@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 Project Tracking System
 =================
 
@@ -31,9 +30,3 @@ management needs:
 More info
 ---------
 * [Arctic LCC Homepage](http://arcticlcc.org)
-=======
-pts
-===
-
-Project Tracking System
->>>>>>> f5dcc9c8912a3544d25407ed28f7803112ae13f4
