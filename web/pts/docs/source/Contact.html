@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-controller-contact-Contact'>/**
+</span> * Main Contact controller
+ */
+Ext.define('PTS.controller.contact.Contact', {
+    extend: 'Ext.app.Controller',
+
+    views: [
+        /*'contact.tab.ContactTab',*/
+        'contact.window.Window'
+    ],
+
+    controllers: [
+        'contact.window.Window'
+    ],
+
+    init: function() {
+        var tab = this.getController('contact.tab.ContactTab'),
+        win = this.getController('contact.window.Window');
+
+        // Remember to call the init method manually
+        tab.init();
+        win.init();
+
+    },
+
+<span id='PTS-controller-contact-Contact-method-openContact'>    /**
+</span>     * Creates and opens the contact window.
+     * @param {Ext.Component/Number/String} type The card, itemId, or index to load.
+     *
+     * - **0** : **Default** Person form
+     * - **1** : Group form
+     * @param {Object} [record] An optional contact record.
+     */
+    openContact: function(type,record) {
+        var win, code,
+            id = record ? record.getId() : false;
+
+        type = type ? type : 0;
+
+        if(id !== false) {
+            code = record.getContactName();
+
+            win = Ext.create(this.getContactWindowWindowView(),{
+                title: 'Edit Contact: ' + code
+            });
+        } else{
+            win = Ext.create(this.getContactWindowWindowView(),{
+                title: 'New Contact'
+            });
+        }
+
+        //win.down('contactform').getLayout().setActiveItem(type);
+
+        this.application.fireEvent('opencontact', id, type);
+
+        win.show();
+    }
+
+    //TODO: closeContact event: clear dependant stores
+});
+</pre>
+</body>
+</html>

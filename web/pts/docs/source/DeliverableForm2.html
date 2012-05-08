@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-view-project-form-DeliverableForm'>/**
+</span> * File: app/view/project/form/DeliverableForm.js
+ * Form for editing Deliverable information.
+ */
+
+Ext.define('PTS.view.project.form.DeliverableForm', {
+    extend: 'Ext.panel.Panel',
+    alias: 'widget.deliverableform',
+    requires: ['PTS.view.controls.ManagerCombo'],
+
+    itemId: 'itemCard-30',
+    title: 'Deliverable',
+    layout: 'border',
+    defaults: {
+        trackResetOnLoad: true,
+        autoScroll: true,
+        preventHeader: true
+    },
+    //model: 'PTS.model.Deliverable',
+
+    initComponent: function() {
+        var me = this;
+
+        Ext.applyIf(me, {
+            items: [{
+                xtype: 'form',
+                itemId: 'itemForm',
+                model: 'PTS.model.Deliverable',
+                layout:'anchor',
+                region: 'center',
+                bodyPadding: 10,
+                items: [
+                    {
+                        xtype: 'container',
+                        itemId: 'mainCon',
+                        layout: {
+                            type: 'anchor'
+                        },
+                        anchor: '100%',
+                        items: [
+                            {
+                                xtype: 'textfield',
+                                name: 'title',
+                                fieldLabel: 'Title',
+                                anchor: '100%'
+                            },
+                            {
+                                xtype: 'textareafield',
+                                name: 'description',
+                                fieldLabel: 'Description',
+                                grow: true,
+                                anchor: '100%'
+                            },
+                            {
+                                xtype: 'combobox',
+                                name: 'deliverabletypeid',
+                                fieldLabel: 'Type',
+                                anchor: '100%',
+                                store: 'DeliverableTypes',
+                                displayField: 'type',
+                                valueField: 'deliverabletypeid',
+                                forceSelection: true,
+                                allowBlank: false,
+                                queryMode: 'local',
+                                listConfig: {
+                                    getInnerTpl: function() {
+                                        return '&lt;div data-qtip=&quot;{description}&quot;&gt;{type}&lt;/div&gt;';
+                                    }
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'managercombo'
+                    },
+                    {
+                        xtype: 'datefield',
+                        name: 'duedate',
+                        fieldLabel: 'Date Due'
+                    },
+                    {
+                        xtype: 'datefield',
+                        name: 'receiveddate',
+                        fieldLabel: 'Date Received'
+                    },
+                    {
+                        xtype: 'checkboxfield',
+                        name: 'invalid',
+                        fieldLabel: 'Invalid',
+                        anchor: '100%'
+                    },
+                    {
+                        xtype: 'checkboxgroup',
+                        fieldLabel: 'Publication',
+                        columns: [
+                            100,
+                            100
+                        ],
+                        anchor: '100%',
+                        items: [
+                            {
+                                xtype: 'checkboxfield',
+                                name: 'publish',
+                                boxLabel: 'Publishable'
+                            },
+                            {
+                                xtype: 'checkboxfield',
+                                name: 'restricted',
+                                boxLabel: 'Restricted'
+                            }
+                        ]
+                    },
+                    {
+                        xtype: 'textareafield',
+                        name: 'accessdescription',
+                        fieldLabel: 'Access Description',
+                        grow: true,
+                        anchor: '100%'
+                    }
+                ]
+            },{
+                xtype:'tabpanel',
+                title: 'Details',
+                region: 'south',
+                collapsible: true,
+                animCollapse: !Ext.isIE8, //TODO: remove this IE8 hack
+                split: true,
+                activeTab: 0,
+                flex: 1,
+                defaults: {
+                    bodyStyle:'padding:10px',
+                    disabled: true
+                },
+                items:[{
+                    title:'Contacts'
+                },{
+                    title:'Progress'
+                },{
+                    title: 'Comments'
+                }]
+            }]
+        });
+
+        me.callParent(arguments);
+    }
+});
+</pre>
+</body>
+</html>

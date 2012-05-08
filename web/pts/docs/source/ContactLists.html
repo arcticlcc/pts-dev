@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-view-contact-ContactLists'>/**
+</span> * File: app/view/contact/ContactLists.js
+ *
+ * Contact Lists tab panel with draggable contacts.
+ */
+Ext.define('PTS.view.contact.ContactLists', {
+    extend: 'Ext.tab.Panel',
+    alias: 'widget.contactlists',
+    requires: [
+        'PTS.view.contact.GroupDDList',
+        'PTS.view.contact.PersonDDList'
+    ],
+    itemId: 'contactLists',
+    activeTab: 0,
+    plain: true,
+    flex: 1,
+
+    initComponent: function() {
+        var me = this;
+
+        Ext.applyIf(me, {
+            items: [
+                {
+                    xtype: 'personddlist',
+                    itemId: 'personsList',
+                    title: 'Persons'
+                },
+                {
+                    xtype: 'groupddlist',
+                    itemId: 'groupsList',
+                    title: 'Groups'
+                }
+            ],
+            dockedItems: [
+                {
+                    xtype: 'toolbar',
+                    dock: 'top',
+                    items: [
+                        {
+                            xtype: 'button',
+                            //itemId: 'addtoproject',
+                            iconCls: 'pts-menu-addbasic',
+                            text: 'Add to Project',
+                            action: 'addcontacts'
+                        }
+                    ]
+                }
+            ]
+        });
+
+        me.callParent(arguments);
+    }
+});
+</pre>
+</body>
+</html>

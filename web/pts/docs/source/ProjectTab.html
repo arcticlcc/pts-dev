@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">Ext.define('PTS.controller.project.tab.ProjectTab', {
+    extend: 'Ext.app.Controller',
+
+    views: [
+        'project.tab.ProjectTab'
+    ],
+
+    refs: [{
+        ref: 'projectList',
+        selector: 'projecttab &gt; projectlist'
+    },{
+        ref: 'projectTab',
+        selector: 'projecttab'
+    }],
+
+    init: function() {
+
+        var list = this.getController('project.tab.ProjectList');
+
+        // Remember to call the init method manually
+        list.init();
+
+        this.control({
+            'projecttab button[action=addproject]': {
+                click: this.newProject
+            },
+
+            'projecttab button[action=editproject]': {
+                click: this.editProject
+            }
+        });
+
+        // We listen for the application-wide projectlistselect event
+        this.application.on({
+            projectlistselect: this.onProjectListSelect,
+            scope: this
+        });
+    },
+
+    newProject: function() {
+        var pc = this.getController('project.Project');
+        pc.openProject();
+    },
+
+    editProject: function() {
+        var pc = this.getController('project.Project'),
+            record = this.getProjectList().getSelectionModel().getSelection()[0];
+        if(record) {
+            pc.openProject(record);
+        }
+    },
+
+    onProjectListSelect: function(prj) {
+            this.getProjectTab().down('button[action=editproject]').setDisabled(!prj);
+    }
+});
+</pre>
+</body>
+</html>

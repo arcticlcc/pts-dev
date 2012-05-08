@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-model-Modification'>/**
+</span> * File: app/model/Modification.js
+ * Description: Modification model.
+ */
+
+Ext.define('PTS.model.Modification', {
+    extend: 'Ext.data.Model',
+    //requires: ['PTS.util.DataTypes'],
+    fields: [
+        {
+            name: 'modificationid',
+            type: 'int',
+            persist: false
+        },
+        {name: 'projectid', type: 'int', useNull: true},
+        {name: 'modtypeid', type: 'int', useNull: true},
+        {name: 'personid', type: 'int', useNull: true},
+        {name: 'parentmodificationid', type: 'int',useNull: true},
+        {name: 'startdate', type: 'mydate'},
+        {name: 'enddate', type: 'mydate'},
+        {name: 'effectivedate', type: 'mydate'},
+        {name: 'datecreated', type: 'mydate'},
+        'modificationcode',
+        'title',
+        'description'
+    ],
+    idProperty: 'modificationid',
+
+    proxy: {
+        type: 'rest',
+        url : '../modification',
+        reader: {
+            type: 'json',
+            root: 'data'
+        }
+    }
+});
+</pre>
+</body>
+</html>

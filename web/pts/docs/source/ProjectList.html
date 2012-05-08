@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-controller-project-tab-ProjectList'>/**
+</span> * Controller for ProjectList
+ */
+Ext.define('PTS.controller.project.tab.ProjectList', {
+    extend: 'Ext.app.Controller',
+    stores: ['ProjectListings'],
+    models: ['ProjectListing'],
+    views: [
+        'project.tab.ProjectList'
+    ],
+    refs: [{
+        ref: 'projectList',
+        selector: 'projecttab &gt; projectlist'
+    }],
+
+    init: function() {
+
+       this.control({
+            'projectlist': {
+                itemdblclick: this.editProject,
+                viewready: this.onProjectListReady,
+                selectionchange: this.onProjectListSelect
+            }
+        });
+
+        // We listen for the application-wide events
+        this.application.on({
+            saveproject: this.onSaveProject,
+            deleteproject: this.onDeleteProject,
+            scope: this
+        });
+    },
+
+    editProject: function(grid, record) {
+        var pc = this.getController('project.Project');
+
+        pc.openProject(record);
+    },
+
+    onProjectListReady: function(grid) {
+        var store = grid.getStore();
+        if (store) {
+            store.on('load', function(store, records, success, oper){
+                if(store.count() &gt; 0) {
+                    this.getSelectionModel().select(0);
+                }
+            },grid);
+        }
+        store.load();
+    },
+
+    onProjectListSelect: function(selModel, selection) {
+        this.application.fireEvent('projectlistselect', selection[0]);
+    },
+
+    onSaveProject: function(record, op) {
+        var index, copy,
+            store = this.getProjectListingsStore(),
+            model = this.getProjectListingModel(),
+            id = record.getId();
+
+        index = store.indexOfId(id);
+
+        if(index === -1) {
+        //The record is new, refresh to update the &quot;related&quot; fields
+            copy = Ext.create(model);
+            store.insert(0,copy);
+        } else {
+        //The record exists in the store, so copy the data
+        //Note: this will only copy the &quot;project&quot; fields,
+        //refresh to update the &quot;related&quot; fields
+            copy = store.getAt(index);
+
+        }
+
+        copy.fields.each(function(field) {
+            copy.set(field.name,record.get(field.name));
+        });
+        //set projectcode
+        copy.set('projectcode',copy.getProjectCode());
+        copy.commit();
+    },
+
+<span id='PTS-controller-project-tab-ProjectList-method-onDeleteProject'>    /**
+</span>     * Fired when a project is deleted.
+     * No record is passed(null), so we
+     * need to use the operation records array
+     */
+    onDeleteProject: function(record, op) {
+        var store = this.getProjectListingsStore();
+
+        Ext.each(op.records, function(rec) {
+            var id = rec.getId();
+
+            store.remove(store.getById(id));
+        });
+    }
+});
+</pre>
+</body>
+</html>

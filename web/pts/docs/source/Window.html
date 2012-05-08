@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-controller-contact-window-Window'>/**
+</span> * Project Window controller.
+ */
+Ext.define('PTS.controller.contact.window.Window', {
+    extend: 'Ext.app.Controller',
+
+    views: [
+        'contact.window.Window'/*,
+        'contact.window.ContactForm'*/
+    ],
+
+    refs: [{
+        ref: 'contactWindow',
+        selector: 'contactwindow'
+    }/*,{
+        ref: 'contactForm',
+        selector: 'contactform'
+    }*/],
+
+    init: function() {
+
+        var cf = this.getController('contact.window.ContactForm');
+
+        // Remember to call the init method manually
+        cf.init();
+
+        this.control({
+            'contactwindow [action=closewindow]': {
+                click: this.closeWindow
+            }/*,
+            'contacttab button[action=editcontact]': {
+                click: this.editContact
+            },
+            'contactwindow tool[type=save]' : {
+                click: this.closeWindow
+            }*/
+        });
+    },
+
+<span id='PTS-controller-contact-window-Window-method-closeWindow'>    /**
+</span>     * Closes the contact window.
+     */
+    closeWindow: function() {
+        this.getContactWindow().close();
+    }
+});
+</pre>
+</body>
+</html>

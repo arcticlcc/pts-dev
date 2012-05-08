@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-controller-dashboard-Task'>/**
+</span> * @class PTS.controller.dashboard.Task
+ */
+Ext.define('PTS.controller.dashboard.Task', {
+    extend: 'Ext.app.Controller',
+    stores: ['Tasks'],
+    views: [
+        'dashboard.TaskList'
+    ],
+
+    init: function() {
+
+        this.control({
+            'tasklist button[action=filtertask]': {
+                change: this.filterTask
+            }
+        });
+    },
+
+<span id='PTS-controller-dashboard-Task-method-filterTask'>    /**
+</span>     * Filter the task list
+     * @param {Ext.button.Cycle} btn The cycle button
+     * @param {Ext.menu.CheckItem} item The menu item that was selected
+     */
+    filterTask: function(btn, itm) {
+        var store = this.getTasksStore(),
+            dt;
+        switch(itm.filter) {
+            case 'user':
+                store.filter('contactid',PTS.user.get('contactid'));
+                break;
+            case 'today':
+                dt = new Date();
+                store.filter('duedate',(Ext.Date.clearTime(dt)));
+                break;
+            default:
+                store.clearFilter();
+        }
+    }
+});
+</pre>
+</body>
+</html>

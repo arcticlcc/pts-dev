@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">Ext.define('PTS.controller.contact.tab.ContactTab', {
+    extend: 'Ext.app.Controller',
+
+    views: [
+        'contact.tab.ContactTab'
+    ],
+
+    refs: [{
+        ref: 'personList',
+        selector: 'contacttab &gt; personlist'
+    },{
+        ref: 'contactTab',
+        selector: 'contacttab'
+    }],
+
+    init: function() {
+
+        var list = this.getController('contact.tab.ContactList');
+
+        // Remember to call the init method manually
+        list.init();
+
+        this.control({
+            'contacttab button[action=addcontact]': {
+                click: this.newContact
+            },
+
+            'contacttab button[action=editcontact]': {
+                click: this.editContact
+            }
+        });
+
+        // We listen for the application-wide events
+        this.application.on({
+            contactlistselect: this.onContactListSelect,
+            contactlistactivate: this.onContactListActivate,
+            scope: this
+        });
+
+    },
+
+    newContact: function() {
+        var pc = this.getController('contact.Contact'),
+            cl = this.getController('contact.tab.ContactList'),
+            type = cl.getContactList().getItemId();
+
+        pc.openContact(type);
+    },
+
+    editContact: function() {
+        var pc = this.getController('contact.Contact'),
+            cl = this.getController('contact.tab.ContactList'),
+            record = cl.getContactList().getSelectionModel().getSelection()[0],
+            type = record.getContactType();
+        if(record) {
+            pc.openContact(type, record);
+        }
+    },
+
+    onContactListSelect: function(selected) {
+        this.getContactTab().down('button[action=editcontact]').setDisabled(!selected);
+    },
+
+    onContactListActivate: function(grid) {
+        var count = grid.getSelectionModel().getCount();
+
+        this.getContactTab().down('button[action=editcontact]').setDisabled(!count);
+    }
+});
+</pre>
+</body>
+</html>

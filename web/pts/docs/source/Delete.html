@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">/*
+ * File: app/view/button/Delete.js
+ * Delete button for project forms/toolbars.
+ * Disabled by default.
+ * Useful handlers should be supplied in config.
+ */
+
+/*
+ * Delete
+ */
+Ext.define('PTS.view.button.Delete', {
+    extend: 'Ext.button.Button',
+    alias: 'widget.deletebutton',
+
+    text: 'Delete',
+    iconCls: 'pts-menu-deletebasic',
+    disabled: true,
+
+    initComponent: function() {
+        var me = this;
+
+        Ext.applyIf(me, {
+            handler: function(){
+                Ext.Msg.alert('Click', 'You clicked on &quot;Delete&quot;.');
+            }
+        });
+
+        me.callParent(arguments);
+    }
+});
+</pre>
+</body>
+</html>

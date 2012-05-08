@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-controller-project-form-ProjectForm'>/**
+</span> * Project Form controller.
+ */
+Ext.define('PTS.controller.project.form.ProjectForm', {
+    extend: 'Ext.app.Controller',
+
+    views: [
+        'project.form.ProjectForm'
+    ],
+    models: [
+        'Project'
+    ],
+    stores: [
+        'ProjectIDs'
+    ],
+    refs: [{
+        ref: 'projectForm',
+        selector: 'projectform'
+    }],
+
+    init: function() {
+
+        /*var list = this.getController('project.tab.ProjectList')
+
+        // Remember to call the init method manually
+        list.init();*/
+
+        this.control({
+            'projectform button[action=saveproject]': {
+                click: this.saveProject
+            },
+            'projectform button[action=resetproject]': {
+                click: this.resetProject
+            },
+            'projectform button[action=deleteproject]': {
+                click: this.confirmDelete
+            }
+        });
+
+        // We listen for the application-wide openproject event
+        this.application.on({
+            openproject: this.onOpenProject,
+            scope: this
+        });
+    },
+
+<span id='PTS-controller-project-form-ProjectForm-method-onOpenProject'>    /**
+</span>     * Open project event.
+     * TODO: filter parent projectlist to remove current project
+     */
+    onOpenProject: function(id) {
+        this.loadRecord(id);
+    },
+
+<span id='PTS-controller-project-form-ProjectForm-method-onSaveProject'>    /**
+</span>     * Save project event.
+     */
+    onSaveProject: function(record, op) {
+        this.application.fireEvent('saveproject', record, op);
+    },
+
+<span id='PTS-controller-project-form-ProjectForm-method-onDeleteProject'>    /**
+</span>     * Delete project event.
+     */
+    onDeleteProject: function(record, op) {
+        this.application.fireEvent('deleteproject', record, op);
+    },
+
+    //TODO: fire app events to relod project list, etc.
+<span id='PTS-controller-project-form-ProjectForm-method-saveProject'>    /**
+</span>     * Save project.
+     */
+     saveProject: function() {
+        var form = this.getProjectForm().getForm(),
+        record = form.getRecord();
+
+        form.updateRecord(record);
+        record.save({
+            success: function(model, op) {
+                var form = this.getProjectForm();
+
+                form.loadRecord(model); //load the model to get desired trackresetonload behaviour
+                form.up('window').projectId = model.getId();
+
+                this.onSaveProject(model, op);
+            },
+            failure: function(model, op) {
+                Ext.MessageBox.show({
+                   title: 'Error',
+                   msg: 'There was an error saving the project.&lt;/br&gt;Error:' + PTS.app.getError(),
+                   buttons: Ext.MessageBox.OK,
+                   //animateTarget: 'mb9',
+                   //fn: showResult,
+                   icon: Ext.Msg.ERROR
+               });
+            },
+            scope: this //need the controller to load the model on success
+        });
+     },
+
+<span id='PTS-controller-project-form-ProjectForm-method-confirmDelete'>    /**
+</span>     * Confirm project deletion.
+     */
+    confirmDelete: function(btn) {
+        var el = btn.getEl(),
+            del = function(b) {
+                if('yes' === b) {
+                    this.deleteProject();
+                }
+            };
+
+        Ext.MessageBox.show({
+            title: 'Confirm Deletion',
+            msg: 'Are you sure you want to delete this project?',
+            //width:300,
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.Msg.WARNING,
+            fn: del,
+            scope: this,
+            animateTarget: el
+        });
+    },
+
+<span id='PTS-controller-project-form-ProjectForm-method-deleteProject'>    /**
+</span>     * Delete project.
+     */
+     deleteProject: function() {
+        var form = this.getProjectForm().getForm(),
+        record = form.getRecord();
+
+        record.destroy({
+            success: function(model, op) {
+                this.onDeleteProject(model, op);
+                this.getProjectForm().up('window').close();
+            },
+            failure: function(model, op) {
+                Ext.MessageBox.show({
+                   title: 'Error',
+                   msg: 'There was an error deleting the project.&lt;/br&gt;Error:' + PTS.app.getError(),
+                   buttons: Ext.MessageBox.OK,
+                   //animateTarget: 'mb9',
+                   icon: Ext.Msg.ERROR
+               });
+            },
+            scope: this //need the controller
+        });
+     },
+
+<span id='PTS-controller-project-form-ProjectForm-method-resetProject'>    /**
+</span>     * Reset project form.
+     */
+     resetProject: function() {
+        var form = this.getProjectForm().getForm();
+
+        form.reset();
+     },
+
+<span id='PTS-controller-project-form-ProjectForm-method-loadRecord'>    /**
+</span>     * Load project.
+     */
+    loadRecord: function(id) {
+        var model = this.getProjectModel(),
+            form = this.getProjectForm();
+
+        if(id) {
+            model.load(id, { // load with id from selected record
+                success: function(model) {
+                    form.loadRecord(model); // when model is loaded successfully, load the data into the form
+
+                    /*Ext.each(itemCard.query('field'), function() {// set all fields as read-only on load
+                        this.setReadOnly(true);
+                    });
+                    itemDetail.setIconCls('alcc-panel-locked');//set the lock icon on the panel
+
+                    Ext.each(btns, function(){
+                        this.enable();
+                    });
+                    itemDetail.getLayout().setActiveItem(itemCard);
+                    if(itemCard.isXType('form')) {
+                        //console.info(itemCard.xtype);
+                        if(itemCard.getForm().isDirty()) {
+                            reset.enable();
+                            if(itemCard.getForm().isValid()) {
+                                save.enable();
+                            }
+                        } else {
+                            reset.disable();
+                            save.disable();
+                        }
+                    }
+                    itemDetail.setTitle(rec.get('type') + &quot;: &quot; + rec.get('task'));
+                    itemDetail.enable();*/
+                },
+                failure: function(model, op) {
+                    Ext.MessageBox.show({
+                       title: 'Error',
+                       msg: 'There was an error loading the project.&lt;/br&gt;Error:' + PTS.app.getError(),
+                       buttons: Ext.MessageBox.OK,
+                       //animateTarget: 'mb9',
+                       icon: Ext.Msg.ERROR
+                   });
+                }
+            });
+        } else{
+            form.loadRecord(Ext.create(model));
+        }
+    }
+});
+</pre>
+</body>
+</html>

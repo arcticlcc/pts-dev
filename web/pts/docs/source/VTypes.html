@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-util-VTypes'>/**
+</span> * Custom Vtypes
+ *
+ * All of the methods document here are applied to Ext.form.field.VTypes
+ */
+Ext.define('PTS.util.VTypes', {
+    singleton: true,
+    requires: [
+        'Ext.form.field.VTypes'
+    ]
+}, function() {
+    Ext.apply(Ext.form.field.VTypes, {
+<span id='PTS-util-VTypes-method-daterange'>        /**
+</span>         * @method daterange
+         * Custom date range validation
+         */
+        daterange: function(val, field) {
+	        var date = field.parseDate(val);
+
+	        if (field.startDateField &amp;&amp;
+		        (!field.dateRangeMax || date === null || (date.getTime() != field.dateRangeMax.getTime()) )) {
+		        var start = field.ownerCt.down('datefield[vfield=beginDate]');
+		        start.setMaxValue(date);
+		        start.validate();
+		        field.dateRangeMax = date;
+	        }
+	        else if (field.endDateField &amp;&amp;
+		        (!field.dateRangeMin  || date === null || (date.getTime() != field.dateRangeMin.getTime()) )) {
+		        var end = field.ownerCt.down('datefield[vfield=endDate]');
+		        end.setMinValue(date);
+		        end.validate();
+		        field.dateRangeMin = date;
+	        }
+	        /*
+	         * Always return true since we're only using this vtype to set the
+	         * min/max allowed values (these are tested for after the vtype test)
+	         */
+	        return true;
+        },
+	    DateRangeText: 'From date must be before To date'
+    });
+    }
+);
+</pre>
+</body>
+</html>

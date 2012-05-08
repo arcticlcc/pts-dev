@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js"><span id='PTS-model-Invoice'>/**
+</span> * File: app/model/Invoice.js
+ * Description: Invoice model.
+ */
+
+Ext.define('PTS.model.Invoice', {
+    extend: 'Ext.data.Model',
+    fields: [
+        {
+            name: 'invoiceid',
+            type: 'int',
+            persist: false
+        },
+        {
+            name: 'projectcontactid',
+            type: 'int',
+            useNull: true
+        },
+        {
+            name: 'datereceived',
+            type: 'mydate',
+            useNull: true
+        },
+        {
+            name: 'dateclosed',
+            type: 'mydate',
+            useNull: true
+        },
+        {
+            name: 'amount',
+            type: 'number',
+            useNull: true
+        },
+        'title'
+    ],
+    idProperty: 'invoiceid',
+
+    hasMany: [
+        {model: 'PTS.model.CostCodeInvoice', name: 'costcodes'}
+    ],
+
+    proxy: {
+        type: 'rest',
+        url : '../invoice',
+        reader: {
+            type: 'json',
+            root: 'data'
+        },
+        writer: {
+            type: 'ajson'
+        }
+    }
+});
+</pre>
+</body>
+</html>

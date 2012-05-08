@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>The source code</title>
+  <link href="../resources/prettify/prettify.css" type="text/css" rel="stylesheet" />
+  <script type="text/javascript" src="../resources/prettify/prettify.js"></script>
+  <style type="text/css">
+    .highlight { display: block; background-color: #ddd; }
+  </style>
+  <script type="text/javascript">
+    function highlight() {
+      document.getElementById(location.hash.replace(/#/, "")).className = "highlight";
+    }
+  </script>
+</head>
+<body onload="prettyPrint(); highlight();">
+  <pre class="prettyprint lang-js">/*
+ * File: app/store/Persons.js
+ * Description: Store of persons
+ */
+
+Ext.define('PTS.store.Persons', {
+    extend: 'Ext.data.Store',
+    model: 'PTS.model.Person',
+
+    pageSize: PTS.Defaults.pageSize,
+    sorters: { property: 'lastname', direction : 'ASC' },
+    proxy: {
+        type: 'rest',
+        url : '../person',
+        api: {
+            read:'../personlist'
+        },
+        reader: {
+            type: 'json',
+            root: 'data'
+        },
+        writer: {
+            type: 'ajson'
+        }
+    }
+});
+</pre>
+</body>
+</html>
