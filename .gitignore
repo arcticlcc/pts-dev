@@ -6,4 +6,4 @@ web/pts/extensible-1.5.1
 web/pts/extjs
 web/pts/lib
 web/pts/resources/css/dev.css
-web/pts/docs/extjs
+web/pts/docs/*
