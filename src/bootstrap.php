@@ -12,7 +12,7 @@ $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path'       => __DIR__.'/../views',
-    'twig.class_path' => __DIR__.'/../vendor/Twig/lib',
+    'twig.class_path' => __DIR__.'/../vendor/twig/twig/lib',
 ));
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
     'db.options'            => array(
@@ -22,13 +22,13 @@ $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
         'user'      => 'pts',
         'password'  => '123',
     ),
-    'db.dbal.class_path'    => __DIR__.'/../vendor/Silex/vendor/doctrine-dbal/lib',
-    'db.common.class_path'  => __DIR__.'/../vendor/Silex/vendor/doctrine-common/lib',
+    'db.dbal.class_path'    => __DIR__.'/../vendor/doctrine/dbal/lib',
+    'db.common.class_path'  => __DIR__.'/../vendor/doctrine/common/lib',
 ));
 
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.logfile'       => __DIR__.'/../log/development.log',
-    'monolog.class_path'    => __DIR__.'/../vendor/Monolog/src',
+    'monolog.class_path'    => __DIR__.'/../vendor/monolog/monolog/src',
 ));
 
 $app->register(new Idiorm\IdiormServiceProvider(), array(
