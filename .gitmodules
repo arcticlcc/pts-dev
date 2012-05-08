@@ -13,3 +13,6 @@
 [submodule "vendor/Monolog"]
 	path = vendor/Monolog
 	url = https://github.com/Seldaek/monolog.git
+[submodule "web/pts/lib/geoext"]
+	path = web/pts/lib/geoext
+	url = https://github.com/geoext/geoext2.git
