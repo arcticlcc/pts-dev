@@ -215,10 +215,6 @@ $app->post('/{class}', function (Request $request, $class) use ($app) {
     return $app['json']->getResponse();
 });
 
-/*$app->post('/{class}/{id}', function (Request $request, $class) use ($app) {
-    return $app->redirect("/$class");
-});*/
-
 $app->delete('/{class}/{id}', function ($class, $id) use ($app) {
     $result = array();
     $restricted = array(
