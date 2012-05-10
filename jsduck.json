@@ -1,0 +1,10 @@
+{
+    "--title": "PTS Docs",
+    "--output": "web/pts/docs/",
+   // "--welcome": "welcome.html",
+    "--warnings": ["-link", "-no_doc"],
+    "--": [
+        "web/pts/app.js",
+        "web/pts/app"
+    ]
+}
