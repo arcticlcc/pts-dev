@@ -7,11 +7,9 @@ Ext.define('PTS.view.project.tab.ProjectTab', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.projecttab',
     requires: [
-        /*'ArcticPTS.view.NewProjectBtn',
-        'ArcticPTS.view.ProjectList',
-        'ArcticPTS.view.ProjectDetailsTabPanel',
-        'ArcticPTS.view.ProjectDetailsCSM'*/
-        'PTS.view.project.tab.ProjectList'
+        /*'ArcticPTS.view.ProjectDetailsCSM'*/
+        'PTS.view.project.tab.ProjectList',
+        'PTS.view.project.tab.ProjectDetail'
     ],
 
     layout: {
@@ -73,11 +71,14 @@ Ext.define('PTS.view.project.tab.ProjectTab', {
                     flex: 1,
                     region: 'east',
                     split: true,
+                    defaults: {
+                        preventHeader: true
+                    },
                     items: [
                         {
-                            //xtype: 'projectdetailstabpanel',
-                            xtype: 'panel',
-                            title: 'Project Details',
+                            xtype: 'projectdetail',
+                            //xtype: 'panel',
+                            //title: 'Project Details',
                             region: 'center'
                         },
                         {
