@@ -3,8 +3,12 @@
  */
 Ext.define('PTS.controller.project.tab.ProjectList', {
     extend: 'Ext.app.Controller',
-    stores: ['ProjectListings'],
-    models: ['ProjectListing'],
+    stores: [
+        'ProjectListings'
+    ],
+    models: [
+        'ProjectListing'
+    ],
     views: [
         'project.tab.ProjectList'
     ],
