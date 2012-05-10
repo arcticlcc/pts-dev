@@ -15,10 +15,12 @@ Ext.define('PTS.controller.project.tab.ProjectTab', {
 
     init: function() {
 
-        var list = this.getController('project.tab.ProjectList');
+        var list = this.getController('project.tab.ProjectList'),
+            det = this.getController('project.tab.ProjectDetail');
 
         // Remember to call the init method manually
         list.init();
+        det.init();
 
         this.control({
             'projecttab button[action=addproject]': {

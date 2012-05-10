@@ -32,6 +32,10 @@ Ext.define('PTS.model.AgreementsTree', {
             type: 'boolean'
         },
         {
+            name: 'hilite',
+            type: 'boolean'
+        },
+        {
             name: 'readonly',
             type: 'boolean',
             defaultValue: false

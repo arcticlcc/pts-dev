@@ -99,10 +99,22 @@
     background-color: transparent;
 }
 .pts-deliverable-invalid {
-    color: grey;
+    color: #808080;
 }
 .pts-deliverable-highlight .x-grid-cell {
     background-color: #FFFFE0;
+}
+.pts-tree-highlight .x-grid-cell {
+    background-color: #F7FAFE;
+    border-width: 0 0 1px 0 !important;
+}
+.pts-tree-header .x-grid-cell {
+    border-color: #99BBE8 !important;
+    border-width: 0 0 2px !important;
+}
+.x-grid-row-over .x-grid-cell, .x-grid-row-over .x-grid-rowwrap-div {
+    background-color: #EFEFEF;
+    border-color: #DDDDDD;
 }
 .pts-panel-locked {
     background-image: url("../images/icons/lock_red.png");
@@ -136,11 +148,15 @@
 /*.pts-field-disabled {
     opacity: .5;
     /*IE Hack */
-	/*-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-	filter: alpha(opacity=50);
+    /*-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    filter: alpha(opacity=50);
 }*/
-#pts-dashboardcalendar .ext-cal-toolbar{
+#pts-dashboardcalendar .ext-cal-toolbar {
     border-top-width: 0;
+}
+.pts-no-tree-icons .x-tree-icon {
+    visibility: hidden;
+    width: 2px;
 }
 /***Ext.ux***/
 .x-grid-checkheader {

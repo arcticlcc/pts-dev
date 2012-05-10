@@ -51,8 +51,10 @@ class Project implements ControllerProviderInterface
         });
 
         $controllers->get('project/{id}/tree', function (Application $app, Request $request, $id) {
+            //check to see if the full tree is requested
+            $long = $request->get('short') ? false : true;
 
-            $createTree = function($rec) use ($app, $id) {
+            $createTree = function($rec) use ($app, $id, $long) {
                 $aid = $rec['modificationid'];
                 $fkey = array('modificationid'=>$aid); //foreign key for modification(agreement)
                 //create nodes
@@ -63,83 +65,83 @@ class Project implements ControllerProviderInterface
                     'projectid' => $rec['projectid'],
                     'parentmodificationid' => $rec['parentmodificationid']
                 ));*/
+                if($long) {
+                    $dels = $app['tree']->node("df-$aid",'Deliverables','task-folder',false);
+                    $dels->setAttribute('typeid',30);
+                    $dels->setAttribute('fkey',$fkey);
+                    $dels->setAttribute('defIcon','pts-page-blue');
 
-                $dels = $app['tree']->node("df-$aid",'Deliverables','task-folder',false);
-                $dels->setAttribute('typeid',30);
-                $dels->setAttribute('fkey',$fkey);
-                $dels->setAttribute('defIcon','pts-page-blue');
+                    $funds = $app['tree']->node("ff-$aid",'Funds','task-folder',false);
+                    $funds->setAttribute('typeid',50);
+                    $funds->setAttribute('fkey',$fkey);
+                    $funds->setAttribute('defIcon','pts-money-dollar');
 
-                $funds = $app['tree']->node("ff-$aid",'Funds','task-folder',false);
-                $funds->setAttribute('typeid',50);
-                $funds->setAttribute('fkey',$fkey);
-                $funds->setAttribute('defIcon','pts-money-dollar');
+                    $tasks = $app['tree']->node("tf-$aid",'Tasks','task-folder',false);
+                    $tasks->setAttribute('typeid',40);
+                    $tasks->setAttribute('fkey',$fkey);
+                    $tasks->setAttribute('defIcon','pts-page-orange');
 
-                $tasks = $app['tree']->node("tf-$aid",'Tasks','task-folder',false);
-                $tasks->setAttribute('typeid',40);
-                $tasks->setAttribute('fkey',$fkey);
-                $tasks->setAttribute('defIcon','pts-page-orange');
+                    //get deliverables/tasks
+                    $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid);
+                    $dfkey = $fkey;
+                    foreach($delRecs as $d) {
+                        $did = $d['deliverableid'] .'-'. $d['modificationid'];
+                        $dataid = $d['modificationid'] .'/deliverable/'. $d['deliverableid'];
+                        //create deliverable node
+                        $icon = $d['parentmodificationid'] ? 'pts-page-bluecopy' : 'pts-page-blue'; //check if the deliverable is a mod
+                        $dnode = $app['tree']->node("d-$did",$d['title'],$icon,true);
+                        //set attributes
+                        /*if($d['parentmodificationid']) { //if the deliverable is a mod
+                            $dfkey[] = array($d['parentdeliverableid'], 'parentdeliverableid');
+                            $dfkey[] = array($d['parentmodificationid'], 'parentmodificationid');
+                        }*/
 
-                //get deliverables/tasks
-                $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid);
-                $dfkey = $fkey;
-                foreach($delRecs as $d) {
-                    $did = $d['deliverableid'] .'-'. $d['modificationid'];
-                    $dataid = $d['modificationid'] .'/deliverable/'. $d['deliverableid'];
-                    //create deliverable node
-                    $icon = $d['parentmodificationid'] ? 'pts-page-bluecopy' : 'pts-page-blue'; //check if the deliverable is a mod
-                    $dnode = $app['tree']->node("d-$did",$d['title'],$icon,true);
-                    //set attributes
-                    /*if($d['parentmodificationid']) { //if the deliverable is a mod
-                        $dfkey[] = array($d['parentdeliverableid'], 'parentdeliverableid');
-                        $dfkey[] = array($d['parentmodificationid'], 'parentmodificationid');
-                    }*/
+                        $dnode->setAttribute('dataid',$dataid);
+                        if($d['invalid']) {
+                            $dnode->setAttribute('cls','pts-deliverable-invalid');
+                        }
+                        if($d['modified']) {
+                            $dnode->setAttribute('readonly','true');
+                        }
+                        if($d['parentdeliverableid']) {
+                            $dnode->setAttribute('parentItm','d-'. $d['parentdeliverableid'] .'-'. $d['parentmodificationid']);
+                        }
+                        //$dnode->setAttribute('fkey',$dfkey);
 
-                    $dnode->setAttribute('dataid',$dataid);
-                    if($d['invalid']) {
-                        $dnode->setAttribute('cls','pts-deliverable-invalid');
+                        switch ($d['deliverabletypeid']) {
+                            case 4: //get tasks
+                            case 7:
+                                /*$tnode = $app['tree']->node("t-$did",$d['title'],'task',true);
+                                $tnode->setAttribute('dataid',$dataid);
+                                $tnode->setAttribute('fkey',array($d['modificationid'], 'modificationid'));*/
+                                $dnode->setAttribute('iconCls','pts-page-orange');
+                                $tasks->addChild($dnode);
+                                break;
+                            default:
+                                /*$dnode = $app['tree']->node("d-$did",$d['title'],'task',true);
+                                $dnode->setAttribute('dataid',$dataid);
+                                $dnode->setAttribute('fkey',array($d['modificationid'], 'modificationid'));*/
+                                $dels->addChild($dnode);
+
+                        }
                     }
-                    if($d['modified']) {
-                        $dnode->setAttribute('readonly','true');
-                    }
-                    if($d['parentdeliverableid']) {
-                        $dnode->setAttribute('parentItm','d-'. $d['parentdeliverableid'] .'-'. $d['parentmodificationid']);
-                    }
-                    //$dnode->setAttribute('fkey',$dfkey);
 
-                    switch ($d['deliverabletypeid']) {
-                        case 4: //get tasks
-                        case 7:
-                            /*$tnode = $app['tree']->node("t-$did",$d['title'],'task',true);
-                            $tnode->setAttribute('dataid',$dataid);
-                            $tnode->setAttribute('fkey',array($d['modificationid'], 'modificationid'));*/
-                            $dnode->setAttribute('iconCls','pts-page-orange');
-                            $tasks->addChild($dnode);
-                            break;
-                        default:
-                            /*$dnode = $app['tree']->node("d-$did",$d['title'],'task',true);
-                            $dnode->setAttribute('dataid',$dataid);
-                            $dnode->setAttribute('fkey',array($d['modificationid'], 'modificationid'));*/
-                            $dels->addChild($dnode);
+                    //get funds
+                    $fundRecs = $app['idiorm']->getRelated(true, 'funding', 'modificationid', $aid);
+                    foreach($fundRecs as $f) {
+                        $fid = $f['fundingid'];
+                        $fnode = $app['tree']->node("f-$fid",$f['title'],'pts-money-dollar',true);
+                        $fnode->setAttribute('dataid',$fid);
+                        //$fnode->setAttribute('fkey',$fkey);
+                        $funds->addChild($fnode);
 
                     }
+
+                    //add child nodes
+                    $node->addChild($dels);
+                    $node->addChild($funds);
+                    $node->addChild($tasks);
                 }
-
-                //get funds
-                $fundRecs = $app['idiorm']->getRelated(true, 'funding', 'modificationid', $aid);
-                foreach($fundRecs as $f) {
-                    $fid = $f['fundingid'];
-                    $fnode = $app['tree']->node("f-$fid",$f['title'],'pts-money-dollar',true);
-                    $fnode->setAttribute('dataid',$fid);
-                    //$fnode->setAttribute('fkey',$fkey);
-                    $funds->addChild($fnode);
-
-                }
-
-                //add child nodes
-                $node->addChild($dels);
-                $node->addChild($funds);
-                $node->addChild($tasks);
-
                 return $node;
             };
 
@@ -147,20 +149,21 @@ class Project implements ControllerProviderInterface
                 //create root node($id,$text,$iconCls,$leaf)
                 $rootNode = $app['tree']->node('root','.','',false);
 
-                $propNode = $app['tree']->node('prt-0','Proposals','task-folder',false);
-                $propNode->setAttribute('typeid', 10);
-                $propNode->setAttribute('fkey',array(
-                    'projectid'=>$id
-                ));
-                $propNode->setAttribute('defIcon','pts-page-white');
+                if($long) {
+                    $propNode = $app['tree']->node('prt-0','Proposals','task-folder',false);
+                    $propNode->setAttribute('typeid', 10);
+                    $propNode->setAttribute('fkey',array(
+                        'projectid'=>$id
+                    ));
+                    $propNode->setAttribute('defIcon','pts-page-white');
 
-                $agreeNode = $app['tree']->node('art-0','Agreements','task-folder',false);
-                $agreeNode->setAttribute('typeid', 20);
-                $agreeNode->setAttribute('fkey',array(
-                    'projectid'=>$id
-                ));
-                $agreeNode->setAttribute('defIcon','pts-agreement-folder');
-
+                    $agreeNode = $app['tree']->node('art-0','Agreements','task-folder',false);
+                    $agreeNode->setAttribute('typeid', 20);
+                    $agreeNode->setAttribute('fkey',array(
+                        'projectid'=>$id
+                    ));
+                    $agreeNode->setAttribute('defIcon','pts-agreement-folder');
+                }
                 //get all related modifications
                 $m = $app['idiorm']->getRelated(true, 'modificationlist', 'projectid', $id);
                 $mod = array();
@@ -177,13 +180,15 @@ class Project implements ControllerProviderInterface
 
                             break;*/
                         case 4: //get proposals
-                            $node = $app['tree']->node("pr-$rid",$r['title'],'pts-page-white',true);
-                            $node->setAttribute('dataid',$rid);
-                            $node->setAttribute('type',$r['typecode']);
-                            /*$node->setAttribute('fkey',array(
-                                array($r['projectid'], 'projectid')
-                            ));*/
-                            $propNode->addChild($node);
+                            if($long) {
+                                $node = $app['tree']->node("pr-$rid",$r['title'],'pts-page-white',true);
+                                $node->setAttribute('dataid',$rid);
+                                $node->setAttribute('type',$r['typecode']);
+                                /*$node->setAttribute('fkey',array(
+                                    array($r['projectid'], 'projectid')
+                                ));*/
+                                $propNode->addChild($node);
+                            }
                             break;
                         default:
                             if($r['parentmodificationid']) {
@@ -200,33 +205,48 @@ class Project implements ControllerProviderInterface
                     $aid = $r['modificationid'];
                     //create the agreement node
                     $node = $createTree($r);
-                    //add modification node
-                    $modNode = $app['tree']->node("mf-$aid",'Modifications','task-folder',false);
-                    $modNode->setAttribute('typeid', 60);
-                    $modNode->setAttribute('fkey',array(
-                        'projectid'=>$r['projectid'],
-                        'modtypeid'=>$r['modtypeid'],
-                        'parentmodificationid'=>$aid
-                    ));
-                    $modNode->setAttribute('defIcon','pts-agreement-folder');
+                    if($long) {
+                        //add modification node
+                        $modNode = $app['tree']->node("mf-$aid",'Modifications','task-folder',false);
+                        $modNode->setAttribute('typeid', 60);
+                        $modNode->setAttribute('fkey',array(
+                            'projectid'=>$r['projectid'],
+                            'modtypeid'=>$r['modtypeid'],
+                            'parentmodificationid'=>$aid
+                        ));
+                        $modNode->setAttribute('defIcon','pts-agreement-folder');
+                    }
+
                     //get mod records for this agreement
                     $modRecs = array_filter($mod, function($mod) use ($r) {
                         return $mod['parentmodificationid'] === $r['modificationid'];
                     });
                     //create and add nodes to modNode
                     foreach($modRecs as $mr) {
-                        $modNode->addChild($createTree($mr));
+                        if($long) {
+                            $modNode->addChild($createTree($mr));
+                        }else {
+                            $mn = $createTree($mr);
+                            $mn->setAttribute('hilite',true);
+                            $node->addChild($mn);
+                        }
                     }
-                    //add modeNode to agreement node
-                    $node->addChild($modNode);
-                    //add to root agreement node
-                    $agreeNode->addChild($node);
+                    if($long) {
+                        //add modeNode to agreement node
+                        $node->addChild($modNode);
+                        //add to root agreement node
+                        $agreeNode->addChild($node);
+                    } else {
+                        $rootNode->addChild($node);
+                    }
                 }
 
-                //add proposals
-                $rootNode->addChild($propNode);
-                //add agreements
-                $rootNode->addChild($agreeNode);
+                if($long) {
+                    //add proposals
+                    $rootNode->addChild($propNode);
+                    //add agreements
+                    $rootNode->addChild($agreeNode);
+                }
 
                 $app['tree']->add($rootNode);
 
