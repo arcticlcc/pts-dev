@@ -14,32 +14,8 @@
 					"name": "Observable.js"
 				},
 				{
-					"path": "extjs/src/app/",
-					"name": "Controller.js"
-				},
-				{
-					"path": "extjs/src/app/",
-					"name": "EventBus.js"
-				},
-				{
 					"path": "extjs/src/util/",
 					"name": "Floating.js"
-				},
-				{
-					"path": "extjs/src/form/action/",
-					"name": "Action.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "Connection.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "validations.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "Operation.js"
 				},
 				{
 					"path": "extjs/src/",
@@ -54,12 +30,40 @@
 					"name": "IdGenerator.js"
 				},
 				{
+					"path": "extjs/src/data/",
+					"name": "Operation.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "validations.js"
+				},
+				{
+					"path": "extjs/src/form/action/",
+					"name": "Action.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "Connection.js"
+				},
+				{
 					"path": "extjs/src/util/",
 					"name": "Animate.js"
 				},
 				{
 					"path": "extjs/src/",
 					"name": "ComponentQuery.js"
+				},
+				{
+					"path": "extjs/src/util/",
+					"name": "HashMap.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "Ajax.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "SortTypes.js"
 				},
 				{
 					"path": "extjs/src/util/",
@@ -70,16 +74,12 @@
 					"name": "Sorter.js"
 				},
 				{
-					"path": "extjs/src/data/",
-					"name": "SortTypes.js"
+					"path": "extjs/src/form/field/",
+					"name": "VTypes.js"
 				},
 				{
-					"path": "extjs/src/",
-					"name": "Ajax.js"
-				},
-				{
-					"path": "extjs/src/util/",
-					"name": "HashMap.js"
+					"path": "extjs/src/data/writer/",
+					"name": "Writer.js"
 				},
 				{
 					"path": "extjs/src/util/",
@@ -95,19 +95,11 @@
 				},
 				{
 					"path": "extjs/src/form/field/",
-					"name": "VTypes.js"
-				},
-				{
-					"path": "extjs/src/data/writer/",
-					"name": "Writer.js"
-				},
-				{
-					"path": "extjs/src/form/field/",
 					"name": "Field.js"
 				},
 				{
-					"path": "extjs/src/dd/",
-					"name": "DragTracker.js"
+					"path": "extjs/src/util/",
+					"name": "Memento.js"
 				},
 				{
 					"path": "extjs/src/util/",
@@ -115,51 +107,51 @@
 				},
 				{
 					"path": "extjs/src/util/",
-					"name": "Memento.js"
+					"name": "KeyNav.js"
 				},
 				{
 					"path": "extjs/src/layout/container/boxOverflow/",
 					"name": "None.js"
 				},
 				{
+					"path": "extjs/src/dd/",
+					"name": "DragTracker.js"
+				},
+				{
 					"path": "extjs/src/layout/container/boxOverflow/",
 					"name": "Scroller.js"
-				},
-				{
-					"path": "extjs/src/util/",
-					"name": "KeyNav.js"
-				},
-				{
-					"path": "extjs/src/state/",
-					"name": "Provider.js"
 				},
 				{
 					"path": "extjs/src/data/",
 					"name": "ResultSet.js"
 				},
 				{
-					"path": "extjs/src/fx/",
-					"name": "CubicBezier.js"
+					"path": "extjs/src/state/",
+					"name": "Provider.js"
 				},
 				{
 					"path": "extjs/src/panel/",
 					"name": "Proxy.js"
 				},
 				{
-					"path": "extjs/src/layout/",
-					"name": "Layout.js"
+					"path": "extjs/src/fx/",
+					"name": "CubicBezier.js"
 				},
 				{
 					"path": "extjs/src/",
 					"name": "ZIndexManager.js"
 				},
 				{
-					"path": "extjs/src/fx/",
-					"name": "Queue.js"
+					"path": "extjs/src/layout/",
+					"name": "Layout.js"
 				},
 				{
 					"path": "extjs/src/dd/",
 					"name": "StatusProxy.js"
+				},
+				{
+					"path": "extjs/src/fx/",
+					"name": "Queue.js"
 				},
 				{
 					"path": "extjs/src/fx/target/",
@@ -168,6 +160,18 @@
 				{
 					"path": "extjs/src/draw/",
 					"name": "Color.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "XTemplate.js"
+				},
+				{
+					"path": "extjs/src/app/",
+					"name": "Controller.js"
+				},
+				{
+					"path": "extjs/src/app/",
+					"name": "EventBus.js"
 				},
 				{
 					"path": "extjs/src/form/action/",
@@ -179,7 +183,15 @@
 				},
 				{
 					"path": "extjs/src/",
-					"name": "XTemplate.js"
+					"name": "AbstractManager.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "ModelManager.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "ComponentManager.js"
 				},
 				{
 					"path": "extjs/src/util/",
@@ -195,23 +207,11 @@
 				},
 				{
 					"path": "extjs/src/data/",
-					"name": "Errors.js"
-				},
-				{
-					"path": "extjs/src/data/",
 					"name": "StoreManager.js"
 				},
 				{
-					"path": "extjs/src/",
-					"name": "AbstractManager.js"
-				},
-				{
-					"path": "extjs/src/",
-					"name": "ModelManager.js"
-				},
-				{
-					"path": "extjs/src/",
-					"name": "ComponentManager.js"
+					"path": "extjs/src/data/",
+					"name": "Errors.js"
 				},
 				{
 					"path": "extjs/src/data/writer/",
@@ -227,43 +227,15 @@
 				},
 				{
 					"path": "extjs/src/util/",
-					"name": "ComponentDragger.js"
-				},
-				{
-					"path": "extjs/src/util/",
 					"name": "Region.js"
 				},
 				{
-					"path": "extjs/src/menu/",
-					"name": "Manager.js"
+					"path": "extjs/src/util/",
+					"name": "ComponentDragger.js"
 				},
 				{
 					"path": "extjs/src/",
 					"name": "FocusManager.js"
-				},
-				{
-					"path": "extjs/src/state/",
-					"name": "Manager.js"
-				},
-				{
-					"path": "extjs/src/state/",
-					"name": "Stateful.js"
-				},
-				{
-					"path": "extjs/src/",
-					"name": "AbstractComponent.js"
-				},
-				{
-					"path": "extjs/src/",
-					"name": "Component.js"
-				},
-				{
-					"path": "extjs/src/picker/",
-					"name": "Color.js"
-				},
-				{
-					"path": "extjs/src/toolbar/",
-					"name": "Fill.js"
 				},
 				{
 					"path": "extjs/src/data/reader/",
@@ -298,8 +270,40 @@
 					"name": "Model.js"
 				},
 				{
+					"path": "extjs/src/menu/",
+					"name": "Manager.js"
+				},
+				{
+					"path": "extjs/src/state/",
+					"name": "Manager.js"
+				},
+				{
+					"path": "extjs/src/state/",
+					"name": "Stateful.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "AbstractComponent.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "Component.js"
+				},
+				{
+					"path": "extjs/src/picker/",
+					"name": "Color.js"
+				},
+				{
+					"path": "extjs/src/toolbar/",
+					"name": "Fill.js"
+				},
+				{
 					"path": "extjs/src/form/",
 					"name": "Labelable.js"
+				},
+				{
+					"path": "extjs/src/fx/",
+					"name": "Easing.js"
 				},
 				{
 					"path": "extjs/src/layout/component/",
@@ -362,22 +366,6 @@
 					"name": "Anchor.js"
 				},
 				{
-					"path": "extjs/src/fx/",
-					"name": "Easing.js"
-				},
-				{
-					"path": "extjs/src/layout/component/",
-					"name": "AbstractDock.js"
-				},
-				{
-					"path": "extjs/src/layout/component/",
-					"name": "Dock.js"
-				},
-				{
-					"path": "extjs/src/layout/component/",
-					"name": "Tip.js"
-				},
-				{
 					"path": "extjs/src/layout/container/",
 					"name": "Auto.js"
 				},
@@ -394,12 +382,20 @@
 					"name": "Header.js"
 				},
 				{
-					"path": "extjs/src/fx/target/",
-					"name": "Element.js"
+					"path": "extjs/src/layout/component/",
+					"name": "AbstractDock.js"
+				},
+				{
+					"path": "extjs/src/layout/component/",
+					"name": "Dock.js"
+				},
+				{
+					"path": "extjs/src/layout/component/",
+					"name": "Tip.js"
 				},
 				{
 					"path": "extjs/src/fx/target/",
-					"name": "CompositeElement.js"
+					"name": "Component.js"
 				},
 				{
 					"path": "extjs/src/fx/target/",
@@ -411,7 +407,11 @@
 				},
 				{
 					"path": "extjs/src/fx/target/",
-					"name": "Component.js"
+					"name": "Element.js"
+				},
+				{
+					"path": "extjs/src/fx/target/",
+					"name": "CompositeElement.js"
 				},
 				{
 					"path": "extjs/src/fx/",
@@ -420,18 +420,6 @@
 				{
 					"path": "extjs/src/fx/",
 					"name": "Animator.js"
-				},
-				{
-					"path": "extjs/src/draw/",
-					"name": "Draw.js"
-				},
-				{
-					"path": "extjs/src/fx/",
-					"name": "PropertyHandler.js"
-				},
-				{
-					"path": "extjs/src/fx/",
-					"name": "Anim.js"
 				},
 				{
 					"path": "extjs/src/toolbar/",
@@ -464,6 +452,18 @@
 				{
 					"path": "extjs/src/panel/",
 					"name": "AbstractPanel.js"
+				},
+				{
+					"path": "extjs/src/draw/",
+					"name": "Draw.js"
+				},
+				{
+					"path": "extjs/src/fx/",
+					"name": "PropertyHandler.js"
+				},
+				{
+					"path": "extjs/src/fx/",
+					"name": "Anim.js"
 				},
 				{
 					"path": "extjs/src/dd/",
@@ -530,10 +530,6 @@
 					"name": "Layer.js"
 				},
 				{
-					"path": "extjs/src/",
-					"name": "PluginManager.js"
-				},
-				{
 					"path": "extjs/src/data/",
 					"name": "Batch.js"
 				},
@@ -542,8 +538,16 @@
 					"name": "Request.js"
 				},
 				{
+					"path": "extjs/src/",
+					"name": "LoadMask.js"
+				},
+				{
 					"path": "extjs/src/layout/component/",
 					"name": "Auto.js"
+				},
+				{
+					"path": "extjs/src/",
+					"name": "PluginManager.js"
 				},
 				{
 					"path": "extjs/src/panel/",
@@ -554,16 +558,8 @@
 					"name": "Resizer.js"
 				},
 				{
-					"path": "extjs/src/",
-					"name": "LoadMask.js"
-				},
-				{
 					"path": "extjs/src/util/",
 					"name": "CSS.js"
-				},
-				{
-					"path": "extjs/src/menu/",
-					"name": "Item.js"
 				},
 				{
 					"path": "extjs/src/menu/",
@@ -571,7 +567,7 @@
 				},
 				{
 					"path": "extjs/src/menu/",
-					"name": "Separator.js"
+					"name": "Item.js"
 				},
 				{
 					"path": "extjs/src/layout/component/",
@@ -586,10 +582,6 @@
 					"name": "AbstractFit.js"
 				},
 				{
-					"path": "extjs/src/draw/",
-					"name": "CompositeSprite.js"
-				},
-				{
 					"path": "extjs/src/data/",
 					"name": "AbstractStore.js"
 				},
@@ -598,16 +590,32 @@
 					"name": "Grouper.js"
 				},
 				{
+					"path": "extjs/src/draw/",
+					"name": "CompositeSprite.js"
+				},
+				{
 					"path": "extjs/src/",
 					"name": "ComponentLoader.js"
+				},
+				{
+					"path": "extjs/src/layout/container/",
+					"name": "Fit.js"
 				},
 				{
 					"path": "extjs/src/menu/",
 					"name": "CheckItem.js"
 				},
 				{
-					"path": "extjs/src/layout/container/",
-					"name": "Fit.js"
+					"path": "extjs/src/data/",
+					"name": "Store.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "ArrayStore.js"
+				},
+				{
+					"path": "extjs/src/menu/",
+					"name": "Separator.js"
 				},
 				{
 					"path": "extjs/src/menu/",
@@ -620,14 +628,6 @@
 				{
 					"path": "extjs/src/draw/",
 					"name": "Component.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "Store.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "ArrayStore.js"
 				},
 				{
 					"path": "extjs/src/resizer/",
@@ -659,11 +659,11 @@
 				},
 				{
 					"path": "extjs/src/draw/engine/",
-					"name": "Svg.js"
+					"name": "Vml.js"
 				},
 				{
 					"path": "extjs/src/draw/engine/",
-					"name": "Vml.js"
+					"name": "Svg.js"
 				},
 				{
 					"path": "extjs/src/data/proxy/",
@@ -674,20 +674,20 @@
 					"name": "RadioManager.js"
 				},
 				{
-					"path": "extjs/src/selection/",
-					"name": "Model.js"
-				},
-				{
 					"path": "extjs/src/form/",
 					"name": "CheckboxManager.js"
 				},
 				{
-					"path": "extjs/src/form/",
-					"name": "FieldAncestor.js"
+					"path": "extjs/src/selection/",
+					"name": "Model.js"
 				},
 				{
 					"path": "extjs/src/layout/component/",
 					"name": "BoundList.js"
+				},
+				{
+					"path": "extjs/src/form/",
+					"name": "FieldAncestor.js"
 				},
 				{
 					"path": "extjs/src/layout/container/",
@@ -698,12 +698,12 @@
 					"name": "DragZone.js"
 				},
 				{
-					"path": "extjs/src/toolbar/",
-					"name": "TextItem.js"
-				},
-				{
 					"path": "extjs/src/layout/component/field/",
 					"name": "Trigger.js"
+				},
+				{
+					"path": "extjs/src/toolbar/",
+					"name": "TextItem.js"
 				},
 				{
 					"path": "extjs/ux/grid/",
@@ -718,52 +718,44 @@
 					"name": "FieldContainer.js"
 				},
 				{
-					"path": "extjs/src/form/",
-					"name": "Label.js"
+					"path": "extjs/src/layout/container/",
+					"name": "AbstractCard.js"
 				},
 				{
 					"path": "extjs/src/dd/",
 					"name": "Registry.js"
 				},
 				{
-					"path": "extjs/src/layout/container/",
-					"name": "AbstractCard.js"
-				},
-				{
-					"path": "extjs/src/button/",
-					"name": "Split.js"
-				},
-				{
-					"path": "extjs/src/picker/",
-					"name": "Month.js"
-				},
-				{
-					"path": "extjs/src/grid/header/",
-					"name": "Container.js"
-				},
-				{
 					"path": "extjs/src/form/",
-					"name": "FieldSet.js"
-				},
-				{
-					"path": "extjs/src/panel/",
-					"name": "Table.js"
+					"name": "Label.js"
 				},
 				{
 					"path": "extjs/src/dd/",
 					"name": "DDTarget.js"
 				},
 				{
+					"path": "extjs/src/panel/",
+					"name": "Table.js"
+				},
+				{
+					"path": "extjs/src/form/",
+					"name": "FieldSet.js"
+				},
+				{
+					"path": "extjs/src/picker/",
+					"name": "Month.js"
+				},
+				{
 					"path": "extjs/src/dd/",
 					"name": "ScrollManager.js"
 				},
 				{
-					"path": "extjs/src/selection/",
-					"name": "DataViewModel.js"
+					"path": "extjs/src/button/",
+					"name": "Split.js"
 				},
 				{
-					"path": "extjs/src/view/",
-					"name": "AbstractView.js"
+					"path": "extjs/src/grid/header/",
+					"name": "Container.js"
 				},
 				{
 					"path": "extjs/src/form/field/",
@@ -772,6 +764,14 @@
 				{
 					"path": "extjs/src/form/field/",
 					"name": "Radio.js"
+				},
+				{
+					"path": "extjs/src/selection/",
+					"name": "DataViewModel.js"
+				},
+				{
+					"path": "extjs/src/view/",
+					"name": "AbstractView.js"
 				},
 				{
 					"path": "extjs/src/form/",
@@ -796,6 +796,14 @@
 				{
 					"path": "extjs/src/layout/container/",
 					"name": "Card.js"
+				},
+				{
+					"path": "extjs/src/dd/",
+					"name": "DropTarget.js"
+				},
+				{
+					"path": "extjs/src/dd/",
+					"name": "DropZone.js"
 				},
 				{
 					"path": "extjs/src/picker/",
@@ -840,14 +848,6 @@
 				{
 					"path": "extjs/ux/",
 					"name": "CheckColumn.js"
-				},
-				{
-					"path": "extjs/src/dd/",
-					"name": "DropTarget.js"
-				},
-				{
-					"path": "extjs/src/dd/",
-					"name": "DropZone.js"
 				},
 				{
 					"path": "extjs/src/picker/",
@@ -907,6 +907,10 @@
 				},
 				{
 					"path": "extjs/src/grid/",
+					"name": "Scroller.js"
+				},
+				{
+					"path": "extjs/src/grid/",
 					"name": "ColumnLayout.js"
 				},
 				{
@@ -914,12 +918,16 @@
 					"name": "HeaderResizer.js"
 				},
 				{
-					"path": "extjs/src/grid/",
-					"name": "Scroller.js"
-				},
-				{
 					"path": "extjs/src/view/",
 					"name": "TableChunker.js"
+				},
+				{
+					"path": "extjs/src/grid/",
+					"name": "LockingView.js"
+				},
+				{
+					"path": "extjs/src/layout/component/",
+					"name": "Body.js"
 				},
 				{
 					"path": "extjs/src/grid/header/",
@@ -930,24 +938,32 @@
 					"name": "DropZone.js"
 				},
 				{
-					"path": "extjs/src/layout/component/",
-					"name": "Body.js"
-				},
-				{
 					"path": "extjs/src/grid/",
-					"name": "LockingView.js"
-				},
-				{
-					"path": "extjs/src/grid/plugin/",
-					"name": "HeaderReorderer.js"
+					"name": "Lockable.js"
 				},
 				{
 					"path": "extjs/src/layout/component/",
 					"name": "FieldSet.js"
 				},
 				{
-					"path": "extjs/src/grid/",
-					"name": "Lockable.js"
+					"path": "extjs/src/grid/plugin/",
+					"name": "HeaderReorderer.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "Tree.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "NodeInterface.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "NodeStore.js"
+				},
+				{
+					"path": "extjs/src/data/",
+					"name": "TreeStore.js"
 				},
 				{
 					"path": "extjs/src/grid/column/",
@@ -970,24 +986,8 @@
 					"name": "Editing.js"
 				},
 				{
-					"path": "extjs/src/data/",
-					"name": "Tree.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "NodeInterface.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "NodeStore.js"
-				},
-				{
 					"path": "extjs/src/grid/plugin/",
 					"name": "RowEditing.js"
-				},
-				{
-					"path": "extjs/src/data/",
-					"name": "TreeStore.js"
 				},
 				{
 					"path": "extjs/src/container/",
@@ -1101,10 +1101,10 @@
 					"path": "extjs/src/form/",
 					"name": "RadioGroup.js"
 				},
-                {
-	                "path": "extensible-1.5.1/src/",
-	                "name": "Extensible.js"
-                },
+				{
+					"path": "extensible-1.5.1/src/",
+					"name": "Extensible.js"
+				},
 				{
 					"path": "extensible-1.5.1/src/calendar/util/",
 					"name": "WeekEventRenderer.js"
@@ -1307,11 +1307,11 @@
 				},
 				{
 					"path": "app/model/",
-					"name": "Modification.js"
+					"name": "Deliverable.js"
 				},
 				{
 					"path": "app/model/",
-					"name": "Deliverable.js"
+					"name": "Modification.js"
 				},
 				{
 					"path": "app/model/",
@@ -1334,16 +1334,16 @@
 					"name": "MyFieldContainer.js"
 				},
 				{
+					"path": "app/view/controls/",
+					"name": "MyFieldSet.js"
+				},
+				{
 					"path": "app/view/contact/window/",
 					"name": "ContactToolbar.js"
 				},
 				{
 					"path": "app/view/controls/",
 					"name": "PositionCombo.js"
-				},
-				{
-					"path": "app/view/controls/",
-					"name": "MyFieldSet.js"
 				},
 				{
 					"path": "app/view/controls/",
@@ -1387,11 +1387,11 @@
 				},
 				{
 					"path": "app/view/contact/",
-					"name": "PersonDDList.js"
+					"name": "GroupDDList.js"
 				},
 				{
 					"path": "app/view/contact/",
-					"name": "GroupDDList.js"
+					"name": "PersonDDList.js"
 				},
 				{
 					"path": "app/view/contact/window/",
@@ -1467,6 +1467,10 @@
 				},
 				{
 					"path": "app/view/project/tab/",
+					"name": "ProjectDetail.js"
+				},
+				{
+					"path": "app/view/project/tab/",
 					"name": "ProjectList.js"
 				},
 				{
@@ -1492,6 +1496,18 @@
 				{
 					"path": "app/controller/project/tab/",
 					"name": "ProjectList.js"
+				},
+				{
+					"path": "app/model/",
+					"name": "AgreementsTree.js"
+				},
+				{
+					"path": "app/store/",
+					"name": "ProjectAgreementsTree.js"
+				},
+				{
+					"path": "app/controller/project/tab/",
+					"name": "ProjectDetail.js"
 				},
 				{
 					"path": "app/model/",
@@ -1558,10 +1574,6 @@
 					"name": "ProjectAgreements.js"
 				},
 				{
-					"path": "app/model/",
-					"name": "AgreementsTree.js"
-				},
-				{
 					"path": "app/view/controls/",
 					"name": "ManagerCombo.js"
 				},
@@ -1580,6 +1592,10 @@
 				{
 					"path": "app/view/controls/",
 					"name": "CurrencyField.js"
+				},
+				{
+					"path": "app/store/",
+					"name": "AgreementsTree.js"
 				},
 				{
 					"path": "app/store/",
@@ -1612,10 +1628,6 @@
 				{
 					"path": "app/view/project/window/",
 					"name": "ItemDetail.js"
-				},
-				{
-					"path": "app/store/",
-					"name": "AgreementsTree.js"
 				},
 				{
 					"path": "app/controller/project/window/",
@@ -1808,7 +1820,7 @@
 				{
 					"path": "app/view/",
 					"name": "Viewport.js"
-				},
+				}
             ]
         },
         {
