@@ -24,6 +24,7 @@ class Login implements ControllerProviderInterface
         $table = 'login';
 
         $controllers->get('login', function (Application $app, Request $request) use ($table){
+            $app['session']->start();
             //set token
             $token = time();
             $app['session']->set('token', $token);
