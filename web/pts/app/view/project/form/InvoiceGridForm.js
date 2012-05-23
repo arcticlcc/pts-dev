@@ -221,7 +221,7 @@ Ext.define('PTS.view.project.form.InvoiceGridForm', {
                                         store: 'CostCodes',
                                         typeAhead: false,
                                         queryMode: 'local',
-                                        forceSelection: true,
+                                        forceSelection: false,
                                         allowBlank: false
                                     },
                                     text: 'Cost Code',
