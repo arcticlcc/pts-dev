@@ -19,7 +19,8 @@ Ext.define('PTS.view.contact.PersonDDList', {
         Ext.applyIf(me, {
             selModel: Ext.create('Ext.selection.CheckboxModel', {
                 injectCheckbox: false,
-                mode: 'SIMPLE'
+                mode: 'SIMPLE',
+                checkOnly: true
             }),
             viewConfig: {
                 copy: true,
