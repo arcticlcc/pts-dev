@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/contact/window/Window.js
  * Description: Edit contact window.
  */

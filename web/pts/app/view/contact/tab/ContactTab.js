@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/contact/tab/ContactTab.js
  * Description: Contact Manager
  */

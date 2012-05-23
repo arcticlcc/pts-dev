@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/ProjectInvoicers.js
  * Description: Store of project invoicers
  * with computed attibutes.

@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/project/ProjectTab.js
  * Description: Dashboard calendar displaying deliverables and tasks.
  */

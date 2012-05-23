@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/contact/PersonList.js
  * Description: List of persons.
  */

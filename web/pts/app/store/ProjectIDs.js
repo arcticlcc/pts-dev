@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/ProjectIDs.js
  * Description: Store of project ids for lookups, comboboxes
  */

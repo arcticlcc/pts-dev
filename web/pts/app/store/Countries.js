@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/Countries.js
  * Description: Store of Countries
  */

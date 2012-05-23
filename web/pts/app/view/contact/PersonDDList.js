@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/contact/PersonDDList.js
  * Description: List of contact persons with dragdrop and checkbox selection.
  */

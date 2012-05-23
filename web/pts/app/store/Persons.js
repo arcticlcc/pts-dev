@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/Persons.js
  * Description: Store of persons
  */

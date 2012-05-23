@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/Tasks.js
  * Description: Task store.
  * TODO: page the grid??

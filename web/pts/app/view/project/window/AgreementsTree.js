@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/project/window/AgreementsTree.js
  * Description: Project Agreements tree panel.
  */

@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/dashboard/Tasklist.js
  * Description: Dashboard grid showing tasks.
  */

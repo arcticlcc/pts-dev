@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/contact/GroupList.js
  * Description: List of contact groups.
  */

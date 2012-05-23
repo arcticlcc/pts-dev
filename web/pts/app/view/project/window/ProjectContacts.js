@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/project/window/ProjectContacts.js
  * Description: Project Contacts tab panel.
  */

@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/States.js
  * Description: Store of States
  */

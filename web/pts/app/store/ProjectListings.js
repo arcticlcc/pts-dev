@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/ProjectListings.js
  * Description: Store of project listings for displaying lists of projects
  * with computed attibutes.

@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/dashboard/Dashboard.js
  * Description: Project dashboard.
  */

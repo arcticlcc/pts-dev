@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/project/ProjectList.js
  * Description: List of projects.
  */

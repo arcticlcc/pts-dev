@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/store/ModTypes.js
  * Description: Store of Modification Types
  */

@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/contact/GroupDDList.js
  * Description: List of contact groups with dragdrop and checkbox selection.
  */

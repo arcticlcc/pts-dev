@@ -1,4 +1,4 @@
-/*
+/**
  * File: app/view/project/window/ProjectAgreements.js
  * Description: Project Agreements tab panel.
  */
@@ -11,7 +11,7 @@ Ext.define('PTS.view.project.window.ProjectAgreements', {
         'PTS.model.Modification'*/
         //'Ext.ux.grid.HeaderToolTip'
     ],
-    
+
     layout: {
         type: 'border'
     },
@@ -71,4 +71,3 @@ Ext.define('PTS.view.project.window.ProjectAgreements', {
         me.callParent(arguments);
     }
 });
-
