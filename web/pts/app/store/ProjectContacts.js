@@ -44,7 +44,7 @@ Ext.define('PTS.store.ProjectContacts', {
 
                     store.each(function(rec) {
                         var itm = rec.get('roletypeid');
-                        if(4 === itm) {
+                        if(4 === itm || 10 === itm) {
                             //add a copy of the record to prevent conflicts with existing model
                             data.push(rec.copy());
                         }
