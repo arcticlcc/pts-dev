@@ -34,15 +34,15 @@ Ext.define('PTS.model.ProjectListing', {
         },
         {
             name: 'allocated',
-            type: 'int'
+            type: 'number'
         },
         {
             name: 'invoiced',
-            type: 'int'
+            type: 'number'
         },
         {
             name: 'difference',
-            type: 'int'
+            type: 'number'
         },
         {
             name: 'startdate',
