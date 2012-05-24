@@ -75,7 +75,7 @@ Ext.define('PTS.view.project.form.ProjectForm', {
                                 {
                                     xtype: 'displayfield',
                                     padding: '0 35 0 0',
-                                    value: 'ARCT',
+                                    value: PTS.orgcode,
                                     hideLabel: true
                                 },
                                 {
