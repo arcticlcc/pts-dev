@@ -199,6 +199,7 @@ Ext.define('PTS.view.project.form.InvoiceGridForm', {
                             xtype: 'roweditgrid',
                             itemId: 'costCodes',
                             title: 'Cost Codes',
+                            syncOnRemoveRow: false,
                             //store: 'CostCodeInvoices',
                             flex: 1,
                             columns: [

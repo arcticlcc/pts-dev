@@ -54,6 +54,9 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
             },
             '#invoiceForm button[action=showlist]': {
                 click: this.showInvoiceList
+            },
+            'invoicegridform>#invoiceForm roweditgrid#costCodes': {
+                beforeremoverow: this.beforeRemoveCostcode
             }
         });
 
@@ -172,66 +175,106 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
      * Save invoice.
      */
      saveInvoice: function() {
-        var panel = this.getInvoiceForm(),
+        var options = {},
+            panel = this.getInvoiceForm(),
             form = panel.getForm(),
             record = form.getRecord(),
+            costcodes = panel.down('roweditgrid#costCodes').getStore(),
+            deletedCodes = costcodes.getRemovedRecords(),
             fid = this.getFundingForm().getRecord().getId();
-            //store;
 
+        //check the costcodes
+        if(0 === costcodes.count()) {
+            Ext.MessageBox.show({
+                title: 'Error',
+                msg: 'At least one Cost Code is required.</br>',
+                buttons: Ext.MessageBox.OK,
+                animateTarget: panel.down('button[action=saveinvoice]').getEl(),
+                fn: function() {
+                    panel.getEl().unmask();
+                },
+                icon: Ext.Msg.ERROR
+            });
+            return;
+        }
         //mask the form
-        panel.getEl().mask('Loading...');
+        panel.getEl().mask('Saving...');
         //set the fundingid
         record.set('fundingid',fid);
         //update the record
         form.updateRecord(record);
-
-        record.save({
-            success: function(model, op) {
-                var listStore = this.getInvoicesStore(),
-                    idx = listStore.indexOfId(model.getId());
-
-
-                form.loadRecord(model); //load the model
-                panel.down('roweditgrid#costCodes').bindStore(model.costcodes());//bind the new associated store
-                //reset all the original values to get desired trackresetonload behaviour
-                Ext.each(panel.query('field'), function() {
-                    this.resetOriginalValue();
-                });
-                //if the record is in the invoicelist replace it
-                if( idx !== -1) {
-                    listStore.removeAt(idx);
-                    listStore.insert(idx, model);
-                } else {//add it
-                    listStore.add(model);
-                }
+        //we need to destroy the deleted costcodes first,
+        //since it's not handled by the model
+        if (deletedCodes.length > 0) {
+            options.destroy = deletedCodes;
+        }
+        costcodes.getProxy().batch(options, {
+            scope: this,
+            exception: function(batch, op) {
+                var store = costcodes,
+                    rec;
 
                 panel.getEl().unmask();
+                //if a destroy operation fails we need to add the record back to the store
+                if(op.action === "destroy") {
+                    rec = op.records[0];
+                    rec.reject();//reject changes
+                    Ext.Array.remove(store.removed, rec); //remove the record from the store's removed array
+                    store.add(rec); //insert back into the store at the same position
+
+                }
             },
-            failure: function(model, op) {
-                //TODO: clean out phantom associated records to prevent duplicates
-                /*if(record.associations.items.length) {//check for associations
-                    //loop thru associations
-                    record.associations.each(function(assoc){
-                        var store = record[assoc.name]();
-                        //and get phantom records
-                        store.remove(store.getNewRecords());
-                    },this);
-                }*/
+            complete: {fn: function() {
+                // save the main invoice record
+                var me = this;
+                record.save({
+                    success: function(model, op) {
+                        var listStore = me.getInvoicesStore(),
+                            idx = listStore.indexOfId(model.getId());
 
-                //panel.getEl().unmask();
+                        form.loadRecord(model); //load the model
+                        panel.down('roweditgrid#costCodes').bindStore(model.costcodes());//bind the new associated store
+                        //reset all the original values to get desired trackresetonload behaviour
+                        Ext.each(panel.query('field'), function() {
+                            this.resetOriginalValue();
+                        });
+                        //if the record is in the invoicelist replace it
+                        if( idx !== -1) {
+                            listStore.removeAt(idx);
+                            listStore.insert(idx, model);
+                        } else {//add it
+                            listStore.add(model);
+                        }
 
-                Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: 'There was a problem saving the invoice.</br>' + PTS.app.getError(),
-                    buttons: Ext.MessageBox.OK,
-                    animateTarget: panel.down('button[action=saveinvoice]').getEl(),
-                    fn: function() {
                         panel.getEl().unmask();
                     },
-                    icon: Ext.Msg.ERROR
-               });
-            },
-            scope: this //need the controller to load the model on success
+                    failure: function(model, op) {
+                        //TODO: clean out phantom associated records to prevent duplicates
+                        /*if(record.associations.items.length) {//check for associations
+                            //loop thru associations
+                            record.associations.each(function(assoc){
+                                var store = record[assoc.name]();
+                                //and get phantom records
+                                store.remove(store.getNewRecords());
+                            },this);
+                        }*/
+
+                        //panel.getEl().unmask();
+
+                        Ext.MessageBox.show({
+                            title: 'Error',
+                            msg: 'There was a problem saving the invoice.</br>' + PTS.app.getError(),
+                            buttons: Ext.MessageBox.OK,
+                            animateTarget: panel.down('button[action=saveinvoice]').getEl(),
+                            fn: function() {
+                                panel.getEl().unmask();
+                            },
+                            icon: Ext.Msg.ERROR
+                       });
+                    },
+                    scope: this //need the controller to load the model on success
+                });
+            }, scope: this}
         });
      },
 
@@ -273,5 +316,21 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
             },
             scope: this
         });
-     }
+     },
+
+    /**
+     * Perform costcode validation.
+     */
+    beforeRemoveCostcode: function(rec, store){
+        if(store.count() === 1) {
+            Ext.MessageBox.show({
+                title: 'Error',
+                msg: 'At least one Cost Code is required.</br>',
+                buttons: Ext.MessageBox.OK,
+                animateTarget: this.getInvoiceForm().down('roweditgrid#costCodes button#removeRow').getEl(),
+                icon: Ext.Msg.ERROR
+            });
+            return false;
+        }
+    },
 });
