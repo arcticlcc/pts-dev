@@ -102,7 +102,7 @@ Ext.define('PTS.controller.dashboard.Calendar', {
             return 4; //completed
         }else if (dt < today) {
             return 1; //late
-        }else if (dt > Ext.Date.add(today, Ext.Date.DAY, 2)) {
+        }else if (dt > Ext.Date.add(today, Ext.Date.DAY, 30)) {
             return 3; //due more than two days into the future
         }else {
             return 2; //due within two days
