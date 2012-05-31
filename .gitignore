@@ -7,6 +7,8 @@ web/pts/extjs
 web/pts/lib
 web/pts/resources/css/dev.css
 web/pts/docs/*
+web/pts/dl/*
+!web/pts/dl/.gitkeep
 !web/pts/docs/schema
 
 vendor
