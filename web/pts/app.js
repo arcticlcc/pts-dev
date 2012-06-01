@@ -13,7 +13,7 @@ Ext.Loader.setConfig({
     paths: {
         'Extensible': 'extensible-1.5.1/src',
         'Extensible.example': 'extensible-1.5.1/examples',
-        'Ext.ux': 'extjs/ux'
+        'Ext.ux': './ux'
     },
     disableCaching: true
 });
