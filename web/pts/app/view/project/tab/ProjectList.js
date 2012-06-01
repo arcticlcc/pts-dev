@@ -94,7 +94,7 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                 xtype: 'pagingtoolbar',
                 store: 'ProjectListings',
                 displayInfo: true,
-                plugins: Ext.create('Ext.ux.grid.PrintGrid', {})
+                plugins: Ext.create('Ext.ux.grid.PrintGrid', {text: 'print'})
             }],
             columns: [
                 {

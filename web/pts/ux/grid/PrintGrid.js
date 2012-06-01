@@ -12,6 +12,13 @@ Ext.define('Ext.ux.grid.PrintGrid', {
         'Ext.ux.grid.Printer'
     ],
 
+    /**
+     * @cfg {String} text
+     *
+     * Text for the print button.
+     */
+    text: null,
+
     constructor : function(config) {
         if (config) {
             Ext.apply(this, config);
@@ -23,7 +30,7 @@ Ext.define('Ext.ux.grid.PrintGrid', {
             print;
 
         print = Ext.create('Ext.button.Button', {
-            text: 'Print',
+            text: this.text,
             iconCls: 'pts-printer',
             handler : function(){
                 Ext.ux.grid.Printer.print(this.up('gridpanel'));

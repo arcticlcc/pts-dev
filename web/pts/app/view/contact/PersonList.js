@@ -22,7 +22,8 @@ Ext.define('PTS.view.contact.PersonList', {
             dockedItems: [{
                 xtype: 'pagingtoolbar',
                 store: 'Persons',
-                displayInfo: true
+                displayInfo: true,
+                plugins: Ext.create('Ext.ux.grid.PrintGrid')
             }],
             columns: [
                 {

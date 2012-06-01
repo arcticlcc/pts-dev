@@ -21,7 +21,8 @@ Ext.define('PTS.view.contact.GroupList', {
             dockedItems: [{
                 xtype: 'pagingtoolbar',
                 store: 'ContactGroups',
-                displayInfo: true
+                displayInfo: true,
+                plugins: Ext.create('Ext.ux.grid.PrintGrid')
             }],
             columns: [
                 {
