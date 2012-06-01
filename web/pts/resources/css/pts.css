@@ -142,6 +142,9 @@
 .pts-page-bluecopy {
     background-image: url("../images/icons/page_copy.png");
 }
+.pts-printer {
+    background-image: url("../images/icons/printer.png");
+}
 .pts-contact-fieldset {
     background-color: #EEF0F3;
 }
