@@ -280,7 +280,8 @@ class PTSServiceProvider implements ServiceProviderInterface
             }
         });
 
-        $app['getTable'] = $app->protect(function($request, $class, array $where = null) use ($app) {
+        //getable method should implement query and sort
+        /*$app['getTable'] = $app->protect(function($request, $class, array $where = null) use ($app) {
             //if(!$key) $key = $class.'id';
 
             $page = $request->get('page') ?: $app['page'];
@@ -328,7 +329,7 @@ class PTSServiceProvider implements ServiceProviderInterface
 
                 $app['json']->setAll(null, 409, false, $exc->getMessage());
             }
-        });
+        });*/
     }
 }
 
