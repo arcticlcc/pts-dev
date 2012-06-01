@@ -27,6 +27,7 @@ Ext.define('PTS.view.dashboard.TaskList', {
                         store: 'Tasks',   // same store GridPanel is using
                         dock: 'top',
                         displayInfo: true,
+                        plugins: Ext.create('Ext.ux.grid.PrintGrid', {}),
                         items: [
                             '-',
                             {

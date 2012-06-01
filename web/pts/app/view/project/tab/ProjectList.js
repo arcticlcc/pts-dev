@@ -7,10 +7,13 @@ Ext.define('PTS.view.project.tab.ProjectList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.projectlist',
     requires: [
-        'PTS.util.Format'
+        'PTS.util.Format',
+        'Ext.ux.grid.PrintGrid'
     ],
 
     store: 'ProjectListings',
+    title: 'Project List',
+    preventHeader: true,
     /*viewConfig: {
         listeners: {
             itemcontextmenu: function(view, rec, el, index, e){
@@ -90,7 +93,8 @@ Ext.define('PTS.view.project.tab.ProjectList', {
             dockedItems: [{
                 xtype: 'pagingtoolbar',
                 store: 'ProjectListings',
-                displayInfo: true
+                displayInfo: true,
+                plugins: Ext.create('Ext.ux.grid.PrintGrid', {})
             }],
             columns: [
                 {
