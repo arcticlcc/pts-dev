@@ -23,7 +23,7 @@ Ext.define('PTS.controller.project.tab.ProjectList', {
             'projectlist': {
                 itemdblclick: this.editProject,
                 viewready: this.onProjectListReady,
-                selectionchange: this.onProjectListSelect
+                select: this.onProjectListSelect
             }
         });
 
@@ -53,8 +53,8 @@ Ext.define('PTS.controller.project.tab.ProjectList', {
         store.load();
     },
 
-    onProjectListSelect: function(selModel, selection) {
-        this.application.fireEvent('projectlistselect', selection[0]);
+    onProjectListSelect: function(rowModel, record) {
+        this.application.fireEvent('projectlistselect', record);
     },
 
     onSaveProject: function(record, op) {
