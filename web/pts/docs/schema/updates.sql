@@ -35,6 +35,7 @@ GRANT USAGE ON SCHEMA cvl TO pts_read;
 
 ALTER DATABASE pts SET search_path=pts, cvl, public
 
+ALTER TABLE addresstype SET SCHEMA cvl;
 ALTER TABLE contacttype SET SCHEMA cvl;
 ALTER TABLE country SET SCHEMA cvl;
 ALTER TABLE deliverabletype SET SCHEMA cvl;
