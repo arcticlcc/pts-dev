@@ -7,7 +7,8 @@ Ext.define('PTS.view.contact.GroupList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.grouplist',
     requires: [
-        //'PTS.util.Format'
+        'Ext.ux.grid.PrintGrid',
+        'Ext.ux.grid.SaveGrid'
     ],
 
     title:'Group',
@@ -22,7 +23,10 @@ Ext.define('PTS.view.contact.GroupList', {
                 xtype: 'pagingtoolbar',
                 store: 'ContactGroups',
                 displayInfo: true,
-                plugins: Ext.create('Ext.ux.grid.PrintGrid')
+                plugins: [
+                    Ext.create('Ext.ux.grid.PrintGrid', {}),
+                    Ext.create('Ext.ux.grid.SaveGrid', {})
+                ]
             }],
             columns: [
                 {

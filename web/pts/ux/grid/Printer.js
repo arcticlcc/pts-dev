@@ -138,7 +138,10 @@ Ext.define("Ext.ux.grid.Printer", {
                       '<a class="' + Ext.baseCSSPrefix + 'ux-grid-printer-linkprint" href="javascript:void(0);" onclick="window.print();">' + this.printLinkText + '</a>',
                       '<a class="' + Ext.baseCSSPrefix + 'ux-grid-printer-linkclose" href="javascript:void(0);" onclick="window.close();">' + this.closeLinkText + '</a>',
                   '</div>',
-                  '<h1>' + this.mainTitle + '</h1>',
+                  '<div id="' + Ext.baseCSSPrefix + 'ux-grid-printer-title">',
+                      '<div class="' + Ext.baseCSSPrefix + 'ux-grid-printer-left"><h1>' + this.mainTitle + '</h1></div>',
+                      '<div class="' + Ext.baseCSSPrefix + 'ux-grid-printer-right">' + this.rightTitle + '</div>',
+                  '</div>',
                     '<table>',
                       '<tr>',
                         headings,
@@ -209,10 +212,18 @@ Ext.define("Ext.ux.grid.Printer", {
         /**
          * @property mainTitle
          * @type String
-         * Title to be used on top of the table
+         * Title to be used on top of the table, float left
          * (defaults to empty)
          */
         mainTitle: '',
+
+        /**
+         * @property rightTitle
+         * @type String
+         * Title to be used on top of the table, float right
+         * (defaults to empty)
+         */
+        rightTitle: '',
 
         /**
          * Text show on print link

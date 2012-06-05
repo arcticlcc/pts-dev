@@ -7,7 +7,8 @@ Ext.define('PTS.view.contact.PersonList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.personlist',
     requires: [
-        //'PTS.util.Format'
+        'Ext.ux.grid.PrintGrid',
+        'Ext.ux.grid.SaveGrid'
     ],
 
     title:'Person',
@@ -23,7 +24,10 @@ Ext.define('PTS.view.contact.PersonList', {
                 xtype: 'pagingtoolbar',
                 store: 'Persons',
                 displayInfo: true,
-                plugins: Ext.create('Ext.ux.grid.PrintGrid')
+                plugins: [
+                    Ext.create('Ext.ux.grid.PrintGrid', {}),
+                    Ext.create('Ext.ux.grid.SaveGrid', {})
+                ]
             }],
             columns: [
                 {

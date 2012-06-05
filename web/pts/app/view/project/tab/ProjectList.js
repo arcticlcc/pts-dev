@@ -8,7 +8,8 @@ Ext.define('PTS.view.project.tab.ProjectList', {
     alias: 'widget.projectlist',
     requires: [
         'PTS.util.Format',
-        'Ext.ux.grid.PrintGrid'
+        'Ext.ux.grid.PrintGrid',
+        'Ext.ux.grid.SaveGrid'
     ],
 
     store: 'ProjectListings',
@@ -94,7 +95,10 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                 xtype: 'pagingtoolbar',
                 store: 'ProjectListings',
                 displayInfo: true,
-                plugins: Ext.create('Ext.ux.grid.PrintGrid', {text: 'print'})
+                plugins: [
+                    Ext.create('Ext.ux.grid.PrintGrid', {}),
+                    Ext.create('Ext.ux.grid.SaveGrid', {})
+                ]
             }],
             columns: [
                 {

@@ -86,6 +86,18 @@ html.x-ux-grid-printer, .x-ux-grid-printer img,.x-ux-grid-printer body {
     border-color: #ededed;
 }
 
+#x-ux-grid-printer-title div {
+    margin-bottom: 10px;
+}
+
+#x-ux-grid-printer-title .x-ux-grid-printer-left {
+    float: left;
+}
+
+#x-ux-grid-printer-title .x-ux-grid-printer-right {
+    float: right;
+}
+
 @media print {
     .x-ux-grid-printer body {
         margin: 0;

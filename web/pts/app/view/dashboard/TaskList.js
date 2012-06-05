@@ -6,6 +6,10 @@
 Ext.define('PTS.view.dashboard.TaskList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.tasklist',
+    requires: [
+        'Ext.ux.grid.PrintGrid',
+        'Ext.ux.grid.SaveGrid'
+    ],
 
     width: 350,
     autoScroll: true,
@@ -27,7 +31,10 @@ Ext.define('PTS.view.dashboard.TaskList', {
                         store: 'Tasks',   // same store GridPanel is using
                         dock: 'top',
                         displayInfo: true,
-                        plugins: Ext.create('Ext.ux.grid.PrintGrid', {}),
+                        plugins: [
+                            Ext.create('Ext.ux.grid.PrintGrid', {}),
+                            Ext.create('Ext.ux.grid.SaveGrid', {})
+                        ],
                         items: [
                             '-',
                             {
