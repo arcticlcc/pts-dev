@@ -7,7 +7,7 @@ use Symfony\Component\HttpFoundation\Response;
 $app = new Application();
 
 // Register Silex extensions
-$app->register(new PTS\Service\JSONServiceProvider());
+//$app->register(new PTS\Service\JSONServiceProvider());
 $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -58,6 +58,11 @@ $app->register(new Idiorm\IdiormServiceProvider(), array(
 $app['json'] = $app->share(function() {
 
     return new PTS\Service\JSON();
+});
+
+$app['csv'] = $app->share(function() {
+
+    return new PTS\Service\CSV();
 });
 
 $app['util'] = $app->share(function() {

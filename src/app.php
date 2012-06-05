@@ -57,11 +57,12 @@ $app->get('/poll', function() use ($app) {
 //TODO: $request->get() should be $request->request->get() for better performance
 
 //TODO: create method in PTS provider to abstract get requests
-$app->get('/{class}', function (Request $request, $class) use ($app) {
+$app->get('/{class}.{format}', function (Request $request, $class, $format) use ($app) {
     $page = $request->get('page') ?: $app['page'];
     $start = $request->get('start') ?: $app['start'];
     $limit = $request->get('limit') ?: $app['limit'];
     $sort = json_decode($request->get('sort'));
+    $filter = json_decode($request->get('filter'));
 
     $result = array();
     $restricted = array(
@@ -92,24 +93,39 @@ $app->get('/{class}', function (Request $request, $class) use ($app) {
             }
         }
 
+        if (isset($filter)) {
+            //loop thru filter array
+            foreach($filter as $val) {
+                $query->where($val->property,$val->value);
+            }
+        }
+
         foreach ($query->find_many() as $object) {
             $result[] = $object->as_array();
         }
+//var_dump($request->getPathInfo());
 
-        $app['json']->setTotal($app['idiorm']->getTable($class)->count());
+        switch ($format) {
+            case "csv":
+                $app['csv']->setTitle($class);
+                break;
+            default:
+                $app[$format]->setTotal($app['idiorm']->getTable($class)->count());
+        }
 
-        $response = $app['json']->setData($result)
+        $response = $app[$format]->setData($result)
                     ->getResponse();
 
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
 
-        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())
+        $response = $app[$format]->setAll(null, 409, false, $exc->getMessage())
                     ->getResponse();
     }
 
     return $response;
-});
+})
+->value('format', 'json');
 
 $app->get('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     $result = array();
