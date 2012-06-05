@@ -7,6 +7,7 @@ Ext.define('PTS.store.Persons', {
     extend: 'Ext.data.Store',
     model: 'PTS.model.Person',
 
+    remoteSort: true,
     pageSize: PTS.Defaults.pageSize,
     sorters: { property: 'lastname', direction : 'ASC' },
     proxy: {

@@ -7,6 +7,7 @@ Ext.define('PTS.store.ContactGroups', {
     extend: 'Ext.data.Store',
     model: 'PTS.model.ContactGroup',
 
+    remoteSort: true,
     pageSize: PTS.Defaults.pageSize,
     sorters: { property: 'name', direction : 'ASC' }
 });

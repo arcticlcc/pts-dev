@@ -9,6 +9,7 @@ Ext.define('PTS.store.Tasks', {
     model: 'PTS.model.Task',
 
     autoLoad: true,
+    remoteSort: true,
     storeId: 'Tasks',
     pageSize: PTS.Defaults.pageSize,
     sorters: [
