@@ -332,5 +332,5 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
             });
             return false;
         }
-    },
+    }
 });

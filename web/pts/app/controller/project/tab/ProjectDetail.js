@@ -43,7 +43,7 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
                 type: 'ajax',
                 url : '../project/' + id + '/tree',
                 extraParams: {
-                    short: true
+                    'short': true
                 },
                 reader: {
                     type: 'json'
