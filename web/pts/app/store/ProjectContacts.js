@@ -37,7 +37,7 @@ Ext.define('PTS.store.ProjectContacts', {
             fn: function(store, recs, success, op){
                     var data = [], //project funders
                         idata = [], //invoicers
-                        invoicerRoles = [1,5,6,7], //roletypes allowed as invoice contact
+                        invoicerRoles = [1,5,6,7,10], //roletypes allowed as invoice contact
                         invoicerIds = [], //invoicers added to projectinvoicers store
                         pstore = Ext.getStore('ProjectFunders'),
                         istore = Ext.getStore('ProjectInvoicers');
