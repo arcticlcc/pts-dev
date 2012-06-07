@@ -7,5 +7,8 @@ Ext.define('PTS.store.RoleTypes', {
     extend: 'Ext.data.Store',
     model: 'PTS.model.RoleType',
 
-    autoLoad: true
+    autoLoad: true,
+    sorters: [
+        'code'
+    ]
 });
