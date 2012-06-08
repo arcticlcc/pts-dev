@@ -7,7 +7,8 @@ Ext.define('PTS.view.contact.window.ContactDetail', {
     alias: 'widget.contactdetail',
     requires: [
         'PTS.view.controls.MyFieldContainer',
-        'PTS.view.controls.AddressFieldSet'
+        'PTS.view.controls.AddressFieldSet',
+        'Ext.form.field.Hidden'
     ],
 
     margin: '0 0 10 0',
