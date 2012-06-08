@@ -21,10 +21,13 @@ Ext.define('Ext.ux.grid.PrintGrid', {
     text: null,
 
     /**
-     * @cfg {String} title
+     * @cfg {String/Function} title
      *
      * Title for the print page. If null will print the
-     * grid title and date.
+     * grid title.
+     *
+     * If the title option is specified as a function, then the function will be called using the PagingToolbar as the
+     * scope (`this` reference). Any resulting string from that call is then used as the title.
      */
     title: null,
 
@@ -44,11 +47,18 @@ Ext.define('Ext.ux.grid.PrintGrid', {
             iconCls: 'pts-printer',
             tooltip: 'Print the visible records',
             handler : function(){
-                var grid = this.up('gridpanel'),
-                    pageData = this.up('pagingtoolbar').getPageData(),
+                var me = this,
+                    grid = me.up('gridpanel'),
+                    pageData = me.up('pagingtoolbar').getPageData(),
                     date = Ext.Date.format(new Date(), 'F j, Y, g:i a'),
                     right = 'Page ' + pageData.currentPage + ' of ' + pageData.pageCount,
-                    title = this.mainTitle ? this.mainTitle : grid.title + ' - ' + date;
+                    title;
+
+                if (Ext.isFunction(me.mainTitle)) {
+                    title = me.mainTitle.call(pbar);
+                }else {
+                    title = me.mainTitle ? me.mainTitle : grid.title + ' - ' + date;
+                }
 
                 Ext.ux.grid.Printer.mainTitle = title;
                 Ext.ux.grid.Printer.rightTitle = right;
