@@ -1,54 +1,47 @@
-﻿-- Foreign Key: contactcostcode_costcode_fk
+-- View: deliverabledue
 
-ALTER TABLE costcode DROP CONSTRAINT contactcostcode_costcode_fk;
+-- DROP VIEW deliverabledue;
 
--- View: projectlist
-
-CREATE OR REPLACE VIEW projectlist AS
- SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
-  project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid,
-   COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS allocated,
-   COALESCE(invoice.amount, 0.00) AS invoiced,
-   COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) - COALESCE(invoice.amount, 0.00) AS difference
-   FROM project
-   JOIN contactgroup ON project.orgid = contactgroup.contactid
-   LEFT JOIN modification USING (projectid)
-   LEFT JOIN funding ON funding.modificationid = modification.modificationid AND funding.fundingtypeid = 1
-   LEFT JOIN ( SELECT modification.projectid, sum(invoice.amount) AS amount
-   FROM invoice
-   JOIN funding USING (fundingid)
+CREATE OR REPLACE VIEW deliverabledue AS
+ SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate,receiveddate, d.title, d.description, projectlist.projectcode, project.shorttitle AS project,
+  (personlist.firstname::text || ' '::text) || personlist.lastname::text AS contact, personlist.priemail AS email,
+   CASE WHEN receiveddate IS NOT NULL THEN 0 ELSE 'now'::text::date - dm.duedate END AS dayspastdue,
+    modification.projectid, dm.modificationid, d.deliverableid
+   FROM deliverable d
+   JOIN deliverablemod dm USING (deliverableid)
    JOIN modification USING (modificationid)
-  WHERE funding.fundingtypeid = 1
-  GROUP BY modification.projectid) invoice USING (projectid);
+   JOIN projectlist USING (projectid)
+   JOIN project USING (projectid)
+   LEFT JOIN (SELECT * from projectcontact WHERE roletypeid IN (6,7)) as projectcontact USING (projectid)
+   LEFT JOIN personlist USING (contactid)
+  WHERE NOT dm.invalid OR NOT (EXISTS ( SELECT 1
+      FROM deliverablemod dp
+     WHERE dm.modificationid = dp.parentmodificationid AND dm.deliverableid = dp.parentdeliverableid))
+  ORDER BY dm.duedate, d.deliverableid, roletypeid, projectcontact.priority;
 
--- move domain tables to new schema
+ALTER TABLE deliverabledue
+  OWNER TO bradley;
+GRANT ALL ON TABLE deliverabledue TO bradley;
+GRANT SELECT ON TABLE deliverabledue TO pts_read;
 
--- Schema: cvl
+-- View: task
 
--- DROP SCHEMA cvl;
+ DROP VIEW task;
 
-CREATE SCHEMA cvl
-  AUTHORIZATION bradley;
+CREATE OR REPLACE VIEW task AS
+ SELECT deliverablemod.duedate, deliverable.title, deliverablemod.receiveddate, (person.firstname::text || ' '::text) || person.lastname::text AS assignee, deliverable.description,
+deliverablemod.deliverableid, person.contactid, projectid, modificationid
+   FROM deliverablemod
+   JOIN deliverable USING (deliverableid)
+   JOIN person ON deliverablemod.personid = person.contactid
+   join modification using (modificationid)
+join projectlist using (projectid)
+  WHERE (deliverable.deliverabletypeid = ANY (ARRAY[4, 7])) AND (NOT deliverablemod.invalid OR NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dm
+  WHERE deliverablemod.modificationid = dm.parentmodificationid AND deliverablemod.deliverableid = dm.parentdeliverableid)))
+  ORDER BY deliverablemod.duedate DESC;
 
-GRANT ALL ON SCHEMA cvl TO bradley;
-GRANT USAGE ON SCHEMA cvl TO pts_read;
-
-ALTER DATABASE pts SET search_path=pts, cvl, public
-
-ALTER TABLE addresstype SET SCHEMA cvl;
-ALTER TABLE contacttype SET SCHEMA cvl;
-ALTER TABLE country SET SCHEMA cvl;
-ALTER TABLE deliverabletype SET SCHEMA cvl;
-ALTER TABLE eaddresstype SET SCHEMA cvl;
-ALTER TABLE filetype SET SCHEMA cvl;
-ALTER TABLE format SET SCHEMA cvl;
-ALTER TABLE fundingtype SET SCHEMA cvl;
-ALTER TABLE govunit SET SCHEMA cvl;
-ALTER TABLE modcontacttype SET SCHEMA cvl;
-ALTER TABLE modtype SET SCHEMA cvl;
-ALTER TABLE modtypestatus SET SCHEMA cvl;
-ALTER TABLE phonetype SET SCHEMA cvl;
-ALTER TABLE postalcode SET SCHEMA cvl;
-ALTER TABLE position SET SCHEMA cvl;
-ALTER TABLE roletype SET SCHEMA cvl;
-ALTER TABLE status SET SCHEMA cvl;
+ALTER TABLE task
+  OWNER TO bradley;
+GRANT ALL ON TABLE task TO bradley;
+GRANT SELECT ON TABLE task TO pts_read;
