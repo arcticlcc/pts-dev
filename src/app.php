@@ -75,10 +75,48 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
             throw new Exception("Unauthorized.");
         }
 
-        $query = $app['idiorm']->getTable($class)
-                ->offset($start)
-                ->limit($limit);
+        $query = $app['idiorm']->getTable($class);
 
+        //add the filters
+        if (isset($filter)) {
+            //loop thru filter array
+            foreach($filter as $val) {
+
+                //if the filter value is an array test for operator
+                //TODO: Implement all Idiorm operators
+                if(is_array($val->value)) {
+                    switch ($val->value[0]) {
+                        case '>':
+                            $query->where_gt($val->property, $val->value[1]);
+                            break;
+                        case '<':
+                            $query->where_lt($val->property, $val->value[1]);
+                            break;
+                        case '<=':
+                            $query->where_lte($val->property, $val->value[1]);
+                            break;
+                        case '>=':
+                            $query->where_gte($val->property, $val->value[1]);
+                            break;
+                        case 'null':
+                            $query->where_null($val->property);
+                            break;
+                        case 'not null':
+                            $query->where_not_null($val->property);
+                            break;
+                        default:
+                            throw new Exception("Invalid filter operator.");
+                    }
+                }else {
+                    $query->where($val->property,$val->value);
+                }
+            }
+        }
+
+        //create the count query with filters applied
+        $count = clone $query;
+
+        //add the sort params
         if (isset($sort)) {
             //loop thru sort array
             foreach($sort as $val) {
@@ -93,24 +131,20 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
             }
         }
 
-        if (isset($filter)) {
-            //loop thru filter array
-            foreach($filter as $val) {
-                $query->where($val->property,$val->value);
-            }
-        }
+        //add offset and limit
+        $query->offset($start)
+            ->limit($limit);
 
         foreach ($query->find_many() as $object) {
             $result[] = $object->as_array();
         }
-//var_dump($request->getPathInfo());
 
         switch ($format) {
             case "csv":
                 $app['csv']->setTitle($class);
                 break;
             default:
-                $app[$format]->setTotal($app['idiorm']->getTable($class)->count());
+                $app[$format]->setTotal($count->count());
         }
 
         $response = $app[$format]->setData($result)
