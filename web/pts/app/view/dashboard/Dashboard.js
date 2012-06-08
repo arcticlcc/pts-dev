@@ -10,7 +10,9 @@ Ext.define('PTS.view.dashboard.Dashboard', {
         /*'ArcticPTS.view.DashboardTaskGrid',
         'ArcticPTS.view.DashBoardQuickView',*/
         'PTS.view.dashboard.Calendar',
-        'Extensible.calendar.gadget.CalendarListPanel'
+        'Extensible.calendar.gadget.CalendarListPanel',
+        'PTS.view.dashboard.DeliverableList',
+        'PTS.view.dashboard.TaskList'
     ],
 
     layout: {
@@ -61,18 +63,32 @@ Ext.define('PTS.view.dashboard.Dashboard', {
                         padding: 0
                     },
                     //title: 'Calendar',
-                    flex: 2,
+                    //flex: 1,
                     region: 'center',
                     viewConfig: {
                         showHeader: true
                     }
                 },
                 {
-                    xtype: 'tasklist',
-                    flex: 1,
+                    xtype: 'tabpanel',
+                    width: 565,
+                    minWidth: 550,
+                    //flex: 1,
                     region: 'east',
                     collapsible: true,
-                    animCollapse: !Ext.isIE8 //TODO: remove this IE8 hack
+                    split: true,
+                    preventHeader: true,
+                    animCollapse: !Ext.isIE8, //TODO: remove this IE8 hack
+                    items: [
+                        {
+                            xtype: 'tasklist',
+                            title: 'Tasks'
+                        },
+                        {
+                            xtype: 'deliverablelist',
+                            title: 'Deliverables'
+                        }
+                    ]
                 }/*,
                 {
                     xtype: 'dashboardquickview',

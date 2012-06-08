@@ -12,11 +12,13 @@ Ext.define('PTS.controller.dashboard.Dashboard', {
     init: function() {
 
         var cal = this.getController('dashboard.Calendar'),
-        task = this.getController('dashboard.Task');
+        task = this.getController('dashboard.TaskList'),
+        del = this.getController('dashboard.DeliverableList');
 
         // Remember to call the init method manually
         cal.init();
         task.init();
+        del.init();
 
         /*this.control({
             'userlist': {

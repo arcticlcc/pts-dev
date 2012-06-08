@@ -1,11 +1,11 @@
 /**
- * File: app/view/dashboard/Tasklist.js
- * Description: Dashboard grid showing tasks.
+ * File: app/view/dashboard/Deliverablelist.js
+ * Description: Dashboard grid showing deliverables.
  */
 
-Ext.define('PTS.view.dashboard.TaskList', {
+Ext.define('PTS.view.dashboard.DeliverableList', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.tasklist',
+    alias: 'widget.deliverablelist',
     requires: [
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid'
@@ -13,8 +13,8 @@ Ext.define('PTS.view.dashboard.TaskList', {
 
     width: 350,
     autoScroll: true,
-    title: 'Tasks',
-    store: 'Tasks',
+    title: 'Deliverables',
+    store: 'DeliverableListings',
 
     initComponent: function() {
         var me = this;
@@ -26,13 +26,13 @@ Ext.define('PTS.view.dashboard.TaskList', {
             dockedItems: [
                     {
                         xtype: 'pagingtoolbar',
-                        store: 'Tasks',   // same store GridPanel is using
+                        store: 'DeliverableListings',   // same store GridPanel is using
                         dock: 'top',
                         displayInfo: true,
                         plugins: [
                             Ext.create('Ext.ux.grid.PrintGrid', {
                                 title: function(){
-                                    return this.child('cycle#filter').getActiveItem().text + ' (Tasks)';
+                                    return this.child('cycle#filter').getActiveItem().text + ' Deliverables';
                                 }
                             }),
                             Ext.create('Ext.ux.grid.SaveGrid', {})
@@ -43,29 +43,35 @@ Ext.define('PTS.view.dashboard.TaskList', {
                                 xtype: 'cycle',
                                 itemId: 'filter',
                                 showText: true,
-                                action: 'filtertask',
-                                tooltip: 'Click to filter the Tasks',
+                                action: 'filterdeliverable',
+                                tooltip: 'Click to filter the Deliverables',
                                 menu: {
                                     xtype: 'menu',
                                     width: 120,
                                     items: [
                                         {
                                             //xtype: 'menucheckitem',
-                                            iconCls: 'pts-menu-users',
-                                            text: 'Show All',
+                                            iconCls: 'pts-flag-red',
+                                            text: 'Overdue',
+                                            filter: 'over'
+                                        },
+                                        {
+                                            //xtype: 'menucheckitem',
+                                            iconCls: 'pts-flag-orange',
+                                            text: 'Due Soon',
+                                            filter: 'soon'
+                                        },
+                                        {
+                                            //xtype: 'menucheckitem',
+                                            iconCls: 'pts-flag-gray',
+                                            text: 'All',
                                             filter: 'all'
                                         },
                                         {
                                             //xtype: 'menucheckitem',
-                                            iconCls: 'pts-menu-user',
-                                            text: 'Show Mine',
-                                            filter: 'user'
-                                        },
-                                        {
-                                            //xtype: 'menucheckitem',
-                                            iconCls: 'pts-menu-exclamation',
-                                            text: 'Due Today',
-                                            filter: 'today'
+                                            iconCls: 'pts-flag-green',
+                                            text: 'Completed',
+                                            filter: 'complete'
                                         }
                                     ]
                                 }
@@ -75,15 +81,24 @@ Ext.define('PTS.view.dashboard.TaskList', {
             ],
             columns: [
                 {
-                    xtype: 'datecolumn',
+                    xtype: 'gridcolumn',
                     width: 83,
                     dataIndex: 'duedate',
-                    text: 'Due Date'
+                    text: 'Due Date',
+                    renderer: function (value, metaData, record, rowIdx, colIdx , store, view) {
+                        var val = Ext.util.Format.date(value),
+                            overdue = record.get('dayspastdue') > 0;
+
+                        if (overdue) {
+                            return '<span style="color:red;">' + val + '</span>';
+                        }
+                        return val;
+                    }
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'assignee',
-                    text: 'Assignee'
+                    dataIndex: 'projectcode',
+                    text: 'Project'
                 },
                 {
                     xtype: 'gridcolumn',
