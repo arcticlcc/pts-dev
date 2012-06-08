@@ -327,6 +327,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                     rec.phantom = true;
                     data.records.push(rec);
                 }
+                data.view.getSelectionModel().deselect(records);
             } else {
                 /*
                  * Remove from the source store. We do this regardless of whether the store
