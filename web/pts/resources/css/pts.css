@@ -59,6 +59,9 @@
 .pts-menu-savebasic {
     background-image: url("../images/icons/disk.png");
 }
+.pts-menu-savetable {
+    background-image: url("../images/icons/table_save.png");
+}
 .pts-menu-viewlist {
     background-image: url("../images/icons/application_view_list.png");
 }
@@ -137,13 +140,29 @@
 
 .pts-page-orange {
     background-image: url("../images/icons/page_orange.png");
-
 }
 .pts-page-bluecopy {
     background-image: url("../images/icons/page_copy.png");
 }
 .pts-printer {
     background-image: url("../images/icons/printer.png");
+}
+.pts-flag-orange {
+    background-image: url("../images/icons/flag_orange.png");
+}
+.pts-flag-red {
+    background-image: url("../images/icons/flag_red.png");
+}
+.pts-flag-gray {
+    background-image: url("../images/icons/flag_gray.png");
+}
+.pts-flag-green {
+    background-image: url("../images/icons/flag_green.png");
+}
+.pts-icon-download {
+    background: url("../images/download.png") no-repeat scroll 2px 0px transparent;
+    width: 60px !important;
+    height: 64px !important;
 }
 .pts-contact-fieldset {
     background-color: #EEF0F3;
