@@ -1,6 +1,5 @@
 /**
- * File: app/model/Task.js
- * Description: Task model.
+ * Task model.
  */
 
 Ext.define('PTS.model.Task', {
