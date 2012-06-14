@@ -5,6 +5,7 @@
     "--warnings": ["-link", "-no_doc"],
     "--": [
         "web/pts/app.js",
-        "web/pts/app"
+        "web/pts/app",
+        "web/pts/ux"
     ]
 }
