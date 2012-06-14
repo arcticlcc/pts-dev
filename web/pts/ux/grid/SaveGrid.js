@@ -1,5 +1,5 @@
 /**
-* @class Ext.ux.SaveGrid
+* @class Ext.ux.grid.SaveGrid
 * @extends Object
 * Plugin for PagingToolbar which adds button for saving the grid
 * @constructor

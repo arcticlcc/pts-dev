@@ -1,5 +1,5 @@
 /**
-* @class Ext.ux.PrintGrid
+* @class Ext.ux.grid.PrintGrid
 * @extends Object
 * Plugin for PagingToolbar which adds button for printing the grid
 * @constructor
