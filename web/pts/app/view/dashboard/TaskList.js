@@ -11,7 +11,6 @@ Ext.define('PTS.view.dashboard.TaskList', {
         'Ext.ux.grid.SaveGrid'
     ],
 
-    width: 350,
     autoScroll: true,
     title: 'Tasks',
     store: 'Tasks',

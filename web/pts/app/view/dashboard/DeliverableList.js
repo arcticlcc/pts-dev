@@ -11,7 +11,6 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
         'Ext.ux.grid.SaveGrid'
     ],
 
-    width: 350,
     autoScroll: true,
     title: 'Deliverables',
     store: 'DeliverableListings',
@@ -105,6 +104,22 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                     dataIndex: 'title',
                     flex: 1,
                     text: 'Title'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'contact',
+                    hidden: true,
+                    text: 'Contact',
+
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'email',
+                    hidden: true,
+                    text: 'E-mail',
+                    renderer: function(value) {
+                        return value ? '<a href="mailto:' + value + '">' + value + '</a>' : '';
+                    }
                 }
             ]
         });
