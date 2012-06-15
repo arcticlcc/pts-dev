@@ -32,7 +32,8 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                             Ext.create('Ext.ux.grid.PrintGrid', {
                                 title: function(){
                                     return this.child('cycle#filter').getActiveItem().text + ' Deliverables';
-                                }
+                                },
+                                printHidden: true
                             }),
                             Ext.create('Ext.ux.grid.SaveGrid', {})
                         ],

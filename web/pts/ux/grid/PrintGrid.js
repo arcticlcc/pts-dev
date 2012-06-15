@@ -31,6 +31,13 @@ Ext.define('Ext.ux.grid.PrintGrid', {
      */
     title: null,
 
+    /**
+     * @property printHidden
+     * @type Boolean
+     * True to always print hidden columns
+     */
+    printHidden: false,
+
     constructor : function(config) {
         if (config) {
             Ext.apply(this, config);
@@ -44,6 +51,7 @@ Ext.define('Ext.ux.grid.PrintGrid', {
         print = Ext.create('Ext.button.Button', {
             text: this.text,
             mainTitle: this.title,
+            printHidden: this.printHidden,
             iconCls: 'pts-printer',
             tooltip: 'Print the visible records',
             handler : function(){
@@ -62,6 +70,7 @@ Ext.define('Ext.ux.grid.PrintGrid', {
 
                 Ext.ux.grid.Printer.mainTitle = title;
                 Ext.ux.grid.Printer.rightTitle = right;
+                Ext.ux.grid.Printer.printHidden = me.printHidden;
                 Ext.ux.grid.Printer.print(grid);
             }
         });

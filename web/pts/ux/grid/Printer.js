@@ -89,9 +89,12 @@ Ext.define("Ext.ux.grid.Printer", {
             });
 
             //remove columns that do not contains dataIndex or dataIndex is empty. for example: columns filter or columns button
-            var clearColumns = [];
+            var clearColumns = [],
+                printHidden = this.printHidden;
             Ext.each(columns, function (column) {
-                if (!Ext.isEmpty(column.dataIndex) && !column.hidden) {
+                //only hide columns if printHidden config is false
+                var hide = printHidden ? false : column.hidden;
+                if (!Ext.isEmpty(column.dataIndex) && !hide) {
                     clearColumns.push(column);
                 }
             });
@@ -258,6 +261,13 @@ Ext.define("Ext.ux.grid.Printer", {
             '<tpl for=".">',
                 '<td>\{{dataIndex}\}</td>',
             '</tpl>',
-        ]
+        ],
+
+        /**
+         * @property printHidden
+         * @type Boolean
+         * True to always print hidden columns
+         */
+        printHidden: false
     }
 });
