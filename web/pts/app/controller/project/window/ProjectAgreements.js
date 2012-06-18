@@ -614,6 +614,14 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
 
             //set mask
             itemDetail.getEl().mask('Loading...');
+            //clear any filters on comboboxes
+            Ext.each(itemForm.query('field'), function() {
+                var me = this;
+
+                if(me.isXType('combobox')) {
+                    me.getStore().clearFilter();
+                }
+            });
 
             Ext.ModelMgr.getModel(itemForm.model).load(id, { // load with id from selected record
                 success: function(model) {
