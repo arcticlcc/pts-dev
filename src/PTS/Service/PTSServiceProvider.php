@@ -35,6 +35,7 @@ class PTSServiceProvider implements ServiceProviderInterface
                     $values = json_decode($request->getContent());
 
                     foreach ($values as $k => $v)  {
+                        $v = is_string($v) ? trim($v) : $v;
                         $object->set($k, $v);
                     }
 
@@ -96,6 +97,7 @@ class PTSServiceProvider implements ServiceProviderInterface
                         $pcol = $idCol ? $idCol : $class.'id';
                         //don't ever overwrite the primary key
                         if($k != $pcol) {
+                        $v = is_string($v) ? trim($v) : $v;
                             $object->set($k, $v);
                         }
                     }
@@ -148,6 +150,7 @@ class PTSServiceProvider implements ServiceProviderInterface
                         }
 
                         foreach ($values as $k => $v)  {
+                            $v = is_string($v) ? trim($v) : $v;
                             $object->set($k, $v);
                         }
 
