@@ -35,31 +35,6 @@ class ProjectContact implements ControllerProviderInterface
 
             $result = $app['saveTable']($request, $table, $id, true);
             $app['json']->setData($result);
-            /*try {
-                $object = $app['idiorm']->getTable($table)->find_one($id);
-                $values = json_decode($request->getContent());
-                //disallow changing projectid and contactid
-                unset($values->projectid);
-                unset($values->contactid);
-
-                foreach ($values as $k => $v)  {
-                    $object->set($k, $v);
-                }
-                $object->save();
-
-                //we want to return the list record
-                $object = $app['idiorm']->getTable($table.'list')->find_one($id);
-
-                $result = $object->as_array();
-                $app['json']->setData($result);
-
-            } catch (Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
-                $message = $exc->getMessage();
-                $success = false;
-                $code = 400;
-                $app['json']->setAll($result,$code,$success,$message);
-            }*/
 
             return $app['json']->getResponse();
         });
