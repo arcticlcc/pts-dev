@@ -6,7 +6,10 @@
 Ext.define('PTS.view.project.form.DeliverableForm', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.deliverableform',
-    requires: ['PTS.view.controls.ManagerCombo'],
+    requires: [
+        'PTS.view.controls.ManagerCombo',
+        'PTS.view.controls.CommentEditGrid'
+    ],
 
     itemId: 'itemCard-30',
     title: 'Deliverable',
@@ -134,12 +137,14 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                 ]
             },{
                 xtype:'tabpanel',
+                //disabled:true,
+                itemId: 'relatedDetails',
                 title: 'Details',
                 region: 'south',
                 collapsible: true,
                 animCollapse: !Ext.isIE8, //TODO: remove this IE8 hack
                 split: true,
-                activeTab: 0,
+                activeTab: 2,
                 flex: 1,
                 defaults: {
                     bodyStyle:'padding:10px',
@@ -150,7 +155,11 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                 },{
                     title:'Progress'
                 },{
-                    title: 'Comments'
+                    title: 'Comments',
+                    disabled: false,
+                    xtype: 'commenteditgrid',
+                    store: 'DeliverableComments',
+                    uri: 'deliverablecomment'
                 }]
             }]
         });

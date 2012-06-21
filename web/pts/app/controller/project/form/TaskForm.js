@@ -2,7 +2,7 @@
  * Controller for Task Form
  */
 Ext.define('PTS.controller.project.form.TaskForm', {
-    extend: 'Ext.app.Controller',
+    extend: 'PTS.controller.project.form.DeliverableForm',
 
     views: [
         'project.form.TaskForm'
@@ -11,25 +11,34 @@ Ext.define('PTS.controller.project.form.TaskForm', {
         'DeliverableType'
     ],
     stores: [
-        'DeliverableTypes'
+        'DeliverableTypes',
+        'DeliverableComments'
     ],
     refs: [{
-        ref: 'taskForm',
-        selector: 'taskform'
+        ref: 'deliverableForm',
+        selector: 'deliverableform#itemCard-40 #itemForm'
+    },{
+        ref: 'deliverableCard',
+        selector: 'deliverableform#itemCard-40'
     }],
 
     init: function() {
         this.control({
             'taskform #itemForm': {
                 beforerender: this.onBeforeRender
+            },
+            'taskform#itemCard-40 #relatedDetails>roweditgrid': {
+                edit: this.onDetailRowEdit,
+                activate: this.onDetailActivate
             }
         });
 
-        // We listen for the application-wide openproject event
-        /*this.application.on({
-            openproject: this.onOpenProject,
+        // We listen for application-wide events
+        this.application.on({
+            itemload: this.onItemLoad,
+            newitem: this.onNewItem,
             scope: this
-        });*/
+        });
     },
 
     onBeforeRender: function(form) {
