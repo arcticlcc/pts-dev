@@ -6,7 +6,8 @@ Ext.define('PTS.view.controls.CommentEditGrid', {
     alias: 'widget.commenteditgrid',
     requires: [
         'Ext.grid.plugin.RowEditing',
-        'PTS.store.GroupUsers'
+        'PTS.store.GroupUsers',
+        'PTS.view.controls.TextareaTriggerField'
     ],
 
     /**
@@ -29,38 +30,9 @@ Ext.define('PTS.view.controls.CommentEditGrid', {
             dataIndex: 'comment',
             flex: 1,
             editor: {
-                xtype: 'textareafield',
-                height: 22,
-                style: {overflow: 'hidden'},
-                allowBlank: false,
-                blankText: 'A comment is required.',
-                listeners: {
-                    focus: {
-                        fn: function(f){
-                            var val = f.getRawValue();
-                            //TODO: extract this functionality into a plugin
-                            if(val.length > 50){
-                                Ext.MessageBox.show({
-                                    title: 'Comment',
-                                    //msg: 'Comment:',
-                                    width:300,
-                                    buttons: Ext.MessageBox.OKCANCEL,
-                                    multiline: true,
-                                    value: val,
-                                    fn: function(btn, txt) {
-                                        if (btn === 'ok'){
-                                        // process text value and close
-                                            f.setValue(txt);
-                                        }
-                                    },
-                                   animateTarget: f.getEl()
-                               });
-                            }
-                        }
-                    }
-                }
-            },
-            text: 'Comment'
+                xtype: 'areatrigger',
+                text: 'Comment'
+            }
         },
         {
             xtype: 'gridcolumn',
