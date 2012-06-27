@@ -1,4 +1,4 @@
-/*
+/**
  * CurrencyField extends NumberField to format display as currency
  * http://www.sencha.com/forum/showthread.php?139600-CurrencyField-extends-NumberField-to-format-display-as-currency
  */
