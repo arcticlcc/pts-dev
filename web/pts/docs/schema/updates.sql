@@ -39,3 +39,9 @@ ALTER TABLE pts.invoicecomment DROP CONSTRAINT invoicecomment_pk;
 ALTER TABLE pts.invoicecomment ADD PRIMARY KEY (invoicecommentid);
 
 COMMENT ON COLUMN deliverablecomment.datemodified IS 'Date that the comment was modified.';
+
+GRANT SELECT, UPDATE ON TABLE deliverablecomment_deliverablecommentid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON TABLE filecomment_filecommentid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON TABLE invoicecomment_invoicecommentid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON TABLE modcomment_modcommentid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON TABLE projectcomment_projectcommentid_seq TO GROUP pts_write;
