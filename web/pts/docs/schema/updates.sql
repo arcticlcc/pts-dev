@@ -45,3 +45,36 @@ GRANT SELECT, UPDATE ON TABLE filecomment_filecommentid_seq TO GROUP pts_write;
 GRANT SELECT, UPDATE ON TABLE invoicecomment_invoicecommentid_seq TO GROUP pts_write;
 GRANT SELECT, UPDATE ON TABLE modcomment_modcommentid_seq TO GROUP pts_write;
 GRANT SELECT, UPDATE ON TABLE projectcomment_projectcommentid_seq TO GROUP pts_write;
+
+
+
+CREATE TABLE pts.fundingcomment (
+                fundingcommentid SERIAL NOT NULL,
+                contactid INTEGER NOT NULL,
+                fundingid INTEGER NOT NULL,
+                datemodified DATE NOT NULL,
+                comment VARCHAR NOT NULL,
+                CONSTRAINT fundingcomment_pk PRIMARY KEY (fundingcommentid)
+);
+COMMENT ON COLUMN pts.fundingcomment.contactid IS 'FK for PERSON';
+COMMENT ON COLUMN pts.fundingcomment.fundingid IS 'FK for FUNDING';
+COMMENT ON COLUMN pts.fundingcomment.datemodified IS 'Date that the comment was modified.';
+
+
+ALTER TABLE pts.fundingcomment ADD CONSTRAINT funding_fundingcomment_fk
+FOREIGN KEY (fundingid)
+REFERENCES pts.funding (fundingid)
+ON DELETE CASCADE
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+ALTER TABLE pts.fundingcomment ADD CONSTRAINT person_fundingcomment_fk
+FOREIGN KEY (contactid)
+REFERENCES pts.person (contactid)
+ON DELETE CASCADE
+ON UPDATE NO ACTION
+NOT DEFERRABLE;
+
+GRANT SELECT, UPDATE ON TABLE fundingcomment_fundingcommentid_seq TO GROUP pts_write;
+GRANT SELECT ON TABLE fundingcomment TO GROUP pts_read;
+GRANT UPDATE, INSERT, DELETE ON TABLE fundingcomment TO GROUP pts_write;
