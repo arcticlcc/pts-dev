@@ -6,11 +6,11 @@ Ext.define('PTS.store.DeliverableComments', {
     extend: 'Ext.data.Store',
     model: 'PTS.model.DeliverableComment',
 
-    autoLoad: false,
+    autoLoad: false//,
     //remoteSort: true,
     //remoteFilter: true,
     //pageSize: PTS.Defaults.pageSize
-    listeners: {
+    /*listeners: {
         add: {
             fn: function(store, records){
                 Ext.each(records, function() {
@@ -22,5 +22,5 @@ Ext.define('PTS.store.DeliverableComments', {
                 });
             }
         }
-    }
+    }*/
 });

@@ -63,16 +63,15 @@ Ext.define('PTS.view.controls.CommentEditGrid', {
         });*/
 
         me.callParent(arguments);
-        /*me.on('beforeedit', function(e) {
-            var rec = e.record;
+        me.getStore().on('add', function(store, records){
+            Ext.each(records, function() {
+                var rec = this;
 
-            if(null === rec.get('contactid')) {
-                rec.set('contactid', PTS.user.get('contactid'));
-            }
-
-            e.cancel = false;
-            return true;
-        });*/
+                if(null === rec.get('contactid')) {
+                    rec.set('contactid', PTS.user.get('contactid'));
+                }
+            });
+        });
     }
 
 });
