@@ -15,7 +15,8 @@ Ext.define('PTS.controller.project.form.AgreementForm', {
     stores: [
         'PurchaseRequests',
         'Statuses',
-        'ModStatuses'
+        'ModStatuses',
+        'ModificationComments'
     ],
     refs: [{
         ref: 'agreementForm',

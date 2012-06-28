@@ -9,7 +9,8 @@ Ext.define('PTS.view.project.form.AgreementForm', {
     requires: [
         'PTS.view.controls.ManagerCombo',
         'PTS.view.controls.RowEditGrid',
-        'Ext.form.field.VTypes'
+        'Ext.form.field.VTypes',
+        'PTS.view.controls.CommentEditGrid'
     ],
 
     itemId: 'itemCard-20',
@@ -244,7 +245,10 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                     disabled: true
                 },{
                     title: 'Comments',
-                    disabled: true
+                    disabled: false,
+                    xtype: 'commenteditgrid',
+                    store: 'ModificationComments',
+                    uri: 'modcomment'
                 }]
             }]
         });

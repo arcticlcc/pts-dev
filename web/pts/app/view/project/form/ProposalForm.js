@@ -8,7 +8,8 @@ Ext.define('PTS.view.project.form.ProposalForm', {
     alias: 'widget.proposalform',
     requires: [
         'PTS.view.controls.ManagerCombo',
-        'PTS.view.controls.StatusCombo'
+        'PTS.view.controls.StatusCombo',
+        'PTS.view.controls.CommentEditGrid'
     ],
 
     itemId: 'itemCard-10',
@@ -160,7 +161,10 @@ Ext.define('PTS.view.project.form.ProposalForm', {
                     disabled: true
                 },{
                     title: 'Comments',
-                    disabled: true
+                    disabled: false,
+                    xtype: 'commenteditgrid',
+                    store: 'ModificationComments',
+                    uri: 'modcomment'
                 }]
             }]
         });

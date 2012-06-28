@@ -14,7 +14,8 @@ Ext.define('PTS.controller.project.form.FundingForm', {
         'FundingTypes',
         'ProjectFunders',
         'CostCodes',
-        'ContactCostCodes'
+        'ContactCostCodes',
+        'FundingComments'
     ],
     refs: [{
         ref: 'fundingForm',

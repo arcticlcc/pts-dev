@@ -13,7 +13,8 @@ Ext.define('PTS.controller.project.form.ProposalForm', {
     ],
     stores: [
         'Statuses',
-        'ModStatuses'
+        'ModStatuses',
+        'ModificationComments'
     ],
     refs: [{
         ref: 'agreementForm',

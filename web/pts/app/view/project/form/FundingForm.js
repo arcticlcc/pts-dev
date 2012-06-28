@@ -6,7 +6,10 @@
 Ext.define('PTS.view.project.form.FundingForm', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.fundingform',
-    requires: ['PTS.view.controls.CurrencyField'],
+    requires: [
+        'PTS.view.controls.CurrencyField',
+        'PTS.view.controls.CommentEditGrid'
+    ],
 
     itemId: 'itemCard-50',
     title: 'Funding',
@@ -147,7 +150,10 @@ Ext.define('PTS.view.project.form.FundingForm', {
                     title:'Invoices'
                 },{
                     title: 'Comments',
-                    disabled: true
+                    disabled: false,
+                    xtype: 'commenteditgrid',
+                    store: 'FundingComments',
+                    uri: 'fundingcomment'
                 }]
             }]
         });
