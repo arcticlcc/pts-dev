@@ -78,3 +78,20 @@ NOT DEFERRABLE;
 GRANT SELECT, UPDATE ON TABLE fundingcomment_fundingcommentid_seq TO GROUP pts_write;
 GRANT SELECT ON TABLE fundingcomment TO GROUP pts_read;
 GRANT UPDATE, INSERT, DELETE ON TABLE fundingcomment TO GROUP pts_write;
+
+--fix ref integrity for deliverables
+CREATE OR REPLACE FUNCTION delete_deliverable() RETURNS trigger AS $$
+    BEGIN
+        -- Check if no other instances of deliverablemod exist
+        IF NOT EXISTS(SELECT 1 FROM deliverablemod WHERE deliverableid = OLD.deliverableid) THEN
+        DELETE FROM deliverable WHERE deliverableid = OLD.deliverableid;
+        END IF;
+
+        RETURN OLD;
+    END;
+$$ LANGUAGE plpgsql;
+
+CREATE TRIGGER delete_deliverablemod
+    AFTER DELETE ON deliverablemod
+    FOR EACH ROW
+    EXECUTE PROCEDURE delete_deliverable();
