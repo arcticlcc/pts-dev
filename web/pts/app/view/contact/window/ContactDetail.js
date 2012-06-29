@@ -8,7 +8,8 @@ Ext.define('PTS.view.contact.window.ContactDetail', {
     requires: [
         'PTS.view.controls.MyFieldContainer',
         'PTS.view.controls.AddressFieldSet',
-        'Ext.form.field.Hidden'
+        'Ext.form.field.Hidden',
+        'PTS.view.controls.PhoneFieldContainer'
     ],
 
     margin: '0 0 10 0',
@@ -100,190 +101,31 @@ Ext.define('PTS.view.contact.window.ContactDetail', {
                     title: 'Phone',
                     items: [
                         {
-                            xtype: 'myfieldcontainer',
+                            xtype: 'phonefieldcontainer',
                             itemId: 'officePhone',
                             layout: {
                                 align: 'middle',
                                 type: 'hbox'
                             },
-                            fieldLabel: 'Office',
-                            items: [
-                                {
-                                    xtype: 'displayfield',
-                                    value: '(',
-                                    flex: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 1',
-                                    width: 50,
-                                    name: 'areacode',
-                                    hideTrigger: true,
-                                    minValue: 0
-                                },
-                                {
-                                    xtype: 'displayfield',
-                                    value: ')',
-                                    flex: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 1',
-                                    width: 150,
-                                    name: 'phnumber',
-                                    hideTrigger: true,
-                                    minValue: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 15 0 0',
-                                    width: 105,
-                                    name: 'extension',
-                                    fieldLabel: 'Ext',
-                                    labelAlign: 'right',
-                                    labelWidth: 50,
-                                    hideTrigger: true
-                                },
-                                {
-                                    xtype: 'countrycombo',
-                                    name: 'countryiso',
-                                    fieldLabel: 'Country',
-                                    labelAlign: 'right',
-                                    labelWidth: 50,
-                                    flex: 1
-                                },
-                                {
-                                    xtype: 'hiddenfield',
-                                    itemId: 'recordId',
-                                    name: 'phoneid',
-                                    fieldLabel: 'Label',
-                                    flex: 1
-                                }
-                            ]
+                            fieldLabel: 'Office'
                         },
                         {
-                            xtype: 'myfieldcontainer',
+                            xtype: 'phonefieldcontainer',
                             itemId: 'mobilePhone',
                             layout: {
                                 align: 'middle',
                                 type: 'hbox'
                             },
-                            fieldLabel: 'Mobile',
-                            items: [
-                                {
-                                    xtype: 'displayfield',
-                                    value: '(',
-                                    flex: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 1',
-                                    width: 50,
-                                    name: 'areacode',
-                                    hideTrigger: true,
-                                    minValue: 0
-                                },
-                                {
-                                    xtype: 'displayfield',
-                                    value: ')',
-                                    flex: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 1',
-                                    width: 150,
-                                    name: 'phnumber',
-                                    hideTrigger: true,
-                                    minValue: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 15 0 0',
-                                    width: 105,
-                                    name: 'extension',
-                                    fieldLabel: 'Ext',
-                                    labelAlign: 'right',
-                                    labelWidth: 50,
-                                    hideTrigger: true
-                                },
-                                {
-                                    xtype: 'countrycombo',
-                                    name: 'countryiso',
-                                    fieldLabel: 'Country',
-                                    labelAlign: 'right',
-                                    labelWidth: 50,
-                                    flex: 1
-                                },
-                                {
-                                    xtype: 'hiddenfield',
-                                    itemId: 'recordId',
-                                    name: 'phoneid',
-                                    fieldLabel: 'Label',
-                                    flex: 1
-                                }
-                            ]
+                            fieldLabel: 'Mobile'
                         },
                         {
-                            xtype: 'myfieldcontainer',
+                            xtype: 'phonefieldcontainer',
                             itemId: 'faxPhone',
                             layout: {
                                 align: 'middle',
                                 type: 'hbox'
                             },
-                            fieldLabel: 'Fax',
-                            items: [
-                                {
-                                    xtype: 'displayfield',
-                                    value: '(',
-                                    flex: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 1',
-                                    width: 50,
-                                    name: 'areacode',
-                                    hideTrigger: true,
-                                    minValue: 0
-                                },
-                                {
-                                    xtype: 'displayfield',
-                                    value: ')',
-                                    flex: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 1',
-                                    width: 150,
-                                    name: 'phnumber',
-                                    hideTrigger: true,
-                                    minValue: 0
-                                },
-                                {
-                                    xtype: 'numberfield',
-                                    margin: '0 15 0 0',
-                                    width: 105,
-                                    name: 'extension',
-                                    fieldLabel: 'Ext',
-                                    labelAlign: 'right',
-                                    labelWidth: 50,
-                                    hideTrigger: true
-                                },
-                                {
-                                    xtype: 'countrycombo',
-                                    name: 'countryiso',
-                                    fieldLabel: 'Country',
-                                    labelAlign: 'right',
-                                    labelWidth: 50,
-                                    flex: 1
-                                },
-                                {
-                                    xtype: 'hiddenfield',
-                                    itemId: 'recordId',
-                                    name: 'phoneid',
-                                    fieldLabel: 'Label',
-                                    flex: 1
-                                }
-                            ]
+                            fieldLabel: 'Fax'
                         }
                     ]
                 }
