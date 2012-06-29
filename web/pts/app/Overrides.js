@@ -124,8 +124,44 @@ Ext.define('PTS.Overrides', {
             }
 
             return me;
+        },
+
+        //Adds rejectChanges.
+        //TODO: Fixed in 4.1
+        //http://www.sencha.com/forum/showthread.php?136871-Where-did-rejectChanges%28%29-go
+        getModifiedRecords : function(){
+            return [].concat(this.getNewRecords(), this.getUpdatedRecords());
+        },
+
+        rejectChanges : function() {
+            var me = this,
+                recs = me.getModifiedRecords(),
+                len = recs.length,
+                i = 0;
+
+            for (; i < len; i++) {
+                recs[i].reject();
+                if (recs[i].phantom) {
+                    me.remove(recs[i]);
+                }
+            }
+
+            recs = me.removed;
+            len = recs.length;
+
+            for (i = 0; i < len; i++) {
+                me.insert(recs[i].lastIndex || 0, recs[i]);
+                recs[i].reject();
+                // lastIndex will get re-added if this rec gets removed again later
+                delete recs[i].lastIndex;
+            }
+
+            // Since removals are cached in a simple array we can simply reset it here.
+            // Adds and updates are managed in the data MixedCollection and should already be current.
+            me.removed.length = 0;
         }
     });
+
     Ext.override(Ext.data.proxy.Proxy, {
         batch: function(options, /* deprecated */listeners) {
             var me = this,
