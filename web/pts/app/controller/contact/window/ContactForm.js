@@ -156,9 +156,10 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
      * Save contact detail fieldset.
      */
     saveFieldSet: function(store, fieldset, type) {
-        var itmRec, itmId;
-
-        if(fieldset.isDirty()) {
+        var itmRec, itmId,
+            save = fieldset.isDirty() && fieldset.isValid();
+        //we only save if valid and dirty
+        if(save) {
             itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
 
             if(itmRec = store.getById(itmId)) {
@@ -182,16 +183,14 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         }
     },
 
-    //TODO: fire app events to reload contact list, etc.
-    //TODO: remove hardcoded values for detail type IDs, use stores
     /**
-     * Save contact.
+     * Save all contact detail fieldsets to the model.
      */
-     saveContact: function() {
-        var panel = this.getActiveForm(),
-            form = panel.getForm(),
-            record = form.getRecord(),
-            store,fieldset, //itmRec, itmId,
+    saveAllFieldSets: function(pnl, frm, rec) {
+        var panel = pnl ? pnl : this.getActiveForm(),
+            form = frm ? frm : panel.getForm(),
+            record = rec ? rec : form.getRecord(),
+            store,fieldset,
             phone = [
                 {type:'fax',val:'1'},
                 {type:'office',val:'3'},
@@ -205,10 +204,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                 {type:'web',val:'2'},
                 {type:'email',val:'1'}
             ];
-        //mask the form
-        panel.getEl().mask('Saving...');
-        //update the main record
-        form.updateRecord(record);
+
         //update the details
         Ext.each(address, function(itm){
             store = record.addresses();
@@ -227,6 +223,24 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             fieldset = panel.down('fieldcontainer#' + itm.type + 'Phone');
             this.saveFieldSet(store, fieldset, {phonetypeid: itm.val});
         },this);
+    },
+
+    //TODO: fire app events to reload contact list, etc.
+    //TODO: remove hardcoded values for detail type IDs, use stores
+    /**
+     * Save contact.
+     */
+     saveContact: function() {
+        var panel = this.getActiveForm(),
+            form = panel.getForm(),
+            record = form.getRecord();
+
+        //mask the form
+        panel.getEl().mask('Saving...');
+        //update the main record
+        form.updateRecord(record);
+        //update the details
+        this.saveAllFieldSets(panel, form, record);
 
         record.save({
             success: function(model, op) {
@@ -320,7 +334,21 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
      * Reset contact form.
      */
      resetContact: function() {
-        var form = this.getActiveForm().getForm();
+        var panel = this.getActiveForm(),
+            form = panel.getForm(),
+            record = form.getRecord();
+
+        //we need to reject the changes to the associated records
+        //TODO: handle association rejections in the base model class
+        if(record.associations.items.length) {//check for associations
+            //loop thru associations
+            record.associations.each(function(assoc){
+                var store = record[assoc.name]();
+
+                store.rejectChanges();
+            });
+        }
+        record.reject();
 
         form.reset();
      },

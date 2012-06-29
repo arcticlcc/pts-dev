@@ -14,5 +14,16 @@ Ext.define('PTS.util.mixin.CheckDirty', {
         return !Ext.Array.every(fields, function(f) {
             return !f.isDirty();
         });
+    },
+
+    /**
+     * Check the container validity
+     * @return {Boolean}
+     */
+    isValid: function() {
+        var fields = this.query('field');
+        return Ext.Array.every(fields, function(f) {
+            return f.isValid();
+        });
     }
 });
