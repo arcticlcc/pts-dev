@@ -61,7 +61,7 @@ class ContactGroup implements ControllerProviderInterface
                     $code = 404;
                     $app['json']->setAll($result,$code,$success,$message);
                 }
-            } catch (Exception $exc) {
+            } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
                 $message = $exc->getMessage();
                 $success = false;
@@ -130,35 +130,6 @@ class ContactGroup implements ControllerProviderInterface
                 ";
 
                 $result = $app['saveRelatedTransaction']($values, $related, $sql, 'contactid', $id);
-                /*$stmt = $app['db']->prepare($sql);
-
-                foreach ($values as $k => $v)  {
-                    $stmt->bindValue($k, $v);
-                }
-                $stmt->bindValue('contactid', $id);
-                $stmt->execute();
-                $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-                //save related data
-                foreach ($related as $rClass => $rTable)  {
-                    //we're assuming the primarykey is {tablename}id
-                    $pk = $rTable['name'].'id';
-                    if(isset($rTable['values'])) {
-                        foreach ($rTable['values'] as $k => $v)  {
-                            //make sure the foreignkey is set
-                            $v->contactid = $id;
-                            //var_dump($v);exit;
-                            //save the related data and add returned data to the result array
-                            $app['saveRelated']($v, $rTable['name'], $v->$pk);
-                        }
-                    }
-                    //we return all of the related records, ExtJS associations require this
-                    //TODO: remove priority when not needed
-                    $result[$rClass] = $app['idiorm']->getRelated(true, $rTable['name'], 'contactid',$id ,
-                        array('priority'=>1));
-
-                }*/
-
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
@@ -195,36 +166,6 @@ class ContactGroup implements ControllerProviderInterface
                 ";
 
                 $result = $app['saveRelatedTransaction']($values, $related, $sql, 'contactid');
-                /*$stmt = $app['db']->prepare($sql);
-
-                foreach ($values as $k => $v)  {
-                    $stmt->bindValue($k, $v);
-                }
-
-                $stmt->execute();
-                $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-                $id = $result['contactid'];
-
-                //save related data
-                //TODO: create method for this
-                foreach ($related as $rClass => $rTable)  {
-                    //we're assuming the primarykey is {tablename}id
-                    $pk = $rTable['name'].'id';
-                    if(isset($rTable['values'])) {
-                        foreach ($rTable['values'] as $k => $v)  {
-                            //set the fkey
-                            $v->contactid = $id;
-                            //save the related data and add returned data to the result array
-                            $app['saveRelated']($v, $rTable['name'], $v->$pk);
-                        }
-                    }
-                    //we return all of the related records, ExtJS associations require this
-                    //TODO: remove priority when not needed
-                    $result[$rClass] = $app['idiorm']->getRelated(true, $rTable['name'], 'contactid',$id ,
-                        array('priority'=>1));
-
-                }*/
-
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());

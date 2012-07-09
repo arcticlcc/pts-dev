@@ -120,50 +120,6 @@ class Person implements ControllerProviderInterface
                 ";
                 //TODO: remove priority when not needed
                 $result = $app['saveRelatedTransaction']($values, $related, $sql, 'contactid', $id, array('priority'=>1));
-                //need to handle transaction manually to account for errors WRT related data
-                /*$app['db']->transactional(function($conn) use ($app, $values, $related, $id, &$result) {
-                    $sql = "
-                        WITH contact as (UPDATE contact
-                            SET comment=:comment, dunsnumber=:dunsnumber, contacttypeid=:contacttypeid
-                            WHERE contactid = :contactid
-                            RETURNING *
-                        ), person as (UPDATE person
-                            SET firstname=:firstname, lastname=:lastname, middlename=:middlename, suffix=:suffix, positionid =:positionid
-                            WHERE contactid = :contactid
-	                    RETURNING *
-                        )
-                        SELECT * FROM contact,person;
-                    ";
-                    $stmt = $conn->prepare($sql);
-
-                    foreach ($values as $k => $v)  {
-                        $stmt->bindValue($k, $v);
-                    }
-                    $stmt->bindValue('contactid', $id);
-                    $stmt->execute();
-                    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-                    //save related data
-                    foreach ($related as $rClass => $rTable)  {
-                        //we're assuming the primarykey is {tablename}id
-                        $pk = $rTable['name'].'id';
-                        if(isset($rTable['values'])) {
-                            foreach ($rTable['values'] as $k => $v)  {
-                                //make sure the foreignkey is set
-                                $v->contactid = $id;
-                                //var_dump($v);exit;
-                                //save the related data and add returned data to the result array
-                                $app['saveRelated']($v, $rTable['name'], $v->$pk);
-                            }
-                        }
-                        //we return all of the related records, ExtJS associations require this
-                        //TODO: remove priority when not needed
-                        $result[$rClass] = $app['idiorm']->getRelated(true, $rTable['name'], 'contactid',$id ,
-                            array('priority'=>1));
-
-                    }
-                });*/
-
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
@@ -199,60 +155,6 @@ class Person implements ControllerProviderInterface
                 ";
                 //TODO: remove priority when not needed
                 $result = $app['saveRelatedTransaction']($values, $related, $sql, 'contactid', false, array('priority'=>1));
-
-                /*//need to handle transaction manually to account for errors WRT related data
-                $app['db']->transactional(function($conn) use ($app, $values, $related, &$result) {
-                    $sql = "
-                        WITH contact as (
-                            INSERT INTO contact(
-                                    contactid, comment, dunsnumber, contacttypeid)
-                                VALUES (DEFAULT, :comment, :dunsnumber, :contacttypeid)
-                                RETURNING *
-                        ), person as (INSERT INTO person(
-                                    contactid, firstname, lastname, middlename, suffix, positionid)
-                            SELECT contactid , :firstname, :lastname, :middlename, :suffix, :positionid
-                            FROM contact
-                            RETURNING *
-                        )
-                        SELECT * FROM contact,person;
-                    ";
-
-                    $stmt = $conn->prepare($sql);
-
-                    foreach ($values as $k => $v)  {
-                        $stmt->bindValue($k, $v);
-                    }
-
-                    $stmt->execute();
-
-                    $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-
-                    $id = $result['contactid'];
-
-                    //save related data
-                    //TODO: create method for this
-                    foreach ($related as $rClass => $rTable)  {
-                        //we're assuming the primarykey is {tablename}id
-                        $pk = $rTable['name'].'id';
-                        if(isset($rTable['values'])) {
-                            foreach ($rTable['values'] as $k => $v)  {
-                                //set the fkey
-                                $v->contactid = $id;
-                                //save the related data and add returned data to the result array
-                                $app['saveRelated']($v, $rTable['name'], $v->$pk);
-                            }
-                        }
-                        //we return all of the related records, ExtJS associations require this
-                        //TODO: remove priority when not needed
-                        $result[$rClass] = $app['idiorm']->getRelated(true, $rTable['name'], 'contactid',$id ,
-                            array('priority'=>1));
-
-                    }
-
-                    //return $result;
-                });*/
-
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
