@@ -244,7 +244,13 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
 
         record.save({
             success: function(model, op) {
+                //clear fields to remove old/invalid data
+                Ext.each(panel.query('field'),function(){
+                    this.setValue('');
+                    this.clearInvalid();
+                });
                 form.loadRecord(model); //load the model
+                this.loadRecordDetails(model, panel); //load the details
                 //reset all the original values to get desired trackresetonload behaviour
                 Ext.each(this.getActiveForm().query('field'), function() {
                     this.resetOriginalValue();
@@ -383,7 +389,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             form.getEl().mask('Loading...');
             model.load(id, { // load with id from selected record
                 success: function(model) {
-                    var addRec, addSet, addCbx,
+                    /*var addRec, addSet, addCbx,
                         phone = [
                             {type:'fax',val:'1'},
                             {type:'office',val:'3'},
@@ -392,12 +398,13 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                         eaddress = [
                             {type:'web',val:'2'},
                             {type:'email',val:'1'}
-                        ];
+                        ];*/
                     form.loadRecord(model); // when model is loaded successfully, load the data into the form
+                    this.loadRecordDetails(model, form);
                     //load the contact details
                     //TODO: implement "primary" filtering client-side
                     //Allow management of additional addresses & phone#s
-                    if(model.addresses().count()) {//load addresses
+                    /*if(model.addresses().count()) {//load addresses
                         //mailing address
                         if(addRec = model.addresses().findRecord( 'addresstypeid',1)) {
                             addSet = form.down('fieldset#mailAddress');
@@ -429,7 +436,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                                 this.loadFieldSet(addRec, addSet);
                             }
                         },this);
-                    }
+                    }*/
                     /*Ext.each(itemCard.query('field'), function() {// set all fields as read-only on load
                         this.setReadOnly(true);
                     });
@@ -472,5 +479,57 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         } else{
             form.loadRecord(Ext.create(model));
         }
+    },
+
+    /**
+     * Load contact details.
+     */
+    loadRecordDetails: function(model, form) {
+        var addRec, addSet, addCbx,
+            phone = [
+                {type:'fax',val:'1'},
+                {type:'office',val:'3'},
+                {type:'mobile',val:'2'}
+            ],
+            eaddress = [
+                {type:'web',val:'2'},
+                {type:'email',val:'1'}
+            ];
+        //load the contact details
+        //TODO: implement "primary" filtering client-side
+        //Allow management of additional addresses & phone#s
+        if(model.addresses().count()) {//load addresses
+            //mailing address
+            if(addRec = model.addresses().findRecord( 'addresstypeid',1)) {
+                addSet = form.down('fieldset#mailAddress');
+                addCbx = addSet.down('checkbox[name=mailingCbx]');
+                this.loadFieldSet(addRec, addSet, addCbx);
+            }
+            //physical address
+            if(addRec = model.addresses().findRecord( 'addresstypeid',2)) {
+                addSet = form.down('fieldset#physicalAddress');
+                addCbx = addSet.down('checkbox[name=physicalCbx]');
+                this.loadFieldSet(addRec, addSet, addCbx);
+            }
+        }
+
+        if(model.phones().count()) {//load phones
+            addCbx = form.down('checkbox[name=phoneCbx]');
+            Ext.each(phone, function(itm){
+                if(addRec = model.phones().findRecord( 'phonetypeid',itm.val)) {
+                    addSet = form.down('fieldcontainer#' + itm.type + 'Phone');
+                    this.loadFieldSet(addRec, addSet, addCbx);
+                }
+            },this);
+        }
+
+        if(model.eaddresses().count()) {//load electronic addresses
+            Ext.each(eaddress, function(itm){
+                if(addRec = model.eaddresses().findRecord( 'eaddresstypeid',itm.val)) {
+                    addSet = form.down('fieldcontainer#' + itm.type + 'Address');
+                    this.loadFieldSet(addRec, addSet);
+                }
+            },this);
+        }        
     }
 });
