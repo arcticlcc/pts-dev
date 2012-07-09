@@ -12,3 +12,4 @@ web/pts/dl/*
 !web/pts/docs/schema
 
 vendor
+patches
