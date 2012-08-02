@@ -12,7 +12,7 @@ class IdiormServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['idiorm'] = $app->share(function () use ($app) {
-			\ORM::set_db($app['db']); //use dbal pdo instance
+            \ORM::set_db($app['db']); //use dbal pdo instance
             /*\ORM::configure($app['idiorm.dsn']);
             \ORM::configure('username', $app['idiorm.username']);
             \ORM::configure('password', $app['idiorm.password']);
