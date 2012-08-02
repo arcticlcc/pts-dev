@@ -82,7 +82,7 @@ class Project implements ControllerProviderInterface
                     $tasks->setAttribute('defIcon','pts-page-orange');
 
                     //get deliverables/tasks
-                    $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid);
+                    $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid, null, 'duedate', 'DESC');
                     $dfkey = $fkey;
                     foreach($delRecs as $d) {
                         $did = $d['deliverableid'] .'-'. $d['modificationid'];
@@ -165,7 +165,7 @@ class Project implements ControllerProviderInterface
                     $agreeNode->setAttribute('defIcon','pts-agreement-folder');
                 }
                 //get all related modifications
-                $m = $app['idiorm']->getRelated(true, 'modificationlist', 'projectid', $id);
+                $m = $app['idiorm']->getRelated(true, 'modificationlist', 'projectid', $id, null, 'modificationid');
                 $mod = array();
                 $agree = array();
 
