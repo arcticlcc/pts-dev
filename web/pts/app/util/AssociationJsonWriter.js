@@ -49,14 +49,31 @@ Ext.define('PTS.util.AssociationJsonWriter', {
             record.associations.each(function(assoc){
                 var store = record[assoc.name](),
                     proxy = store.getProxy(),
-                    rdata = [];
+                    removed = store.getRemovedRecords(),
+                    rdata = [], remData = [];
                 //and get dirty records
                 store.each(function(r) {
                     if(r.dirty){
                         rdata.push(proxy.getWriter().getRecordData(r));
                     }
-                    data[assoc.name] = rdata;
                 },this);
+                data[assoc.name] = rdata;
+
+                //check for removed records
+                if(removed.length > 0) {
+                    //check to see if the destroy object exists
+                    if(undefined === data.destroy) {
+                        data.destroy = {};
+                    }
+                    Ext.each(removed, function(r) {
+                        //remData.push(proxy.getWriter().getRecordData(r));
+                        remData.push({
+                            id: r.getId()
+                        });
+                    },this);
+                    //add records to data object
+                    data.destroy[assoc.name] = remData;
+                }
             },this);
         }
         return data;
