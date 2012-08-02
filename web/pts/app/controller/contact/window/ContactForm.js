@@ -153,7 +153,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     },
 
     /**
-     * Save contact detail fieldset.
+     * Save contact detail fieldset record.
      */
     saveFieldSet: function(store, fieldset, type) {
         var itmRec, itmId,
@@ -184,6 +184,23 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     },
 
     /**
+     * Delete contact detail fieldset record.
+     */
+    deleteFieldSet: function(store, fieldset) {
+        var itmRec, itmId, del;
+
+            itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
+
+            if(itmRec = store.getById(itmId)) {
+                store.remove(itmRec);
+            }
+            //disable the checkbox
+            if(del = fieldset.down('checkboxfield#delete')) {
+                del.disable();
+            }
+    },
+
+    /**
      * Save all contact detail fieldsets to the model.
      */
     saveAllFieldSets: function(pnl, frm, rec) {
@@ -209,19 +226,34 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         Ext.each(address, function(itm){
             store = record.addresses();
             fieldset = panel.down('fieldset#' + itm.type + 'Address');
-            this.saveFieldSet(store, fieldset, {addresstypeid: itm.val});
+            //check the status of the delete checkbox
+            if(fieldset.down('checkboxfield#delete').getValue()) {
+                this.deleteFieldSet(store, fieldset);
+            }else {
+                this.saveFieldSet(store, fieldset, {addresstypeid: itm.val});
+            }
         },this);
 
         Ext.each(eaddress, function(itm){
             store = record.eaddresses();
             fieldset = panel.down('fieldcontainer#' + itm.type + 'Address');
-            this.saveFieldSet(store, fieldset, {eaddresstypeid: itm.val});
+            //delete the record if the field is empty
+            if(Ext.String.trim(fieldset.down('textfield[name=uri]').getValue()) === '' && fieldset.isDirty()) {
+                this.deleteFieldSet(store, fieldset);
+            }else {
+                this.saveFieldSet(store, fieldset, {eaddresstypeid: itm.val});
+            }
         },this);
 
         Ext.each(phone, function(itm){
             store = record.phones();
             fieldset = panel.down('fieldcontainer#' + itm.type + 'Phone');
-            this.saveFieldSet(store, fieldset, {phonetypeid: itm.val});
+
+            if(fieldset.down('checkboxfield#delete').getValue()) {
+                this.deleteFieldSet(store, fieldset);
+            }else {
+                this.saveFieldSet(store, fieldset, {phonetypeid: itm.val});
+            }
         },this);
     },
 
@@ -363,6 +395,8 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
      * Load contact detail fieldset.
      */
     loadFieldSet: function(rec, fieldSet, cbx) {
+        var del = fieldSet.items.get('delete');
+
         if(cbx) {
             cbx.setValue(true);
             cbx.resetOriginalValue();
@@ -377,6 +411,10 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                 me.resetOriginalValue();
             }
         });
+        //show delete checkbox
+        if(del) {
+            del.enable();
+        }
     },
 
     /**
@@ -530,6 +568,6 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                     this.loadFieldSet(addRec, addSet);
                 }
             },this);
-        }        
+        }
     }
 });

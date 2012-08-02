@@ -5,11 +5,33 @@ Ext.define('PTS.view.controls.PhoneFieldContainer', {
     extend: 'PTS.view.controls.MyFieldContainer',
     alias: 'widget.phonefieldcontainer',
 
-    initComponent: function() {
-        var me = this;
+    /**
+     * @cfg {Boolean/String}
+     * This controls whether the delete checkbox is rendered into the fieldset
+     * Supplying anything other than a false value will render the checkbox with
+     * the passed value as the itemId.
+     */
+    deleteCheckBox: 'delete',
 
-        Ext.applyIf(me, {
-            items: [
+    /**
+     * A function to run when the delete checkbox is clicked. By default
+     * the field labels in the parent container will be highlighted when the
+     * box is checked. Override to customize the action.
+     * @param {Ext.form.field.Checkbox} cbx The checkbox.
+     * @param {Object} newValue The new value
+     * @param {Object} oldValue The original value
+     */
+    deleteCheckBoxAction: function(cbx, newValue, oldValue) {
+        var clr = newValue ? '#C62415' : 'inherit';
+
+        cbx.ownerCt.getEl().setStyle({
+            color: clr
+        });
+    },
+
+    initComponent: function() {
+        var me = this,
+            itms = [
                 {
                     xtype: 'displayfield',
                     value: '(',
@@ -60,13 +82,29 @@ Ext.define('PTS.view.controls.PhoneFieldContainer', {
                 {
                     xtype: 'hiddenfield',
                     itemId: 'recordId',
-                    name: 'phoneid',
-                    fieldLabel: 'Label',
-                    flex: 1
+                    name: 'phoneid'
                 }
-            ]
+            ];
+
+        if(me.deleteCheckBox) {
+            itms.push({
+                xtype: 'checkboxfield',
+                itemId: me.deleteCheckBox,
+                disabled: true,
+                hideEmptyLabel: false,
+                boxLabel: 'Delete',
+                labelWidth: 10,
+                listeners: {
+                    change: this.deleteCheckBoxAction
+                }
+            });
+        }
+
+        Ext.applyIf(me, {
+            items: itms
         });
 
         me.callParent(arguments);
+
     }
 });

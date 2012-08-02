@@ -26,11 +26,33 @@ Ext.define('PTS.view.controls.AddressFieldSet', {
      */
     copyCheckBox: false,
 
-    initComponent: function() {
-        var me = this;
+    /**
+     * @cfg {Boolean/String}
+     * This controls whether the delete checkbox is rendered into the fieldset
+     * Supplying anything other than a false value will render the checkbox with
+     * the passed value as the itemId.
+     */
+    deleteCheckBox: 'delete',
 
-        Ext.applyIf(me, {
-            items: [
+    /**
+     * A function to run when the delete checkbox is clicked. By default
+     * the field labels in the parent container will be highlighted when the
+     * box is checked. Override to customize the action.
+     * @param {Ext.form.field.Checkbox} cbx The checkbox.
+     * @param {Object} newValue The new value
+     * @param {Object} oldValue The original value
+     */
+    deleteCheckBoxAction: function(cbx, newValue, oldValue) {
+        var clr = newValue ? '#C62415' : 'inherit';
+
+        cbx.ownerCt.getEl().setStyle({
+            color: clr
+        });
+    },
+
+    initComponent: function() {
+        var me = this,
+            itms = [
                 {
                     xtype: 'textfield',
                     name: 'street1',
@@ -131,23 +153,35 @@ Ext.define('PTS.view.controls.AddressFieldSet', {
                     fieldLabel: 'Label',
                     anchor: '100%'
                 }
-            ]
+            ];
+
+        if(me.deleteCheckBox) {
+            itms.splice(0,0,{
+                xtype: 'checkboxfield',
+                itemId: me.deleteCheckBox,
+                disabled: true,
+                hideEmptyLabel: false,
+                boxLabel: 'Delete address',
+                anchor: '100%',
+                listeners: {
+                    change: this.deleteCheckBoxAction
+                }
+            });
+        }
+        if(me.copyCheckBox) {
+            itms.splice(0,0,{
+                xtype: 'checkboxfield',
+                itemId: me.copyCheckBox,
+                hideEmptyLabel: false,
+                boxLabel: 'Copy primary mailing address',
+                anchor: '100%'
+            });
+        }
+
+        Ext.applyIf(me, {
+            items: itms
         });
 
         me.callParent(arguments);
-    },
-
-    listeners: {
-        beforerender: function(cmp) {
-            if(cmp.copyCheckBox) {
-                cmp.insert(0,{
-                    xtype: 'checkboxfield',
-                    itemId: cmp.copyCheckBox,
-                    hideEmptyLabel: false,
-                    boxLabel: 'Copy primary mailing address',
-                    anchor: '100%'
-                });
-            }
-        }
     }
 });
