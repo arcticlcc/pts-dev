@@ -123,12 +123,30 @@ class PTSServiceProvider implements ServiceProviderInterface
         /**
          * @app saveRelatedTransaction
          * Saves parent and related tables in a single transaction
+         * Processes related records marked for deletion
          */
         $app['saveRelatedTransaction'] = $app->protect(function ($values, $related, $sql, $pk, $id = false, $filter = null) use ($app) {
                 $result = array();
 
                 //need to handle transaction manually to account for errors WRT related data
                 $app['db']->transactional(function($conn) use ($app, $values, $related, &$result, $sql, $id, $pk, $filter) {
+
+                    //process records to be deleted
+                    if(property_exists($values,'destroy')) {
+                        //delete related records
+                        foreach ($values->destroy as $dClass => $dData)  {
+                            //get the table name
+                            $dTable = $related[$dClass]['name'];
+                            //we're assuming the primarykey is {tablename}id
+                            $pky = $dTable.'id';
+                            //delete the records
+                            foreach($dData as $obj) {
+                                $conn->delete($dTable, array($pky => $obj->id));
+                            }
+                        }
+                    unset($values->destroy);//remove the destroy property
+                    }
+
                     //check $sql length, if only one word assume it's a tablename
                     if(str_word_count($sql) > 1) {
                         $stmt = $conn->prepare($sql);
