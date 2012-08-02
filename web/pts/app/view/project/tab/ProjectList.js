@@ -114,6 +114,13 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                     flex: 1
                 },
                 {
+                    xtype: 'gridcolumn',
+                    hidden: true,
+                    dataIndex: 'shorttitle',
+                    text: 'Short Title',
+                    flex: 1
+                },
+                {
                     text: 'Funding',
                     columns: [
                         {

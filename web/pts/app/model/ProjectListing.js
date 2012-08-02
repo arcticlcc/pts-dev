@@ -25,6 +25,9 @@ Ext.define('PTS.model.ProjectListing', {
             name: 'title', type: 'mystring', useNull: true
         },
         {
+            name: 'shorttitle', type: 'mystring', useNull: true
+        },
+        {
             name: 'fiscalyear',
             type: 'int'
         },
