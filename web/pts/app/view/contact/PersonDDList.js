@@ -45,6 +45,19 @@ Ext.define('PTS.view.contact.PersonDDList', {
                     dataIndex: 'lastname',
                     flex: 3,
                     text: 'Last Name'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'priacronym',
+                    width: 60,
+                    text: 'Group'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'prigroupname',
+                    flex: 2,
+                    hidden: true,
+                    text: 'Group Name'
                 }
             ]
         });

@@ -95,3 +95,7 @@ CREATE TRIGGER delete_deliverablemod
     AFTER DELETE ON deliverablemod
     FOR EACH ROW
     EXECUTE PROCEDURE delete_deliverable();
+
+--make acronym required
+ALTER TABLE contactgroup
+   ALTER COLUMN acronym SET NOT NULL;
