@@ -584,7 +584,11 @@ Ext.define('Ext.ux.grid.HeaderFilters',{
         {
             var field = this.fields[fn];
             if(!field.isDisabled() && field.isValid())
-                filters[field.filterName] = field.getSubmitValue();
+                if(field.condition) {
+                    filters[field.filterName] = [field.condition,field.getSubmitValue()];
+                }else {
+                    filters[field.filterName] = field.getSubmitValue();
+                }
         }
         return filters;
     },
