@@ -16,8 +16,10 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     stores: [
         'ProjectContacts',
         'ContactGroups',
+        'DDContactGroups',
         'Persons',
-        'RoleTypes'
+        'RoleTypes',
+        'DDPersons'
     ],
     refs: [{
         ref: 'projectContacts',

@@ -14,9 +14,11 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     ],
     stores: [
         'ContactGroups',
+        'DDContactGroups',
         'ContactContactGroups',
         'Persons',
-        'Positions'
+        'Positions',
+        'DDPersons'
     ],
     refs: [{
         ref: 'personGroups',

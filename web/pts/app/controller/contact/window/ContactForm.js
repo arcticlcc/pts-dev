@@ -19,7 +19,9 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         'ContactTypes',
         'ContactContactGroups',
         'ContactGroups',
-        'Persons'
+        'DDContactGroups',
+        'Persons',
+        'DDPersons'
     ],
     refs: [{
         ref: 'contactForm',
