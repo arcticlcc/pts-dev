@@ -19,13 +19,10 @@ Ext.define("Ext.ux.grid.FilterBar", {
     searchStore: null,
 
     /**
-     * @cfg {Ext.data.Store} comboStore
-     * The store for the search combobox.
+     * @cfg array comboData
+     * The data for the search combobox store.
      */
-    comboStore: Ext.create('Ext.data.ArrayStore', {
-        fields:[ 'fieldId', 'fieldName' ],
-        data: [ [ 1, 'First Field' ], [ 2, 'Second Field' ] ]
-    }),
+    comboData: null,
 
     initComponent: function() {
         var me = this;
@@ -36,7 +33,9 @@ Ext.define("Ext.ux.grid.FilterBar", {
                 itemId: 'searchCombo',
                 fieldLabel: 'Search',
                 labelWidth: 50,
-                store: me.comboStore,
+                store: Ext.create('Ext.data.ArrayStore', {
+                    fields:[ 'fieldId', 'fieldName' ]
+                }),
                 queryMode: 'local',
                 valueField: 'fieldId',
                 displayField: 'fieldName',
@@ -96,7 +95,8 @@ Ext.define("Ext.ux.grid.FilterBar", {
             listeners: {
                 added: function(c) {
                     var cols = c.ownerCt.columns,
-                        data = [];
+                        data = [],
+                        store = c.down('#searchCombo').getStore();
 
                     Ext.each(cols, function(c){
                         if(c.dataIndex) {
@@ -104,7 +104,10 @@ Ext.define("Ext.ux.grid.FilterBar", {
                         }
                     });
 
-                    c.comboStore.loadData(data);
+                    store.loadData(data);
+                },
+                removed: function(c, ownerCt) {
+                    c.searchStore.clearFilter();
                 }
             }
         });
