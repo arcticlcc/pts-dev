@@ -6,11 +6,11 @@ Ext.define('PTS.view.contact.PersonDDList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.personddlist',
     requires: [
-        //'PTS.util.Format'
+        'Ext.ux.grid.FilterBar'
     ],
 
     title:'Persons',
-    store: 'Persons',
+    store: 'DDPersons',
     itemId: 'personsList', //do not change
 
     initComponent: function() {
@@ -30,7 +30,7 @@ Ext.define('PTS.view.contact.PersonDDList', {
             },
             dockedItems: [{
                 xtype: 'pagingtoolbar',
-                store: 'Persons',
+                store: 'DDPersons',
                 displayInfo: false
             }],
             columns: [
@@ -63,5 +63,11 @@ Ext.define('PTS.view.contact.PersonDDList', {
         });
 
         me.callParent(arguments);
+
+        me.addDocked({
+                xtype: 'filterbar',
+                searchStore: me.store,
+                dock: 'bottom'
+        });
     }
 });

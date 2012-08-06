@@ -6,11 +6,11 @@ Ext.define('PTS.view.contact.GroupDDList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.groupddlist',
     requires: [
-        //'PTS.util.Format'
+        'Ext.ux.grid.FilterBar'
     ],
 
     title:'Groups',
-    store: 'ContactGroups',
+    store: 'DDContactGroups',
     itemId: 'groupsList', //do not change
 
     initComponent: function() {
@@ -30,7 +30,7 @@ Ext.define('PTS.view.contact.GroupDDList', {
             },
             dockedItems: [{
                 xtype: 'pagingtoolbar',
-                store: 'ContactGroups',
+                store: 'DDContactGroups',
                 displayInfo: false
             }],
             columns: [
@@ -44,5 +44,11 @@ Ext.define('PTS.view.contact.GroupDDList', {
         });
 
         me.callParent(arguments);
+
+        me.addDocked({
+                xtype: 'filterbar',
+                searchStore: me.store,
+                dock: 'bottom'
+        });
     }
 });
