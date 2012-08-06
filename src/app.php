@@ -104,6 +104,12 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
                         case 'not null':
                             $query->where_not_null($val->property);
                             break;
+                        case 'like':
+                            $query->where_like($val->property, $val->value[1]);
+                            break;
+                        case 'ilike':
+                            $query->where_ilike($val->property, $val->value[1] . '%');
+                            break;
                         default:
                             throw new Exception("Invalid filter operator.");
                     }
