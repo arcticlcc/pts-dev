@@ -75,7 +75,7 @@ Ext.define('PTS.view.contact.window.PersonGroups', {
                                 },
                                 {
                                     xtype: 'pagingtoolbar',
-                                    store: 'Persons',
+                                    store: 'DDPersons',
                                     displayInfo: true
                                 }
                             ]
@@ -99,7 +99,7 @@ Ext.define('PTS.view.contact.window.PersonGroups', {
                                 },
                                 {
                                     xtype: 'pagingtoolbar',
-                                    store: 'ContactGroups',
+                                    store: 'DDContactGroups',
                                     displayInfo: true
                                 }
                             ]
