@@ -245,6 +245,28 @@ Ext.define('PTS.view.contact.window.ContactForm', {
                                 }
                             },
                             {
+                                xtype: 'filtercombo',
+                                itemId: 'parentGroup',
+                                anchor: '100%',
+                                name: 'parentgroupid',
+                                fieldLabel: 'Primary Parent',
+                                store: 'ContactGroupIDs',
+                                displayField: 'fullname',
+                                valueField: 'contactid',
+                                forceSelection: false,
+                                queryMode: 'local'/*,
+                                remoteFilterField: 'fullname',
+                                typeAhead: true,
+                                minChars: 2,
+                                queryMode: 'local',
+                                hideTrigger:true,
+                                listConfig: {
+                                    loadingText: 'Searching...',
+                                    emptyText: 'No matching groups found.'
+                                },
+                                pageSize: 20*/
+                            },
+                            {
                                 xtype: 'textfield',
                                 name: 'dunsnumber',
                                 fieldLabel: 'DUNS #',

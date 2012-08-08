@@ -9,7 +9,7 @@ Ext.define('PTS.model.ContactContactGroup', {
         {
             name: 'contactcontactgroupid',
             type: 'int',
-            persist: false,
+            //persist: false,
             useNull: true
         },
         {

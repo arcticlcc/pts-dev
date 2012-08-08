@@ -18,6 +18,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     stores: [
         'ContactTypes',
         'ContactContactGroups',
+        'ContactGroupIDs',
         'ContactGroups',
         'DDContactGroups',
         'Persons',
@@ -186,6 +187,36 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     },
 
     /**
+     * Save contactgroup primary parent.
+     */
+    saveParentGroup: function(store, field, contactId) {
+        var itmRec, itmId,
+            save = field.isValid() && field.isDirty();
+        //we only save if valid and dirty
+        if(save) {
+            itmId = parseInt(field.getValue(), 10);
+            //we grab the first record here
+            //we assume the first record is the primary group
+            if(itmRec = store.getAt(0)) {
+                //load the new data into existing model
+                    itmRec.beginEdit();
+                            itmRec.set('groupid', field.getValue());
+                    itmRec.endEdit();
+
+            }else{ //we need to create a new record
+                    var cfg = {
+                        contactid: contactId,
+                        groupid: field.getValue(),
+                        positionid: 0,
+                        priority: 1,
+                    };
+
+                    itmRec = store.add(cfg);
+                    itmRec[0].setDirty();
+            }
+        }
+    },
+    /**
      * Delete contact detail fieldset record.
      */
     deleteFieldSet: function(store, fieldset) {
@@ -200,6 +231,18 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             if(del = fieldset.down('checkboxfield#delete')) {
                 del.disable();
             }
+    },
+
+    /**
+     * Delete contactgroup primary parent.
+     */
+    deleteParentGroup: function(store) {
+        var itmRec;
+
+        //we just remove the first record
+        if(itmRec = store.getAt(0)) {
+            store.remove(itmRec);
+        }
     },
 
     /**
@@ -257,6 +300,17 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                 this.saveFieldSet(store, fieldset, {phonetypeid: itm.val});
             }
         },this);
+
+        //handle parent group for contactgroups
+        if(fieldset = panel.down('field#parentGroup')) {
+            store = record.contactcontactgroups();
+
+            if(null === fieldset.getValue() && fieldset.isDirty()) {
+                this.deleteParentGroup(store, fieldset);
+            }else {
+                this.saveParentGroup(store, fieldset, record.getId());
+            }
+        }
     },
 
     //TODO: fire app events to reload contact list, etc.
@@ -570,6 +624,19 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                     this.loadFieldSet(addRec, addSet);
                 }
             },this);
+        }
+
+        if(model.contactcontactgroups().count()) {//load primary parent group
+            addRec = model.contactcontactgroups().getAt(0);
+            addSet = form.down('field#parentGroup');
+            addSet.setValue(addRec.get('groupid'));
+            model.beginEdit();
+            //load fullname and parentgroupid on model to update list
+            model.set('parentname',addSet.getRawValue());
+            model.set('parentgroupid',addRec.get('groupid'));
+            model.set('fullname',addSet.getRawValue() + ' -> ' + model.get('name'));
+            model.endEdit(true);
+
         }
     }
 });

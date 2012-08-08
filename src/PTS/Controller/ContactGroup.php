@@ -26,15 +26,24 @@ class ContactGroup implements ControllerProviderInterface
             'addresses'=>array('name' =>'address'),
             'eaddresses'=>array('name' => 'eaddress'),
             'phones'=>array('name' => 'phone'),
+            'contactcontactgroups'=>array('name' => 'contactcontactgroup')
         );
+ //TODO: replace redirect with new method in PTS provider
+        $controllers->get('contactgroup', function (Application $app, Request $request) use ($table){
+            $table .= 'list'; //need to use projectcontactlist view
+            $query = $request->getQueryString(); //pass the query through
+
+            return $app->redirect("/$table?$query");
+        });
 
         $controllers->get('contactgroup/{id}', function (Application $app, Request $request, $id) use ($table) {
             $result = array();
+            $table .= 'list';
 
             try {
                 $object = $app['idiorm']->getTable($table)
-                    ->join('contact', array('contactgroup.contactid', '=', 'contact.contactid'))
-                    ->where('contactgroup.contactid', $id)
+                    ->join('contact', array("$table.contactid", '=', 'contact.contactid'))
+                    ->where("$table.contactid", $id)
                     ->find_one();
 
                 //get primary mail/physical addresses, assumes priority is set to 1
@@ -49,11 +58,16 @@ class ContactGroup implements ControllerProviderInterface
                 $eaddresses = $app['idiorm']->getRelated(true, 'eaddress', 'contactid', $id,
                     array('priority'=>1, 'eaddresstypeid' => array(1,2)));
 
+                //get primary parent group, assumes priority is set to 1
+                $ccgroup = $app['idiorm']->getRelated(true, 'contactcontactgroup', 'contactid', $id,
+                    array('priority'=>1));
+
                 if($object) {
                     $result = $object->as_array();
                     $result['addresses'] = $addresses;
                     $result['phones'] = $phones;
                     $result['eaddresses'] = $eaddresses;
+                    $result['contactcontactgroups'] = $ccgroup;
                     $app['json']->setData($result);
                 }else {
                     $message = "No record found in table '$table' with id of $id.";
@@ -124,7 +138,7 @@ class ContactGroup implements ControllerProviderInterface
                     ), contactgroup as (UPDATE contactgroup
                         SET organization=:organization, name=:name, acronym=:acronym
                         WHERE contactid = :contactid
-	                RETURNING *
+                        RETURNING *
                     )
                     SELECT * FROM contact,contactgroup;
                 ";

@@ -13,7 +13,15 @@ Ext.define('PTS.model.ContactGroup', {
             persist: false
         },
         {
+            name: 'parentgroupid',
+            type: 'int',
+            persist: false
+        },
+        {
             name: 'name', type: 'mystring', useNull: true
+        },
+        {
+            name: 'fullname', type: 'mystring', useNull: true, persist: false
         },
         {
             name: 'acronym', type: 'mystring', useNull: true
@@ -54,7 +62,8 @@ Ext.define('PTS.model.ContactGroup', {
     hasMany: [
         {model: 'PTS.model.Address', name: 'addresses'},
         {model: 'PTS.model.Phone', name: 'phones'},
-        {model: 'PTS.model.EAddress', name: 'eaddresses'}
+        {model: 'PTS.model.EAddress', name: 'eaddresses'},
+        {model: 'PTS.model.ContactContactGroup', name: 'contactcontactgroups'}
     ],
 
     proxy: {
