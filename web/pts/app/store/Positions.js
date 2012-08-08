@@ -9,5 +9,17 @@ Ext.define('PTS.store.Positions', {
     autoLoad: true,
     sorters: [
         'title'
-    ]
+    ],
+    proxy: {
+        type: 'rest',
+        url : '../person',
+        api: {
+            read:'../personpositionlist'
+        },
+        reader: {
+            type: 'json',
+            root: 'data'
+        },
+        limitParam: undefined
+    }
 });
