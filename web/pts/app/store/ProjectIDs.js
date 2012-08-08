@@ -1,6 +1,5 @@
 /**
- * File: app/store/ProjectIDs.js
- * Description: Store of project ids for lookups, comboboxes
+ * Store of project ids for lookups, comboboxes
  */
 
 Ext.define('PTS.store.ProjectIDs', {
@@ -20,5 +19,5 @@ Ext.define('PTS.store.ProjectIDs', {
             name: 'title'
         }
     ],
-    autoLoad: false
+    autoLoad: true
 });
