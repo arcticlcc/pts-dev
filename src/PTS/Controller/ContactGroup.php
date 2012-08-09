@@ -144,6 +144,21 @@ class ContactGroup implements ControllerProviderInterface
                 ";
 
                 $result = $app['saveRelatedTransaction']($values, $related, $sql, 'contactid', $id);
+
+                if(!empty($result['contactcontactgroups'])) {
+                    //get fullname
+                    $fullname = $app['idiorm']->getTable('contactgrouplist')
+                                ->where('contactid', $result['contactid'])
+                                ->find_one();
+                    if($fullname) {
+                        $result['fullname'] = $fullname->fullname;
+                        $result['parentname'] = $fullname->parentname;
+                        $result['parentgroupid'] = $fullname->parentgroupid;
+                    }
+                } else {
+                    $result['fullname'] = $result['name'];
+                };
+
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
@@ -180,6 +195,21 @@ class ContactGroup implements ControllerProviderInterface
                 ";
 
                 $result = $app['saveRelatedTransaction']($values, $related, $sql, 'contactid');
+
+                if(!empty($result['contactcontactgroups'])) {
+                    //get fullname
+                    $fullname = $app['idiorm']->getTable('contactgrouplist')
+                                ->where('contactid', $result['contactid'])
+                                ->find_one();
+                    if($fullname) {
+                        $result['fullname'] = $fullname->fullname;
+                        $result['parentname'] = $fullname->parentname;
+                        $result['parentgroupid'] = $fullname->parentgroupid;
+                    }
+                } else {
+                    $result['fullname'] = $result['name'];
+                };
+
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
