@@ -34,6 +34,10 @@ class PTSServiceProvider implements ServiceProviderInterface
 
                     $values = json_decode($request->getContent());
 
+                    //don't ever pass the primary key
+                    $pcol = $object->get_id_column_name();
+                    unset($values->$pcol);
+
                     foreach ($values as $k => $v)  {
                         $v = is_string($v) ? trim($v) : $v;
                         $object->set($k, $v);
