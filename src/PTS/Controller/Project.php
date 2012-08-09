@@ -82,7 +82,7 @@ class Project implements ControllerProviderInterface
                     $tasks->setAttribute('defIcon','pts-page-orange');
 
                     //get deliverables/tasks
-                    $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid, null, 'duedate', 'DESC');
+                    $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid, null, 'duedate', 'ASC');
                     $dfkey = $fkey;
                     foreach($delRecs as $d) {
                         $did = $d['deliverableid'] .'-'. $d['modificationid'];
