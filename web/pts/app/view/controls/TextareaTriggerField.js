@@ -82,34 +82,5 @@ Ext.define('PTS.view.controls.TextareaTriggerField', {
             me.inputEl.setStyle('overflow', 'hidden');
         }
         me.inputEl.setStyle('height', me.height + 'px');
-    },
-                //allowBlank: false,
-                //blankText: 'A comment is required.'
-                /*listeners: {
-                    focus: {
-                        fn: function(f){
-                            var val = f.getRawValue();
-                            //TODO: extract this functionality into a plugin
-                            if(val.length > 50){
-                                Ext.MessageBox.show({
-                                    title: 'Comment',
-                                    //msg: 'Comment:',
-                                    width:300,
-                                    buttons: Ext.MessageBox.OKCANCEL,
-                                    multiline: true,
-                                    value: val,
-                                    fn: function(btn, txt) {
-                                        if (btn === 'ok'){
-                                        // process text value and close
-                                            f.setValue(txt);
-                                        }
-                                    },
-                                   animateTarget: f.getEl()
-                               });
-                            }
-                        }
-                    }
-                }
-            }*/
-
+    }
 });
