@@ -108,9 +108,20 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'dayspastdue',
+                    text: 'Past Due',
+                    renderer: function (value, metaData, record, rowIdx, colIdx , store, view) {
+                        if (value > 0) {
+                            return '<span style="color:#FF0000;">' + value + '</span>';
+                        }
+                        return value;
+                    }
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'contact',
                     hidden: true,
-                    text: 'Contact',
+                    text: 'Contact'
 
                 },
                 {
