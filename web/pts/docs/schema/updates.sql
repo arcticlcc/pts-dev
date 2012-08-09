@@ -114,3 +114,15 @@ CREATE OR REPLACE VIEW projectlist AS
    JOIN modification USING (modificationid)
   WHERE funding.fundingtypeid = 1
   GROUP BY modification.projectid) invoice USING (projectid);
+
+--remove contactgroups from groupmemberlist, this is a temp hack to prevent groups from
+--displaying in the member management grid
+CREATE OR REPLACE VIEW groupmemberlist AS
+         SELECT ccg.groupid, ccg.contactid, ccg.positionid, ccg.contactcontactgroupid, pg_catalog.concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name, ccg.priority
+           FROM contactcontactgroup ccg
+      JOIN person USING (contactid);
+/*UNION
+         SELECT ccg.groupid, ccg.contactid, ccg.positionid, ccg.contactcontactgroupid, contactgroup.name, ccg.priority
+           FROM contactcontactgroup ccg
+      JOIN contactgroup USING (contactid)
+  ORDER BY 5, 3;*/
