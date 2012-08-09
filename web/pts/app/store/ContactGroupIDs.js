@@ -4,12 +4,8 @@
 
 Ext.define('PTS.store.ContactGroupIDs',{
     extend: 'Ext.data.Store',
-    //model: 'PTS.model.ContactGroup',
+    model: 'PTS.model.ContactGroupID',
 
-    fields: [
-        {name: 'contactid', type: 'int'},
-        {name: 'fullname', type: 'string'}
-    ],
     remoteSort: true,
     autoLoad: true,
     //pageSize: PTS.Defaults.pageSize,

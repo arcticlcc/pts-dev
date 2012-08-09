@@ -132,18 +132,49 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     },
 
     /**
-     * @event
-     * Save contact event.
+     * Fire save contact event.
      */
     onSaveContact: function(record, op) {
+        var rec, store;
+
+        //we need to update the corresponding ContactIDs record
+        if( Ext.getClassName(record) === 'PTS.model.ContactGroup') {
+            store = this.getContactGroupIDsStore();
+            rec = store.getById(record.getId());
+            if(rec) {
+                //update
+                rec.set('fullname', record.get('fullname'));
+            } else{
+                //add new
+                store.add(record);
+            }
+            store.sort();
+        }
+
+        /**
+         * @event savecontact
+         * Fires after contact is successfully saved.
+         */
         this.application.fireEvent('savecontact', record, op);
     },
 
     /**
-     * @event
-     * Delete contact event.
+     * Fires deletecontact event.
      */
     onDeleteContact: function(record, op) {
+        var rec, store;
+
+        //we need to remove the corresponding ContactIDs record
+        if( Ext.getClassName(record) === 'PTS.model.ContactGroup') {
+            store = this.getContactGroupIDsStore();
+            rec = store.getById(record.getId());
+            store.remove(rec);
+        }
+
+        /**
+         * @event deletecontact
+         * Fires after contact is successfully removed.
+         */
         this.application.fireEvent('deletecontact', record, op);
     },
 
@@ -208,7 +239,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                         contactid: contactId,
                         groupid: field.getValue(),
                         positionid: 0,
-                        priority: 1,
+                        priority: 1
                     };
 
                     itmRec = store.add(cfg);
@@ -406,7 +437,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
 
         record.destroy({
             success: function(model, op) {
-                this.onDeleteContact(model, op);
+                this.onDeleteContact(record, op);
                 this.getContactForm().up('window').close();
             },
             /*failure: function(model, op) {
@@ -626,16 +657,18 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             },this);
         }
 
-        if(model.contactcontactgroups().count()) {//load primary parent group
-            addRec = model.contactcontactgroups().getAt(0);
-            addSet = form.down('field#parentGroup');
-            addSet.setValue(addRec.get('groupid'));
-            model.beginEdit();
-            //load fullname and parentgroupid on model to update list
-            model.set('parentname',addSet.getRawValue());
-            model.set('parentgroupid',addRec.get('groupid'));
-            model.set('fullname',addSet.getRawValue() + ' -> ' + model.get('name'));
-            model.endEdit(true);
+        if(addSet = form.down('field#parentGroup')) {//load primary parent group
+            if(addRec = model.contactcontactgroups().getAt(0)) {
+                //addRec = model.contactcontactgroups().getAt(0);
+                //addSet = form.down('field#parentGroup');
+                addSet.setValue(addRec.get('groupid'));
+                //model.beginEdit();
+                //load fullname and parentgroupid on model
+                //model.set('parentname',addSet.getRawValue());
+                //model.set('parentgroupid',addRec.get('groupid'));
+                //model.set('fullname',addSet.getRawValue() + ' -> ' + model.get('name'));
+                //model.endEdit(true);
+            }
 
         }
     }
