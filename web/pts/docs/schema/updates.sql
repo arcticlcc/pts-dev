@@ -126,3 +126,34 @@ CREATE OR REPLACE VIEW groupmemberlist AS
            FROM contactcontactgroup ccg
       JOIN contactgroup USING (contactid)
   ORDER BY 5, 3;*/
+
+-- View: contactgrouplist
+
+-- DROP VIEW contactgrouplist;
+
+CREATE OR REPLACE VIEW contactgrouplist AS
+ WITH RECURSIVE grouptree AS (
+                 SELECT contactgroup.contactid, contactgroup.organization, contactgroup.name, contactgroup.acronym, contactcontactgroup.groupid, contactgroup.name::text || ''::text AS fullname, NULL::text AS parentname
+                   FROM contactgroup
+              LEFT JOIN contactcontactgroup USING (contactid)
+             WHERE contactcontactgroup.groupid IS NULL
+        UNION ALL
+                 SELECT ccg.contactid, cg.organization, cg.name, cg.acronym, gt.contactid, (gt.fullname || ' -> '::text) || cg.name::text AS full_name, gt.name
+                   FROM contactgroup cg
+              JOIN contactcontactgroup ccg USING (contactid)
+         JOIN grouptree gt ON ccg.groupid = gt.contactid
+        )
+ SELECT grouptree.contactid, grouptree.groupid AS parentgroupid, grouptree.organization, grouptree.name, grouptree.acronym, grouptree.fullname, grouptree.parentname
+   FROM grouptree;
+
+ALTER TABLE contactgrouplist
+  OWNER TO bradley;
+GRANT ALL ON TABLE contactgrouplist TO bradley;
+GRANT SELECT ON TABLE contactgrouplist TO pts_read;
+
+CREATE VIEW personpositionlist AS
+    SELECT "position".positionid, "position".title, "position".code FROM cvl."position" WHERE ("position".positionid > 0);
+
+COMMENT ON COLUMN deliverablecomment.deliverableid IS 'FK for DELIVERABLE';
+
+COMMENT ON COLUMN deliverablecomment.contactid IS 'FK for PERSON';
