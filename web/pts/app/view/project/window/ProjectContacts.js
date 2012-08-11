@@ -138,6 +138,11 @@ Ext.define('PTS.view.project.window.ProjectContacts', {
                                     getInnerTpl: function() {
                                         return '<div data-qtip="{description}">{code}</div>';
                                     }
+                                },
+                                listeners: {
+                                    blur: function(c) {
+                                        c.getStore().clearFilter();
+                                    }
                                 }
                             },
                             flex: 2,

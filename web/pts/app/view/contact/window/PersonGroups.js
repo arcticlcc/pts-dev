@@ -197,12 +197,17 @@ Ext.define('PTS.view.contact.window.PersonGroups', {
                                 //store: 'RoleTypes',
                                 lazyRender: true,
                                 listClass: 'x-combo-list-small',
-                                queryMode: 'local'/*,
-                                listConfig: {
+                                queryMode: 'local',
+                                /*listConfig: {
                                     getInnerTpl: function() {
                                         return '<div data-qtip="{description}">{code}</div>';
                                     }
-                                }*/
+                                },*/
+                                listeners: {
+                                    blur: function(c) {
+                                        c.getStore().clearFilter();
+                                    }
+                                }
                             },
                             flex: 2,
                             text: 'Position'
