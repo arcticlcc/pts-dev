@@ -184,7 +184,7 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
             fid = this.getFundingForm().getRecord().getId();
 
         //check the costcodes
-        if(0 === costcodes.count()) {
+        if(0 === costcodes.count() || 0 === costcodes.collect('costcodeid').length) {
             Ext.MessageBox.show({
                 title: 'Error',
                 msg: 'At least one Cost Code is required.</br>',

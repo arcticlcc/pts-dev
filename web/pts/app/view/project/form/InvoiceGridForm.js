@@ -166,7 +166,8 @@ Ext.define('PTS.view.project.form.InvoiceGridForm', {
                                 {
                                     xtype: 'currencyfield',
                                     name: 'amount',
-                                    fieldLabel: 'Amount'
+                                    fieldLabel: 'Amount',
+                                    allowBlank: false
                                 },
                                 {
                                     xtype: 'fieldcontainer',
