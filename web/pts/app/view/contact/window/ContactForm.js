@@ -254,7 +254,16 @@ Ext.define('PTS.view.contact.window.ContactForm', {
                                 displayField: 'fullname',
                                 valueField: 'contactid',
                                 forceSelection: false,
-                                queryMode: 'local'/*,
+                                queryMode: 'local',
+                                validator: function(val) {
+                                    var cid = this.up('form#groupForm').getRecord().getId();
+
+                                    if(cid === this.getValue()) {
+                                        return "A group cannot be its own parent";
+                                    }else {
+                                        return true;
+                                    }
+                                }/*,
                                 remoteFilterField: 'fullname',
                                 typeAhead: true,
                                 minChars: 2,
