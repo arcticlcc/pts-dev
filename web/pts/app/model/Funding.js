@@ -27,6 +27,11 @@ Ext.define('PTS.model.Funding', {
             type: 'int',
             useNull: true
         },
+        {
+            name: 'fundingrecipientid',
+            type: 'int',
+            useNull: true
+        },
         {name: 'amount', type: 'number', useNull: true},
         {
             name: 'title',

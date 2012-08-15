@@ -80,6 +80,19 @@ Ext.define('PTS.view.project.form.FundingForm', {
                         fieldLabel: 'Amount',
                         allowBlank: false,
                         minValue: 0.01
+                    },
+                    {
+                        xtype: 'combobox',
+                        name: 'fundingrecipientid',
+                        itemId: 'recipientCombo',
+                        fieldLabel: 'Funding Recipient',
+                        anchor: '100%',
+                        store: 'ProjectRecipients',
+                        displayField: 'name',
+                        valueField: 'projectcontactid',
+                        forceSelection: true,
+                        allowBlank: false,
+                        queryMode: 'local'
                     }
                 ]
             },{

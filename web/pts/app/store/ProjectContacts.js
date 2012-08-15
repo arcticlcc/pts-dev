@@ -7,7 +7,8 @@ Ext.define('PTS.store.ProjectContacts', {
     model: 'PTS.model.ProjectContact',
     requires: [
         'PTS.store.ProjectFunders',
-        'PTS.store.ProjectInvoicers'
+        'PTS.store.ProjectInvoicers',
+        'PTS.store.ProjectRecipients'
         ],
 
     autoLoad: false,
@@ -36,11 +37,13 @@ Ext.define('PTS.store.ProjectContacts', {
         datachanged: { //update store for project funders/invoicers based on projectcontacts
             fn: function(store, recs, success, op){
                     var data = [], //project funders
-                        idata = [], //invoicers
+                        idata = [], //invoicers,
+                        rdata = [], //recipient
                         invoicerRoles = [1,5,6,7,10,11], //roletypes allowed as invoice contact
                         invoicerIds = [], //invoicers added to projectinvoicers store
                         pstore = Ext.getStore('ProjectFunders'),
-                        istore = Ext.getStore('ProjectInvoicers');
+                        istore = Ext.getStore('ProjectInvoicers'),
+                        rstore = Ext.getStore('ProjectRecipients');
 
                     store.each(function(rec) {
                         var itm = rec.get('roletypeid');
@@ -52,9 +55,14 @@ Ext.define('PTS.store.ProjectContacts', {
                         if(Ext.Array.indexOf(invoicerRoles, itm) > -1 && Ext.Array.indexOf(invoicerIds, rec.getId()) === -1) {
                             idata.push(rec.copy());
                         }
+                        //add funding recipient
+                        if(11 === itm) {
+                            rdata.push(rec.copy());
+                        }
                     });
                     pstore.loadRecords(data,{addRecords: false});
                     istore.loadRecords(idata,{addRecords: false});
+                    rstore.loadRecords(rdata,{addRecords: false});
                     return true;
             }
         }

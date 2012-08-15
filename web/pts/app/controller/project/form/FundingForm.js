@@ -15,7 +15,8 @@ Ext.define('PTS.controller.project.form.FundingForm', {
         'ProjectFunders',
         'CostCodes',
         'ContactCostCodes',
-        'FundingComments'
+        'FundingComments',
+        'ProjectRecipients'
     ],
     refs: [{
         ref: 'fundingForm',
@@ -78,12 +79,18 @@ Ext.define('PTS.controller.project.form.FundingForm', {
     onNewItem: function(model, form) {
         //we have to check the itemId
         if(this.getFundingCard().itemId === form.ownerCt.itemId) {
-            var grids = form.ownerCt.query('#relatedDetails>roweditgrid, #relatedDetails invoicegridform #invoiceList');
+            var grids = form.ownerCt.query('#relatedDetails>roweditgrid, #relatedDetails invoicegridform #invoiceList'),
+                store = this.getProjectRecipientsStore();
 
             form.ownerCt.down('#relatedDetails').disable();
             Ext.each(grids, function(gr){
                 gr.getStore().removeAll();
             });
+            //Check the ProjectRecipients store
+            if(store.count() === 1) {
+                //set the Project Recipient combo
+                this.getFundingForm().down('combo#recipientCombo').setValue(store.getAt(0).getId());
+            }
         }
     },
 
