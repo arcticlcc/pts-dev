@@ -9,6 +9,7 @@ Ext.define('PTS.store.ProjectListings', {
     model: 'PTS.model.ProjectListing',
 
     remoteSort: true,
+    remoteFilter: true,
     pageSize: PTS.Defaults.pageSize,
     sorters: [
         { property: 'fiscalyear', direction : 'DESC' },

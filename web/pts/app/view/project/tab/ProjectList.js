@@ -153,5 +153,11 @@ Ext.define('PTS.view.project.tab.ProjectList', {
         });
 
         me.callParent(arguments);
+
+        me.addDocked({
+                xtype: 'filterbar',
+                searchStore: me.store,
+                dock: 'bottom'
+        });
     }
 });

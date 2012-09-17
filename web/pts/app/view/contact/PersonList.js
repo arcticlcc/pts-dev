@@ -8,7 +8,8 @@ Ext.define('PTS.view.contact.PersonList', {
     alias: 'widget.personlist',
     requires: [
         'Ext.ux.grid.PrintGrid',
-        'Ext.ux.grid.SaveGrid'
+        'Ext.ux.grid.SaveGrid',
+        'Ext.ux.grid.FilterBar'
     ],
 
     title:'Person',
@@ -91,5 +92,11 @@ Ext.define('PTS.view.contact.PersonList', {
         });
 
         me.callParent(arguments);
+
+        me.addDocked({
+                xtype: 'filterbar',
+                searchStore: me.store,
+                dock: 'bottom'
+        });
     }
 });

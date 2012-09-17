@@ -8,6 +8,7 @@ Ext.define('PTS.store.Persons', {
     model: 'PTS.model.Person',
 
     remoteSort: true,
+    remoteFilter: true,
     pageSize: PTS.Defaults.pageSize,
     sorters: { property: 'lastname', direction : 'ASC' },
     proxy: {

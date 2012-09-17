@@ -8,7 +8,8 @@ Ext.define('PTS.view.contact.GroupList', {
     alias: 'widget.grouplist',
     requires: [
         'Ext.ux.grid.PrintGrid',
-        'Ext.ux.grid.SaveGrid'
+        'Ext.ux.grid.SaveGrid',
+        'Ext.ux.grid.FilterBar'
     ],
 
     title:'Group',
@@ -59,5 +60,10 @@ Ext.define('PTS.view.contact.GroupList', {
         });
 
         me.callParent(arguments);
+        me.addDocked({
+                xtype: 'filterbar',
+                searchStore: me.store,
+                dock: 'bottom'
+        });
     }
 });
