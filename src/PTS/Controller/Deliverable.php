@@ -74,8 +74,25 @@ class Deliverable implements ControllerProviderInterface
 
             try {
                 $values = json_decode($request->getContent());
-                $sql = "
-                    WITH del as (INSERT INTO deliverable
+                //need to check if we're posting a "modification"
+                if($values->parentmodificationid && $values->parentdeliverableid) {
+                    $sql = "WITH del as (SELECT *
+                        FROM deliverable
+                        WHERE deliverableid = :parentdeliverableid
+                    ), dmod as (INSERT INTO deliverablemod
+                        (deliverableid, personid, modificationid,duedate,receiveddate,invalid,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
+                        SELECT del.deliverableid,:personid, :modificationid, :duedate,:receiveddate,:invalid,:publish,
+                            :restricted,:accessdescription,:parentmodificationid,del.deliverableid
+                        FROM del
+                    RETURNING *
+                    )
+                    SELECT * FROM del,dmod;";
+                    //get rid of extra params
+                    unset($values->deliverabletypeid);
+                    unset($values->title);
+                    unset($values->description);
+                }else {
+                    $sql = "WITH del as (INSERT INTO deliverable
                         (deliverabletypeid, title, description)
                         VALUES (:deliverabletypeid, :title, :description)
                         RETURNING *
@@ -84,10 +101,10 @@ class Deliverable implements ControllerProviderInterface
                         SELECT deliverableid,:personid, :modificationid, :duedate,:receiveddate,:invalid,:publish,
                             :restricted,:accessdescription,:parentmodificationid,:parentdeliverableid
                         FROM del
-	                RETURNING *
+                    RETURNING *
                     )
-                    SELECT * FROM del,dmod;
-                ";
+                    SELECT * FROM del,dmod;";
+                }
                 $stmt = $app['db']->prepare($sql);
 
                 foreach ($values as $k => $v)  {
