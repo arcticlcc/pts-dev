@@ -1,6 +1,6 @@
 /**
  * @class PTS.store.ModStatuses
- * Store of deliverable status types.
+ * Store of modification status.
  */
 Ext.define('PTS.store.ModStatuses', {
     extend: 'Ext.data.Store',

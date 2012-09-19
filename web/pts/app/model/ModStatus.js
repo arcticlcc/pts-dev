@@ -1,5 +1,4 @@
 /**
- * File: app/model/ModStatus.js
  * Description: Modification Status model.
  */
 
