@@ -8,6 +8,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
     alias: 'widget.agreementform',
     requires: [
         'PTS.view.controls.ManagerCombo',
+        'PTS.view.controls.StatusCombo',
         'PTS.view.controls.RowEditGrid',
         'Ext.form.field.VTypes',
         'PTS.view.controls.CommentEditGrid'

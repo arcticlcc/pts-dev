@@ -28,6 +28,7 @@ Ext.define('PTS.view.controls.CommentEditGrid', {
         {
             xtype: 'gridcolumn',
             dataIndex: 'comment',
+            text: 'Comment',
             flex: 1,
             editor: {
                 xtype: 'areatrigger',
