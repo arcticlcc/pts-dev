@@ -40,6 +40,7 @@ Ext.define("Ext.ux.grid.FilterBar", {
                 valueField: 'fieldId',
                 displayField: 'fieldName',
                 triggerAction: 'all',
+                editable: false,
                 emptyText: 'Select a field',
                 listeners: {
                     change: function(cbx, newVal, oldVal) {
