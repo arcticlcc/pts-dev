@@ -8,6 +8,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
     alias: 'widget.deliverableform',
     requires: [
         'PTS.view.controls.ManagerCombo',
+        'PTS.view.controls.StatusCombo',
+        'PTS.view.controls.RowEditGrid',
         'PTS.view.controls.CommentEditGrid'
     ],
 
@@ -40,6 +42,9 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             type: 'anchor'
                         },
                         anchor: '100%',
+                        defaults: {
+                            allowBlank: false
+                        },
                         items: [
                             {
                                 xtype: 'textfield',
@@ -63,7 +68,6 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 displayField: 'type',
                                 valueField: 'deliverabletypeid',
                                 forceSelection: true,
-                                allowBlank: false,
                                 queryMode: 'local',
                                 listConfig: {
                                     getInnerTpl: function() {
@@ -144,13 +148,75 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                 collapsible: true,
                 animCollapse: !Ext.isIE8, //TODO: remove this IE8 hack
                 split: true,
-                activeTab: 2,
+                //activeTab: 1,
                 flex: 1,
                 defaults: {
                     bodyStyle:'padding:10px',
                     disabled: true
                 },
                 items:[{
+                    xtype: 'roweditgrid',
+                    store: 'DeliverableModStatuses',
+                    uri: 'deliverablemodstatus',
+                    title:'Status',
+                    disabled: false,
+                    columns: [
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'deliverablestatusid',
+                            renderer: function(value, metaData, record, rowIdx, colIdx , store, view) {
+                                var combo = view.getHeaderAtIndex(colIdx).getEditor(),
+                                    idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
+                                    rec = combo.getStore().getAt(idx);
+                                if (rec) {
+                                    return rec.get(combo.displayField);
+                                }
+                                return value;
+                            },
+                            editor: {
+                                xtype: 'statuscombo',
+                                store: 'DeliverableStatuses',
+                                valueField: 'deliverablestatusid',
+                                allowBlank: false
+                            },
+                            text: 'Status'
+                        },
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'effectivedate',
+                            editor: {
+                                xtype: 'datefield',
+                                allowBlank: false
+                            },
+                            text: 'Effective Date'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'contactid',
+                            //width: 150,
+                            hidden: false,
+                            renderer: function(value) {
+                                var store = Ext.getStore('GroupUsers'),
+                                    idx = store.find('contactid', value, 0, false, true, true),
+                                    rec = store.getAt(idx);
+                                if (rec) {
+                                    return rec.get('fullname');
+                                }
+                                return value;
+                            },
+                            text: 'User'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'comment',
+                            editor: {
+                                xtype: 'textfield'
+                            },
+                            flex: 1,
+                            text: 'Comment'
+                        }
+                    ]
+                }, {
                     title:'Contacts'
                 },{
                     title:'Progress'

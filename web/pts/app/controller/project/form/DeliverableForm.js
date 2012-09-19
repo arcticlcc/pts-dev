@@ -12,7 +12,9 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
     ],
     stores: [
         'DeliverableTypes',
-        'DeliverableComments'
+        'DeliverableComments',
+        'DeliverableStatuses',
+        'DeliverableModStatuses'
     ],
     refs: [{
         ref: 'deliverableForm',
@@ -104,9 +106,14 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
      */
     onDetailRowEdit: function(editor, e) {
         var model = this.getDeliverableForm().getRecord(),
-            id = model.get('deliverableid');
+            id = model.get('deliverableid'),
+            mid = model.get('modificationid');
 
         editor.record.set('deliverableid',id);
+        //set modificationid if it exists
+        if(model.fields.containsKey('modificationid')) {
+            editor.record.set('modificationid',mid);
+        }
         editor.store.sync();
 
     },
