@@ -49,10 +49,10 @@ Ext.define("Ext.ux.grid.FilterBar", {
                     }
                 }
             }, {
+                xtype: 'searchfield',
                 //width: 250,
                 flex: 1,
                 disabled: true,
-                xtype: 'searchfield',
                 store: me.searchStore,
                 onTrigger1Click : function(){
                     var me = this,
@@ -91,7 +91,17 @@ Ext.define("Ext.ux.grid.FilterBar", {
                     me.hasSearch = true;
                     me.triggerEl.item(0).setDisplayed('block');
                     me.doComponentLayout();
+                },
+                listeners: {
+                    render: function(c) {
+                    Ext.tip.QuickTipManager.register({
+                         target: c.triggerEl,
+                         title: "Search Hint",
+                         text: "Wildcards % and _ are allowed."
+                        });
+                    }
                 }
+
             }],
             listeners: {
                 added: function(c) {
