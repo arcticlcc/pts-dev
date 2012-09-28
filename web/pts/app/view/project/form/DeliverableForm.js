@@ -89,7 +89,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                     {
                         xtype: 'datefield',
                         name: 'receiveddate',
-                        fieldLabel: 'Date Received'
+                        fieldLabel: 'Date Received',
+                        disabled: true
                     },
                     {
                         xtype: 'checkboxfield',
@@ -186,7 +187,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             dataIndex: 'effectivedate',
                             editor: {
                                 xtype: 'datefield',
-                                allowBlank: false
+                                allowBlank: false,
+                                maxValue: new Date()
                             },
                             text: 'Effective Date'
                         },
