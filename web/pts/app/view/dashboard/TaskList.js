@@ -89,6 +89,12 @@ Ext.define('PTS.view.dashboard.TaskList', {
                     dataIndex: 'title',
                     flex: 1,
                     text: 'Title'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'status',
+                    hidden: true,
+                    text: 'Status'
                 }
             ]
         });

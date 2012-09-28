@@ -29,7 +29,9 @@ Ext.define('PTS.model.DeliverableListing', {
         {name: 'project', type: 'mystring', useNull: true},
         {name: 'contact', type: 'mystring', useNull: true},
         {name: 'email', type: 'mystring', useNull: true},
-        {name: 'dayspastdue', type: 'int', useNull: true}
+        {name: 'dayspastdue', type: 'int', useNull: true},
+        {name: 'completed', type: 'mybool', useNull: true},
+        {name: 'status', type: 'mystring', useNull: true}
     ],
     idProperty: 'deliverableid',
 

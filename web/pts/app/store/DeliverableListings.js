@@ -18,10 +18,10 @@ Ext.define('PTS.store.DeliverableListings', {
         {
             property: 'dayspastdue',
             value   : ['>',0]
-        },
+        }/*,
         {
             property: 'receiveddate',
             value   : ['null']
-        }
+        }*/
     ]
 });

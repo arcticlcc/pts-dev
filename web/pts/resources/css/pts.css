@@ -156,6 +156,9 @@
 .pts-flag-gray {
     background-image: url("../images/icons/flag_gray.png");
 }
+.pts-flag-white {
+    background-image: url("../images/icons/flag_white.png");
+}
 .pts-flag-green {
     background-image: url("../images/icons/flag_green.png");
 }
@@ -201,4 +204,28 @@
 
 .x-grid-checkheader-editor .x-form-cb-wrap {
     text-align: center;
+}
+/***Custom Calendar Rules***/
+.x-cal-33,
+.x-cal-33-x .ext-cal-evb,
+.ext-ie .x-cal-33-ad,
+.ext-opera .x-cal-33-ad {
+    color: #595959;
+}
+.ext-cal-day-col .x-cal-33,
+.ext-dd-drag-proxy .x-cal-33,
+.x-cal-33-ad,
+.x-cal-33-ad .ext-cal-evm,
+.x-cal-33 .ext-cal-picker-icon,
+.x-cal-33-x dl,
+.x-calendar-palette .x-cal-33 span {
+    background-color: #595959;
+    /*background-image: url("../images/ext-cal-list-hidden.png");
+    background-position: right top;
+    background-repeat: no-repeat;*/
+}
+
+.x-cal-33-ad,
+.x-cal-33-ad .ext-cal-evm {
+    border-color: #595959;
 }

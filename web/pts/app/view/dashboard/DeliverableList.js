@@ -63,13 +63,19 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                                         },
                                         {
                                             //xtype: 'menucheckitem',
-                                            iconCls: 'pts-flag-gray',
+                                            iconCls: 'pts-flag-green',
+                                            text: 'Incomplete',
+                                            filter: 'incomplete'
+                                        },
+                                        {
+                                            //xtype: 'menucheckitem',
+                                            iconCls: 'pts-flag-white',
                                             text: 'All',
                                             filter: 'all'
                                         },
                                         {
                                             //xtype: 'menucheckitem',
-                                            iconCls: 'pts-flag-green',
+                                            iconCls: 'pts-flag-gray',
                                             text: 'Completed',
                                             filter: 'complete'
                                         }
@@ -105,6 +111,11 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                     dataIndex: 'title',
                     flex: 1,
                     text: 'Title'
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'status',
+                    text: 'Status'
                 },
                 {
                     xtype: 'gridcolumn',

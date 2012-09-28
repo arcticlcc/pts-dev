@@ -5,7 +5,7 @@
  * - **C1** : Past Due
  * - **C2** : Due Immediately
  * - **C3** : Due Soon
- * - **C4** : Completed
+ * - **C4** : Received
  */
 Ext.define('PTS.data.Calendar', {
     constructor: function() {
@@ -24,8 +24,12 @@ Ext.define('PTS.data.Calendar', {
                 "color": 20
             },{
                 "id": 4,
-                "title": "Completed",
+                "title": "Received",
                 "color": 26
+            },{
+                "id": 5,
+                "title": "Completed",
+                "color": 33
             }]
         };
     }

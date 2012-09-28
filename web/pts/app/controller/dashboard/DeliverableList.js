@@ -38,11 +38,11 @@ Ext.define('PTS.controller.dashboard.DeliverableList', {
                     {
                         property: 'dayspastdue',
                         value   : ['>',0]
-                    },
+                    }/*,
                     {
                         property: 'receiveddate',
                         value   : ['null']
-                    }
+                    }*/
                 ]);
                 break;
             case 'soon':
@@ -61,11 +61,23 @@ Ext.define('PTS.controller.dashboard.DeliverableList', {
                     }
                 ]);
                 break;
-            case 'complete':
+            case 'incomplete':
                 store.filter([
+                    {
+                        property: 'completed',
+                        value   : 'false'
+                    },
                     {
                         property: 'receiveddate',
                         value   : ['not null']
+                    }
+                ]);
+                break;
+            case 'complete':
+                store.filter([
+                    {
+                        property: 'completed',
+                        value   : 'true'
                     }
                 ]);
                 break;
