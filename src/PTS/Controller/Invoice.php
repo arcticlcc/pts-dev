@@ -63,7 +63,7 @@ class Invoice implements ControllerProviderInterface
             try {
                 $values = json_decode($request->getContent());
 
-                $app['mergeRelated'](&$related, &$values);
+                $app['mergeRelated']($related, $values);
                 $result = $app['saveRelatedTransaction']($values, $related, $table, 'invoiceid', $id);
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
@@ -83,7 +83,7 @@ class Invoice implements ControllerProviderInterface
             try {
                 $values = json_decode($request->getContent());
 
-                $app['mergeRelated'](&$related, &$values);
+                $app['mergeRelated']($related, $values);
                 $result = $app['saveRelatedTransaction']($values, $related, $table, 'invoiceid');
                 $app['json']->setData($result);
             } catch (\Exception $exc) {

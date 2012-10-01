@@ -128,7 +128,7 @@ class ContactGroup implements ControllerProviderInterface
 
             try {
                 $values = json_decode($request->getContent());
-                $app['mergeRelated'](&$related, &$values);
+                $app['mergeRelated']($related, $values);
 
                 $sql = "
                     WITH contact as (UPDATE contact
@@ -177,7 +177,7 @@ class ContactGroup implements ControllerProviderInterface
 
             try {
                 $values = json_decode($request->getContent());
-                $app['mergeRelated'](&$related, &$values);
+                $app['mergeRelated']($related, $values);
 
                 $sql = "
                     WITH contact as (

@@ -105,7 +105,7 @@ class Person implements ControllerProviderInterface
 
             try {
                 $values = json_decode($request->getContent());
-                $app['mergeRelated'](&$related, &$values);
+                $app['mergeRelated']($related, $values);
                 $sql = "
                     WITH contact as (UPDATE contact
                         SET comment=:comment, dunsnumber=:dunsnumber, contacttypeid=:contacttypeid, inactive=:inactive
@@ -138,7 +138,7 @@ class Person implements ControllerProviderInterface
 
             try {
                 $values = json_decode($request->getContent());
-                $app['mergeRelated'](&$related, &$values);
+                $app['mergeRelated']($related, $values);
                 $sql = "
                     WITH contact as (
                         INSERT INTO contact(

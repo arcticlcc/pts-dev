@@ -69,7 +69,7 @@ class PTSServiceProvider implements ServiceProviderInterface
          *@app mergeRelated
          * Get related data from request and add to the related array
          */
-        $app['mergeRelated'] = $app->protect(function ($related, $values) use ($app) {
+        $app['mergeRelated'] = $app->protect(function (&$related, &$values) use ($app) {
             //get related data from request and add to the related array
             foreach ($related as $k => $v)  {
 //var_dump($values);
