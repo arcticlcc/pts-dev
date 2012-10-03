@@ -10,7 +10,7 @@ Ext.define('PTS.store.DeliverableModStatuses', {
     autoSync: false,
     sorters: [
         { property: 'effectivedate', direction : 'DESC' },
-        { property: 'delivarablestatusid', direction : 'DESC' }
+        { property: 'deliverablestatusid', direction : 'DESC' }
     ],
     listeners: {
         'add': function(store, records){
