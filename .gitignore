@@ -10,6 +10,7 @@ web/pts/docs/*
 web/pts/dl/*
 !web/pts/dl/.gitkeep
 !web/pts/docs/schema
+!web/pts/docs/guide
 
 vendor
 patches
