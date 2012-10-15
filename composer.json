@@ -3,7 +3,9 @@
         "silex/silex": "1.0.*",
         "monolog/monolog": "1.1.*",
         "twig/twig": "1.8.*",
-        "doctrine/dbal": "2.2.*"
+        "doctrine/dbal": "2.2.*",
+        "igorw/config-service-provider": "1.0.*",
+        "symfony/yaml": "2.1.*"
     },
 
     "autoload": {
