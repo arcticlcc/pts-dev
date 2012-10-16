@@ -92,7 +92,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
 
     /**
      * @cfg {String} reorderCol
-     * Specifies whether the reorder column is rendered.
+     * Specifies whether the reorder column is rendered on init.
      */
     reorderCol: true,
 
@@ -150,7 +150,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
         }
 
         this.contactType = type;
-        this.reorderCol = type === 'group' ? false : this.reorderCol;
+        this.reorderCol = type === 'group' ? false : true;
         this.contactId = id;
     },
 

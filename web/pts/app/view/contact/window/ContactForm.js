@@ -256,10 +256,15 @@ Ext.define('PTS.view.contact.window.ContactForm', {
                                 forceSelection: false,
                                 queryMode: 'local',
                                 validator: function(val) {
-                                    var cid = this.up('form#groupForm').getRecord().getId();
+                                    var cid = this.up('form#groupForm').getRecord().getId(),
+                                        rval = this.getValue();
 
-                                    if(cid === this.getValue()) {
+                                    if(rval === 0 || rval === null) {
+                                        return true;
+                                    }else if(cid === rval) {
                                         return "A group cannot be its own parent";
+                                    }else if(this.getStore().indexOfId(rval) === -1) {
+                                        return "You must make a selection from the list";
                                     }else {
                                         return true;
                                     }
