@@ -156,6 +156,7 @@ class PTSServiceProvider implements ServiceProviderInterface
                         $stmt = $conn->prepare($sql);
 
                         foreach ($values as $k => $v)  {
+                            $v = is_string($v) ? trim($v) : $v;
                             $stmt->bindValue($k, $v);
                         }
 
