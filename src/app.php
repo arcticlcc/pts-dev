@@ -326,4 +326,5 @@ $app->mount('/', new PTS\Controller\Modification());
 $app->mount('/', new PTS\Controller\Country());
 $app->mount('/', new PTS\Controller\Invoice());
 $app->mount('/', new PTS\Controller\Funding());
+$app->mount('/', new PTS\Controller\Report());
 ?>

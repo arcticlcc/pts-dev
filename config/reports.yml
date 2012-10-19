@@ -1,0 +1,34 @@
+reports:
+  - text: Contact Reports
+    descrip: Reports associated with Persons and Groups
+    iconCls: folder
+    leaf: false
+    children:
+      - text: ALCC Steering Committee
+        url: ../alccsteeringcommittee
+        descrip: Lists members of the ALCC Steering Committee
+        xtype: personlist
+        model: PTS.model.Person
+      - text: ALCC Staff
+        url: ../alccstaff
+        descrip: Lists staff of the ALCC
+        cols:
+          - {text: First, dataIndex: firstname}
+          - {text: Last, dataIndex: lastname}
+        fields: [firstname, lastname]
+  - text: Project Reports
+    descrip: Reports associated with Projects
+    iconCls: folder
+    leaf: false
+    children:
+      - text: Short Project Summary
+        url: ../shortprojectsummary
+        descrip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: Principal Investigators, dataIndex: principalinvestigators, flex: 1}
+          - {text: Title, dataIndex: title, flex: 1}
+          - {text: Short Title, dataIndex: shorttitle, hidden: true}
+          - {text: Description, dataIndex: description, flex: 2}
+          - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
+        fields: [projectcode, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]     

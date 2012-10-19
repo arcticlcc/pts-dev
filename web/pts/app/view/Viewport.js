@@ -8,7 +8,8 @@ Ext.define('PTS.view.Viewport', {
         'PTS.view.MainToolbar',
         'PTS.view.dashboard.Dashboard',
         'PTS.view.project.tab.ProjectTab',
-        'PTS.view.contact.tab.ContactTab'
+        'PTS.view.contact.tab.ContactTab',
+        'PTS.view.report.tab.ReportTab'
     ],
 
     layout: {
@@ -44,6 +45,9 @@ Ext.define('PTS.view.Viewport', {
                             title: 'Contacts'
                         },
                         {
+                            xtype: 'reporttab'
+                        }
+                        /*{
                             xtype: 'panel',
                             html: '\'Reports go here\'',
                             tpl: Ext.create('Ext.XTemplate',
@@ -51,7 +55,7 @@ Ext.define('PTS.view.Viewport', {
                             ),
                             title: 'Reports',
                             disabled: true
-                        }
+                        }*/
                     ]
                 },
                 {

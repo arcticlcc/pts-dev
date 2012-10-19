@@ -13,23 +13,21 @@ Ext.define('PTS.view.contact.PersonList', {
     ],
 
     title:'Person',
-    store: 'Persons',
-    itemId: 'person', //do not change, required for opencontact event
     remoteSort: 'true',
 
+    /**
+     * Specifies whether to add the FilterBar plugin
+     */
+    filterBar: true,
+
     initComponent: function() {
-        var me = this;
+        var me = this,
+            docked;
 
         Ext.applyIf(me, {
-            dockedItems: [{
-                xtype: 'pagingtoolbar',
-                store: 'Persons',
-                displayInfo: true,
-                plugins: [
-                    Ext.create('Ext.ux.grid.PrintGrid', {}),
-                    Ext.create('Ext.ux.grid.SaveGrid', {})
-                ]
-            }],
+            store: 'Persons',
+            itemId: 'person', //required for opencontact event
+            //dockedItems: [],
             columns: [
                 {
                     xtype: 'gridcolumn',
@@ -93,10 +91,25 @@ Ext.define('PTS.view.contact.PersonList', {
 
         me.callParent(arguments);
 
-        me.addDocked({
+        docked = [{
+                xtype: 'pagingtoolbar',
+                store: me.store,
+                displayInfo: true,
+                plugins: [
+                    Ext.create('Ext.ux.grid.PrintGrid', {}),
+                    Ext.create('Ext.ux.grid.SaveGrid', {})
+                ],
+                dock: 'top'
+            }];
+
+        if(me.filterBar) {
+            docked.push({
                 xtype: 'filterbar',
                 searchStore: me.store,
                 dock: 'bottom'
-        });
+            });
+        }
+
+        me.addDocked(docked);
     }
 });

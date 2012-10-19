@@ -1,128 +1,86 @@
---add support for deliverable status
-CREATE TABLE pts.deliverablemodstatus (
-                deliverablemodstatusid SERIAL,
-                deliverablestatusid INTEGER NOT NULL,
-                modificationid INTEGER NOT NULL,
-                deliverableid INTEGER NOT NULL,
-                effectivedate DATE NOT NULL,
-                comment VARCHAR,
-                CONSTRAINT deliverablemodstatus_pk PRIMARY KEY (deliverablemodstatusid)
-);
-COMMENT ON TABLE pts.deliverablemodstatus IS 'Links DELIVERABLEMOD to DELIVERABLESTATUS';
-COMMENT ON COLUMN pts.deliverablemodstatus.deliverablemodstatusid IS 'PK for MODSTATUS, created for convenience when using client applications';
-COMMENT ON COLUMN pts.deliverablemodstatus.deliverablestatusid IS 'PK for DELIVERABLESTATUS';
-COMMENT ON COLUMN pts.deliverablemodstatus.modificationid IS 'PK for MODIFICATION';
-COMMENT ON COLUMN pts.deliverablemodstatus.deliverableid IS 'PK for DELIVERABLE';
-COMMENT ON COLUMN pts.deliverablemodstatus.effectivedate IS 'Date of status change';
+-- Schema: report
 
-CREATE TABLE cvl.deliverablestatus (
-                deliverablestatusid INTEGER NOT NULL,
-                code VARCHAR NOT NULL,
-                status VARCHAR NOT NULL,
-                description VARCHAR NOT NULL,
-                comment VARCHAR,
-                CONSTRAINT deliverablestatus_pk PRIMARY KEY (deliverablestatusid)
-);
-COMMENT ON TABLE cvl.deliverablestatus IS 'status of DELIVERABLE';
-COMMENT ON COLUMN cvl.deliverablestatus.deliverablestatusid IS 'PK for DELIVERABLESTATUS';
-COMMENT ON COLUMN cvl.deliverablestatus.code IS 'code for status';
-COMMENT ON COLUMN cvl.deliverablestatus.status IS 'status of PROJECT';
-COMMENT ON COLUMN cvl.deliverablestatus.description IS 'description of status';
+-- DROP SCHEMA report;
 
+CREATE SCHEMA report
+  AUTHORIZATION bradley;
 
-ALTER TABLE pts.deliverablemodstatus ADD CONSTRAINT deliverablestatus_deliverablemodstatus_fk
-FOREIGN KEY (deliverablestatusid)
-REFERENCES cvl.deliverablestatus (deliverablestatusid)
-ON DELETE NO ACTION
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
+GRANT ALL ON SCHEMA report TO bradley;
+GRANT USAGE ON SCHEMA report TO pts_read;
 
-ALTER TABLE pts.deliverablemodstatus ADD CONSTRAINT deliverablemod_deliverablemodstatus_fk
-FOREIGN KEY (modificationid, deliverableid)
-REFERENCES pts.deliverablemod (modificationid, deliverableid)
-ON DELETE CASCADE
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
+ALTER DATABASE pts SET search_path=pts, cvl, report, public;
 
---permissions
-GRANT SELECT, UPDATE ON TABLE deliverablemodstatus_deliverablemodstatusid_seq TO pts_write;
-GRANT SELECT ON TABLE deliverablemodstatus TO pts_read;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE deliverablemodstatus TO pts_write;
-GRANT SELECT ON TABLE cvl.deliverablestatus TO pts_read;
+-- View: report.alccsteeringcommittee
 
---track user for deliverable status
+-- DROP VIEW report.alccsteeringcommittee;
 
-ALTER TABLE pts.deliverablemodstatus ADD COLUMN contactid INTEGER NOT NULL;
+CREATE OR REPLACE VIEW report.alccsteeringcommittee AS
+ SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, ccg.groupid AS prigroupid, cg.acronym AS priacronym, cg.name AS prigroupname, p.areacode AS priareacode, p.phnumber AS priphnumber, p.extension AS priextension, p.countryiso AS pricountryiso, e.uri AS priemail
+   FROM person
+   LEFT JOIN ( SELECT phone.phoneid, phone.contactid, phone.addressid, phone.phonetypeid, phone.countryiso, phone.areacode, phone.phnumber, phone.extension, phone.priority, row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
+   LEFT JOIN ( SELECT eaddress.eaddressid, eaddress.contactid, eaddress.eaddresstypeid, eaddress.uri, eaddress.priority, eaddress.comment, row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+      FROM eaddress
+     WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
+   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+   FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid
+   JOIN contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42 AND sc.positionid = 85
+  ORDER BY person.lastname;
 
-ALTER TABLE pts.deliverablemodstatus ADD CONSTRAINT person_deliverablemodstatus_fk
-FOREIGN KEY (contactid)
-REFERENCES pts.person (contactid)
-ON DELETE CASCADE
-ON UPDATE NO ACTION
-NOT DEFERRABLE;
+ALTER TABLE report.alccsteeringcommittee
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.alccsteeringcommittee TO bradley;
+GRANT SELECT ON TABLE report.alccsteeringcommittee TO pts_read;
 
---data for DELIVERABLESTATUS
-INSERT INTO deliverablestatus VALUES (0, 'Overdue', 'Overdue', 'Deliverable or Task is overdue.', NULL);
-INSERT INTO deliverablestatus VALUES (10, 'Received', 'Received', 'Deliverable or Task has been delivered.', NULL);
-INSERT INTO deliverablestatus VALUES (20, 'Reviewing', 'Under Review', 'Deliverable or Task is under review - received but not accepted.', NULL);
-INSERT INTO deliverablestatus VALUES (30, 'Revising', 'Under Revision', 'Deliverable or Task is being revised.', NULL);
-INSERT INTO deliverablestatus VALUES (40, 'Completed', 'Completed', 'Deliverable or Task has been accepted as complete.', NULL);
-INSERT INTO deliverablestatus VALUES (50, 'Archived', 'Archived', 'All items generated by the Deliverable or Task have been archived.', NULL);
-INSERT INTO deliverablestatus VALUES (60, 'Published', 'Published', 'All publishable items generated by the Deliverable or Task have been published.', NULL);
+-- View: report.alccstaff
 
+-- DROP VIEW report.alccstaff;
 
+CREATE OR REPLACE VIEW report.alccstaff AS
+ SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, ccg.groupid AS prigroupid, cg.acronym AS priacronym, cg.name AS prigroupname, p.areacode AS priareacode, p.phnumber AS priphnumber, p.extension AS priextension, p.countryiso AS pricountryiso, e.uri AS priemail
+   FROM person
+   LEFT JOIN ( SELECT phone.phoneid, phone.contactid, phone.addressid, phone.phonetypeid, phone.countryiso, phone.areacode, phone.phnumber, phone.extension, phone.priority, row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
+   LEFT JOIN ( SELECT eaddress.eaddressid, eaddress.contactid, eaddress.eaddresstypeid, eaddress.uri, eaddress.priority, eaddress.comment, row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+      FROM eaddress
+     WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
+   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+   FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid
+   JOIN contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42
+   JOIN contact ON contact.contactid = person.contactid AND contact.contacttypeid = 5
+  ORDER BY person.lastname;
 
---update views
-SET search_path = pts, pg_catalog;
+ALTER TABLE report.alccstaff
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.alccstaff TO bradley;
+GRANT SELECT ON TABLE report.alccstaff TO pts_read;
 
-DROP VIEW deliverableall;
+--timestamp for project comments
+ALTER TABLE projectcomment
+   ALTER COLUMN stamp TYPE timestamp with time zone;
+ALTER TABLE projectcomment
+   ALTER COLUMN stamp SET DEFAULT now();
 
-DROP VIEW deliverablecalendar;
+-- View: report.shortprojectsummary
 
-DROP VIEW deliverabledue;
+-- DROP VIEW report.shortprojectsummary;
 
-DROP VIEW deliverablelist;
+CREATE OR REPLACE VIEW report.shortprojectsummary AS
+ SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(string_agg(pi.fullname, '; '::text) OVER (PARTITION BY project.projectid), 'No PI listed'::text) AS principalinvestigators, project.shorttitle, project.abstract, project.description
+   FROM project
+   LEFT JOIN projectcontact pc ON project.projectid = pc.projectid AND pc.roletypeid = 7
+   LEFT JOIN ( SELECT person.contactid, ((person.firstname::text || ' '::text) || person.lastname::text) || COALESCE(', '::text || cg.name::text, ''::text) AS fullname
+      FROM person
+   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+              FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid) pi USING (contactid)
+   JOIN contactgroup ON project.orgid = contactgroup.contactid;
 
-DROP VIEW task;
-
-CREATE INDEX fki_deliverable_deliverablemod_fk ON deliverablemod USING btree (deliverableid);
-
-CREATE INDEX fki_deliverablemod_deliverablemod_fk ON deliverablemod USING btree (parentmodificationid, parentdeliverableid);
-
-CREATE VIEW deliverableall AS
-	SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverablemod.devinterval, deliverablemod.invalid, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverable.deliverabletypeid, deliverable.title, deliverable.description, (EXISTS (SELECT 1 FROM deliverablemod dm WHERE ((dm.parentdeliverableid = deliverablemod.deliverableid) AND (dm.parentmodificationid = deliverablemod.modificationid)))) AS modified, status.status, status.effectivedate FROM (((deliverablemod LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)) LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) WHERE (deliverablemodstatus.deliverablestatusid = 10) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)) JOIN deliverable USING (deliverableid));
-
-CREATE VIEW deliverablecalendar AS
-	SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverable.title, deliverable.description, (((person.firstname)::text || ' '::text) || (person.lastname)::text) AS manager, deliverabletype.type, form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode, modification.projectid, status.status, status.effectivedate, COALESCE((status.deliverablestatusid >= 40), false) AS completed FROM ((((((((deliverablemod LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)) LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) WHERE (deliverablemodstatus.deliverablestatusid = 10) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)) JOIN modification USING (modificationid)) JOIN project USING (projectid)) JOIN contactgroup ON ((project.orgid = contactgroup.contactid))) JOIN deliverable USING (deliverableid)) JOIN cvl.deliverabletype USING (deliverabletypeid)) JOIN person ON ((deliverablemod.personid = person.contactid))) WHERE ((NOT deliverablemod.invalid) OR (NOT (EXISTS (SELECT 1 FROM deliverablemod dm WHERE ((deliverablemod.modificationid = dm.parentmodificationid) AND (deliverablemod.deliverableid = dm.parentdeliverableid))))));
-
-CREATE VIEW deliverabledue AS
-	SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate, efd.effectivedate AS receiveddate, d.title, d.description, projectlist.projectcode, project.shorttitle AS project, (((personlist.firstname)::text || ' '::text) || (personlist.lastname)::text) AS contact, personlist.priemail AS email, CASE WHEN (status.deliverablestatusid >= 10) THEN 0 WHEN (status.deliverablestatusid = 0) THEN ((('now'::text)::date - status.effectivedate) + 1) ELSE (('now'::text)::date - dm.duedate) END AS dayspastdue, modification.projectid, dm.modificationid, d.deliverableid, COALESCE(status.status, 'Not Received'::character varying) AS status, status.effectivedate, COALESCE((status.deliverablestatusid >= 40), false) AS completed FROM ((((((((deliverable d JOIN deliverablemod dm USING (deliverableid)) JOIN modification USING (modificationid)) JOIN projectlist USING (projectid)) JOIN project USING (projectid)) LEFT JOIN (SELECT projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, projectcontact.projectcontactid FROM projectcontact WHERE (projectcontact.roletypeid = ANY (ARRAY[6, 7]))) projectcontact USING (projectid)) LEFT JOIN personlist USING (contactid)) LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)) LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) WHERE (deliverablemodstatus.deliverablestatusid = 10) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)) WHERE ((NOT (d.deliverabletypeid = ANY (ARRAY[4, 7]))) AND ((NOT dm.invalid) OR (NOT (EXISTS (SELECT 1 FROM deliverablemod dp WHERE ((dm.modificationid = dp.parentmodificationid) AND (dm.deliverableid = dp.parentdeliverableid))))))) ORDER BY dm.duedate, d.deliverableid, projectcontact.roletypeid, projectcontact.priority;
-
-CREATE VIEW deliverablelist AS
-	SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverablemod.devinterval, deliverablemod.invalid, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverable.deliverabletypeid, deliverable.title, deliverable.description FROM ((deliverablemod LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) WHERE (deliverablemodstatus.deliverablestatusid = 10) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)) JOIN deliverable USING (deliverableid)) WHERE ((NOT deliverablemod.invalid) OR (NOT (EXISTS (SELECT 1 FROM deliverablemod dm WHERE ((deliverablemod.modificationid = dm.parentmodificationid) AND (deliverablemod.deliverableid = dm.parentdeliverableid))))));
-
-COMMENT ON VIEW deliverablelist IS 'List of all valid, non-modified deliverables';
-
-CREATE VIEW task AS
-	SELECT deliverablemod.duedate, deliverable.title, efd.effectivedate AS receiveddate, (((person.firstname)::text || ' '::text) || (person.lastname)::text) AS assignee, deliverable.description, deliverablemod.deliverableid, person.contactid, modification.projectid, deliverablemod.modificationid, CASE WHEN (status.deliverablestatusid >= 10) THEN 0 WHEN (status.deliverablestatusid = 0) THEN ((('now'::text)::date - status.effectivedate) + 1) ELSE (('now'::text)::date - deliverablemod.duedate) END AS dayspastdue, status.status, status.effectivedate, COALESCE((status.deliverablestatusid >= 40), false) AS completed, projectlist.projectcode FROM ((((((deliverablemod LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)) LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) WHERE (deliverablemodstatus.deliverablestatusid = 10) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)) JOIN deliverable USING (deliverableid)) JOIN person ON ((deliverablemod.personid = person.contactid))) JOIN modification USING (modificationid)) JOIN projectlist USING (projectid)) WHERE ((deliverable.deliverabletypeid = ANY (ARRAY[4, 7])) AND ((NOT deliverablemod.invalid) OR (NOT (EXISTS (SELECT 1 FROM deliverablemod dm WHERE ((deliverablemod.modificationid = dm.parentmodificationid) AND (deliverablemod.deliverableid = dm.parentdeliverableid))))))) ORDER BY deliverablemod.duedate DESC;
-
-COMMENT ON VIEW task IS 'Lists all tasks that are not invalid or modified';
-
-COMMENT ON VIEW deliverablelist IS 'List of all valid, non-modified deliverables';
-
-COMMENT ON VIEW task IS 'Lists all tasks that are not invalid or modified';
-
-GRANT SELECT ON TABLE pts.deliverableall TO GROUP pts_read;
-GRANT SELECT ON TABLE pts.deliverablecalendar TO GROUP pts_read;
-GRANT SELECT ON TABLE pts.deliverabledue TO GROUP pts_read;
-GRANT SELECT ON TABLE pts.deliverablelist TO GROUP pts_read;
-GRANT SELECT ON TABLE pts.task TO GROUP pts_read;
-
---update deliverablemodstatus
-INSERT INTO pts.deliverablemodstatus(
-        deliverablestatusid, modificationid,
-            deliverableid, effectivedate, comment, contactid)
-select 10 as deliverablestatusid,modificationid,deliverableid,receiveddate,'This status was automatically generated during a system upgrade.' as comment,personid from deliverablemod
-join deliverable using (deliverableid)
-join person on (personid = contactid)
-where receiveddate is not null;
+ALTER TABLE report.shortprojectsummary
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.shortprojectsummary TO bradley;
+GRANT SELECT ON TABLE report.shortprojectsummary TO pts_read;

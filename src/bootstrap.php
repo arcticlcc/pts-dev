@@ -9,6 +9,7 @@ $app = new Application();
 // Register Silex extensions
 //$app->register(new PTS\Service\JSONServiceProvider());
 $app->register(new PTS\Service\PTSServiceProvider());
+$app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/reports.yml"));
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path'       => __DIR__.'/../views',
@@ -85,7 +86,7 @@ $app['limit'] = 1000;
 //$app['my.param'] = '...';
 
 // Override settings for your dev environment
-$env = isset($_ENV['SILEX_ENV']) ? $_ENV['SILEX_ENV'] : 'dev';
+$env = getenv("SILEX_ENV") ? $_ENV['SILEX_ENV'] : 'dev';
 
 if ('dev' == $env) {
     $app['debug'] = true;

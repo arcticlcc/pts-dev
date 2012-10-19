@@ -41,7 +41,8 @@ Ext.application({
         'MainToolbar',
         'dashboard.Dashboard',
         'project.Project',
-        'contact.Contact'
+        'contact.Contact',
+        'report.Report'
 
     ],
 
