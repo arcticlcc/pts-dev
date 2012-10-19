@@ -73,6 +73,14 @@ Ext.define('PTS.view.controls.CommentEditGrid', {
                 }
             });
         });
+        me.on('edit',function(editor, e) {
+            var rec = editor.record;
+            if(rec.dirty) {
+                rec.beginEdit();
+                rec.set('datemodified',new Date());
+                rec.endEdit();
+            }
+        });
     }
 
 });
