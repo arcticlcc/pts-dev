@@ -8,7 +8,8 @@ Ext.define('PTS.view.project.window.Window', {
     requires: [
         'PTS.view.project.form.ProjectForm',
         'PTS.view.project.window.ProjectContacts',
-        'PTS.view.project.window.ProjectAgreements'
+        'PTS.view.project.window.ProjectAgreements',
+        'PTS.view.controls.CommentEditGrid'
     ],
 
     height: Ext.Element.getViewportHeight() - 40,
@@ -40,6 +41,11 @@ Ext.define('PTS.view.project.window.Window', {
                         },
                         {
                             xtype: 'projectagreements'
+                        },
+                        {
+                            title: 'Comments',
+                            xtype: 'commenteditgrid',
+                            store: 'ProjectComments'
                         }
                     ]
                 }

@@ -8,14 +8,16 @@ Ext.define('PTS.controller.project.window.Window', {
         'project.window.Window'/*,
         'project.form.ProjectForm'*/
     ],
-
+    stores: [
+        'ProjectComments'
+    ],
     refs: [{
         ref: 'projectWindow',
         selector: 'projectwindow'
-    }/*,{
+    },{
         ref: 'projectForm',
-        selector: 'projectform'
-    }*/],
+        selector: 'projectwindow projectform'
+    }],
 
     init: function() {
 
@@ -31,9 +33,13 @@ Ext.define('PTS.controller.project.window.Window', {
             'projectwindow [action=closewindow]': {
                 click: this.closeWindow
             },
-            'projectwindow' : {
+            'projectwindow': {
                 beforeclose: this.onBeforeClose
-            }/*,
+            },
+            'projectwindow>tabpanel>commenteditgrid': {
+                edit: this.onCommentRowEdit
+            }
+            /*,
 
             'projecttab button[action=editproject]': {
                 click: this.editProject
@@ -56,7 +62,17 @@ Ext.define('PTS.controller.project.window.Window', {
      */
     onBeforeClose: function() {
         this.application.fireEvent('closeproject');
-    }
+    },
 
+    /**
+     * Update the record in the commenteditgrid store with the projectid.
+     */
+    onCommentRowEdit: function(editor, e) {
+        var model = this.getProjectForm().getRecord(),
+            id = model.getId();
+
+        editor.record.set('projectid',id);
+        editor.store.sync();
+    }
 
 });

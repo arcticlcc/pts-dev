@@ -41,7 +41,7 @@ Ext.define('PTS.controller.project.Project', {
      * @param {Object} [record] An optional project record.
      */
     openProject: function(record, callBack, animateTarget) {
-        var win, code,
+        var win, code, cstore,
             id = record ? record.get('projectid') : false;
 
         if(id !== false) {
@@ -51,6 +51,21 @@ Ext.define('PTS.controller.project.Project', {
                 title: 'Edit Project: ' + code,
                 projectId: id
             });
+            //load the project comments
+            cstore = win.down('#projecttabpanel>commenteditgrid').getStore();
+            cstore.setProxy({
+                type: 'rest',
+                url : '../projectcomment',
+                appendId: true,
+                api: {
+                    read:'../project/' + id + '/projectcomment'
+                },
+                reader: {
+                    type: 'json',
+                    root: 'data'
+                }
+            });
+            cstore.load();
         } else{
             win = Ext.create(this.getProjectWindowWindowView(),{
                 title: 'New Project'
