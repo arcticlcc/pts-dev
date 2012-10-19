@@ -1,3 +1,6 @@
+/**
+ * Controller for ContactTab
+ */
 Ext.define('PTS.controller.contact.tab.ContactTab', {
     extend: 'Ext.app.Controller',
 

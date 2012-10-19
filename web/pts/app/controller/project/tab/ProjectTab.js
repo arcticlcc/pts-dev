@@ -1,3 +1,6 @@
+/**
+ * Controller for ProjectTab
+ */
 Ext.define('PTS.controller.project.tab.ProjectTab', {
     extend: 'Ext.app.Controller',
 
