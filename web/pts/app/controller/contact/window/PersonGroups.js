@@ -378,8 +378,8 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
         }
 
         //mask panel if store is dirty
-        if(!!(store.getRemovedRecords().length + store.getUpdatedRecords().length
-                + store.getNewRecords().length)) {
+        if(!!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
+            store.getNewRecords().length)) {
             el.mask('Saving...');
         }
         //TODO: Fixed in 4.1?

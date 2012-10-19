@@ -164,8 +164,8 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      saveContacts: function() {
         var store = this.getProjectContactsStore(),
             el = this.getProjectContactsList().getEl(),
-            isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length
-                + store.getNewRecords().length);
+            isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
+                store.getNewRecords().length);
 
         //mask panel
         if(isDirty) {
