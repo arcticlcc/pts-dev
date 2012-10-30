@@ -12,7 +12,8 @@ Ext.define('PTS.Overrides', {
         'Extensible.calendar.view.Month',
         'Ext.grid.RowEditor',
         'Ext.Array',
-        'Ext.util.Sorter'
+        'Ext.util.Sorter',
+        'Ext.data.TreeStore'
 
     ]
 }, function() {
@@ -135,6 +136,25 @@ Ext.define('PTS.Overrides', {
                 return false;
             }
             this.callOverridden(arguments);
+        },
+    //fix Ext.view.View itemadd event bug
+    //TODO: fixed in  4.1.2
+    //http://www.sencha.com/forum/showthread.php?142914-Ext.view.View-itemadd-event-bug
+        onAdd : function(ds, records, index) {
+            var me = this,
+                nodes;
+
+            if (me.all.getCount() === 0) {
+                me.refresh();
+            }else {
+                nodes = me.bufferRender(records, index);
+                me.doAdd(nodes, records, index);
+
+                me.selModel.refresh();
+                me.updateIndexes(index);
+            }
+
+            me.fireEvent('itemadd', records, index, nodes);
         }
     });
     //http://www.sencha.com/forum/showthread.php?182524-RadioField-and-isDirty-problem&p=745308&viewfull=1#post745308
@@ -338,5 +358,52 @@ Ext.define('PTS.Overrides', {
           }
           return this.eventTpl;
        }
+    });
+    //Fixes clearonload when using REST, from 4.1
+    //TODO: Fixed in 4.1
+    //http://www.sencha.com/forum/showthread.php?151211-Reloading-TreeStore-adds-all-records-to-store-getRemovedRecords&p=661157
+    Ext.override(Ext.data.TreeStore, {
+        load: function(options) {
+            options = options || {};
+            options.params = options.params || {};
+
+            var me = this,
+                node = options.node || me.tree.getRootNode();
+
+            // If there is not a node it means the user hasnt defined a rootnode yet. In this case lets just
+            // create one for them.
+            if (!node) {
+                node = me.setRootNode({
+                    expanded: true
+                }, true);
+            }
+
+            // Assign the ID of the Operation so that a ServerProxy can set its idParam parameter,
+            // or a REST proxy can create the correct URL
+            options.id = node.getId();
+
+            if (me.clearOnLoad) {
+                if(me.clearRemovedOnLoad) {
+                    // clear from the removed array any nodes that were descendants of the node being reloaded so that they do not get saved on next sync.
+                    me.clearRemoved(node);
+                }
+                // temporarily remove the onNodeRemove event listener so that when removeAll is called, the removed nodes do not get added to the removed array
+                me.tree.un('remove', me.onNodeRemove, me);
+                // remove all the nodes
+                node.removeAll(false);
+                // reattach the onNodeRemove listener
+                me.tree.on('remove', me.onNodeRemove, me);
+            }
+
+            Ext.applyIf(options, {
+                node: node
+            });
+
+            if (node) {
+                node.set('loading', true);
+            }
+
+            return me.callParent([options]);
+        }
     });
 });

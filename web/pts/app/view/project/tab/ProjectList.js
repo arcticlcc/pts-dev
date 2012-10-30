@@ -9,7 +9,8 @@ Ext.define('PTS.view.project.tab.ProjectList', {
     requires: [
         'PTS.util.Format',
         'Ext.ux.grid.PrintGrid',
-        'Ext.ux.grid.SaveGrid'
+        'Ext.ux.grid.SaveGrid',
+        'Ext.ux.grid.FilterBar'
     ],
 
     store: 'ProjectListings',

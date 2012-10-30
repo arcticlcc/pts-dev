@@ -25,7 +25,18 @@ Ext.define("Ext.ux.grid.FilterBar", {
     comboData: null,
 
     initComponent: function() {
-        var me = this;
+        var me = this,
+            store = me.searchStore;
+
+        if (store) {
+            store = Ext.data.StoreManager.lookup(store);
+            //TODO: add exception handling???
+            /*store.on({
+                scope: me,
+                exception: me.onLoadError
+            });*/
+        }
+        me.searchStore = store;
 
         Ext.applyIf(me, {
             items: [{

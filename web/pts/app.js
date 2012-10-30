@@ -14,7 +14,7 @@ Ext.Loader.setConfig({
         'Extensible': 'extensible-1.5.1/src',
         'Extensible.example': 'extensible-1.5.1/examples',
         'Ext.ux': './ux',
-        'GEoExt': './lib/geoext/src/GeoExt'
+        'GeoExt': './lib/geoext/src/GeoExt'
     },
     disableCaching: true
 });
@@ -27,7 +27,8 @@ Ext.application({
         'PTS.util.VTypes', //custom validation types/
         'PTS.Overrides',
         'PTS.util.ActivityMonitor',
-        'PTS.util.AssociationJsonWriter'//custom writer
+        'PTS.util.AssociationJsonWriter',//custom writer
+        'Ext.ux.window.Notification'
     ],
     name: 'PTS',
 
@@ -179,14 +180,19 @@ Ext.application({
             //only fire the global handler if no failure handler is passed
             //we have to check for regular ajax and data operation callbacks
             if(undefined === op.failure && undefined === op.operation.failure) {
-                Ext.MessageBox.show({
+                /*Ext.MessageBox.show({
                    title: 'Error',
                    msg: txt.message,
                    buttons: Ext.MessageBox.OK,
                    //animateTarget: 'mb9',
                    //fn: showResult,
                    icon: Ext.Msg.ERROR
-               });
+               });*/
+                Ext.create('widget.uxNotification', {
+                    title: 'Error',
+                    iconCls: 'ux-notification-icon-error',
+                    html: txt.message,
+                }).show();
            }
         });
 
