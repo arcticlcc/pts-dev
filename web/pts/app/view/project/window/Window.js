@@ -9,7 +9,8 @@ Ext.define('PTS.view.project.window.Window', {
         'PTS.view.project.form.ProjectForm',
         'PTS.view.project.window.ProjectContacts',
         'PTS.view.project.window.ProjectAgreements',
-        'PTS.view.controls.CommentEditGrid'
+        'PTS.view.controls.CommentEditGrid',
+        'PTS.view.project.window.ProjectKeywords'
     ],
 
     height: Ext.Element.getViewportHeight() - 40,
@@ -18,11 +19,34 @@ Ext.define('PTS.view.project.window.Window', {
     layout: {
         type: 'fit'
     },
+
+    /**
+     * @cfg {Boolean} closable
+     * This needs to be set to false since we're using a
+     * custom close tool.
+     */
     closable: false,
+    maximizable: true,
     title: 'Edit Project',
     constrain: true,
     modal: true,
     y: 10,
+
+    /**
+     * Adds the custom close tool.
+     */
+    addTools: function() {
+        var me = this;
+
+        // Call Panel's initTools
+        me.callParent();
+
+        me.addTool({
+            xtype: 'tool',
+            type: 'close',
+            action: 'closewindow'
+        });
+    },
 
     initComponent: function() {
         var me = this;
@@ -46,6 +70,9 @@ Ext.define('PTS.view.project.window.Window', {
                             title: 'Comments',
                             xtype: 'commenteditgrid',
                             store: 'ProjectComments'
+                        },
+                        {
+                            xtype: 'projectkeywords'
                         }
                     ]
                 }
@@ -69,17 +96,6 @@ Ext.define('PTS.view.project.window.Window', {
                             action: 'closewindow'
                         }
                     ]
-                }
-            ],
-            tools: [
-                /*{
-                    xtype: 'tool',
-                    type: 'save'
-                },*/
-                {
-                    xtype: 'tool',
-                    type: 'close',
-                    action: 'closewindow'
                 }
             ]
         });

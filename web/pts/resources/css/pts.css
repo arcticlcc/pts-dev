@@ -1,194 +1,208 @@
 .x-accordion-hd {
     cursor: pointer;
-}
-.x-grid-table .x-grid-row .x-grid-cell{
+    }
+.x-grid-table .x-grid-row .x-grid-cell {
     border-color: #FAFAFA #EDEDED #EDEDED;
     border-style: solid;
     border-width: 1px 1px 1px 0;
-}
+    }
 .x-action-col-cell img {
     cursor: pointer;
     height: 16px;
     width: 16px;
-}
-
-
+    }
 #pts-main-toolbar {
     background-image: none !important;
-}
-.pts-agree-progress-bar .x-progress-bar{
+    }
+.pts-agree-progress-bar .x-progress-bar {
     height: 14px;
-}
-.pts-agree-invalid .x-progress-bar{
-}
+    }
+.pts-agree-invalid .x-progress-bar {
+    }
 #pts-agree-tree .leaf .x-grid-cell {
-    background-color:#FAFAFA;
-}
-
-
+    background-color: #FAFAFA;
+    }
+.pts-col-info {
+    background: url("../images/icons/information.png") no-repeat;
+    width: 16px !important;
+    height: 16px !important;
+    }
+.pts-col-add {
+    background: url("../images/icons/arrow_right.png") no-repeat;
+    width: 16px !important;
+    height: 16px !important;
+    }
 .pts-menu-edit {
     background-image: url("../images/icons/application_edit.png");
-}
+    }
 .pts-menu-delete {
     background-image: url("../images/icons/application_delete.png");
-}
+    }
 .pts-menu-add {
     background-image: url("../images/icons/application_add.png");
-}
+    }
 .pts-agreement-folder {
     background-image: url("../images/icons/folder_page.png");
-}
+    }
 .x-grid-tree-node-expanded .pts-agreement-folder {
     background-image: url("../images/icons/folder_page_open.png");
-}
+    }
 .pts-menu-settings {
     background-image: url("../images/icons/cog.png");
-}
+    }
 .pts-menu-logout {
     background-image: url("../images/icons/poweroff.png");
-}
+    }
 .pts-menu-deletebasic {
     background-image: url("../images/icons/delete.png");
-}
+    }
 .pts-menu-addbasic {
     background-image: url("../images/icons/add.png");
-}
+    }
 .pts-menu-editbasic {
     background-image: url("../images/icons/pencil.png");
-}
+    }
 .pts-menu-savebasic {
     background-image: url("../images/icons/disk.png");
-}
+    }
 .pts-menu-savetable {
     background-image: url("../images/icons/table_save.png");
-}
+    }
 .pts-menu-viewlist {
     background-image: url("../images/icons/application_view_list.png");
-}
+    }
 .pts-menu-reset {
     background-image: url("../images/icons/arrow_rotate_anticlockwise.png");
-}
+    }
 .pts-menu-refresh {
     background-image: url("../images/icons/arrow_refresh.png");
-}
+    }
 .pts-arrow-up {
     background-image: url("../images/icons/arrow_up.png");
-}
+    }
 .pts-arrow-up-disabled {
     background-image: url("../images/icons/arrow_up_disabled.png");
-}
+    }
 .pts-arrow-down {
     background-image: url("../images/icons/arrow_down.png");
-}
+    }
 .pts-arrow-down-disabled {
     background-image: url("../images/icons/arrow_down_disabled.png");
-}
+    }
 .pts-exclamation-tab {
     background-image: url("../images/icons/exclamation_tab.png");
-}
+    }
 .pts-menu-exclamation {
     background-image: url("../images/icons/exclamation.png");
-}
+    }
 .pts-menu-user {
     background-image: url("../images/icons/user.png");
-}
+    }
 .pts-menu-users {
     background-image: url("../images/icons/users.png");
-}
+    }
 .pts-money-dollar {
     background-image: url("../images/icons/money_dollar.png");
-}
-.pts-grid-row-hilite .x-grid-cell {
+    }
+.pts-grid-row-hilite .x-grid-cell, .pts-grid-row-phantom .x-grid-cell {
     background-color: transparent;
-}
+    }
+.pts-grid-row-phantom {
+    background-color: #DDFFD5;
+    }
 .pts-deliverable-invalid {
     color: #808080;
-}
+    }
 .pts-deliverable-highlight .x-grid-cell {
     background-color: #FFFFE0;
-}
+    }
 .pts-tree-highlight .x-grid-cell {
     background-color: #F7FAFE;
     border-width: 0 0 1px 0 !important;
-}
+    }
 .pts-tree-header .x-grid-cell {
     border-color: #99BBE8 !important;
     border-width: 0 0 2px !important;
-}
+    }
 .x-grid-row-over .x-grid-cell, .x-grid-row-over .x-grid-rowwrap-div {
     background-color: #EFEFEF;
     border-color: #DDDDDD;
-}
+    }
+.pts-keyword-tree .x-tree-icon { display: none !important; }
+.pts-keyword-tree .pts-tree-branch {
+    font-weight: bold !important;
+    }
+.pts-keyword-tree .x-grid-table .x-grid-row .x-grid-cell{
+    border: none;
+    }
+
 .pts-panel-locked {
     background-image: url("../images/icons/lock_red.png");
-}
+    }
 .pts-panel-unlocked {
     background-image: url("../images/icons/lock_open.png");
-}
-
+    }
 .pts-leaf-red {
     background-image: url("../images/icons/leaf_red.png");
-}
-
+    }
 .pts-page-white {
     background-image: url("../images/icons/page_white.png");
-}
-
+    }
 .pts-page-blue {
     background-image: url("../images/icons/page.png");
-}
-
+    }
 .pts-page-orange {
     background-image: url("../images/icons/page_orange.png");
-}
+    }
 .pts-page-bluecopy {
     background-image: url("../images/icons/page_copy.png");
-}
+    }
 .pts-printer {
     background-image: url("../images/icons/printer.png");
-}
+    }
 .pts-flag-orange {
     background-image: url("../images/icons/flag_orange.png");
-}
+    }
 .pts-flag-red {
     background-image: url("../images/icons/flag_red.png");
-}
+    }
 .pts-flag-gray {
     background-image: url("../images/icons/flag_gray.png");
-}
+    }
 .pts-flag-white {
     background-image: url("../images/icons/flag_white.png");
-}
+    }
 .pts-flag-green {
     background-image: url("../images/icons/flag_green.png");
-}
+    }
 .pts-zoom {
     background-image: url("../images/icons/zoom.png");
-}
+    }
 .pts-icon-download {
     background: url("../images/download.png") no-repeat scroll 2px 0px transparent;
     width: 60px !important;
     height: 64px !important;
-}
+    }
 .pts-contact-fieldset {
     background-color: #EEF0F3;
-}
+    }
 .pts-trigger-zoom {
     background-image: url("../images/trigger_zoom.gif");
-}
+    }
 /*.pts-field-disabled {
     opacity: .5;
     /*IE Hack */
-    /*-ms-filter:"progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+    /*-ms-filter: "progid: DXImageTransform.Microsoft.Alpha(Opacity=50)";
     filter: alpha(opacity=50);
-}*/
+    }
+*/
 #pts-dashboardcalendar .ext-cal-toolbar {
     border-top-width: 0;
-}
+    }
 .pts-no-tree-icons .x-tree-icon {
     visibility: hidden;
     width: 2px;
-}
+    }
 /***Ext.ux***/
 .x-grid-checkheader {
     height: 14px;
@@ -196,22 +210,20 @@
     background-position: 50% -2px;
     background-repeat: no-repeat;
     background-color: transparent;
-}
-
+    }
 .x-grid-checkheader-checked {
     background-image: url('../images/checked.gif');
-}
-
+    }
 .x-grid-checkheader-editor .x-form-cb-wrap {
     text-align: center;
-}
+    }
 /***Custom Calendar Rules***/
 .x-cal-33,
 .x-cal-33-x .ext-cal-evb,
 .ext-ie .x-cal-33-ad,
 .ext-opera .x-cal-33-ad {
     color: #595959;
-}
+    }
 .ext-cal-day-col .x-cal-33,
 .ext-dd-drag-proxy .x-cal-33,
 .x-cal-33-ad,
@@ -222,10 +234,36 @@
     background-color: #595959;
     /*background-image: url("../images/ext-cal-list-hidden.png");
     background-position: right top;
-    background-repeat: no-repeat;*/
-}
-
+    background-repeat: no-repeat;
+    ;*/
+    }
 .x-cal-33-ad,
 .x-cal-33-ad .ext-cal-evm {
     border-color: #595959;
-}
+    }
+/***Notification***/
+.ux-notification-window .x-window-body {
+    text-align: center;
+    padding: 15px 5px 15px 5px;
+    width: 200px;
+    }
+.ux-notification-icon-information {
+    background-image: url('../images/icon16_info.png');
+    }
+.ux-notification-icon-error {
+    background-image: url('../images/icon16_error.png');
+    }
+.ux-notification-light .x-window-header {
+    background-color: transparent;
+    }
+body .ux-notification-light {
+    background: #FFFFFF url('../images/fader.png') repeat-x;
+    z-index: 1000000 !important;
+    }
+.ux-notification-light .x-window-body {
+    text-align: center;
+    padding: 15px 5px 18px 5px;
+    width: 200px;
+    background-color: transparent;
+    border: 0px solid white;
+    }

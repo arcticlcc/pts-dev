@@ -65,7 +65,7 @@ class TreeNode {
 
             $parent->addChild($newNode);
 
-            if(!$newNode->leaf) {
+            if(!$newNode->leaf && isset($children["children"])) {
                 foreach ($children["children"] as $node) {
                      $newNode->addChildren($node, $newNode);
                 }

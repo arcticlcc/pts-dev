@@ -41,6 +41,14 @@ class Project implements ControllerProviderInterface
             return $app['json']->getResponse();
         });
 
+        $controllers->get('project/{id}/projectkeyword', function (Application $app, Request $request, $id) {
+            $table = 'projectkeywordlist'; //need to use projectkeywordlist view
+
+            $app['getRelated']($request, $table, 'projectid', $id);
+
+            return $app['json']->getResponse();
+        });
+
         $controllers->get('project/{id}/task', function (Application $app, Request $request, $id) {
             $table = 'modification';
             $query = array('modtypeid' => 4);

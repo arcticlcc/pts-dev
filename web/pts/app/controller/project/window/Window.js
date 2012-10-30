@@ -23,11 +23,13 @@ Ext.define('PTS.controller.project.window.Window', {
 
         var pf = this.getController('project.form.ProjectForm'),
             pc = this.getController('project.window.ProjectContacts'),
-            pa = this.getController('project.window.ProjectAgreements');
+            pa = this.getController('project.window.ProjectAgreements'),
+            pk = this.getController('project.window.ProjectKeywords');
         // Remember to call the init method manually
         pf.init();
         pc.init();
         pa.init();
+        pk.init();
 
         this.control({
             'projectwindow [action=closewindow]': {

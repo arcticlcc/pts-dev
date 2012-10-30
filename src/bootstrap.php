@@ -48,7 +48,8 @@ $app->register(new Idiorm\IdiormServiceProvider(), array(
     'groupmemberlist' => 'contactcontactgroupid',
     'postalcodelist' => 'postalcode',
     'country' => 'countryiso',
-    'personlist' => 'contactid'
+    'personlist' => 'contactid',
+    'projectkeywordlist' => 'projectkeywordid'
 ));
 
 // Add services to the DI container
