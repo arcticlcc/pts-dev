@@ -156,8 +156,6 @@ Ext.application({
                 PTS.util.ActivityMonitor.start();
             },
             failure: function(user, op) {
-                console.info(user);
-                console.info(op);
                 Ext.MessageBox.show({
                    title: 'Error',
                    msg: 'There was an error.',
@@ -192,7 +190,7 @@ Ext.application({
                 Ext.create('widget.uxNotification', {
                     title: 'Error',
                     iconCls: 'ux-notification-icon-error',
-                    html: txt.message,
+                    html: txt.message
                 }).show();
            }
         });
