@@ -22,7 +22,7 @@ Ext.define('PTS.view.MainToolbar', {
             items: [
                 {
                     xtype: 'tbtext',
-                    html: '<h1>Arctic LCC Project Tracking System</h1>',
+                    html: '<h1>Arctic LCC Project Tracking System <span class="pts-version">v' + PTS.app.version + '</span></h1>',
                     style: {
                         textAlign: 'center',
                         fontSize: '18px'

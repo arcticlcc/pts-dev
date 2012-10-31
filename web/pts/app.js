@@ -31,6 +31,7 @@ Ext.application({
         'Ext.ux.window.Notification'
     ],
     name: 'PTS',
+    version: '0.5',
 
     appFolder: 'app',
     autoCreateViewport: false,
