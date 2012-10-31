@@ -45,17 +45,12 @@ Ext.define('PTS.controller.project.form.TaskForm', {
         var data = [], myGroup, cbx, idx, cont;
 
         //create radio items
-        this.getDeliverableTypesStore().each(function(rec) {
-            var txt = 'task'.toLowerCase(),
-                itm = rec.get('type');
-
-            if((itm.indexOf(txt)+1)) {
-                data.push({
-                    boxLabel: itm,
-                    name: 'deliverabletypeid',
-                    inputValue: rec.get('deliverabletypeid')
-                });
-            }
+        Ext.getStore('TaskTypes').each(function(rec) {
+            data.push({
+                boxLabel: rec.get('type'),
+                name: 'deliverabletypeid',
+                inputValue: rec.get('deliverabletypeid')
+            });
         });
         //create radiogroup
         myGroup = {
