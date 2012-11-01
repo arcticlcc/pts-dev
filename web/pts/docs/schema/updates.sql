@@ -1,73 +1,62 @@
--- Schema: report
+--PTS schema v0.4.1 => v0.5
 
--- DROP SCHEMA report;
+SET search_path = pts, pg_catalog;
 
-CREATE SCHEMA report
-  AUTHORIZATION bradley;
+-- Table: projectkeyword
 
-GRANT ALL ON SCHEMA report TO bradley;
-GRANT USAGE ON SCHEMA report TO pts_read;
+-- DROP TABLE projectkeyword;
 
-ALTER DATABASE pts SET search_path=pts, cvl, report, public;
-
--- View: report.alccsteeringcommittee
-
--- DROP VIEW report.alccsteeringcommittee;
-
-CREATE OR REPLACE VIEW report.alccsteeringcommittee AS
- SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, ccg.groupid AS prigroupid, cg.acronym AS priacronym, cg.name AS prigroupname, p.areacode AS priareacode, p.phnumber AS priphnumber, p.extension AS priextension, p.countryiso AS pricountryiso, e.uri AS priemail
-   FROM person
-   LEFT JOIN ( SELECT phone.phoneid, phone.contactid, phone.addressid, phone.phonetypeid, phone.countryiso, phone.areacode, phone.phnumber, phone.extension, phone.priority, row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
-           FROM phone
-          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
-   LEFT JOIN ( SELECT eaddress.eaddressid, eaddress.contactid, eaddress.eaddresstypeid, eaddress.uri, eaddress.priority, eaddress.comment, row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
-      FROM eaddress
-     WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
-   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
-   FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
-   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid
-   JOIN contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42 AND sc.positionid = 85
-  ORDER BY person.lastname;
-
-ALTER TABLE report.alccsteeringcommittee
+CREATE TABLE projectkeyword
+(
+  projectid integer NOT NULL,
+  keywordid uuid NOT NULL, -- GCMD concept UUID
+  projectkeywordid serial NOT NULL,
+  CONSTRAINT projectconcept_pk PRIMARY KEY (projectkeywordid ),
+  CONSTRAINT concept_projectconcept_fk FOREIGN KEY (keywordid)
+      REFERENCES gcmd.keyword (keywordid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE NO ACTION,
+  CONSTRAINT project_projectconcept_fk FOREIGN KEY (projectid)
+      REFERENCES project (projectid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE,
+  CONSTRAINT projectkeyword_conceptid_projectid_key UNIQUE (keywordid , projectid )
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE projectkeyword
   OWNER TO bradley;
-GRANT ALL ON TABLE report.alccsteeringcommittee TO bradley;
-GRANT SELECT ON TABLE report.alccsteeringcommittee TO pts_read;
+GRANT ALL ON TABLE projectkeyword TO bradley;
+GRANT SELECT ON TABLE projectkeyword TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectkeyword TO pts_write;
+COMMENT ON TABLE projectkeyword
+  IS 'Identify project GCMD concepts(keywords)';
+COMMENT ON COLUMN projectkeyword.keywordid IS 'GCMD concept UUID';
 
--- View: report.alccstaff
+COMMENT ON COLUMN deliverablemod.receiveddate IS '***Deprecated use DELIVERABLEMODSTATUS*** Date the deliverable is delivered';
 
--- DROP VIEW report.alccstaff;
+-- View: projectkeywordlist
 
-CREATE OR REPLACE VIEW report.alccstaff AS
- SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, ccg.groupid AS prigroupid, cg.acronym AS priacronym, cg.name AS prigroupname, p.areacode AS priareacode, p.phnumber AS priphnumber, p.extension AS priextension, p.countryiso AS pricountryiso, e.uri AS priemail
-   FROM person
-   LEFT JOIN ( SELECT phone.phoneid, phone.contactid, phone.addressid, phone.phonetypeid, phone.countryiso, phone.areacode, phone.phnumber, phone.extension, phone.priority, row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
-           FROM phone
-          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
-   LEFT JOIN ( SELECT eaddress.eaddressid, eaddress.contactid, eaddress.eaddresstypeid, eaddress.uri, eaddress.priority, eaddress.comment, row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
-      FROM eaddress
-     WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
-   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
-   FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
-   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid
-   JOIN contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42
-   JOIN contact ON contact.contactid = person.contactid AND contact.contacttypeid = 5
-  ORDER BY person.lastname;
+-- DROP VIEW projectkeywordlist;
 
-ALTER TABLE report.alccstaff
+CREATE OR REPLACE VIEW projectkeywordlist AS
+ SELECT projectkeyword.keywordid, projectkeyword.projectid, projectkeyword.projectkeywordid, keyword.preflabel AS text, keyword.definition, keyword.parentkeywordid
+   FROM projectkeyword
+   JOIN gcmd.keyword USING (keywordid);
+
+ALTER TABLE projectkeywordlist
   OWNER TO bradley;
-GRANT ALL ON TABLE report.alccstaff TO bradley;
-GRANT SELECT ON TABLE report.alccstaff TO pts_read;
+GRANT ALL ON TABLE projectkeywordlist TO bradley;
+GRANT SELECT ON TABLE projectkeywordlist TO pts_read;
 
---timestamp for project comments
-ALTER TABLE projectcomment
-   ALTER COLUMN stamp TYPE timestamp with time zone;
-ALTER TABLE projectcomment
-   ALTER COLUMN stamp SET DEFAULT now();
+GRANT SELECT ON TABLE projectkeyword_projectkeywordid_seq TO GROUP pts_read;
+GRANT SELECT, UPDATE ON TABLE projectkeyword_projectkeywordid_seq TO GROUP pts_write;
+
+
+SET search_path = report, pts, pg_catalog;
 
 -- View: report.shortprojectsummary
 
--- DROP VIEW report.shortprojectsummary;
+DROP VIEW report.shortprojectsummary;
 
 CREATE OR REPLACE VIEW report.shortprojectsummary AS
  SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(string_agg(pi.fullname, '; '::text) OVER (PARTITION BY project.projectid), 'No PI listed'::text) AS principalinvestigators, project.shorttitle, project.abstract, project.description
