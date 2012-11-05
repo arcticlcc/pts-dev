@@ -16,3 +16,6 @@
 [submodule "web/pts/lib/geoext"]
 	path = web/pts/lib/geoext
 	url = https://github.com/geoext/geoext2.git
+[submodule "web/pts/lib/openlayers"]
+	path = web/pts/lib/openlayers
+	url = https://github.com/openlayers/openlayers.git
