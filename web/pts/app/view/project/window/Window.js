@@ -10,7 +10,10 @@ Ext.define('PTS.view.project.window.Window', {
         'PTS.view.project.window.ProjectContacts',
         'PTS.view.project.window.ProjectAgreements',
         'PTS.view.controls.CommentEditGrid',
-        'PTS.view.project.window.ProjectKeywords'
+        'PTS.view.project.window.ProjectKeywords',
+        'PTS.view.project.ProjectMap',
+        'GeoExt.selection.FeatureModel',
+        'Ext.grid.plugin.CellEditing'
     ],
 
     height: Ext.Element.getViewportHeight() - 40,
@@ -73,6 +76,70 @@ Ext.define('PTS.view.project.window.Window', {
                         },
                         {
                             xtype: 'projectkeywords'
+                        },
+                        {
+                            xtype: 'panel',
+                            defaults: {
+                                preventHeader: true
+                            },
+                            layout: {
+                                type: 'border'
+                            },
+                            title: 'Map',
+                            items: [
+                                {
+                                    xtype: 'projectmap',
+                                    //center: '-130.95977783203,10.914916992189',
+                                    center: '-16760019.526289, 9118642.6397498',
+                                    zoom: 4,
+                                    region: 'center'
+                                },
+                                {
+                                    xtype: 'gridpanel',
+                                    itemId: 'featureGrid',
+                                    store: 'ProjectVectors',
+                                    height: 250,
+                                    split: true,
+                                    autoScroll: true,
+                                    title: 'Feature List',
+                                    region: 'south',
+                                    columns: [
+                                        {
+                                            xtype: 'gridcolumn',
+                                            dataIndex: 'name',
+                                            flex: 1,
+                                            text: 'Name',
+                                            editor: {
+                                                xtype: 'textfield',
+                                                allowBlank: false
+                                            }
+                                        },
+                                        {
+                                            xtype: 'gridcolumn',
+                                            dataIndex: 'comment',
+                                            flex: 2,
+                                            text: 'Description',
+                                            editor: {
+                                                xtype: 'textfield',
+                                                allowBlank: false
+                                            }
+                                        }
+                                    ],
+                                    selModel: {
+                                        //autoPanMapOnSelection: true,
+                                        selectControl: {
+                                            id: 'PTS-Select-Row'
+                                        }
+                                    },
+                                    selType: 'featuremodel',
+                                    plugins: [
+                                        Ext.create('Ext.grid.plugin.CellEditing', {
+                                            pluginId: 'cellEdit',
+                                            clicksToEdit: 1
+                                        })
+                                    ]
+                                }
+                            ]
                         }
                     ]
                 }

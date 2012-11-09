@@ -16,9 +16,7 @@ Ext.define('PTS.controller.project.Project', {
         ref: 'projectWindow',
         selector: 'projectwindow'
     }],
-    /*controllers: [
-        'project.window.Window'
-    ],*/
+    stores: ['ProjectVectors'],
 
     init: function() {
         var tab = this.getController('project.tab.ProjectTab'),

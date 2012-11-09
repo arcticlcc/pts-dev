@@ -122,6 +122,9 @@
 .pts-deliverable-highlight .x-grid-cell {
     background-color: #FFFFE0;
     }
+.pts-vector-highlight .x-grid-cell {
+    background-color: #FFFF9C;
+    }
 .pts-tree-highlight .x-grid-cell {
     background-color: #F7FAFE;
     border-width: 0 0 1px 0 !important;
@@ -134,14 +137,15 @@
     background-color: #EFEFEF;
     border-color: #DDDDDD;
     }
-.pts-keyword-tree .x-tree-icon { display: none !important; }
+.pts-keyword-tree .x-tree-icon {
+    display: none !important;
+    }
 .pts-keyword-tree .pts-tree-branch {
     font-weight: bold !important;
     }
-.pts-keyword-tree .x-grid-table .x-grid-row .x-grid-cell{
+.pts-keyword-tree .x-grid-table .x-grid-row .x-grid-cell {
     border: none;
     }
-
 .pts-panel-locked {
     background-image: url("../images/icons/lock_red.png");
     }
@@ -209,6 +213,37 @@
     visibility: hidden;
     width: 2px;
     }
+/***Map****/
+.pts-arrow-right {
+    background-image: url("../images/icons/arrow_right.png");
+    }
+.pts-arrow-left {
+    background-image: url("../images/icons/arrow_left.png");
+    }
+.pts-menu-point {
+    background-image: url("../images/icons/bullet_red.png");
+    }
+.pts-menu-modify {
+    background-image: url("../images/icons/shape_square_edit.png");
+    }
+.pts-menu-move {
+    background-image: url("../images/icons/shape_move.png");
+    }
+.pts-menu-resize {
+    background-image: url("../images/icons/shape_resize.png");
+    }
+.pts-menu-rotate {
+    background-image: url("../images/icons/arrow_rotate_clockwise.png");
+    }
+.pts-menu-line {
+    background-image: url("../images/icons/line_red.png");
+    }
+.pts-menu-polygon {
+    background-image: url("../images/icons/shape_square_red.png");
+    }
+.pts-menu-pan {
+    background-image: url("../images/icons/pan.png");
+    }
 /***Ext.ux***/
 .x-grid-checkheader {
     height: 14px;
@@ -241,7 +276,7 @@
     /*background-image: url("../images/ext-cal-list-hidden.png");
     background-position: right top;
     background-repeat: no-repeat;
-    ;*/
+    */
     }
 .x-cal-33-ad,
 .x-cal-33-ad .ext-cal-evm {
