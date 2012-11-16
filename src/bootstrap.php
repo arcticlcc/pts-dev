@@ -9,6 +9,7 @@ $app = new Application();
 // Register Silex extensions
 //$app->register(new PTS\Service\JSONServiceProvider());
 $app->register(new PTS\Service\PTSServiceProvider());
+$app->register(new PTS\Controller\Feature());
 $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/reports.yml"));
 $app->register(new Silex\Provider\SessionServiceProvider());
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
@@ -49,7 +50,8 @@ $app->register(new Idiorm\IdiormServiceProvider(), array(
     'postalcodelist' => 'postalcode',
     'country' => 'countryiso',
     'personlist' => 'contactid',
-    'projectkeywordlist' => 'projectkeywordid'
+    'projectkeywordlist' => 'projectkeywordid',
+    'projectfeature' => 'id'
 ));
 
 // Add services to the DI container

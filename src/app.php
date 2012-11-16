@@ -328,4 +328,5 @@ $app->mount('/', new PTS\Controller\Invoice());
 $app->mount('/', new PTS\Controller\Funding());
 $app->mount('/', new PTS\Controller\Report());
 $app->mount('/', new PTS\Controller\Keyword());
+$app->mount('/', new PTS\Controller\Feature());
 ?>

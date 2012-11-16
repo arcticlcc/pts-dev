@@ -9,6 +9,7 @@ Ext.define('PTS.view.project.ProjectMap', {
         'GeoExt.panel.Map',
         'GeoExt.slider.Zoom',
         'GeoExt.slider.Tip',
+        'GeoExt.slider.LayerOpacity',
         'Ext.toolbar.Toolbar',
         'PTS.view.controls.MapToolbar',
         'PTS.view.button.Edit',
@@ -65,18 +66,35 @@ Ext.define('PTS.view.project.ProjectMap', {
                         return url + path;
                 }}),
             saveStrategy = new OpenLayers.Strategy.Save(),
+            fixedStrategy = new OpenLayers.Strategy.Fixed(),
+            refreshStrategy = new OpenLayers.Strategy.Refresh(),
             vector = new OpenLayers.Layer.Vector("Project Features",{
+                visibility: false,
                 strategies: [
-                    new OpenLayers.Strategy.Fixed(),
+                    refreshStrategy,
+                    fixedStrategy,
                     saveStrategy
                 ],
                 protocol: new OpenLayers.Protocol.HTTP({
-                    url: '../polygon',
+                    url: '../projectfeature',
                     format: new OpenLayers.Format.GeoJSON({
                         ignoreExtraDims: true
-                    })
+                    }),
+                    deleteWithPOST: true
                 })
-            });
+            }),
+            protoCallBack = function(resp) {
+                //console.info(arguments);
+                if(resp.code !== OpenLayers.Protocol.Response.SUCCESS) {
+                    PTS.app.showError('There was an error processing the features.</br>Error: ' + Ext.decode(resp.priv.responseText).message);
+                }
+            };
+
+        //TODO: better error handling, specific to type of operation
+        vector.protocol.options.update = { callback: protoCallBack, scope: this };
+        vector.protocol.options.create = { callback: protoCallBack, scope: this };
+        vector.protocol.options.delete = { callback: protoCallBack, scope: this };
+
         var layerInfo = {
           "currentVersion" : 10.01,
           "mapName" : "Layers",
@@ -155,10 +173,12 @@ Ext.define('PTS.view.project.ProjectMap', {
         for (var i=0; i<layerInfo.tileInfo.lods.length; i++) {
             resolutions.push(layerInfo.tileInfo.lods[i].resolution);
         }
-        var topo = new OpenLayers.Layer.ArcGISCache( "World Topo",
+        var topo = new OpenLayers.Layer.ArcGISCache( "Topo",
             "http://services.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer", {
-                isBaseLayer: true,
+                isBaseLayer: false,
                 wrapDateLine: false,
+                visibility: true,
+                displayInLayerSwitcher:false,
                 //From layerInfo above
                 resolutions: resolutions,
                 tileSize: new OpenLayers.Size(layerInfo.tileInfo.cols, layerInfo.tileInfo.rows),
@@ -168,8 +188,9 @@ Ext.define('PTS.view.project.ProjectMap', {
             });
         var nmap = new OpenLayers.Layer.ArcGISCache( "National Map Vector",
             "http://basemap.nationalmap.gov/ArcGIS/rest/services/TNM_Vector_Small/MapServer", {
-                isBaseLayer: true,
+                isBaseLayer: false,
                 wrapDateLine: false,
+                visibility: false,
                 //From layerInfo above
                 resolutions: resolutions,
                 tileSize: new OpenLayers.Size(layerInfo.tileInfo.cols, layerInfo.tileInfo.rows),
@@ -179,16 +200,64 @@ Ext.define('PTS.view.project.ProjectMap', {
             });
         var bdlMerc = new OpenLayers.Layer.XYZ( "GINA BDL",
                     "http://tiles.gina.alaska.edu/tilesrv/bdl/tile/${x}/${y}/${z}",
-                    {sphericalMercator: true,wrapDateLine: true});
+                    {sphericalMercator: true,isBaseLayer: false,wrapDateLine: true, displayInLayerSwitcher:false});
+
+        var topoSlider = Ext.create('GeoExt.slider.LayerOpacity', {
+            id: "topoSlider",
+            layer: topo,
+            complementaryLayer: bdlMerc,
+            changeVisibility: true,
+            aggressive: true,
+            vertical: true,
+            height: 120,
+            x: 10,
+            y: 200,
+            plugins: Ext.create("GeoExt.slider.Tip", {
+                getText: function(thumb) {
+                    return Ext.String.format('{0}%', thumb.value);
+                }
+            })
+        });
+
+        var topoBdl = new OpenLayers.Layer( "Topo/Imagery",
+                    {sphericalMercator: true,isBaseLayer: false,wrapDateLine: true, displayInLayerSwitcher:true});
+
+        topoBdl.events.on({
+            "visibilitychanged": function(evt) {
+//console.info(arguments);
+//console.info(this);
+                var vis = evt.object.visibility,
+                    slider = this;
+
+                slider.setVisible(vis);
+                slider.complementaryLayer.setVisibility(vis);
+                slider.layer.setVisibility(vis);
+            },
+            scope: topoSlider
+        });
+
+        var plain = new OpenLayers.Layer( "Empty",
+                    {sphericalMercator: true,isBaseLayer: true,wrapDateLine: true, displayInLayerSwitcher:false});
+
         me.map = new OpenLayers.Map('map', {
             maxExtent: maxExtent,
-            StartBounds: layerMaxExtent,
+            //StartBounds: layerMaxExtent,
             units: (layerInfo.units == "esriFeet") ? 'ft' : 'm',
             resolutions: resolutions,
             tileSize: new OpenLayers.Size(layerInfo.tileInfo.cols, layerInfo.tileInfo.rows),
             projection: 'EPSG:' + layerInfo.spatialReference.wkid,
-            layers: [bdlMerc,topo,nmap,vector]
+            layers: [plain,topoBdl,bdlMerc,topo,nmap,vector]
         });
+
+        //prevent selection of feature with state === 'Deleted'
+        vector.events.on({
+            "beforefeatureselected": function(evt) {
+                if(evt.feature.state === OpenLayers.State.DELETE) {
+                    return false;
+                }
+            }
+        });
+
         Ext.applyIf(me, {
 //            center: '12.3046875,51.48193359375',
 //            zoom: 6,
@@ -210,7 +279,9 @@ Ext.define('PTS.view.project.ProjectMap', {
                         return Ext.String.format(out, slider.getZoom(), slider.getResolution(), slider.getScale());
                     }
                 })
-            }],
+            },
+                topoSlider
+            ],
             projectVectors: vector/*,
             dockedItems: [{
                 xtype: 'toolbar',
@@ -237,6 +308,7 @@ Ext.define('PTS.view.project.ProjectMap', {
                 map: me.map,
                 vectorLayer: vector,
                 saveStrategy: saveStrategy,
+                refreshStrategy: refreshStrategy,
                 dock: 'top',
                 defaults: {
                     //disabled: true,

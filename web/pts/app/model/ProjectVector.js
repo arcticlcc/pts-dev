@@ -15,6 +15,7 @@ Ext.define('PTS.model.ProjectVector', {
                 }
             }
         },
+        {name: 'projectid', type: 'int', useNull: true},
         {name: 'name', type: 'mystring', useNull: true},
         {name: 'comment', type: 'mystring', useNull: true}
     ],

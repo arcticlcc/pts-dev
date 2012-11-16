@@ -122,6 +122,9 @@
 .pts-deliverable-highlight .x-grid-cell {
     background-color: #FFFFE0;
     }
+.pts-delete-highlight .x-grid-cell {
+    background-color: #FFE3E5;
+    }
 .pts-vector-highlight .x-grid-cell {
     background-color: #FFFF9C;
     }
@@ -244,6 +247,12 @@
 .pts-menu-pan {
     background-image: url("../images/icons/pan.png");
     }
+.olControlLayerSwitcher .layersDiv {
+    background-color: #6395BA !important;
+    }
+#topoSlider .x-slider-vert,#topoSlider .x-slider-vert .x-slider-end,#topoSlider .x-slider-vert .x-slider-inner {
+    background-image: url("../images/slider-v-bg.png");
+}
 /***Ext.ux***/
 .x-grid-checkheader {
     height: 14px;

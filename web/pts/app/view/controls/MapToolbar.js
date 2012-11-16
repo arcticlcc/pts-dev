@@ -8,6 +8,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
         'GeoExt.Action',
         'PTS.view.button.Edit',
         'PTS.view.button.Save',
+        'PTS.view.button.Delete',
+        'PTS.view.button.Reset',
         'Ext.button.Button',
         'Ext.button.Split',
         'Ext.menu.CheckItem'
@@ -31,17 +33,25 @@ Ext.define('PTS.view.controls.MapToolbar', {
      */
     saveStrategy: null,
 
+    /**
+     * @cfg {OpenLayers.Strategy.Refresh} refreshStrategy
+     * The vector layer refresh strategy.
+     */
+    refreshStrategy: null,
+
     initComponent: function() {
         var me = this,
             map = me.map,
             vector = me.vectorLayer,
             items = [],
-            ctrl,
-            modify,
-            sel;
+            NavControl,
+            ModifyFeature,
+            DeleteFeature,
+            //UnDeleteFeature,
+            SelectHover;
 
         //select on hover
-        sel = new OpenLayers.Control.SelectFeature(vector,{
+        SelectHover = new OpenLayers.Control.SelectFeature(vector,{
             id: 'PTS-Select-Hover',
             hover: true,
             highlightOnly: true,
@@ -115,7 +125,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             }*/
         });
 
-        /*sel.events.on({
+        /*SelectHover.events.on({
             "beforefeaturehighlighted": function(evt) {
                 if(this.highlightOnly && evt.feature.renderIntent === "select") {
                     return false;
@@ -136,6 +146,26 @@ Ext.define('PTS.view.controls.MapToolbar', {
             text: "max extent",
             tooltip: "zoom to max extent"
         })));*/
+
+        // Navigation history - two "button" controls
+        NavControl = new OpenLayers.Control.NavigationHistory();
+        map.addControl(NavControl);
+
+        items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
+            //text: "previous",
+            iconCls: "pts-arrow-left",
+            control: NavControl.previous,
+            disabled: true,
+            tooltip: "previous in history"
+        })));
+
+        items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
+            //text: "next",
+            iconCls: "pts-arrow-right",
+            control: NavControl.next,
+            disabled: true,
+            tooltip: "next in history"
+        })));
 
         items.push("-");
 
@@ -231,7 +261,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
                 labelOutlineWidth: 3
         });
 
-        modify = new OpenLayers.Control.ModifyFeature(vector,{
+        ModifyFeature = new OpenLayers.Control.ModifyFeature(vector,{
             id:'PTS-Modify-Feature',
             vertexRenderIntent: 'vertex'
         });
@@ -240,7 +270,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             text: 'Modify',
             itemId: 'modify',
             iconCls: 'pts-menu-modify',
-            control: modify,
+            control: ModifyFeature,
             map: map,
             toggleGroup: "draw",
             allowDepress: false,
@@ -282,18 +312,18 @@ Ext.define('PTS.view.controls.MapToolbar', {
                 render: function(btn){
                     btn.menu.items.each(function(itm) {
                         itm.on('checkchange', function(chkItm, checked) {
-                            var feature = modify.feature;
+                            var feature = ModifyFeature.feature;
 
                             if(checked) {
-                                modify.mode = chkItm.modoption;
+                                ModifyFeature.mode = chkItm.modoption;
                                 //set the correct icon and text
                                 btn.setText(chkItm.text);
                                 btn.setIconCls(chkItm.iconCls);
 
                                 if(feature) {
                                     //we need to reselect the feature to update the control
-                                    modify.unselectFeature(feature);
-                                    modify.selectFeature(feature);
+                                    ModifyFeature.unselectFeature(feature);
+                                    ModifyFeature.selectFeature(feature);
                                 }
                                 //make sure the button is pressed
                                 btn.toggle(true);
@@ -303,8 +333,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
                 }/*,
                 toggle: function(btn, pressed){
                     console.info(btn);
-                    console.info(sel);
-                    sel.highlightOnly = pressed;
+                    console.info(SelectHover);
+                    SelectHover.highlightOnly = pressed;
                 }*/
             }
         })));
@@ -314,32 +344,150 @@ Ext.define('PTS.view.controls.MapToolbar', {
         items.push({
             xtype: 'savebutton',
             handler: function() {
+                var remove = [];
+                //destroy "deleted" features that have not been persisted
+                Ext.each(vector.features, function(feature) {
+                    if(feature.state === OpenLayers.State.DELETE && feature.fid == undefined) {
+                        remove.push(feature);
+                    }
+                });
+                vector.destroyFeatures(remove);
                 me.saveStrategy.save();
             },
             disabled: false
         });
 
+        if(me.refreshStrategy) {
+            items.push({
+                xtype: 'resetbutton',
+                handler: function() {
+                    me.refreshStrategy.refresh();
+                },
+                disabled: false
+            });
+        }
+
         items.push("-");
 
-        // Navigation history - two "button" controls
-        ctrl = new OpenLayers.Control.NavigationHistory();
-        map.addControl(ctrl);
+        vector.styleMap.styles.delete = new OpenLayers.Style({
+                fillColor: "#FF272C",
+                strokeColor: "#FF272C"
+        });
 
-        items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
-            //text: "previous",
-            iconCls: "pts-arrow-left",
-            control: ctrl.previous,
-            disabled: true,
-            tooltip: "previous in history"
+        //Delete control
+        DeleteFeature = OpenLayers.Class(OpenLayers.Control, {
+            initialize: function(layer, options) {
+                OpenLayers.Control.prototype.initialize.apply(this, [options]);
+                this.layer = layer;
+                this.handler = new OpenLayers.Handler.Feature(
+                    this, layer, {click: this.clickFeature}
+                );
+            },
+            clickFeature: function(feature) {
+                this.layer.events.triggerEvent("beforedeletetoggle", {feature: feature});
+
+                if(feature.state === OpenLayers.State.DELETE) {
+                    // if feature doesn't have a fid, need to insert
+                    if(feature.fid == undefined) {
+                        feature.state = OpenLayers.State.INSERT;
+                    } else {
+                        feature.state = OpenLayers.State.UPDATE;
+                    }
+                    this.highlight(feature);
+                    this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
+
+                } else {
+                    // if feature doesn't have a fid, destroy it
+                    /*if(feature.fid == undefined) {
+                        this.layer.destroyFeatures([feature]);
+                    } else {*/
+                        feature.state = OpenLayers.State.DELETE;
+                        this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
+                        //this.layer.drawFeature(feature,"delete");
+                        this.highlight(feature);
+                    //}
+                }
+
+                this.layer.events.triggerEvent("deletetoggle", {feature: feature});
+            },
+            highlight: function(feature) {
+                var layer = feature.layer;
+
+                feature._prevHighlighter = feature._lastHighlighter;
+                feature._lastHighlighter = this.id;
+
+                if(feature.state === OpenLayers.State.DELETE) {
+                    layer.drawFeature(feature, "delete");
+                } else {
+                    layer.drawFeature(feature, "default");
+                }
+
+            },
+            setMap: function(map) {
+                this.handler.setMap(map);
+                OpenLayers.Control.prototype.setMap.apply(this, arguments);
+            },
+            CLASS_NAME: "OpenLayers.Control.DeleteFeature"
+        });
+
+        //UnDelete control
+        /*UnDeleteFeature = OpenLayers.Class(OpenLayers.Control, {
+            initialize: function(layer, options) {
+                OpenLayers.Control.prototype.initialize.apply(this, [options]);
+                this.layer = layer;
+                this.handler = new OpenLayers.Handler.Feature(
+                    this, layer, {click: this.clickFeature}
+                );
+            },
+            clickFeature: function(feature) {
+                // if feature doesn't have a fid, need to insert
+                if(feature.fid == undefined) {
+                    feature.state = OpenLayers.State.INSERT;
+                } else {
+                    feature.state = OpenLayers.State.UPDATE;
+                }
+
+                this.highlight(feature);
+                this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
+            },
+            highlight: function(feature) {
+                var layer = feature.layer;
+
+                feature._prevHighlighter = feature._lastHighlighter;
+                feature._lastHighlighter = this.id;
+                layer.drawFeature(feature, "default");
+            },
+            setMap: function(map) {
+                this.handler.setMap(map);
+                OpenLayers.Control.prototype.setMap.apply(this, arguments);
+            },
+            CLASS_NAME: "OpenLayers.Control.UnDeleteFeature"
+        });*/
+
+        items.push(Ext.create('PTS.view.button.Delete',Ext.create('GeoExt.Action', {
+            control: new DeleteFeature(vector),
+            map: map,
+            // button options
+            text: 'Toggle Delete',
+            disabled: false,
+            toggleGroup: "draw",
+            allowDepress: false,
+            tooltip: "Delete Features"
         })));
+        /*items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
+            control: new UnDeleteFeature(vector),
+            map: map,
+            // button options
+            text: 'Restore',
+            disabled: false,
+            toggleGroup: "draw",
+            allowDepress: false,
+            iconCls: "pts-arrow-left",
+            tooltip: "Restore Features"
+        })));*/
 
-        items.push(Ext.create('Ext.button.Button', {
-            //text: "next",
-            iconCls: "pts-arrow-right",
-            control: ctrl.next,
-            disabled: true,
-            tooltip: "next in history"
-        }));
+        items.push("-");
+
         items.push("->");
 
         // Help action
