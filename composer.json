@@ -5,7 +5,8 @@
         "twig/twig": "1.8.*",
         "doctrine/dbal": "2.2.*",
         "igorw/config-service-provider": "1.0.*",
-        "symfony/yaml": "2.1.*"
+        "symfony/yaml": "2.1.*",
+        "geokit/geokit": "dev-doctrine"
     },
 
     "autoload": {
