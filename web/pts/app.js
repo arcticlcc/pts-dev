@@ -73,6 +73,18 @@ Ext.application({
     },
 
     /**
+     * Creates an error notification.
+     * @param {String} txt The error string.
+     */
+    showError: function(txt) {
+        Ext.create('widget.uxNotification', {
+            title: 'Error',
+            iconCls: 'ux-notification-icon-error',
+            html: txt
+        }).show();
+    },
+
+    /**
      * Launch the application.
      */
     launch: function() {
