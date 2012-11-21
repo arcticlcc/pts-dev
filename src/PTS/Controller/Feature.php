@@ -241,10 +241,11 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                 $object = $app['idiorm']->getTable($table)->find_one($id[1]);
 
                 if($object) {
+                    //we'll actually return from the projectfeature view
+                    $return = $app['idiorm']->getTable('projectfeature')->find_one($geom->type .'-' . $id[1]);
+                    $result[] = $return->as_array();
+                    //delete the object
                     $object->delete();
-
-                    $object = $app['idiorm']->getTable('projectfeature')->find_one($geom->type .'-' . $id[1]);
-                    $result[] = $object->as_array();
 
                     $geoJSON = $app['toGeoJSON']($result);
                     return new Response($geoJSON, 200, array(

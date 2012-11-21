@@ -52,6 +52,9 @@ Ext.define('PTS.controller.project.window.Window', {
                 beforerender: this.onProjectMapBeforeRender,
                 afterlayout: this.onProjectMapAfterLayout
             },
+            'projectwindow projectmap maptoolbar': {
+                beforerender: this.onMapToolbarBeforeRender
+            },
             'projectwindow projectmap maptoolbar button#modify': {
                 toggle: this.onModifyBtnToggle
             },
@@ -90,6 +93,13 @@ Ext.define('PTS.controller.project.window.Window', {
 
         editor.record.set('projectid',id);
         editor.store.sync();
+    },
+
+    /**
+     * MapToolbar beforerender listener
+     */
+    onMapToolbarBeforeRender: function(tb) {
+        tb.maskCmp = this.getProjectMap().ownerCt;
     },
 
     /**
@@ -135,6 +145,11 @@ Ext.define('PTS.controller.project.window.Window', {
                     }).show();*/
                 }
                 mapPanel.ownerCt.getEl().unmask();
+            },
+            "refresh": function(evt) {
+                //deselect feature row before refresh to prevent grid selection events
+                //from trying to access non-existent objects after refresh
+                this.getSelectionModel().deselectAll();
             },
             scope: this.getFeatureGrid()
         });
@@ -306,7 +321,7 @@ Ext.define('PTS.controller.project.window.Window', {
 
         if(pressed && sel.length === 1) {
             map = btn.up('projectmap').map;
-            map.getControlsBy('id','PTS-Modify-Feature')[0].selectFeature(sel.first().raw);
+            map.getControlsBy('id','PTS-Modify-Feature')[0].selectControl.select(sel.first().raw);
         }
     },
 

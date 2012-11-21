@@ -39,6 +39,39 @@ Ext.define('PTS.view.controls.MapToolbar', {
      */
     refreshStrategy: null,
 
+    /**
+     * @cfg {Ext.container.Container/boolean} maskCmp
+     * The container to mask when calling save or refresh strategy.
+     * If set to true, the ownerCt of the toolbar is masked.
+     */
+    maskCmp: false,
+
+    /**
+     * Mask the component specified by the {@link #maskCmp} config.
+     * @param {String} message The messsage to display.
+     */
+    showMask: function(message) {
+        var me = this,
+            cmp = me.maskCmp === true ? me.ownerCt : me.maskCmp,
+            m = message ? message: 'Loading Project Features...';
+
+        if(cmp) {
+            cmp.getEl().mask(m);
+        }
+    },
+
+    /**
+     * Unmask the component specified by the {@link #maskCmp} config.
+     */
+    unmask: function() {
+        var me = this,
+            cmp = me.maskCmp === true ? me.ownerCt : me.maskCmp;
+
+        if(cmp) {
+            cmp.getEl().unmask();
+        }
+    },
+
     initComponent: function() {
         var me = this,
             map = me.map,
@@ -186,7 +219,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
         }));
 
         items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
-            text: 'Draw Point',
+            text: 'Point',
             iconCls: 'pts-menu-point',
             control: new OpenLayers.Control.DrawFeature(vector, OpenLayers.Handler.Point),
             map: map,
@@ -199,7 +232,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
         })));
 
         items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
-            text: 'Draw Line',
+            text: 'Line',
             iconCls: 'pts-menu-line',
             control: new OpenLayers.Control.DrawFeature(vector, OpenLayers.Handler.Path),
             map: map,
@@ -212,7 +245,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
         })));
 
         items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
-            text: 'Draw Polygon',
+            text: 'Polygon',
             iconCls: 'pts-menu-polygon',
             control: new OpenLayers.Control.DrawFeature(vector, OpenLayers.Handler.Polygon),
             map: map,
@@ -238,11 +271,11 @@ Ext.define('PTS.view.controls.MapToolbar', {
         })));*/
 
         vector.styleMap.styles.vertex = new OpenLayers.Style({
-                fillColor: "#EEEC00",
+                fillColor: "#EE00E2",
                 fillOpacity: 0.4,
                 hoverFillColor: "white",
                 hoverFillOpacity: 0.8,
-                strokeColor: "#EEEC00",
+                strokeColor: "#EE00E2",
                 strokeOpacity: 1,
                 strokeWidth: 1,
                 strokeLinecap: "round",
@@ -341,29 +374,54 @@ Ext.define('PTS.view.controls.MapToolbar', {
 
         items.push("-");
 
+        //add events to saveStrategy to show/hide mask
+        if(me.maskCmp) {
+            me.saveStrategy.events.on({
+                start: function() {
+                    this.showMask('Saving project features...');
+                },
+                success: function() {
+                    this.unmask();
+                },
+                fail: function() {
+                    this.unmask();
+                },
+                scope: this
+            });
+        }
+
         items.push({
             xtype: 'savebutton',
             handler: function() {
-                var remove = [];
-                //destroy "deleted" features that have not been persisted
-                Ext.each(vector.features, function(feature) {
-                    if(feature.state === OpenLayers.State.DELETE && feature.fid == undefined) {
-                        remove.push(feature);
-                    }
-                });
-                vector.destroyFeatures(remove);
-                me.saveStrategy.save();
+                var remove = [],
+                    dirty = Ext.Array.some(vector.features, function(f){
+                        return f.state;
+                    });
+
+                if(dirty) {
+                    //destroy "deleted" features that have not been persisted
+                    Ext.each(vector.features, function(feature) {
+                        if(feature.state === OpenLayers.State.DELETE && feature.fid == undefined) {
+                            remove.push(feature);
+                        }
+                    });
+                    vector.destroyFeatures(remove);
+                    me.saveStrategy.save();
+                }
             },
-            disabled: false
+            disabled: false,
+            tooltip: 'Save project features'
         });
 
         if(me.refreshStrategy) {
             items.push({
                 xtype: 'resetbutton',
                 handler: function() {
+                    me.showMask();
                     me.refreshStrategy.refresh();
                 },
-                disabled: false
+                disabled: false,
+                tooltip: 'Reload the project features'
             });
         }
 
@@ -430,49 +488,15 @@ Ext.define('PTS.view.controls.MapToolbar', {
             CLASS_NAME: "OpenLayers.Control.DeleteFeature"
         });
 
-        //UnDelete control
-        /*UnDeleteFeature = OpenLayers.Class(OpenLayers.Control, {
-            initialize: function(layer, options) {
-                OpenLayers.Control.prototype.initialize.apply(this, [options]);
-                this.layer = layer;
-                this.handler = new OpenLayers.Handler.Feature(
-                    this, layer, {click: this.clickFeature}
-                );
-            },
-            clickFeature: function(feature) {
-                // if feature doesn't have a fid, need to insert
-                if(feature.fid == undefined) {
-                    feature.state = OpenLayers.State.INSERT;
-                } else {
-                    feature.state = OpenLayers.State.UPDATE;
-                }
-
-                this.highlight(feature);
-                this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
-            },
-            highlight: function(feature) {
-                var layer = feature.layer;
-
-                feature._prevHighlighter = feature._lastHighlighter;
-                feature._lastHighlighter = this.id;
-                layer.drawFeature(feature, "default");
-            },
-            setMap: function(map) {
-                this.handler.setMap(map);
-                OpenLayers.Control.prototype.setMap.apply(this, arguments);
-            },
-            CLASS_NAME: "OpenLayers.Control.UnDeleteFeature"
-        });*/
-
         items.push(Ext.create('PTS.view.button.Delete',Ext.create('GeoExt.Action', {
             control: new DeleteFeature(vector),
             map: map,
             // button options
-            text: 'Toggle Delete',
+            text: 'Delete',
             disabled: false,
             toggleGroup: "draw",
             allowDepress: false,
-            tooltip: "Delete Features"
+            tooltip: "Click to mark features for deletion. Click again to unmark."
         })));
         /*items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
             control: new UnDeleteFeature(vector),

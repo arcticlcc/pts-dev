@@ -309,6 +309,7 @@ Ext.define('PTS.view.project.ProjectMap', {
                 vectorLayer: vector,
                 saveStrategy: saveStrategy,
                 refreshStrategy: refreshStrategy,
+                maskCmp: true,
                 dock: 'top',
                 defaults: {
                     //disabled: true,
