@@ -1,75 +1,102 @@
---PTS schema v0.4.1 => v0.5
+-- Executing query:
+-- Table: projectline
 
-SET search_path = pts, pg_catalog;
+ DROP TABLE projectline;
 
--- Table: projectkeyword
-
--- DROP TABLE projectkeyword;
-
-CREATE TABLE projectkeyword
+CREATE TABLE projectline
 (
   projectid integer NOT NULL,
-  keywordid uuid NOT NULL, -- GCMD concept UUID
-  projectkeywordid serial NOT NULL,
-  CONSTRAINT projectconcept_pk PRIMARY KEY (projectkeywordid ),
-  CONSTRAINT concept_projectconcept_fk FOREIGN KEY (keywordid)
-      REFERENCES gcmd.keyword (keywordid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT project_projectconcept_fk FOREIGN KEY (projectid)
+  projectlineid SERIAL NOT NULL,
+  name character varying NOT NULL,
+  comment character varying NOT NULL,
+  CONSTRAINT projectline_pk PRIMARY KEY (projectlineid ),
+  CONSTRAINT project_projectline_fk FOREIGN KEY (projectid)
       REFERENCES project (projectid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE,
-  CONSTRAINT projectkeyword_conceptid_projectid_key UNIQUE (keywordid , projectid )
+      ON UPDATE NO ACTION ON DELETE CASCADE
 )
 WITH (
-  OIDS=FALSE
+  OIDS=TRUE
 );
-ALTER TABLE projectkeyword
+ALTER TABLE projectline
   OWNER TO bradley;
-GRANT ALL ON TABLE projectkeyword TO bradley;
-GRANT SELECT ON TABLE projectkeyword TO pts_read;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectkeyword TO pts_write;
-COMMENT ON TABLE projectkeyword
-  IS 'Identify project GCMD concepts(keywords)';
-COMMENT ON COLUMN projectkeyword.keywordid IS 'GCMD concept UUID';
+GRANT ALL ON TABLE projectline TO bradley;
+GRANT SELECT ON TABLE projectline TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectline TO pts_write;
 
-COMMENT ON COLUMN deliverablemod.receiveddate IS '***Deprecated use DELIVERABLEMODSTATUS*** Date the deliverable is delivered';
 
--- View: projectkeywordlist
+-- Executing query:
+-- Table: projectpolygon
 
--- DROP VIEW projectkeywordlist;
+ DROP TABLE projectpolygon;
 
-CREATE OR REPLACE VIEW projectkeywordlist AS
- SELECT projectkeyword.keywordid, projectkeyword.projectid, projectkeyword.projectkeywordid, keyword.preflabel AS text, keyword.definition, keyword.parentkeywordid
-   FROM projectkeyword
-   JOIN gcmd.keyword USING (keywordid);
-
-ALTER TABLE projectkeywordlist
+CREATE TABLE projectpolygon
+(
+  projectid integer NOT NULL,
+  projectpolygonid SERIAL NOT NULL,
+  name character varying NOT NULL,
+  comment character varying NOT NULL,
+  CONSTRAINT projectpolygon_pk PRIMARY KEY (projectpolygonid ),
+  CONSTRAINT project_projectpolygon_fk FOREIGN KEY (projectid)
+      REFERENCES project (projectid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE projectpolygon
   OWNER TO bradley;
-GRANT ALL ON TABLE projectkeywordlist TO bradley;
-GRANT SELECT ON TABLE projectkeywordlist TO pts_read;
-
-GRANT SELECT ON TABLE projectkeyword_projectkeywordid_seq TO GROUP pts_read;
-GRANT SELECT, UPDATE ON TABLE projectkeyword_projectkeywordid_seq TO GROUP pts_write;
+GRANT ALL ON TABLE projectpolygon TO bradley;
+GRANT SELECT ON TABLE projectpolygon TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectpolygon TO pts_write;
 
 
-SET search_path = report, pts, pg_catalog;
 
--- View: report.shortprojectsummary
+-- Executing query:
+-- Table: projectpoint
 
-DROP VIEW report.shortprojectsummary;
+ DROP TABLE projectpoint;
 
-CREATE OR REPLACE VIEW report.shortprojectsummary AS
- SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(string_agg(pi.fullname, '; '::text) OVER (PARTITION BY project.projectid), 'No PI listed'::text) AS principalinvestigators, project.shorttitle, project.abstract, project.description
-   FROM project
-   LEFT JOIN projectcontact pc ON project.projectid = pc.projectid AND pc.roletypeid = 7
-   LEFT JOIN ( SELECT person.contactid, ((person.firstname::text || ' '::text) || person.lastname::text) || COALESCE(', '::text || cg.name::text, ''::text) AS fullname
-      FROM person
-   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
-              FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
-   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid) pi USING (contactid)
-   JOIN contactgroup ON project.orgid = contactgroup.contactid;
-
-ALTER TABLE report.shortprojectsummary
+CREATE TABLE projectpoint
+(
+  projectid integer NOT NULL,
+  projectpointid SERIAL NOT NULL,
+  name character varying NOT NULL,
+  comment character varying NOT NULL,
+  CONSTRAINT projectpoint_pk PRIMARY KEY (projectpointid ),
+  CONSTRAINT project_projectpoint_fk FOREIGN KEY (projectid)
+      REFERENCES project (projectid) MATCH SIMPLE
+      ON UPDATE NO ACTION ON DELETE CASCADE
+)
+WITH (
+  OIDS=TRUE
+);
+ALTER TABLE projectpoint
   OWNER TO bradley;
-GRANT ALL ON TABLE report.shortprojectsummary TO bradley;
-GRANT SELECT ON TABLE report.shortprojectsummary TO pts_read;
+GRANT ALL ON TABLE projectpoint TO bradley;
+GRANT SELECT ON TABLE projectpoint TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectpoint TO pts_write;
+
+
+-- Executing query:
+SELECT AddGeometryColumn ('pts','projectpoint','the_geom',3857,'POINT',2);
+SELECT AddGeometryColumn ('pts','projectpolygon','the_geom',3857,'POLYGON',2);
+SELECT AddGeometryColumn ('pts','projectline','the_geom',3857,'LINESTRING',2);
+
+-- View: projectfeature
+
+-- DROP VIEW projectfeature;
+
+CREATE OR REPLACE VIEW projectfeature AS
+        (         SELECT projectpoint.projectid, 'Point-'::text || projectpoint.projectpointid AS id, projectpoint.name, projectpoint.comment, st_asgeojson(projectpoint.the_geom, 8) AS geom
+                   FROM projectpoint
+        UNION
+                 SELECT projectpolygon.projectid, 'Polygon-'::text || projectpolygon.projectpolygonid AS id, projectpolygon.name, projectpolygon.comment, st_asgeojson(projectpolygon.the_geom, 8) AS geom
+                   FROM projectpolygon)
+UNION
+         SELECT projectline.projectid, 'LineString-'::text || projectline.projectlineid AS id, projectline.name, projectline.comment, st_asgeojson(projectline.the_geom, 8) AS geom
+           FROM projectline;
+
+ALTER TABLE projectfeature
+  OWNER TO bradley;
+GRANT ALL ON TABLE projectfeature TO bradley;
+GRANT SELECT ON TABLE projectfeature TO pts_read;
