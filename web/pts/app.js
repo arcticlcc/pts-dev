@@ -109,10 +109,19 @@ Ext.application({
                     reader: {
                         type: 'json',
                         root: 'data'
+                    },
+                    //For ALCC, we only want staff not SC members
+                    extraParams: {
+                        filter: Ext.encode([
+                            {
+                                property: 'positionid',
+                                value   : ['where not in',[96, 85]]
+                            }
+                        ])
                     }
                 });
                 //TODO: Account for ability to change groups,
-                //This store will need to be reloaded.
+                //this store will need to be reloaded.
                 store.load();
 
                 Ext.create('PTS.view.Viewport');

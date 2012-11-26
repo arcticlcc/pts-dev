@@ -213,7 +213,7 @@ class PTSServiceProvider implements ServiceProviderInterface
             $start = $request->get('start') ?: $app['start'];
             $limit = $request->get('limit') ?: $app['limit'];
             $sort = $request->get('sort');
-
+            $filter = json_decode($request->get('filter'));
             $result = array();
 
             try {
@@ -226,7 +226,13 @@ class PTSServiceProvider implements ServiceProviderInterface
                         $query->where($k, $v);
                     }
                 }
-
+                //add the filters
+                if (isset($filter)) {
+                    //loop thru filter array
+                    foreach($filter as $val) {
+                        $app['addFilter']($query, $val);
+                    }
+                }
                 $count = clone $query;
 
                 if(isset($sort)) {
@@ -356,6 +362,53 @@ class PTSServiceProvider implements ServiceProviderInterface
                 $app['json']->setAll(null, 409, false, $exc->getMessage());
             }
         });*/
+
+        /**
+         *@app addFilter
+         * Add filter to query
+         */
+        $app['addFilter'] = $app->protect(function (&$query, $filter) use ($app) {
+            //if the filter value is an array test for operator
+            //TODO: Implement all Idiorm operators
+            if(is_array($filter->value)) {
+                switch ($filter->value[0]) {
+                    case '>':
+                        $query->where_gt($filter->property, $filter->value[1]);
+                        break;
+                    case '<':
+                        $query->where_lt($filter->property, $filter->value[1]);
+                        break;
+                    case '<=':
+                        $query->where_lte($filter->property, $filter->value[1]);
+                        break;
+                    case '>=':
+                        $query->where_gte($filter->property, $filter->value[1]);
+                        break;
+                    case 'null':
+                        $query->where_null($filter->property);
+                        break;
+                    case 'not null':
+                        $query->where_not_null($filter->property);
+                        break;
+                    case 'like':
+                        $query->where_like($filter->property, $filter->value[1]);
+                        break;
+                    case 'ilike':
+                        $query->where_ilike($filter->property, $filter->value[1] . '%');
+                        break;
+                    case 'where in':
+                        $query->where_in($filter->property, $filter->value[1]);
+                        break;
+                    case 'where not in':
+                        $query->where_not_in($filter->property, $filter->value[1]);
+                        break;
+                    default:
+                        throw new Exception("Invalid filter operator.");
+                }
+            }else {
+                $query->where($filter->property,$filter->value);
+            }
+        });
     }
 }
 

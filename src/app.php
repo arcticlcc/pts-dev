@@ -81,41 +81,7 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
         if (isset($filter)) {
             //loop thru filter array
             foreach($filter as $val) {
-
-                //if the filter value is an array test for operator
-                //TODO: Implement all Idiorm operators
-                if(is_array($val->value)) {
-                    switch ($val->value[0]) {
-                        case '>':
-                            $query->where_gt($val->property, $val->value[1]);
-                            break;
-                        case '<':
-                            $query->where_lt($val->property, $val->value[1]);
-                            break;
-                        case '<=':
-                            $query->where_lte($val->property, $val->value[1]);
-                            break;
-                        case '>=':
-                            $query->where_gte($val->property, $val->value[1]);
-                            break;
-                        case 'null':
-                            $query->where_null($val->property);
-                            break;
-                        case 'not null':
-                            $query->where_not_null($val->property);
-                            break;
-                        case 'like':
-                            $query->where_like($val->property, $val->value[1]);
-                            break;
-                        case 'ilike':
-                            $query->where_ilike($val->property, $val->value[1] . '%');
-                            break;
-                        default:
-                            throw new Exception("Invalid filter operator.");
-                    }
-                }else {
-                    $query->where($val->property,$val->value);
-                }
+                $app['addFilter']($query, $val);
             }
         }
 
