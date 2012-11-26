@@ -1,3 +1,5 @@
+--version 0.6--
+
 -- Executing query:
 -- Table: projectline
 
@@ -8,7 +10,7 @@ CREATE TABLE projectline
   projectid integer NOT NULL,
   projectlineid SERIAL NOT NULL,
   name character varying NOT NULL,
-  comment character varying NOT NULL,
+  comment character varying,
   CONSTRAINT projectline_pk PRIMARY KEY (projectlineid ),
   CONSTRAINT project_projectline_fk FOREIGN KEY (projectid)
       REFERENCES project (projectid) MATCH SIMPLE
@@ -34,7 +36,7 @@ CREATE TABLE projectpolygon
   projectid integer NOT NULL,
   projectpolygonid SERIAL NOT NULL,
   name character varying NOT NULL,
-  comment character varying NOT NULL,
+  comment character varying,
   CONSTRAINT projectpolygon_pk PRIMARY KEY (projectpolygonid ),
   CONSTRAINT project_projectpolygon_fk FOREIGN KEY (projectid)
       REFERENCES project (projectid) MATCH SIMPLE
@@ -61,7 +63,7 @@ CREATE TABLE projectpoint
   projectid integer NOT NULL,
   projectpointid SERIAL NOT NULL,
   name character varying NOT NULL,
-  comment character varying NOT NULL,
+  comment character varying,
   CONSTRAINT projectpoint_pk PRIMARY KEY (projectpointid ),
   CONSTRAINT project_projectpoint_fk FOREIGN KEY (projectid)
       REFERENCES project (projectid) MATCH SIMPLE
@@ -100,3 +102,22 @@ ALTER TABLE projectfeature
   OWNER TO bradley;
 GRANT ALL ON TABLE projectfeature TO bradley;
 GRANT SELECT ON TABLE projectfeature TO pts_read;
+
+-- View: grouppersonlist
+
+-- DROP VIEW grouppersonlist;
+
+CREATE OR REPLACE VIEW grouppersonlist AS
+ SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, contactcontactgroup.groupid, contactgroup.acronym, contactgroup.name, contactcontactgroup.positionid
+   FROM contactcontactgroup
+   JOIN contactgroup ON contactgroup.contactid = contactcontactgroup.groupid
+   JOIN person ON person.contactid = contactcontactgroup.contactid;
+
+-- Column: description
+
+-- ALTER TABLE polygon DROP COLUMN description;
+
+ALTER TABLE polygon ADD COLUMN description character varying;
+COMMENT ON COLUMN polygon.description IS 'Description of vector feature.';
+
+SELECT AddGeometryColumn ('pts','polygon','the_geom',3857,'POLYGON',2);
