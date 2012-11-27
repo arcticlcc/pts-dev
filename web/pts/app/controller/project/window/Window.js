@@ -151,6 +151,30 @@ Ext.define('PTS.controller.project.window.Window', {
                 //from trying to access non-existent objects after refresh
                 this.getSelectionModel().deselectAll();
             },
+            "ptsfeaturesupdated": function(resp) {
+                var store = this.getStore(),
+                    type = resp.requestType.toLowerCase(),
+                    features;
+
+                //update the state of the grid records
+                if(type === 'create') {
+                    features = resp.reqFeatures;
+                    //create does not return an array for single record
+                    if(Ext.typeOf(features) !== 'array') {
+                        features = [features];
+                    }
+                    Ext.each(features, function(f) {
+                        store.getById(f.id).commit();
+                    });
+                } else {
+                    features = resp.features;
+                    Ext.each(features, function(f) {
+                        store.data.findBy(function(record) {
+                            return record.raw.fid === f.fid;
+                        }).commit();
+                    });
+                }
+            },
             scope: this.getFeatureGrid()
         });
 

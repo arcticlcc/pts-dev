@@ -87,6 +87,9 @@ Ext.define('PTS.view.project.ProjectMap', {
                 //console.info(arguments);
                 if(resp.code !== OpenLayers.Protocol.Response.SUCCESS) {
                     PTS.app.showError('There was an error processing the features.</br>Error: ' + Ext.decode(resp.priv.responseText).message);
+                } else if(resp.requestType.toLowerCase() !== 'delete'){
+                //custom event called when successful
+                    this.projectVectors.events.triggerEvent("ptsfeaturesupdated", resp);
                 }
             };
 
