@@ -9,7 +9,9 @@ Ext.define('PTS.view.project.window.ProjectContacts', {
     requires: [
         'Ext.ux.CheckColumn',
         'Ext.ux.grid.HeaderToolTip',
-        'PTS.view.contact.ContactLists'
+        'PTS.view.contact.ContactLists',
+        'Ext.selection.CheckboxModel',
+        'Ext.grid.plugin.DragDrop'
     ],
 
     layout: {

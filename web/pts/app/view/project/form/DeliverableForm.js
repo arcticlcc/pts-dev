@@ -10,7 +10,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
         'PTS.view.controls.ManagerCombo',
         'PTS.view.controls.StatusCombo',
         'PTS.view.controls.RowEditGrid',
-        'PTS.view.controls.CommentEditGrid'
+        'PTS.view.controls.CommentEditGrid',
+        'Ext.form.CheckboxGroup'
     ],
 
     itemId: 'itemCard-30',

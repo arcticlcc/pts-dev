@@ -7,7 +7,9 @@ Ext.define('PTS.view.project.window.ProjectKeywords', {
     alias: 'widget.projectkeywords',
     requires: [
         'PTS.view.controls.KeywordTree',
-        'Ext.ux.grid.FilterBar'
+        'Ext.ux.grid.FilterBar',
+        'Ext.grid.plugin.DragDrop',
+        'Ext.grid.column.Template'
     ],
 
     layout: {

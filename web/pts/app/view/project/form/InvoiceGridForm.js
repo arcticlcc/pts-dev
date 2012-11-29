@@ -9,7 +9,8 @@ Ext.define('PTS.view.project.form.InvoiceGridForm', {
     requires: [
         'PTS.view.controls.RowEditGrid',
         'PTS.view.controls.CurrencyField',
-        'Ext.util.Format.usMoney'
+        'Ext.util.Format.usMoney',
+        'Ext.grid.column.Number'
     ],
 
     activeItem: 0,

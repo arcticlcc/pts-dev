@@ -4,6 +4,10 @@
 Ext.define('PTS.view.controls.KeywordTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.keywordtree',
+    requires: [
+       'Ext.tree.plugin.TreeViewDragDrop',
+       'Ext.grid.column.Template'
+    ],
 
     //useArrows: true,
     rootVisible: false,

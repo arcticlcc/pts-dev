@@ -4,6 +4,9 @@
 Ext.define('PTS.view.controls.PhoneFieldContainer', {
     extend: 'PTS.view.controls.MyFieldContainer',
     alias: 'widget.phonefieldcontainer',
+    requires: [
+        'Ext.form.field.Display'
+    ],
 
     /**
      * @cfg {Boolean/String}

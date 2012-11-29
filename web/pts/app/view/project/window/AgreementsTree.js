@@ -7,8 +7,7 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.agreementstree',
     requires: [
-       // 'Ext.ux.CheckColumn',
-       // 'Ext.ux.grid.HeaderToolTip'
+       'Ext.tree.plugin.TreeViewDragDrop'
     ],
 
     border: '0 0 0 1',

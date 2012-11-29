@@ -6,7 +6,10 @@
 Ext.define('PTS.view.project.form.ProjectForm', {
     extend: 'Ext.form.Panel',
     alias: 'widget.projectform',
-    requires: ['PTS.view.controls.DateRangeField'],
+    requires: [
+        'PTS.view.controls.DateRangeField',
+        'Ext.form.field.Display'
+    ],
 
     autoScroll: true,
     bodyPadding: 5,

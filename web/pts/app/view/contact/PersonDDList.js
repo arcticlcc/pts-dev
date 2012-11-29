@@ -6,7 +6,9 @@ Ext.define('PTS.view.contact.PersonDDList', {
     extend: 'Ext.grid.Panel',
     alias: 'widget.personddlist',
     requires: [
-        'Ext.ux.grid.FilterBar'
+        'Ext.ux.grid.FilterBar',
+        'Ext.selection.CheckboxModel',
+        'Ext.grid.plugin.DragDrop'
     ],
 
     title:'Persons',

@@ -10,7 +10,9 @@ Ext.define('PTS.view.contact.window.PersonGroups', {
         'Ext.ux.CheckColumn',
         'Ext.ux.grid.HeaderToolTip',
         'PTS.view.contact.GroupDDList',
-        'PTS.view.contact.PersonDDList'
+        'PTS.view.contact.PersonDDList',
+        'Ext.selection.CheckboxModel',
+        'Ext.grid.plugin.DragDrop'
     ],
 
     layout: {
