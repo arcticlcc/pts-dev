@@ -11,7 +11,7 @@
 
     <script type="text/javascript" src="extjs/ext.js"></script>
 
-    <!--<script src="lib/OpenLayers/OpenLayers.js"></script>-->
+    <script src="lib/openlayers/OpenLayers.js"></script>
     <script type="text/javascript">
         Ext.define('UserId', {
             singleton: true,
