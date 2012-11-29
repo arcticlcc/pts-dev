@@ -19,10 +19,22 @@ Ext.define('PTS.view.project.ProjectMap', {
     title: 'Map',
 
     /**
+     * @property {OpenLayers.Layer.Vector} projectVectors
+     * The map layer containing the project vector features.
+     */
+
+    /**
      * @cfg {boolean} showTools
      * True to show the map toolbar.
      */
     displayTools: true,
+
+    /**
+     * @cfg {string} commonStore
+     * The store to use for the add feature menu,
+     * passed to the toolbar. Only applicable if displayTools is true.
+     */
+    commonStore: false,
 
     /**
      * @cfg {OpenLayers.Layer.Vector} projectVectors
@@ -96,7 +108,7 @@ Ext.define('PTS.view.project.ProjectMap', {
         //TODO: better error handling, specific to type of operation
         vector.protocol.options.update = { callback: protoCallBack, scope: this };
         vector.protocol.options.create = { callback: protoCallBack, scope: this };
-        vector.protocol.options.delete = { callback: protoCallBack, scope: this };
+        vector.protocol.options["delete"] = { callback: protoCallBack, scope: this };
 
         var layerInfo = {
           "currentVersion" : 10.01,
@@ -227,8 +239,6 @@ Ext.define('PTS.view.project.ProjectMap', {
 
         topoBdl.events.on({
             "visibilitychanged": function(evt) {
-//console.info(arguments);
-//console.info(this);
                 var vis = evt.object.visibility,
                     slider = this;
 
@@ -285,25 +295,12 @@ Ext.define('PTS.view.project.ProjectMap', {
             },
                 topoSlider
             ],
-            projectVectors: vector/*,
-            dockedItems: [{
-                xtype: 'toolbar',
-                dock: 'top',
-                items: [{
-                    text: 'Current center of the map',
-                    handler: function(){
-                        var c = GeoExt.panel.Map.guess().map.getCenter();
-                        Ext.Msg.alert(this.getText(), c.toString());
-                    }
-                }]
-            }]*/
+            projectVectors: vector
         });
 
         me.callParent(arguments);
 
         me.map.addControl(new OpenLayers.Control.LayerSwitcher());
-        //bind vector to store
-        //Ext.getStore('ProjectVectors').bind(vector);
 
         if(me.displayTools) {
            me.mapToolbar =  {
@@ -312,57 +309,43 @@ Ext.define('PTS.view.project.ProjectMap', {
                 vectorLayer: vector,
                 saveStrategy: saveStrategy,
                 refreshStrategy: refreshStrategy,
+                commonStore: me.commonStore,
                 maskCmp: true,
-                dock: 'top',
-                defaults: {
-                    //disabled: true,
-                    //hidden: true
-                }/*,
-                items: [
-                    {
-                        text: 'Current center of the map',
-                        handler: function(){
-                            var c = GeoExt.panel.Map.guess().map.getCenter();
-                            Ext.Msg.alert(this.getText(), c.toString());
-                        },
-                        hidden: true
-                    },{
-                        xtype: 'editbutton',
-                        disabled: false,
-                        hidden: false,
-                        handler: function(btn) {
-                            btn.ownerCt.items.each(function(i) {
-                                i.show();
-                            });
-                            btn.hide();
-                        }
-                    },{
-                        xtype: 'savebutton'
-                    }, Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
-                        control: new OpenLayers.Control.ZoomToMaxExtent(),
-                        map: me.map,
-                        text: "max extent",
-                        tooltip: "zoom to max extent"
-                    })),{
-                        text: 'Draw Point',
-                        iconCls: 'pts-menu-point',
-                        action: 'addpoint'
-                    },{
-                        text: 'Draw Line',
-                        iconCls: 'pts-menu-line',
-                        action: 'addline'
-                    },{
-                        text: 'Draw Polygon',
-                        iconCls: 'pts-menu-polygon',
-                        action: 'addpolygon'
-                    },{
-                        text: 'Modify',
-                        iconCls: 'pts-menu-modify',
-                        action: 'modify'
-                    }
-                ]*/
+                dock: 'top'
             };
             me.addDocked(me.mapToolbar);
+        }
+    },
+
+    /**
+     * Add features to the project vector layer.
+     */
+
+    addVector: function(wkt) {
+        var me = this,
+            vectors = me.projectVectors,
+            format = new OpenLayers.Format.WKT(),
+            bounds, features;
+
+        features = format.read(wkt);
+
+        if(features) {
+            if(features.constructor != Array) {
+                features = [features];
+            }
+            for(var i=0; i<features.length; ++i) {
+
+                features[i].state = OpenLayers.State.INSERT;
+
+                if (!bounds) {
+                    bounds = features[i].geometry.getBounds();
+                } else {
+                    bounds.extend(features[i].geometry.getBounds());
+                }
+
+            }
+            vectors.addFeatures(features);
+            me.map.zoomToExtent(bounds);
         }
     }
 });

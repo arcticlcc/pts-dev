@@ -38,6 +38,9 @@
     width: 16px !important;
     height: 16px !important;
     }
+.pts-loading-small {
+    background-image: url("../images/loading.gif");
+    }
 .pts-menu-edit {
     background-image: url("../images/icons/application_edit.png");
     }

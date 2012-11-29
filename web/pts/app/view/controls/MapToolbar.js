@@ -12,7 +12,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
         'PTS.view.button.Reset',
         'Ext.button.Button',
         'Ext.button.Split',
-        'Ext.menu.CheckItem'
+        'Ext.menu.CheckItem',
+        'Ext.ux.StoreMenu'
     ],
 
     /**
@@ -38,6 +39,12 @@ Ext.define('PTS.view.controls.MapToolbar', {
      * The vector layer refresh strategy.
      */
     refreshStrategy: null,
+
+    /**
+     * @cfg {string} commonStore
+     * The store to use for the add feature menu.
+     */
+    commonStore: false,
 
     /**
      * @cfg {Ext.container.Container/boolean} maskCmp
@@ -150,27 +157,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
                         this.unselect(feature);
                     }
                 }
-            }/*,
-            eventListeners: {
-                beforefeaturehighlighted: report,
-                featurehighlighted: report,
-                featureunhighlighted: report
-            }*/
-        });
-
-        /*SelectHover.events.on({
-            "beforefeaturehighlighted": function(evt) {
-                if(this.highlightOnly && evt.feature.renderIntent === "select") {
-                    return false;
-                }
-            },
-            "beforefeatureunhighlighted": function(evt) {
-                if(this.highlightOnly && evt.feature.renderIntent === "select") {
-                    return false;
-                }
             }
-        });*/
-
+        });
 
         // ZoomToMaxExtent control, a "button" control
         /*items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
@@ -206,16 +194,11 @@ Ext.define('PTS.view.controls.MapToolbar', {
         items.push(Ext.create('Ext.button.Button',{
             text: 'Pan',
             iconCls: 'pts-menu-pan',
-            //control: new OpenLayers.Control.Navigation(),
-            //map: map,
             // button options
             toggleGroup: "draw",
             allowDepress: false,
             pressed: true,
-            tooltip: "Pan the map"//,
-            // check item options
-            //group: "draw",
-            //checked: true
+            tooltip: "Pan the map"
         }));
 
         items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
@@ -226,9 +209,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             // button options
             toggleGroup: "draw",
             allowDepress: false,
-            tooltip: "Draw a point"//,
-            // check item options
-            //group: "draw"
+            tooltip: "Draw a point"
         })));
 
         items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
@@ -239,9 +220,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             // button options
             toggleGroup: "draw",
             allowDepress: false,
-            tooltip: "Draw a line"//,
-            // check item options
-            //group: "draw"
+            tooltip: "Draw a line"
         })));
 
         items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
@@ -252,23 +231,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
             // button options
             toggleGroup: "draw",
             allowDepress: false,
-            tooltip: "Draw a polygon"//,
-            // check item options
-            //group: "draw"
+            tooltip: "Draw a polygon"
         })));
-
-        /*items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
-            text: 'Modify',
-            iconCls: 'pts-menu-modify',
-            control: new OpenLayers.Control.ModifyFeature(vector),
-            map: map,
-            // button options
-            toggleGroup: "draw",
-            allowDepress: false,
-            tooltip: "Modify a feature"//,
-            // check item options
-            //group: "draw"
-        })));*/
 
         vector.styleMap.styles.vertex = new OpenLayers.Style({
                 fillColor: "#EE00E2",
@@ -363,12 +327,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
                             }
                         });
                     });
-                }/*,
-                toggle: function(btn, pressed){
-                    console.info(btn);
-                    console.info(SelectHover);
-                    SelectHover.highlightOnly = pressed;
-                }*/
+                }
             }
         })));
 
@@ -394,6 +353,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             xtype: 'savebutton',
             handler: function() {
                 var remove = [],
+                    persisted,
                     dirty = Ext.Array.some(vector.features, function(f){
                         return f.state;
                     });
@@ -401,12 +361,18 @@ Ext.define('PTS.view.controls.MapToolbar', {
                 if(dirty) {
                     //destroy "deleted" features that have not been persisted
                     Ext.each(vector.features, function(feature) {
-                        if(feature.state === OpenLayers.State.DELETE && feature.fid == undefined) {
-                            remove.push(feature);
+                        if(feature.state === OpenLayers.State.DELETE) {
+                            if(feature.fid == undefined) {
+                                remove.push(feature);
+                            }else {
+                                persisted = true;
+                            }
                         }
                     });
                     vector.destroyFeatures(remove);
-                    me.saveStrategy.save();
+                    if(persisted) {
+                        me.saveStrategy.save();
+                    }
                 }
             },
             disabled: false,
@@ -427,7 +393,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
 
         items.push("-");
 
-        vector.styleMap.styles.delete = new OpenLayers.Style({
+        vector.styleMap.styles["delete"] = new OpenLayers.Style({
                 fillColor: "#FF272C",
                 strokeColor: "#FF272C"
         });
@@ -456,14 +422,9 @@ Ext.define('PTS.view.controls.MapToolbar', {
 
                 } else {
                     // if feature doesn't have a fid, destroy it
-                    /*if(feature.fid == undefined) {
-                        this.layer.destroyFeatures([feature]);
-                    } else {*/
-                        feature.state = OpenLayers.State.DELETE;
-                        this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
-                        //this.layer.drawFeature(feature,"delete");
-                        this.highlight(feature);
-                    //}
+                    feature.state = OpenLayers.State.DELETE;
+                    this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
+                    this.highlight(feature);
                 }
 
                 this.layer.events.triggerEvent("deletetoggle", {feature: feature});
@@ -498,20 +459,20 @@ Ext.define('PTS.view.controls.MapToolbar', {
             allowDepress: false,
             tooltip: "Click to mark features for deletion. Click again to unmark."
         })));
-        /*items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
-            control: new UnDeleteFeature(vector),
-            map: map,
-            // button options
-            text: 'Restore',
-            disabled: false,
-            toggleGroup: "draw",
-            allowDepress: false,
-            iconCls: "pts-arrow-left",
-            tooltip: "Restore Features"
-        })));*/
 
         items.push("-");
 
+        if(me.commonStore) {
+            items.push({
+                text: 'Add Feature',
+                iconCls: 'pts-menu-addbasic',
+                itemId: 'addFeature',
+                menu: Ext.create('Ext.ux.StoreMenu', {
+                    store: 'CommonVectors',
+                    loadingCls: 'pts-loading-small'
+                })
+            });
+        }
         items.push("->");
 
         // Help action

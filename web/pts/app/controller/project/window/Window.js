@@ -10,7 +10,8 @@ Ext.define('PTS.controller.project.window.Window', {
     ],
     stores: [
         'ProjectComments',
-        'ProjectVectors'
+        'ProjectVectors',
+        'CommonVectors'
     ],
     refs: [{
         ref: 'projectWindow',
@@ -55,6 +56,9 @@ Ext.define('PTS.controller.project.window.Window', {
             'projectwindow projectmap maptoolbar': {
                 beforerender: this.onMapToolbarBeforeRender
             },
+            'projectwindow projectmap maptoolbar #addFeature menuitem': {
+                click: this.onAddFeatureMenuClick
+            },
             'projectwindow projectmap maptoolbar button#modify': {
                 toggle: this.onModifyBtnToggle
             },
@@ -96,14 +100,26 @@ Ext.define('PTS.controller.project.window.Window', {
     },
 
     /**
-     * MapToolbar beforerender listener
+     * MapToolbar beforerender handler
      */
     onMapToolbarBeforeRender: function(tb) {
         tb.maskCmp = this.getProjectMap().ownerCt;
     },
 
     /**
-     * ProjectMap afterlayout listener
+     * On click handler for the addFeature menu
+     */
+    onAddFeatureMenuClick: function(item, evt) {
+        var rec = this.getCommonVectorsStore().getById(item.itemId),
+            wkt = rec.get('wkt');
+
+        if(wkt) {
+            this.getProjectMap().addVector(wkt);
+        }
+    },
+
+    /**
+     * ProjectMap afterlayout handler
      */
     onProjectMapAfterLayout: function(mapPanel) {
 
@@ -138,11 +154,6 @@ Ext.define('PTS.controller.project.window.Window', {
 
                 if(resp.code !== OpenLayers.Protocol.Response.SUCCESS) {
                     PTS.app.showError('There was an error loading the features.</br>Error: ' + Ext.decode(resp.priv.responseText).message);
-                    /*Ext.create('widget.uxNotification', {
-                        title: 'Error',
-                        iconCls: 'ux-notification-icon-error',
-                        html: 'There was an error loading the features.</br>Error: ' + Ext.decode(resp.priv.responseText).message
-                    }).show();*/
                 }
                 mapPanel.ownerCt.getEl().unmask();
             },
@@ -183,7 +194,7 @@ Ext.define('PTS.controller.project.window.Window', {
     },
 
     /**
-     * ProjectMap beforerender listener
+     * ProjectMap beforerender handler
      */
     onProjectMapBeforeRender: function(mapPanel) {
         var ctl,
@@ -287,20 +298,6 @@ Ext.define('PTS.controller.project.window.Window', {
                 }
             }
         });
-            /*over = function(feature) {
-                var rec = grid.getStore().getByFeature(feature),
-                    row = grid.getView().getNode(rec),
-                    rowEl = Ext.get(row);
-
-                rowEl.addCls('pts-vector-highlight');
-            },
-            out = function(feature) {
-                var rec = grid.getStore().getByFeature(feature),
-                    row = grid.getView().getNode(rec),
-                    rowEl = Ext.get(row);
-
-                rowEl.removeCls('pts-vector-highlight');
-            };*/
 
         ctl.events.on({
             "beforefeatureunhighlighted": function(evt) {
@@ -334,7 +331,7 @@ Ext.define('PTS.controller.project.window.Window', {
     },
 
     /**
-     * MapToolbar Modify button toggle listener
+     * MapToolbar Modify button toggle handler
      *
      * Use the ModifyFeature control to select vector tied
      * to currently selected grid row, if any.
@@ -350,7 +347,7 @@ Ext.define('PTS.controller.project.window.Window', {
     },
 
     /**
-     * FeatureGrid viewready listener
+     * FeatureGrid viewready handler
      *
      * If the modifyfeature control is active, we call it's
      * selectFeature method when a grid row is selected.
@@ -370,21 +367,6 @@ Ext.define('PTS.controller.project.window.Window', {
                 ctl.selectFeature(feature);
             }
         };
-
-        /*sel.on({
-            "beforefeatureselected": function(evt) {
-                //don't do anything if this is a vertex
-                if(evt.feature.renderIntent === 'vertex') {
-                    var mod = ctl.map.getControlsBy('id','PTS-Modify-Feature')[0].feature;
-                    //just redraw the feature if it's being modified
-                    if(ctl.highlightOnly && evt.feature === mod) {
-                        ctl.layer.drawFeature(evt.feature, "temporary");
-                        return false;
-                    }
-                return false;
-                }
-            }
-        });*/
 
         //add the projectid to new records
         addId = function(store, records) {
@@ -448,22 +430,15 @@ Ext.define('PTS.controller.project.window.Window', {
     },
 
     /**
-     * FeatureGrid deselect listener
+     * FeatureGrid deselect handler
      *
      * Commit edits and make sure the proper style is applied
      * when a grid row is deselected.
      */
     onFeatureGridDeselect: function(rm, rec, idx) {
-        var cell = rm.view.ownerCt.getPlugin('cellEdit');//,
-            //layer = rec.raw.layer,
-            //edit = cell.activeRecord;
+        var cell = rm.view.ownerCt.getPlugin('cellEdit');
 
         cell.completeEdit();
         rm.selectControl.unselect(rec.raw);
-        /*if(edit == rec) {
-            layer.drawFeature(rec.raw, 'select');
-        } else {
-            layer.drawFeature(rec.raw, 'default');
-        }*/
     }
 });

@@ -89,6 +89,7 @@ Ext.define('PTS.view.project.window.Window', {
                             items: [
                                 {
                                     xtype: 'projectmap',
+                                    commonStore: 'CommonVectors',
                                     //center: '-130.95977783203,10.914916992189',
                                     center: '-16760019.526289, 9118642.6397498',
                                     zoom: 4,

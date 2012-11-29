@@ -38,10 +38,8 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
          * table. Does NOT support "multi" geometries.
          */
         $app['toWKT'] = $app->protect(function ($geom) use ($app) {
-             //print_r($geom);
             $points = array();
 
-             //print_r($points);
             switch($geom->type) {
                 case 'Polygon':
                     foreach($geom->coordinates[0] as $val) {
@@ -88,10 +86,8 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                 //assign the rest of the values as propoerties
                 $j['properties'] = $feature;
                 $features[] = $j;
-//echo 'test';
-//print_r($idCol);
             }
-//print_r($idCol);
+
             $geoJSON .= json_encode($features) . '}';
 
             return $geoJSON;
