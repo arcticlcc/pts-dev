@@ -367,6 +367,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
                             }else {
                                 persisted = true;
                             }
+                        }else {
+                            persisted = true;
                         }
                     });
                     vector.destroyFeatures(remove);
