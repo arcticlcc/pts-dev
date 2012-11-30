@@ -9,1994 +9,2098 @@
                 "debug": true
             },
             "files": [
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Observable.js"
-                },
-                {
-                    "path": "extjs/src/app/",
-                    "name": "Controller.js"
-                },
-                {
-                    "path": "extjs/src/app/",
-                    "name": "EventBus.js"
-                },
-                {
-                    "path": "extjs/src/form/action/",
-                    "name": "Action.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Connection.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Floating.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Association.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Template.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Filter.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "IdGenerator.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Operation.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Sorter.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "validations.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "ClickRepeater.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "TextMetrics.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "KeyMap.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "VTypes.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Animate.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "HashMap.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ComponentQuery.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "SortTypes.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/boxOverflow/",
-                    "name": "None.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DragTracker.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Ajax.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Offset.js"
-                },
-                {
-                    "path": "extjs/src/data/writer/",
-                    "name": "Writer.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Field.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "KeyNav.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Memento.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ZIndexManager.js"
-                },
-                {
-                    "path": "extjs/src/layout/",
-                    "name": "Layout.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "ResultSet.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "CubicBezier.js"
-                },
-                {
-                    "path": "extjs/src/state/",
-                    "name": "Provider.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "Proxy.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "Queue.js"
-                },
-                {
-                    "path": "extjs/src/fx/target/",
-                    "name": "Target.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "StatusProxy.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "Color.js"
-                },
-                {
-                    "path": "extjs/src/form/action/",
-                    "name": "Load.js"
-                },
-                {
-                    "path": "extjs/src/form/action/",
-                    "name": "Submit.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "XTemplate.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "AbstractMixedCollection.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Sortable.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "MixedCollection.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Errors.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "StoreManager.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "AbstractManager.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ModelManager.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ComponentManager.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "Manager.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Region.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "ComponentDragger.js"
-                },
-                {
-                    "path": "extjs/src/data/writer/",
-                    "name": "Json.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "FocusManager.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Types.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Field.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "AbstractContainer.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Container.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Anchor.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/boxOverflow/",
-                    "name": "Scroller.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DragDropManager.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Component.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Button.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "ProgressBar.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/field/",
-                    "name": "Field.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/field/",
-                    "name": "Text.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/field/",
-                    "name": "TextArea.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "Labelable.js"
-                },
-                {
-                    "path": "extjs/src/data/reader/",
-                    "name": "Reader.js"
-                },
-                {
-                    "path": "extjs/src/data/reader/",
-                    "name": "Json.js"
-                },
-                {
-                    "path": "extjs/src/data/proxy/",
-                    "name": "Proxy.js"
-                },
-                {
-                    "path": "extjs/src/data/proxy/",
-                    "name": "Client.js"
-                },
-                {
-                    "path": "extjs/src/data/proxy/",
-                    "name": "Memory.js"
-                },
-                {
-                    "path": "extjs/src/data/proxy/",
-                    "name": "Server.js"
-                },
-                {
-                    "path": "extjs/src/data/proxy/",
-                    "name": "Ajax.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Model.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "Easing.js"
-                },
-                {
-                    "path": "extjs/src/state/",
-                    "name": "Manager.js"
-                },
-                {
-                    "path": "extjs/src/state/",
-                    "name": "Stateful.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "AbstractComponent.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Component.js"
-                },
-                {
-                    "path": "extjs/src/picker/",
-                    "name": "Color.js"
-                },
-                {
-                    "path": "extjs/src/button/",
-                    "name": "Button.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ProgressBar.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "Fill.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Base.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Text.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "TextArea.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Auto.js"
-                },
-                {
-                    "path": "extjs/src/container/",
-                    "name": "AbstractContainer.js"
-                },
-                {
-                    "path": "extjs/src/container/",
-                    "name": "Container.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "Header.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "Item.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "Separator.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/boxOverflow/",
-                    "name": "Menu.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Box.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "HBox.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "VBox.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "Toolbar.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "AbstractPanel.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "AbstractDock.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Dock.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Tip.js"
-                },
-                {
-                    "path": "extjs/src/fx/target/",
-                    "name": "Element.js"
-                },
-                {
-                    "path": "extjs/src/fx/target/",
-                    "name": "CompositeElement.js"
-                },
-                {
-                    "path": "extjs/src/fx/target/",
-                    "name": "Sprite.js"
-                },
-                {
-                    "path": "extjs/src/fx/target/",
-                    "name": "Component.js"
-                },
-                {
-                    "path": "extjs/src/fx/target/",
-                    "name": "CompositeSprite.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "Manager.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "Animator.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "Draw.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "PropertyHandler.js"
-                },
-                {
-                    "path": "extjs/src/fx/",
-                    "name": "Anim.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DragDrop.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DD.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DDProxy.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DragSource.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "DD.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "Panel.js"
-                },
-                {
-                    "path": "extjs/src/window/",
-                    "name": "Window.js"
-                },
-                {
-                    "path": "extjs/src/window/",
-                    "name": "MessageBox.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "Basic.js"
-                },
-                {
-                    "path": "extjs/src/tip/",
-                    "name": "Tip.js"
-                },
-                {
-                    "path": "extjs/src/tip/",
-                    "name": "ToolTip.js"
-                },
-                {
-                    "path": "extjs/src/tip/",
-                    "name": "QuickTip.js"
-                },
-                {
-                    "path": "extjs/src/tip/",
-                    "name": "QuickTipManager.js"
-                },
-                {
-                    "path": "extjs/src/app/",
-                    "name": "Application.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Point.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Layer.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Batch.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "PluginManager.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "LoadMask.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "Tool.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Request.js"
-                },
-                {
-                    "path": "extjs/src/resizer/",
-                    "name": "Resizer.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Auto.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "CSS.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "KeyNav.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ElementLoader.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "Item.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "CheckItem.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "Separator.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Draw.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Grouper.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "CompositeSprite.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "AbstractFit.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "AbstractStore.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ComponentLoader.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Store.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "ArrayStore.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Fit.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "Menu.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "Surface.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "Component.js"
-                },
-                {
-                    "path": "extjs/src/resizer/",
-                    "name": "ResizeTracker.js"
-                },
-                {
-                    "path": "extjs/src/data/reader/",
-                    "name": "Array.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "ShadowPool.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "Matrix.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "SpriteDD.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Shadow.js"
-                },
-                {
-                    "path": "extjs/src/draw/",
-                    "name": "Sprite.js"
-                },
-                {
-                    "path": "extjs/src/draw/engine/",
-                    "name": "Svg.js"
-                },
-                {
-                    "path": "extjs/src/draw/engine/",
-                    "name": "Vml.js"
-                },
-                {
-                    "path": "extjs/src/data/proxy/",
-                    "name": "Rest.js"
-                },
-                {
-                    "path": "ux/window/",
-                    "name": "Notification.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "RadioManager.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "Tree.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "NodeInterface.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "CheckboxManager.js"
-                },
-                {
-                    "path": "extjs/src/selection/",
-                    "name": "Model.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "FieldAncestor.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "BoundList.js"
-                },
-                {
-                    "path": "ux/grid/",
-                    "name": "Save.js"
-                },
-                {
-                    "path": "extjs/src/panel/",
-                    "name": "Table.js"
-                },
-                {
-                    "path": "ux/grid/",
-                    "name": "Printer.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Column.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DragZone.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/field/",
-                    "name": "Trigger.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "TextItem.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Hidden.js"
-                },
-                {
-                    "path": "ux/grid/",
-                    "name": "HeaderToolTip.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "Spacer.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "FieldContainer.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "Label.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "Registry.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "AbstractCard.js"
-                },
-                {
-                    "path": "extjs/src/button/",
-                    "name": "Split.js"
-                },
-                {
-                    "path": "extjs/src/picker/",
-                    "name": "Month.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DDTarget.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "ScrollManager.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "FieldSet.js"
-                },
-                {
-                    "path": "extjs/src/grid/header/",
-                    "name": "Container.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Checkbox.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Radio.js"
-                },
-                {
-                    "path": "extjs/src/selection/",
-                    "name": "DataViewModel.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "AbstractView.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "NodeStore.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "TreeStore.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "Panel.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "RowEditor.js"
-                },
-                {
-                    "path": "ux/grid/",
-                    "name": "SaveGrid.js"
-                },
-                {
-                    "path": "ux/grid/",
-                    "name": "PrintGrid.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Trigger.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Picker.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "View.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Card.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "Table.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "View.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "Panel.js"
-                },
-                {
-                    "path": "extjs/src/picker/",
-                    "name": "Date.js"
-                },
-                {
-                    "path": "extjs/src/menu/",
-                    "name": "DatePicker.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Date.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DropTarget.js"
-                },
-                {
-                    "path": "extjs/src/dd/",
-                    "name": "DropZone.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Spinner.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Number.js"
-                },
-                {
-                    "path": "extjs/src/toolbar/",
-                    "name": "Paging.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "BoundList.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "BoundListKeyNav.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "ComboBox.js"
-                },
-                {
-                    "path": "extjs/src/grid/column/",
-                    "name": "Column.js"
-                },
-                {
-                    "path": "ux/",
-                    "name": "CheckColumn.js"
-                },
-                {
-                    "path": "extjs/src/picker/",
-                    "name": "Time.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Time.js"
-                },
-                {
-                    "path": "ux/form/",
-                    "name": "SearchField.js"
-                },
-                {
-                    "path": "ux/grid/",
-                    "name": "FilterBar.js"
-                },
-                {
-                    "path": "extjs/src/grid/plugin/",
-                    "name": "Editing.js"
-                },
-                {
-                    "path": "extjs/src/tree/",
-                    "name": "View.js"
-                },
-                {
-                    "path": "extjs/src/tree/",
-                    "name": "Column.js"
-                },
-                {
-                    "path": "extjs/src/selection/",
-                    "name": "RowModel.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Tab.js"
-                },
-                {
-                    "path": "extjs/src/grid/plugin/",
-                    "name": "RowEditing.js"
-                },
-                {
-                    "path": "extjs/src/selection/",
-                    "name": "TreeModel.js"
-                },
-                {
-                    "path": "extjs/src/tree/",
-                    "name": "Panel.js"
-                },
-                {
-                    "path": "extjs/src/tab/",
-                    "name": "Tab.js"
-                },
-                {
-                    "path": "extjs/src/tab/",
-                    "name": "Bar.js"
-                },
-                {
-                    "path": "extjs/src/tab/",
-                    "name": "Panel.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "Scroller.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "ColumnLayout.js"
-                },
-                {
-                    "path": "extjs/src/grid/plugin/",
-                    "name": "HeaderResizer.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "TableChunker.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "LockingView.js"
-                },
-                {
-                    "path": "extjs/src/grid/header/",
-                    "name": "DragZone.js"
-                },
-                {
-                    "path": "extjs/src/grid/header/",
-                    "name": "DropZone.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Body.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "Lockable.js"
-                },
-                {
-                    "path": "extjs/src/grid/plugin/",
-                    "name": "HeaderReorderer.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "FieldSet.js"
-                },
-                {
-                    "path": "extjs/src/grid/column/",
-                    "name": "Action.js"
-                },
-                {
-                    "path": "extjs/src/util/",
-                    "name": "Inflector.js"
-                },
-                {
-                    "path": "extjs/src/data/",
-                    "name": "HasManyAssociation.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Action.js"
-                },
-                {
-                    "path": "extjs/src/container/",
-                    "name": "Viewport.js"
-                },
-                {
-                    "path": "extjs/src/resizer/",
-                    "name": "Splitter.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "Border.js"
-                },
-                {
-                    "path": "extjs/src/resizer/",
-                    "name": "SplitterTracker.js"
-                },
-                {
-                    "path": "extjs/src/grid/column/",
-                    "name": "Date.js"
-                },
-                {
-                    "path": "extjs/src/button/",
-                    "name": "Cycle.js"
-                },
-                {
-                    "path": "extjs/src/grid/column/",
-                    "name": "Boolean.js"
-                },
-                {
-                    "path": "extjs/src/form/field/",
-                    "name": "Display.js"
-                },
-                {
-                    "path": "extjs/src/layout/component/",
-                    "name": "Editor.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "Editor.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "CellEditor.js"
-                },
-                {
-                    "path": "extjs/src/grid/plugin/",
-                    "name": "CellEditing.js"
-                },
-                {
-                    "path": "extjs/src/selection/",
-                    "name": "CheckboxModel.js"
-                },
-                {
-                    "path": "extjs/src/",
-                    "name": "AbstractPlugin.js"
-                },
-                {
-                    "path": "extjs/src/grid/plugin/",
-                    "name": "DragDrop.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "DragZone.js"
-                },
-                {
-                    "path": "extjs/src/view/",
-                    "name": "DropZone.js"
-                },
-                {
-                    "path": "extjs/src/grid/",
-                    "name": "ViewDropZone.js"
-                },
-                {
-                    "path": "extjs/src/layout/container/",
-                    "name": "CheckboxGroup.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "CheckboxGroup.js"
-                },
-                {
-                    "path": "extjs/src/grid/column/",
-                    "name": "Number.js"
-                },
-                {
-                    "path": "extjs/src/tree/plugin/",
-                    "name": "TreeViewDragDrop.js"
-                },
-                {
-                    "path": "extjs/src/tree/",
-                    "name": "ViewDragZone.js"
-                },
-                {
-                    "path": "extjs/src/tree/",
-                    "name": "ViewDropZone.js"
-                },
-                {
-                    "path": "extjs/src/grid/column/",
-                    "name": "Template.js"
-                },
-                {
-                    "path": "extjs/src/form/",
-                    "name": "RadioGroup.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/",
-                    "name": "Extensible.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/util/",
-                    "name": "WeekEventRenderer.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/template/",
-                    "name": "BoxLayout.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "CalendarMappings.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "EventMappings.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "EventModel.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/dd/",
-                    "name": "StatusProxy.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "CalendarModel.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/util/",
-                    "name": "ColorPicker.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/template/",
-                    "name": "DayHeader.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/template/",
-                    "name": "DayBody.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/template/",
-                    "name": "Month.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/form/",
-                    "name": "EventWindow.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/dd/",
-                    "name": "DragZone.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "MemoryCalendarStore.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "MemoryEventStore.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/data/",
-                    "name": "EventStore.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/gadget/",
-                    "name": "CalendarListMenu.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/gadget/",
-                    "name": "CalendarListPanel.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/menu/",
-                    "name": "Event.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/dd/",
-                    "name": "DropZone.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/form/field/",
-                    "name": "ReminderCombo.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/form/field/",
-                    "name": "CalendarCombo.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/form/recurrence/",
-                    "name": "Combo.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/form/field/",
-                    "name": "DateRange.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/form/",
-                    "name": "EventDetails.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "AbstractCalendar.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "MonthDayDetail.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "Month.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "MultiWeek.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "DayHeader.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/dd/",
-                    "name": "DayDragZone.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/dd/",
-                    "name": "DayDropZone.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "DayBody.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "Day.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "MultiDay.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/view/",
-                    "name": "Week.js"
-                },
-                {
-                    "path": "extensible-1.5.1/src/calendar/",
-                    "name": "CalendarPanel.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "State.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "States.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Country.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Countries.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Position.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Positions.js"
-                },
-                {
-                    "path": "app/",
-                    "name": "Defaults.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "User.js"
-                },
-                {
-                    "path": "app/util/",
-                    "name": "DataTypes.js"
-                },
-                {
-                    "path": "app/util/",
-                    "name": "VTypes.js"
-                },
-                {
-                    "path": "app/util/",
-                    "name": "ActivityMonitor.js"
-                },
-                {
-                    "path": "app/util/",
-                    "name": "AssociationJsonWriter.js"
-                },
-                {
-                    "path": "app/controller/report/",
-                    "name": "Report.js"
-                },
-                {
-                    "path": "app/view/",
-                    "name": "MainToolbar.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Modification.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Deliverable.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Funding.js"
-                },
-                {
-                    "path": "app/data/",
-                    "name": "Calendar.js"
-                },
-                {
-                    "path": "app/util/mixin/",
-                    "name": "CheckDirty.js"
-                },
-                {
-                    "path": "app/controller/",
-                    "name": "MainToolbar.js"
-                },
-                {
-                    "path": "app/view/dashboard/",
-                    "name": "DeliverableList.js"
-                },
-                {
-                    "path": "app/view/dashboard/",
-                    "name": "TaskList.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "MyFieldContainer.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "PhoneFieldContainer.js"
-                },
-                {
-                    "path": "app/view/contact/window/",
-                    "name": "ContactToolbar.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "PositionCombo.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "MyFieldSet.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "CountryCombo.js"
-                },
-                {
-                    "path": "app/",
-                    "name": "Overrides.js"
-                },
-                {
-                    "path": "app/view/dashboard/",
-                    "name": "Calendar.js"
-                },
-                {
-                    "path": "app/view/dashboard/",
-                    "name": "Dashboard.js"
-                },
-                {
-                    "path": "app/controller/dashboard/",
-                    "name": "Dashboard.js"
-                },
-                {
-                    "path": "app/view/contact/",
-                    "name": "GroupDDList.js"
-                },
-                {
-                    "path": "app/view/contact/",
-                    "name": "PersonDDList.js"
-                },
-                {
-                    "path": "app/view/contact/window/",
-                    "name": "PersonGroups.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "MyCombo.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "FilterCombo.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "StateCombo.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "AddressFieldSet.js"
-                },
-                {
-                    "path": "app/view/contact/window/",
-                    "name": "ContactDetail.js"
-                },
-                {
-                    "path": "app/view/contact/window/",
-                    "name": "ContactForm.js"
-                },
-                {
-                    "path": "app/view/contact/window/",
-                    "name": "Window.js"
-                },
-                {
-                    "path": "app/controller/contact/",
-                    "name": "Contact.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "DateRangeField.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "TextareaTriggerField.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "GroupUser.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "ProjectForm.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "GroupUsers.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "RowEditGrid.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "CommentEditGrid.js"
-                },
-                {
-                    "path": "app/view/project/window/",
-                    "name": "AgreementsTree.js"
-                },
-                {
-                    "path": "app/view/project/window/",
-                    "name": "ProjectAgreements.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "KeywordTree.js"
-                },
-                {
-                    "path": "app/view/project/window/",
-                    "name": "ProjectKeywords.js"
-                },
-                {
-                    "path": "app/view/contact/",
-                    "name": "ContactLists.js"
-                },
-                {
-                    "path": "app/view/project/window/",
-                    "name": "ProjectContacts.js"
-                },
-                {
-                    "path": "app/view/project/window/",
-                    "name": "Window.js"
-                },
-                {
-                    "path": "app/controller/project/",
-                    "name": "Project.js"
-                },
-                {
-                    "path": "app/controller/dashboard/",
-                    "name": "Calendar.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Task.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Tasks.js"
-                },
-                {
-                    "path": "app/controller/dashboard/",
-                    "name": "TaskList.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "DeliverableListing.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DeliverableListings.js"
-                },
-                {
-                    "path": "app/controller/dashboard/",
-                    "name": "DeliverableList.js"
-                },
-                {
-                    "path": "app/util/",
-                    "name": "Format.js"
-                },
-                {
-                    "path": "app/view/project/tab/",
-                    "name": "ProjectDetail.js"
-                },
-                {
-                    "path": "app/view/project/tab/",
-                    "name": "ProjectList.js"
-                },
-                {
-                    "path": "app/view/project/tab/",
-                    "name": "ProjectTab.js"
-                },
-                {
-                    "path": "app/controller/project/tab/",
-                    "name": "ProjectTab.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ProjectComment.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectComments.js"
-                },
-                {
-                    "path": "app/controller/project/window/",
-                    "name": "Window.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ProjectListing.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectListings.js"
-                },
-                {
-                    "path": "app/controller/project/tab/",
-                    "name": "ProjectList.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "AgreementsTree.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectAgreementsTree.js"
-                },
-                {
-                    "path": "app/controller/project/tab/",
-                    "name": "ProjectDetail.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Project.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectIDs.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "ProjectForm.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "ReorderColumn.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ProjectContact.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectFunders.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectInvoicers.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectRecipients.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectContacts.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ContactGroup.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ContactGroups.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DDContactGroups.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Person.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Persons.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "RoleType.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "RoleTypes.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DDPersons.js"
-                },
-                {
-                    "path": "app/controller/project/window/",
-                    "name": "ProjectContacts.js"
-                },
-                {
-                    "path": "app/controller/project/window/",
-                    "name": "ProjectAgreements.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "KeywordNode.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ProjectKeyword.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "KeywordNodes.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ProjectKeywords.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Keywords.js"
-                },
-                {
-                    "path": "app/controller/project/window/",
-                    "name": "ProjectKeywords.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "ManagerCombo.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Status.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "CurrencyField.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "AgreementsTree.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Statuses.js"
-                },
-                {
-                    "path": "app/view/controls/",
-                    "name": "StatusCombo.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "ProposalForm.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "AgreementForm.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "DeliverableForm.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "TaskForm.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "FundingForm.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "ModificationForm.js"
-                },
-                {
-                    "path": "app/view/project/window/",
-                    "name": "ItemDetail.js"
-                },
-                {
-                    "path": "app/controller/project/window/",
-                    "name": "AgreementsTree.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ModType.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ModTypes.js"
-                },
-                {
-                    "path": "app/controller/project/window/",
-                    "name": "ItemDetail.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "PurchaseRequest.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ModStatus.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "PurchaseRequests.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ModStatuses.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "BaseModificationForm.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ModificationComment.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ModificationComments.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "AgreementForm.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "ModificationForm.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "ProposalForm.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "FundingType.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "CostCode.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ContactCostCode.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "FundingComment.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "FundingTypes.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "CostCodes.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ContactCostCodes.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "FundingComments.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "FundingForm.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "DeliverableType.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DeliverableTypes.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "DeliverableComment.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "DeliverableStatus.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "DeliverableModStatus.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DeliverableComments.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DeliverableStatuses.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "DeliverableModStatuses.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "DeliverableForm.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "TaskForm.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Invoice.js"
-                },
-                {
-                    "path": "app/view/project/form/",
-                    "name": "InvoiceGridForm.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "Invoices.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "CostCodeInvoice.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "CostCodeInvoices.js"
-                },
-                {
-                    "path": "app/controller/project/form/",
-                    "name": "InvoiceGridForm.js"
-                },
-                {
-                    "path": "app/view/contact/",
-                    "name": "PersonList.js"
-                },
-                {
-                    "path": "app/view/contact/",
-                    "name": "GroupList.js"
-                },
-                {
-                    "path": "app/view/contact/tab/",
-                    "name": "ContactTab.js"
-                },
-                {
-                    "path": "app/controller/contact/tab/",
-                    "name": "ContactTab.js"
-                },
-                {
-                    "path": "app/controller/contact/window/",
-                    "name": "Window.js"
-                },
-                {
-                    "path": "app/controller/contact/tab/",
-                    "name": "ContactList.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Address.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "EAddress.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "Phone.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ContactType.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ContactContactGroup.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ContactGroupID.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ContactTypes.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ContactContactGroups.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ContactGroupIDs.js"
-                },
-                {
-                    "path": "app/controller/contact/window/",
-                    "name": "ContactForm.js"
-                },
-                {
-                    "path": "app/controller/contact/window/",
-                    "name": "PersonGroups.js"
-                },
-                {
-                    "path": "app/controller/contact/window/",
-                    "name": "ContactDetail.js"
-                },
-                {
-                    "path": "app/model/",
-                    "name": "ReportTree.js"
-                },
-                {
-                    "path": "app/view/report/",
-                    "name": "ReportGrid.js"
-                },
-                {
-                    "path": "app/store/",
-                    "name": "ReportTree.js"
-                },
-                {
-                    "path": "app/view/report/tab/",
-                    "name": "ReportTab.js"
-                },
-                {
-                    "path": "app/controller/report/tab/",
-                    "name": "ReportTab.js"
-                },
-                {
-                    "path": "app/view/",
-                    "name": "Viewport.js"
-                }
+				{	
+					"path": "extjs/src/util/",
+					"name": "Observable.js"
+				},
+				{	
+					"path": "extjs/src/app/",
+					"name": "Controller.js"
+				},
+				{	
+					"path": "extjs/src/app/",
+					"name": "EventBus.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Template.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Floating.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Connection.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Association.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "IdGenerator.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "validations.js"
+				},
+				{	
+					"path": "extjs/src/form/action/",
+					"name": "Action.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Operation.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "VTypes.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Animate.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ComponentQuery.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "ClickRepeater.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "TextMetrics.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "KeyMap.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Filter.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Sorter.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "HashMap.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "SortTypes.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Ajax.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Memento.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DragTracker.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Offset.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Field.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/boxOverflow/",
+					"name": "None.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/boxOverflow/",
+					"name": "Scroller.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "KeyNav.js"
+				},
+				{	
+					"path": "extjs/src/data/writer/",
+					"name": "Writer.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "CubicBezier.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "Proxy.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ZIndexManager.js"
+				},
+				{	
+					"path": "extjs/src/state/",
+					"name": "Provider.js"
+				},
+				{	
+					"path": "extjs/src/layout/",
+					"name": "Layout.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "ResultSet.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "Queue.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "StatusProxy.js"
+				},
+				{	
+					"path": "extjs/src/fx/target/",
+					"name": "Target.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "Color.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "XTemplate.js"
+				},
+				{	
+					"path": "extjs/src/form/action/",
+					"name": "Load.js"
+				},
+				{	
+					"path": "extjs/src/form/action/",
+					"name": "Submit.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "AbstractMixedCollection.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Sortable.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "MixedCollection.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Errors.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "StoreManager.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "AbstractManager.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ComponentManager.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ModelManager.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "ComponentDragger.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Region.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "FocusManager.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "Manager.js"
+				},
+				{	
+					"path": "extjs/src/data/writer/",
+					"name": "Json.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Types.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Field.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "Labelable.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DragDropManager.js"
+				},
+				{	
+					"path": "extjs/src/state/",
+					"name": "Manager.js"
+				},
+				{	
+					"path": "extjs/src/state/",
+					"name": "Stateful.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "AbstractComponent.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Component.js"
+				},
+				{	
+					"path": "extjs/src/picker/",
+					"name": "Color.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "Fill.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Component.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Button.js"
+				},
+				{	
+					"path": "extjs/src/button/",
+					"name": "Button.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "ProgressBar.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ProgressBar.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/field/",
+					"name": "Field.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Base.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/field/",
+					"name": "Text.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Text.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/field/",
+					"name": "TextArea.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "TextArea.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "AbstractContainer.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Container.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Anchor.js"
+				},
+				{	
+					"path": "extjs/src/data/reader/",
+					"name": "Reader.js"
+				},
+				{	
+					"path": "extjs/src/data/reader/",
+					"name": "Json.js"
+				},
+				{	
+					"path": "extjs/src/data/proxy/",
+					"name": "Proxy.js"
+				},
+				{	
+					"path": "extjs/src/data/proxy/",
+					"name": "Client.js"
+				},
+				{	
+					"path": "extjs/src/data/proxy/",
+					"name": "Memory.js"
+				},
+				{	
+					"path": "extjs/src/data/proxy/",
+					"name": "Server.js"
+				},
+				{	
+					"path": "extjs/src/data/proxy/",
+					"name": "Ajax.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Model.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "Easing.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "AbstractDock.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Dock.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Auto.js"
+				},
+				{	
+					"path": "extjs/src/container/",
+					"name": "AbstractContainer.js"
+				},
+				{	
+					"path": "extjs/src/container/",
+					"name": "Container.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "Header.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Tip.js"
+				},
+				{	
+					"path": "extjs/src/fx/target/",
+					"name": "Element.js"
+				},
+				{	
+					"path": "extjs/src/fx/target/",
+					"name": "CompositeElement.js"
+				},
+				{	
+					"path": "extjs/src/fx/target/",
+					"name": "Sprite.js"
+				},
+				{	
+					"path": "extjs/src/fx/target/",
+					"name": "CompositeSprite.js"
+				},
+				{	
+					"path": "extjs/src/fx/target/",
+					"name": "Component.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "Manager.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "Animator.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "Draw.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "PropertyHandler.js"
+				},
+				{	
+					"path": "extjs/src/fx/",
+					"name": "Anim.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "Item.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "Separator.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/boxOverflow/",
+					"name": "Menu.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Box.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "HBox.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "VBox.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "Toolbar.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "AbstractPanel.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DragDrop.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DD.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DDProxy.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DragSource.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "DD.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "Panel.js"
+				},
+				{	
+					"path": "extjs/src/window/",
+					"name": "Window.js"
+				},
+				{	
+					"path": "extjs/src/window/",
+					"name": "MessageBox.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "Basic.js"
+				},
+				{	
+					"path": "extjs/src/tip/",
+					"name": "Tip.js"
+				},
+				{	
+					"path": "extjs/src/tip/",
+					"name": "ToolTip.js"
+				},
+				{	
+					"path": "extjs/src/tip/",
+					"name": "QuickTip.js"
+				},
+				{	
+					"path": "extjs/src/tip/",
+					"name": "QuickTipManager.js"
+				},
+				{	
+					"path": "extjs/src/app/",
+					"name": "Application.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Point.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Layer.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "PluginManager.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Auto.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "LoadMask.js"
+				},
+				{	
+					"path": "extjs/src/resizer/",
+					"name": "Resizer.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Batch.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "Tool.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Request.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "CSS.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "KeyNav.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "Item.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "CheckItem.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ElementLoader.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Draw.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "AbstractStore.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Grouper.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "CompositeSprite.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "AbstractFit.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ComponentLoader.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Store.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "ArrayStore.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "Separator.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "Surface.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "Component.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Fit.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "Menu.js"
+				},
+				{	
+					"path": "extjs/src/resizer/",
+					"name": "ResizeTracker.js"
+				},
+				{	
+					"path": "extjs/src/data/reader/",
+					"name": "Array.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "ShadowPool.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "Matrix.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "SpriteDD.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Shadow.js"
+				},
+				{	
+					"path": "extjs/src/draw/",
+					"name": "Sprite.js"
+				},
+				{	
+					"path": "extjs/src/draw/engine/",
+					"name": "Svg.js"
+				},
+				{	
+					"path": "extjs/src/draw/engine/",
+					"name": "Vml.js"
+				},
+				{	
+					"path": "extjs/src/data/proxy/",
+					"name": "Rest.js"
+				},
+				{	
+					"path": "ux/window/",
+					"name": "Notification.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "RadioManager.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "Tree.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "NodeInterface.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "NodeStore.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "CheckboxManager.js"
+				},
+				{	
+					"path": "extjs/src/selection/",
+					"name": "Model.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "FieldAncestor.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "BoundList.js"
+				},
+				{	
+					"path": "ux/grid/",
+					"name": "Printer.js"
+				},
+				{	
+					"path": "extjs/src/panel/",
+					"name": "Table.js"
+				},
+				{	
+					"path": "ux/grid/",
+					"name": "Save.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/field/",
+					"name": "Trigger.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "TextItem.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Column.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DragZone.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Hidden.js"
+				},
+				{	
+					"path": "ux/grid/",
+					"name": "HeaderToolTip.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "Spacer.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "FieldContainer.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "Registry.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "AbstractCard.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "Label.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Display.js"
+				},
+				{	
+					"path": "extjs/src/selection/",
+					"name": "RowModel.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "AbstractPlugin.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DDTarget.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "ScrollManager.js"
+				},
+				{	
+					"path": "extjs/src/button/",
+					"name": "Split.js"
+				},
+				{	
+					"path": "extjs/src/picker/",
+					"name": "Month.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "FieldSet.js"
+				},
+				{	
+					"path": "extjs/src/grid/header/",
+					"name": "Container.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "TreeStore.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Checkbox.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Radio.js"
+				},
+				{	
+					"path": "extjs/src/selection/",
+					"name": "DataViewModel.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "AbstractView.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "Panel.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "RowEditor.js"
+				},
+				{	
+					"path": "ux/grid/",
+					"name": "PrintGrid.js"
+				},
+				{	
+					"path": "ux/grid/",
+					"name": "SaveGrid.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Trigger.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Picker.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "View.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Card.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "Table.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "View.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "Panel.js"
+				},
+				{	
+					"path": "extjs/src/selection/",
+					"name": "CheckboxModel.js"
+				},
+				{	
+					"path": "extjs/src/grid/plugin/",
+					"name": "DragDrop.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Spinner.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Number.js"
+				},
+				{	
+					"path": "extjs/src/toolbar/",
+					"name": "Paging.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "BoundList.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "BoundListKeyNav.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "ComboBox.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DropTarget.js"
+				},
+				{	
+					"path": "extjs/src/dd/",
+					"name": "DropZone.js"
+				},
+				{	
+					"path": "extjs/src/picker/",
+					"name": "Date.js"
+				},
+				{	
+					"path": "extjs/src/menu/",
+					"name": "DatePicker.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Date.js"
+				},
+				{	
+					"path": "extjs/src/grid/column/",
+					"name": "Column.js"
+				},
+				{	
+					"path": "ux/",
+					"name": "CheckColumn.js"
+				},
+				{	
+					"path": "extjs/src/picker/",
+					"name": "Time.js"
+				},
+				{	
+					"path": "extjs/src/form/field/",
+					"name": "Time.js"
+				},
+				{	
+					"path": "ux/form/",
+					"name": "SearchField.js"
+				},
+				{	
+					"path": "ux/grid/",
+					"name": "FilterBar.js"
+				},
+				{	
+					"path": "extjs/src/grid/column/",
+					"name": "Template.js"
+				},
+				{	
+					"path": "extjs/src/grid/plugin/",
+					"name": "Editing.js"
+				},
+				{	
+					"path": "extjs/src/tree/plugin/",
+					"name": "TreeViewDragDrop.js"
+				},
+				{	
+					"path": "extjs/src/slider/",
+					"name": "Tip.js"
+				},
+				{	
+					"path": "ux/",
+					"name": "StoreMenu.js"
+				},
+				{	
+					"path": "extjs/src/tree/",
+					"name": "View.js"
+				},
+				{	
+					"path": "extjs/src/selection/",
+					"name": "TreeModel.js"
+				},
+				{	
+					"path": "extjs/src/tree/",
+					"name": "Column.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Action.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Editor.js"
+				},
+				{	
+					"path": "extjs/src/slider/",
+					"name": "Thumb.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/field/",
+					"name": "Slider.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Tab.js"
+				},
+				{	
+					"path": "extjs/src/grid/plugin/",
+					"name": "RowEditing.js"
+				},
+				{	
+					"path": "extjs/src/tree/",
+					"name": "Panel.js"
+				},
+				{	
+					"path": "extjs/src/",
+					"name": "Editor.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "CellEditor.js"
+				},
+				{	
+					"path": "extjs/src/grid/plugin/",
+					"name": "CellEditing.js"
+				},
+				{	
+					"path": "extjs/src/slider/",
+					"name": "Multi.js"
+				},
+				{	
+					"path": "extjs/src/slider/",
+					"name": "Single.js"
+				},
+				{	
+					"path": "extjs/src/tab/",
+					"name": "Tab.js"
+				},
+				{	
+					"path": "extjs/src/tab/",
+					"name": "Bar.js"
+				},
+				{	
+					"path": "extjs/src/tab/",
+					"name": "Panel.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "Scroller.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "ColumnLayout.js"
+				},
+				{	
+					"path": "extjs/src/grid/plugin/",
+					"name": "HeaderResizer.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "TableChunker.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "DragZone.js"
+				},
+				{	
+					"path": "extjs/src/tree/",
+					"name": "ViewDragZone.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "LockingView.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "Body.js"
+				},
+				{	
+					"path": "extjs/src/grid/header/",
+					"name": "DragZone.js"
+				},
+				{	
+					"path": "extjs/src/grid/header/",
+					"name": "DropZone.js"
+				},
+				{	
+					"path": "extjs/src/view/",
+					"name": "DropZone.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "Lockable.js"
+				},
+				{	
+					"path": "extjs/src/layout/component/",
+					"name": "FieldSet.js"
+				},
+				{	
+					"path": "extjs/src/grid/plugin/",
+					"name": "HeaderReorderer.js"
+				},
+				{	
+					"path": "extjs/src/grid/",
+					"name": "ViewDropZone.js"
+				},
+				{	
+					"path": "extjs/src/tree/",
+					"name": "ViewDropZone.js"
+				},
+				{	
+					"path": "extjs/src/grid/column/",
+					"name": "Action.js"
+				},
+				{	
+					"path": "extjs/src/util/",
+					"name": "Inflector.js"
+				},
+				{	
+					"path": "extjs/src/data/",
+					"name": "HasManyAssociation.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "CheckboxGroup.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "CheckboxGroup.js"
+				},
+				{	
+					"path": "extjs/src/form/",
+					"name": "RadioGroup.js"
+				},
+				{	
+					"path": "extjs/src/grid/column/",
+					"name": "Number.js"
+				},
+				{	
+					"path": "extjs/src/container/",
+					"name": "Viewport.js"
+				},
+				{	
+					"path": "extjs/src/resizer/",
+					"name": "Splitter.js"
+				},
+				{	
+					"path": "extjs/src/layout/container/",
+					"name": "Border.js"
+				},
+				{	
+					"path": "extjs/src/resizer/",
+					"name": "SplitterTracker.js"
+				},
+				{	
+					"path": "extjs/src/grid/column/",
+					"name": "Date.js"
+				},
+				{	
+					"path": "extjs/src/button/",
+					"name": "Cycle.js"
+				},
+				{	
+					"path": "extjs/src/grid/column/",
+					"name": "Boolean.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/",
+					"name": "Extensible.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/util/",
+					"name": "WeekEventRenderer.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/template/",
+					"name": "BoxLayout.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "CalendarMappings.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "EventMappings.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "EventModel.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/dd/",
+					"name": "StatusProxy.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "CalendarModel.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/util/",
+					"name": "ColorPicker.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/template/",
+					"name": "DayBody.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/template/",
+					"name": "DayHeader.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/template/",
+					"name": "Month.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/form/",
+					"name": "EventWindow.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/dd/",
+					"name": "DragZone.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "MemoryEventStore.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "MemoryCalendarStore.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/data/",
+					"name": "EventStore.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/gadget/",
+					"name": "CalendarListMenu.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/gadget/",
+					"name": "CalendarListPanel.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/form/field/",
+					"name": "ReminderCombo.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/form/field/",
+					"name": "CalendarCombo.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/form/recurrence/",
+					"name": "Combo.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/dd/",
+					"name": "DropZone.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/menu/",
+					"name": "Event.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/form/field/",
+					"name": "DateRange.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/form/",
+					"name": "EventDetails.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "AbstractCalendar.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "MonthDayDetail.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "Month.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "MultiWeek.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "DayHeader.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/dd/",
+					"name": "DayDragZone.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/dd/",
+					"name": "DayDropZone.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "DayBody.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "Day.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "MultiDay.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/view/",
+					"name": "Week.js"
+				},
+				{	
+					"path": "extensible-1.5.1/src/calendar/",
+					"name": "CalendarPanel.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/selection/",
+					"name": "FeatureModel.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/data/reader/",
+					"name": "Feature.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/data/",
+					"name": "LayerModel.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/data/",
+					"name": "FeatureStore.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/slider/",
+					"name": "Tip.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/data/",
+					"name": "LayerStore.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/panel/",
+					"name": "Map.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/",
+					"name": "Action.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/slider/",
+					"name": "Zoom.js"
+				},
+				{	
+					"path": "lib/geoext/src/GeoExt/slider/",
+					"name": "LayerOpacity.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "State.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "States.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Country.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Countries.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Position.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Positions.js"
+				},
+				{	
+					"path": "app/",
+					"name": "Defaults.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "User.js"
+				},
+				{	
+					"path": "app/util/",
+					"name": "DataTypes.js"
+				},
+				{	
+					"path": "app/util/",
+					"name": "VTypes.js"
+				},
+				{	
+					"path": "app/util/",
+					"name": "ActivityMonitor.js"
+				},
+				{	
+					"path": "app/util/",
+					"name": "AssociationJsonWriter.js"
+				},
+				{	
+					"path": "app/controller/report/",
+					"name": "Report.js"
+				},
+				{	
+					"path": "app/view/",
+					"name": "MainToolbar.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Modification.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Deliverable.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Funding.js"
+				},
+				{	
+					"path": "app/data/",
+					"name": "Calendar.js"
+				},
+				{	
+					"path": "app/util/mixin/",
+					"name": "CheckDirty.js"
+				},
+				{	
+					"path": "app/controller/",
+					"name": "MainToolbar.js"
+				},
+				{	
+					"path": "app/view/dashboard/",
+					"name": "DeliverableList.js"
+				},
+				{	
+					"path": "app/view/dashboard/",
+					"name": "TaskList.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "MyFieldContainer.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "PhoneFieldContainer.js"
+				},
+				{	
+					"path": "app/view/contact/window/",
+					"name": "ContactToolbar.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "PositionCombo.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "MyFieldSet.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "CountryCombo.js"
+				},
+				{	
+					"path": "app/",
+					"name": "Overrides.js"
+				},
+				{	
+					"path": "app/view/dashboard/",
+					"name": "Calendar.js"
+				},
+				{	
+					"path": "app/view/dashboard/",
+					"name": "Dashboard.js"
+				},
+				{	
+					"path": "app/controller/dashboard/",
+					"name": "Dashboard.js"
+				},
+				{	
+					"path": "app/view/contact/",
+					"name": "PersonDDList.js"
+				},
+				{	
+					"path": "app/view/contact/",
+					"name": "GroupDDList.js"
+				},
+				{	
+					"path": "app/view/contact/window/",
+					"name": "PersonGroups.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "MyCombo.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "FilterCombo.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "StateCombo.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "AddressFieldSet.js"
+				},
+				{	
+					"path": "app/view/contact/window/",
+					"name": "ContactDetail.js"
+				},
+				{	
+					"path": "app/view/contact/window/",
+					"name": "ContactForm.js"
+				},
+				{	
+					"path": "app/view/contact/window/",
+					"name": "Window.js"
+				},
+				{	
+					"path": "app/controller/contact/",
+					"name": "Contact.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "DateRangeField.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "TextareaTriggerField.js"
+				},
+				{	
+					"path": "app/view/button/",
+					"name": "Edit.js"
+				},
+				{	
+					"path": "app/view/button/",
+					"name": "Save.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "GroupUser.js"
+				},
+				{	
+					"path": "app/view/button/",
+					"name": "Delete.js"
+				},
+				{	
+					"path": "app/view/button/",
+					"name": "Reset.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "ProjectForm.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "RowEditGrid.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "GroupUsers.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "CommentEditGrid.js"
+				},
+				{	
+					"path": "app/view/project/window/",
+					"name": "AgreementsTree.js"
+				},
+				{	
+					"path": "app/view/project/window/",
+					"name": "ProjectAgreements.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "KeywordTree.js"
+				},
+				{	
+					"path": "app/view/project/window/",
+					"name": "ProjectKeywords.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "MapToolbar.js"
+				},
+				{	
+					"path": "app/view/project/",
+					"name": "ProjectMap.js"
+				},
+				{	
+					"path": "app/view/contact/",
+					"name": "ContactLists.js"
+				},
+				{	
+					"path": "app/view/project/window/",
+					"name": "ProjectContacts.js"
+				},
+				{	
+					"path": "app/view/project/window/",
+					"name": "Window.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ProjectVector.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectVectors.js"
+				},
+				{	
+					"path": "app/controller/project/",
+					"name": "Project.js"
+				},
+				{	
+					"path": "app/controller/dashboard/",
+					"name": "Calendar.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Task.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Tasks.js"
+				},
+				{	
+					"path": "app/controller/dashboard/",
+					"name": "TaskList.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "DeliverableListing.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DeliverableListings.js"
+				},
+				{	
+					"path": "app/controller/dashboard/",
+					"name": "DeliverableList.js"
+				},
+				{	
+					"path": "app/util/",
+					"name": "Format.js"
+				},
+				{	
+					"path": "app/view/project/tab/",
+					"name": "ProjectDetail.js"
+				},
+				{	
+					"path": "app/view/project/tab/",
+					"name": "ProjectList.js"
+				},
+				{	
+					"path": "app/view/project/tab/",
+					"name": "ProjectTab.js"
+				},
+				{	
+					"path": "app/controller/project/tab/",
+					"name": "ProjectTab.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ProjectComment.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "CommonVector.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectComments.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "CommonVectors.js"
+				},
+				{	
+					"path": "app/controller/project/window/",
+					"name": "Window.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ProjectListing.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectListings.js"
+				},
+				{	
+					"path": "app/controller/project/tab/",
+					"name": "ProjectList.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "AgreementsTree.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectAgreementsTree.js"
+				},
+				{	
+					"path": "app/controller/project/tab/",
+					"name": "ProjectDetail.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Project.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectIDs.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "ProjectForm.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "ReorderColumn.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ProjectContact.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectFunders.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectInvoicers.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectRecipients.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectContacts.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ContactGroup.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ContactGroups.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DDContactGroups.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Person.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Persons.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "RoleType.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "RoleTypes.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DDPersons.js"
+				},
+				{	
+					"path": "app/controller/project/window/",
+					"name": "ProjectContacts.js"
+				},
+				{	
+					"path": "app/controller/project/window/",
+					"name": "ProjectAgreements.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "KeywordNode.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ProjectKeyword.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "KeywordNodes.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ProjectKeywords.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Keywords.js"
+				},
+				{	
+					"path": "app/controller/project/window/",
+					"name": "ProjectKeywords.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "ManagerCombo.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Status.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "CurrencyField.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "AgreementsTree.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Statuses.js"
+				},
+				{	
+					"path": "app/view/controls/",
+					"name": "StatusCombo.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "ProposalForm.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "AgreementForm.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "DeliverableForm.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "TaskForm.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "FundingForm.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "ModificationForm.js"
+				},
+				{	
+					"path": "app/view/project/window/",
+					"name": "ItemDetail.js"
+				},
+				{	
+					"path": "app/controller/project/window/",
+					"name": "AgreementsTree.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ModType.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ModTypes.js"
+				},
+				{	
+					"path": "app/controller/project/window/",
+					"name": "ItemDetail.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "PurchaseRequest.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ModStatus.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "PurchaseRequests.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ModStatuses.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "BaseModificationForm.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ModificationComment.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ModificationComments.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "AgreementForm.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "ModificationForm.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "ProposalForm.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "FundingType.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "CostCode.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ContactCostCode.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "FundingComment.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "FundingTypes.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "CostCodes.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ContactCostCodes.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "FundingComments.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "FundingForm.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "DeliverableType.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DeliverableTypes.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "DeliverableComment.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "DeliverableStatus.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "DeliverableModStatus.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DeliverableComments.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DeliverableStatuses.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "DeliverableModStatuses.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "DeliverableForm.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "TaskForm.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Invoice.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "Invoices.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "CostCodeInvoice.js"
+				},
+				{	
+					"path": "app/view/project/form/",
+					"name": "InvoiceGridForm.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "CostCodeInvoices.js"
+				},
+				{	
+					"path": "app/controller/project/form/",
+					"name": "InvoiceGridForm.js"
+				},
+				{	
+					"path": "app/view/contact/",
+					"name": "PersonList.js"
+				},
+				{	
+					"path": "app/view/contact/",
+					"name": "GroupList.js"
+				},
+				{	
+					"path": "app/view/contact/tab/",
+					"name": "ContactTab.js"
+				},
+				{	
+					"path": "app/controller/contact/tab/",
+					"name": "ContactTab.js"
+				},
+				{	
+					"path": "app/controller/contact/window/",
+					"name": "Window.js"
+				},
+				{	
+					"path": "app/controller/contact/tab/",
+					"name": "ContactList.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Address.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "EAddress.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "Phone.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ContactType.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ContactContactGroup.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ContactGroupID.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ContactTypes.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ContactContactGroups.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ContactGroupIDs.js"
+				},
+				{	
+					"path": "app/controller/contact/window/",
+					"name": "ContactForm.js"
+				},
+				{	
+					"path": "app/controller/contact/window/",
+					"name": "PersonGroups.js"
+				},
+				{	
+					"path": "app/controller/contact/window/",
+					"name": "ContactDetail.js"
+				},
+				{	
+					"path": "app/model/",
+					"name": "ReportTree.js"
+				},
+				{	
+					"path": "app/view/report/",
+					"name": "ReportGrid.js"
+				},
+				{	
+					"path": "app/store/",
+					"name": "ReportTree.js"
+				},
+				{	
+					"path": "app/view/report/tab/",
+					"name": "ReportTab.js"
+				},
+				{	
+					"path": "app/controller/report/tab/",
+					"name": "ReportTab.js"
+				},
+				{	
+					"path": "app/view/",
+					"name": "Viewport.js"
+				},
             ]
         },
         {
