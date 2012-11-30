@@ -113,11 +113,142 @@ CREATE OR REPLACE VIEW grouppersonlist AS
    JOIN contactgroup ON contactgroup.contactid = contactcontactgroup.groupid
    JOIN person ON person.contactid = contactcontactgroup.contactid;
 
+ALTER TABLE polygon
+	DROP COLUMN fid,
+	ADD COLUMN polygonid SERIAL NOT NULL,
+	ADD COLUMN description character varying;
+
+ALTER TABLE line
+	DROP COLUMN fid,
+	ADD COLUMN lineid SERIAL,
+	ADD COLUMN description character varying;
+
+ALTER TABLE point
+	DROP COLUMN fid,
+	ADD COLUMN pointid SERIAL,
+	ADD COLUMN description character varying;
+
+ALTER TABLE polygon
+	ADD CONSTRAINT polygon_pk PRIMARY KEY (polygonid);
+
+ALTER TABLE line
+	ADD CONSTRAINT line_pk PRIMARY KEY (lineid);
+
+ALTER TABLE point
+	ADD CONSTRAINT point_pk PRIMARY KEY (pointid);
+
 -- Column: description
 
--- ALTER TABLE polygon DROP COLUMN description;
-
-ALTER TABLE polygon ADD COLUMN description character varying;
 COMMENT ON COLUMN polygon.description IS 'Description of vector feature.';
 
 SELECT AddGeometryColumn ('pts','polygon','the_geom',3857,'POLYGON',2);
+SELECT AddGeometryColumn ('pts','line','the_geom',3857,'LINESTRING',2);
+SELECT AddGeometryColumn ('pts','point','the_geom',3857,'POINT',2);
+
+-- View: commonfeature
+
+-- DROP VIEW commonfeature;
+
+CREATE OR REPLACE VIEW commonfeature AS
+ SELECT polygon.polygonid AS id, polygon.name AS text, polygon.description, st_astext(polygon.the_geom) AS wkt
+   FROM polygon;
+
+ALTER TABLE commonfeature
+  OWNER TO bradley;
+GRANT ALL ON TABLE commonfeature TO bradley;
+GRANT SELECT ON TABLE commonfeature TO pts_read;
+
+--prevent cascade on projectcontact_funding_fk
+ALTER TABLE funding
+	DROP CONSTRAINT projectcontact_funding_fk;
+ALTER TABLE funding
+	ADD CONSTRAINT projectcontact_funding_fk FOREIGN KEY (projectcontactid) REFERENCES projectcontact(projectcontactid);
+
+--move commonfeatures to cvl schema
+ DROP VIEW pts.commonfeature;
+
+-- Table: pts.point
+
+ DROP TABLE pts.point;
+
+CREATE TABLE cvl.point
+(
+  name character varying NOT NULL,
+  pointid SERIAL,
+  description character varying,
+  the_geom geometry,
+  CONSTRAINT point_pk PRIMARY KEY (pointid ),
+  CONSTRAINT enforce_dims_the_geom CHECK (st_ndims(the_geom) = 2),
+  CONSTRAINT enforce_geotype_the_geom CHECK (geometrytype(the_geom) = 'POINT'::text OR the_geom IS NULL),
+  CONSTRAINT enforce_srid_the_geom CHECK (st_srid(the_geom) = 3857)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cvl.point
+  OWNER TO bradley;
+GRANT ALL ON TABLE cvl.point TO bradley;
+GRANT SELECT ON TABLE cvl.point TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE cvl.point TO pts_write;
+
+-- Table: cvl.line
+
+DROP TABLE pts.line;
+
+CREATE TABLE cvl.line
+(
+  name character varying NOT NULL,
+  lineid SERIAL,
+  description character varying,
+  the_geom geometry,
+  CONSTRAINT line_pk PRIMARY KEY (lineid ),
+  CONSTRAINT enforce_dims_the_geom CHECK (st_ndims(the_geom) = 2),
+  CONSTRAINT enforce_geotype_the_geom CHECK (geometrytype(the_geom) = 'LINESTRING'::text OR the_geom IS NULL),
+  CONSTRAINT enforce_srid_the_geom CHECK (st_srid(the_geom) = 3857)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cvl.line
+  OWNER TO bradley;
+GRANT ALL ON TABLE cvl.line TO bradley;
+GRANT SELECT ON TABLE cvl.line TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE cvl.line TO pts_write;
+
+-- Table: cvl.polygon
+
+ DROP TABLE pts.polygon;
+
+CREATE TABLE cvl.polygon
+(
+  name character varying NOT NULL,
+  polygonid SERIAL,
+  description character varying, -- Description of vector feature.
+  the_geom geometry,
+  CONSTRAINT polygon_pk PRIMARY KEY (polygonid ),
+  CONSTRAINT enforce_dims_the_geom CHECK (st_ndims(the_geom) = 2),
+  CONSTRAINT enforce_geotype_the_geom CHECK (geometrytype(the_geom) = 'POLYGON'::text OR the_geom IS NULL),
+  CONSTRAINT enforce_srid_the_geom CHECK (st_srid(the_geom) = 3857)
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cvl.polygon
+  OWNER TO bradley;
+GRANT ALL ON TABLE cvl.polygon TO bradley;
+GRANT SELECT ON TABLE cvl.polygon TO pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE cvl.polygon TO pts_write;
+COMMENT ON COLUMN cvl.polygon.description IS 'Description of vector feature.';
+
+CREATE OR REPLACE VIEW cvl.commonfeature AS
+ SELECT polygon.polygonid AS id, polygon.name AS text, polygon.description, st_astext(polygon.the_geom) AS wkt
+   FROM polygon;
+
+ALTER TABLE cvl.commonfeature
+  OWNER TO bradley;
+GRANT ALL ON TABLE cvl.commonfeature TO bradley;
+GRANT SELECT ON TABLE cvl.commonfeature TO pts_read;
+
+GRANT SELECT, UPDATE ON TABLE pts.projectline_projectlineid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON TABLE pts.projectpoint_projectpointid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON TABLE pts.projectpolygon_projectpolygonid_seq TO GROUP pts_write;
