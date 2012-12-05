@@ -359,24 +359,27 @@ Ext.define('PTS.view.controls.MapToolbar', {
                     });
 
                 if(dirty) {
-                    //destroy "deleted" features that have not been persisted
                     Ext.each(vector.features, function(feature) {
-                        if(feature.state === OpenLayers.State.DELETE) {
-                            if(feature.fid == undefined) {
+                        if(!!feature.state) {
+                            //destroy "deleted" features that have not been persisted
+                            if(feature.fid == undefined && feature.state === OpenLayers.State.DELETE) {
                                 remove.push(feature);
                             }else {
                                 persisted = true;
                             }
-                        }else {
+                        }/*else {
                             persisted = true;
-                        }
+                        }*/
                     });
                     vector.destroyFeatures(remove);
                     if(persisted) {
                         me.saveStrategy.save();
+                    }else {
+                        this.unmask();
                     }
                 }
             },
+            scope: this,
             disabled: false,
             tooltip: 'Save project features'
         });

@@ -150,11 +150,27 @@ Ext.define('PTS.controller.project.window.Window', {
                 mapPanel.ownerCt.getEl().mask('Loading project features...');
             },
             "loadend": function(evt) {
-                var resp = evt.response;
+                var resp = evt.response,
+                    bnd, map, zoom;
 
                 if(resp.code !== OpenLayers.Protocol.Response.SUCCESS) {
                     PTS.app.showError('There was an error loading the features.</br>Error: ' + Ext.decode(resp.priv.responseText).message);
                 }
+
+                if(mapPanel.zoomOnLoad && evt.object.features.length) {
+                    bnd = evt.object.getDataExtent();
+                    map = mapPanel.map;
+                    zoom = map.getZoomForExtent(bnd);
+
+                    if(zoom <= mapPanel.maxZoomOnLoad) {
+                        map.zoomToExtent(bnd);
+                    } else {
+                        map.setCenter(bnd.getCenterLonLat(),
+                            mapPanel.maxZoomOnLoad,
+                            false, false);
+                    }
+                }
+                mapPanel.zoomOnLoad = false;
                 mapPanel.ownerCt.getEl().unmask();
             },
             "refresh": function(evt) {

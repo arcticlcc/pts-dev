@@ -42,6 +42,20 @@ Ext.define('PTS.view.project.ProjectMap', {
      */
 
     /**
+     * @cfg {boolean} zoomOnLoad
+     * Whether to zoom to the extent of the features
+     * in the projectVectors layer on the next map load.
+     * This property is set to false after the load completes.
+     */
+     zoomOnLoad: true,
+
+    /**
+     * @cfg {number} maxZoomOnLoad
+     * The maximum zoom level for {@link #property-zoomOnLoad}
+     */
+     maxZoomOnLoad: 6,
+
+    /**
      * @cfg {Ext.toolbar.Toolbar} mapToolbar
      * The map toolbar.
      */
