@@ -52,7 +52,7 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                                         {
                                             //xtype: 'menucheckitem',
                                             iconCls: 'pts-flag-red',
-                                            text: 'Overdue',
+                                            text: 'Past Due',
                                             filter: 'over'
                                         },
                                         {
@@ -88,7 +88,7 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
             columns: [
                 {
                     xtype: 'gridcolumn',
-                    width: 83,
+                    width: 75,
                     dataIndex: 'duedate',
                     text: 'Due Date',
                     renderer: function (value, metaData, record, rowIdx, colIdx , store, view) {
@@ -103,14 +103,20 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'title',
+                    flex: 2,
+                    text: 'Title'
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'projectcode',
                     text: 'Project'
                 },
                 {
                     xtype: 'gridcolumn',
-                    dataIndex: 'title',
-                    flex: 1,
-                    text: 'Title'
+                    dataIndex: 'project',
+                    text: 'Project Title',
+                    flex: 2
                 },
                 {
                     xtype: 'gridcolumn',
@@ -121,6 +127,7 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                     xtype: 'gridcolumn',
                     dataIndex: 'dayspastdue',
                     text: 'Past Due',
+                    width: 70,
                     renderer: function (value, metaData, record, rowIdx, colIdx , store, view) {
                         if (value > 0) {
                             return '<span style="color:#FF0000;">' + value + '</span>';

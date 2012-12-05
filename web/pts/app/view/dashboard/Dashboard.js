@@ -71,7 +71,8 @@ Ext.define('PTS.view.dashboard.Dashboard', {
                 },
                 {
                     xtype: 'tabpanel',
-                    width: 565,
+                    width: Ext.getBody().getWidth() > 1490 ? 700 : 590,
+                    title: 'Tasks and Deliverables',
                     minWidth: 550,
                     //flex: 1,
                     region: 'east',

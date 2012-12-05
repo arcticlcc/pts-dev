@@ -14,5 +14,9 @@ Ext.define('PTS.store.Tasks', {
     pageSize: PTS.Defaults.pageSize,
     sorters: [
         'duedate'
-    ]
+    ],
+    filters: [{
+        property: 'completed',
+        value: 'false'
+    }]
 });

@@ -68,6 +68,15 @@ Ext.define('PTS.view.dashboard.TaskList', {
                                         }
                                     ]
                                 }
+                            },
+                            '-',
+                            {
+                                xtype: 'button',
+                                action: 'togglecomplete',
+                                text: 'Completed',
+                                enableToggle: 'true',
+                                iconCls: 'pts-btn-check',
+                                tooltip: 'Include completed tasks'
                             }
                         ]
                     }

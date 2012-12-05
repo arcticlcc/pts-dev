@@ -11,11 +11,19 @@ Ext.define('PTS.controller.dashboard.TaskList', {
     init: function() {
 
         this.control({
+            'tasklist button[action=togglecomplete]': {
+                toggle: this.toggleComplete
+            },
             'tasklist button[action=filtertask]': {
                 change: this.filterTask
             }
         });
     },
+
+    /**
+     * @cfg {Boolean} showComplete
+     * @private
+     */
 
     /**
      * Filter the task list
@@ -32,16 +40,54 @@ Ext.define('PTS.controller.dashboard.TaskList', {
         store.clearFilter(true);
         store.remoteFilter = true;
 
+        if(!this.showComplete) {
+            store.filters.add(new Ext.util.Filter({
+                property: 'completed',
+                value: 'false'
+            }));
+        }
+
         switch(itm.filter) {
             case 'user':
-                store.filter('contactid',PTS.user.get('contactid'));
+                store.filters.add(new Ext.util.Filter({
+                    property: 'contactid',
+                    value: PTS.user.get('contactid')
+                }));
                 break;
             case 'today':
                 dt = new Date();
-                store.filter('duedate',(Ext.Date.clearTime(dt)));
+                store.filters.add(new Ext.util.Filter({
+                    property: 'duedate',
+                    value: Ext.Date.clearTime(dt)
+                }));
                 break;
             default:
                 store.clearFilter();
         }
+
+        store.load();
+    },
+
+    /**
+     * Filter the task list
+     * @param {Ext.button.Button} btn The button
+     * @param {Ext.menu.CheckItem} pressed The pressed state
+     */
+    toggleComplete: function(btn, pressed) {
+        var store = this.getTasksStore(),
+            filters = store.filters;
+            //idx = store.filters.findIndex('property','completed'),
+            //filter = store.filters.getAt(idx);
+
+        this.showComplete = pressed;
+        if(pressed) {
+            filters.removeAt(filters.findIndex('property','completed'));
+        } else {
+            filters.add(new Ext.util.Filter({
+                property: 'completed',
+                value: 'false'
+            }));
+        }
+        store.load();
     }
 });
