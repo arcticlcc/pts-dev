@@ -1,5 +1,4 @@
 /**
- * File: app/view/project/form/DeliverableForm.js
  * Form for editing Deliverable information.
  */
 
@@ -22,7 +21,6 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
         autoScroll: true,
         preventHeader: true
     },
-    //model: 'PTS.model.Deliverable',
 
     initComponent: function() {
         var me = this;
@@ -220,7 +218,95 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             text: 'Comment'
                         }
                     ]
-                }, {
+                },{
+                    xtype: 'roweditgrid',
+                    store: 'DeliverableNotices',
+                    uri: 'deliverablenotice',
+                    title:'Notices',
+                    disabled: false,
+                    columns: [
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'noticeid',
+                            renderer: function(value, metaData, record, rowIdx, colIdx , store, view) {
+                                var combo = view.getHeaderAtIndex(colIdx).getEditor(),
+                                    idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
+                                    rec = combo.getStore().getAt(idx);
+                                if (rec) {
+                                    return rec.get(combo.displayField);
+                                }
+                                return value;
+                            },
+                            editor: {
+                                xtype: 'statuscombo',
+                                store: 'Notices',
+                                valueField: 'noticeid',
+                                allowBlank: false
+                            },
+                            text: 'Notice'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'recipientid',
+                            renderer: function(value, metaData, record, rowIdx, colIdx , store, view) {
+                                var combo = view.getHeaderAtIndex(colIdx).getEditor(),
+                                    idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
+                                    rec = combo.getStore().getAt(idx);
+                                if (rec) {
+                                    return rec.get(combo.displayField);
+                                }
+                                return value;
+                            },
+                            editor: {
+                                xtype: 'filtercombo',
+                                store: 'NoticeRecipients',
+                                displayField: 'name',
+                                valueField: 'contactid',
+                                allowBlank: false,
+                                forceSelection: true,
+                                typeAhead: false,
+                                queryMode: 'local',
+                                lastQuery: ''
+                            },
+                            text: 'Recipient'
+                        },
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'datesent',
+                            editor: {
+                                xtype: 'datefield',
+                                allowBlank: false,
+                                maxValue: new Date()
+                            },
+                            text: 'Date Sent'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'contactid',
+                            //width: 150,
+                            hidden: false,
+                            renderer: function(value) {
+                                var store = Ext.getStore('GroupUsers'),
+                                    idx = store.find('contactid', value, 0, false, true, true),
+                                    rec = store.getAt(idx);
+                                if (rec) {
+                                    return rec.get('fullname');
+                                }
+                                return value;
+                            },
+                            text: 'User'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'comment',
+                            editor: {
+                                xtype: 'textfield'
+                            },
+                            flex: 1,
+                            text: 'Comment'
+                        }
+                    ]
+                },{
                     title:'Contacts'
                 },{
                     title:'Progress'

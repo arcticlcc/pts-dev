@@ -14,7 +14,10 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         'DeliverableTypes',
         'DeliverableComments',
         'DeliverableStatuses',
-        'DeliverableModStatuses'
+        'DeliverableModStatuses',
+        'DeliverableNotices',
+        'NoticeRecipients',
+        'Notices'
     ],
     refs: [{
         ref: 'deliverableForm',
