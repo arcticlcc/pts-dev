@@ -31,4 +31,27 @@ reports:
           - {text: Short Title, dataIndex: shorttitle, hidden: true}
           - {text: Description, dataIndex: description, flex: 2}
           - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
-        fields: [projectcode, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]     
+        fields: [projectcode, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
+  - text: Deliverable Reports
+    descrip: Reports associated with Deliverables
+    iconCls: folder
+    leaf: false
+    children:
+      - text: Deliverable Notices
+        url: ../noticesent
+        descrip: Lists deliverables either overdue or due soon(30 days) and notice status
+        cols:
+          - {text: Due Date, dataIndex: duedate}
+          - {text: Title, dataIndex: title, flex: 1}
+          - {text: Description, dataIndex: description, flex: 2, hidden: true}
+          - {text: Last Notice, dataIndex: lastnotice}
+          - {text: Date Sent, dataIndex: datesent}
+          - {text: Project, dataIndex: projectcode}
+          - {text: Project Title, dataIndex: project, flex: 1}
+          - {text: Pri. Investigator, dataIndex: contact, flex: 1}
+          - {text: PI Email, dataIndex: email, flex: 1}
+          - {text: Financial Officer, dataIndex: fofficer, flex: 1}
+          - {text: FO Email, dataIndex: foemail, flex: 1}
+          - {text: Past Due, dataIndex: dayspastdue, hidden:true}
+          - {text: Status, dataIndex: status, hidden:true}
+        fields: [duedate, title, description, lastnotice, datesent, projectcode, project, contact, email, fofficer, foemail, dayspastdue, status]             

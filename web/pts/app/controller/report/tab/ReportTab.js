@@ -58,7 +58,8 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                     root: 'data'
                 }
             },
-            autoLoad: true
+            autoLoad: true,
+            remoteSort: true
         };
 
         if(rec.data.model) {
