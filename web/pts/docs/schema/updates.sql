@@ -1,3 +1,28 @@
+-- Table: cvl.notice
+
+-- DROP TABLE cvl.notice;
+
+CREATE TABLE cvl.notice
+(
+  noticeid integer NOT NULL, -- PK for NOTICE
+  title character varying NOT NULL, -- Full title of notice
+  code character varying NOT NULL, -- Short title of notice
+  description character varying NOT NULL,
+  CONSTRAINT notice_pk PRIMARY KEY (noticeid )
+)
+WITH (
+  OIDS=FALSE
+);
+ALTER TABLE cvl.notice
+  OWNER TO bradley;
+GRANT ALL ON TABLE cvl.notice TO bradley;
+GRANT SELECT ON TABLE cvl.notice TO pts_read;
+COMMENT ON TABLE cvl.notice
+  IS 'CVL for types of notices';
+COMMENT ON COLUMN cvl.notice.noticeid IS 'PK for NOTICE';
+COMMENT ON COLUMN cvl.notice.title IS 'Full title of notice';
+COMMENT ON COLUMN cvl.notice.code IS 'Short title of notice';
+
 -- Table: deliverablenotice
 
 -- DROP TABLE deliverablenotice;
@@ -55,31 +80,6 @@ CREATE INDEX fki_person_deliverablenotice_user_fk
   (recipientid );
 
 GRANT SELECT, UPDATE ON TABLE deliverablenotice_deliverablenoticeid_seq TO GROUP pts_write;
-
--- Table: cvl.notice
-
--- DROP TABLE cvl.notice;
-
-CREATE TABLE cvl.notice
-(
-  noticeid integer NOT NULL, -- PK for NOTICE
-  title character varying NOT NULL, -- Full title of notice
-  code character varying NOT NULL, -- Short title of notice
-  description character varying NOT NULL,
-  CONSTRAINT notice_pk PRIMARY KEY (noticeid )
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE cvl.notice
-  OWNER TO bradley;
-GRANT ALL ON TABLE cvl.notice TO bradley;
-GRANT SELECT ON TABLE cvl.notice TO pts_read;
-COMMENT ON TABLE cvl.notice
-  IS 'CVL for types of notices';
-COMMENT ON COLUMN cvl.notice.noticeid IS 'PK for NOTICE';
-COMMENT ON COLUMN cvl.notice.title IS 'Full title of notice';
-COMMENT ON COLUMN cvl.notice.code IS 'Short title of notice';
 
 -- View: report.noticesent
 
