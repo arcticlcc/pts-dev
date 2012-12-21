@@ -66,6 +66,9 @@ Ext.define('PTS.model.ProjectListing', {
         },
         {
             name: 'projectcode', type: 'mystring', useNull: true
+        },
+        {
+            name: 'status', type: 'mystring', useNull: true
         }
     ],
 
