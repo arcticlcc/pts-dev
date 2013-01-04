@@ -7,5 +7,9 @@ Ext.define('PTS.store.ModStatuses', {
     model: 'PTS.model.ModStatus',
 
     autoLoad: false,
-    autoSync: false
+    autoSync: false,
+    sorters: [
+        { property: 'effectivedate', direction : 'DESC' },
+        { property: 'weight', direction : 'DESC' }
+    ]
 });
