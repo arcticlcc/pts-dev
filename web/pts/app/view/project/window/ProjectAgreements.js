@@ -58,10 +58,13 @@ Ext.define('PTS.view.project.window.ProjectAgreements', {
                 {
                     xtype: 'agreementitemdetail',
                     flex: 2,
-                    region: 'center'
+                    region: 'center',
+                    minWidth: 450
                 },
                 {
                     xtype: 'agreementstree',
+                    split: true,
+                    collapsible: false,
                     flex: 1,
                     region: 'west'
                 }
