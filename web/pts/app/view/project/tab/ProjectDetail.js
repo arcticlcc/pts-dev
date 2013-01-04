@@ -20,21 +20,24 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                 backgroundImage: 'none'
             },
             defaults: {
-                autoScroll: true
+                //autoScroll: true
+                layout: 'fit'
             },
             items: [
                 {
                     xtype: 'treepanel',
-                    itemId: 'projectagreements',
+                    itemId: 'projectAgreements',
                     title: 'Agreements',
                     store: 'ProjectAgreementsTree',
-                    cls: 'pts-no-tree-icons',
+                    //cls: 'pts-no-tree-icons',
                     lines: false,
+                    useArrows: true,
                     rootVisible: false,
                     viewConfig: {
-                        getRowClass: function(record, rowIndex, rowParams, store){
+                        /*getRowClass: function(record, rowIndex, rowParams, store){
                             return record.get("hilite") ? "pts-tree-highlight" : 'pts-tree-header';
-                        }
+                        }*/
+                        disableSelection: true
                     },
                     columns: [
                         {
@@ -54,20 +57,18 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                 },
                 {
                     xtype: 'panel',
-                    title: 'Deliverables'
+                    title: 'Deliverables',
+                    disabled: true
                 },
                 {
                     xtype: 'panel',
-                    title: 'Funding'
-                },
-                {
-                    xtype: 'panel',
-                    title: 'Contacts'
-                },
+                    title: 'Contacts',
+                    disabled: true
+                }/*,
                 {
                     xtype: 'panel',
                     title: 'Files'
-                }
+                }*/
             ]
         });
 

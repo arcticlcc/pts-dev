@@ -1,6 +1,5 @@
 /**
- * File: app/model/Project.js
- * Description: Project model.
+ * Project model.
  */
 
 Ext.define('PTS.model.Project', {
@@ -61,6 +60,10 @@ Ext.define('PTS.model.Project', {
         {
             name: 'uuid',
             persist: false
+        },
+        {
+            name: 'exportmetadata',
+            type: 'myboolean'
         },
         {
             name: 'projectcode',

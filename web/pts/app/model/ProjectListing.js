@@ -1,6 +1,5 @@
 /**
- * File: app/model/ProjectListing.js
- * Description: Project listing(record with computed attributes) model.
+ * Project listing(record with computed attributes) model.
  */
 
 Ext.define('PTS.model.ProjectListing', {
@@ -69,6 +68,10 @@ Ext.define('PTS.model.ProjectListing', {
         },
         {
             name: 'status', type: 'mystring', useNull: true
+        },
+        {
+            name: 'exportmetadata',
+            type: 'myboolean'
         }
     ],
 

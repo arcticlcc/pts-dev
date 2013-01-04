@@ -124,7 +124,17 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'status',
-                    text: 'Status'
+                    text: 'Status',
+                    width: 80
+                },
+                {
+                    xtype: 'booleancolumn',
+                    text: 'Export',
+                    trueText: 'Yes',
+                    falseText: 'No',
+                    dataIndex: 'exportmetadata',
+                    hidden: true,
+                    width: 55
                 },
                 {
                     text: 'Funding',
