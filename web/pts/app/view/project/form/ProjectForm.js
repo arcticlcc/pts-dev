@@ -114,6 +114,15 @@ Ext.define('PTS.view.project.form.ProjectForm', {
                                     labelWidth: 8,
                                     allowBlank: false,
                                     emptyText: 'Unique ID'
+                                },
+                                {
+                                    xtype: 'checkboxfield',
+                                    name: 'exportmetadata',
+                                    margin: '0 0 0 20',
+                                    width: 175,
+                                    boxLabel: 'Export Metadata?',
+                                    labelPad: 3,
+                                    labelWidth: 120
                                 }
                             ]
                         },
