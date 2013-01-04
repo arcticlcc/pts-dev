@@ -47,8 +47,8 @@ Ext.define('PTS.util.VTypes', {
         moddaterange: function(val, field) {
             var date = field.parseDate(val),
                 fields = [
-                        field.up('form').down('#startDate'),
-                        field.up('form').down('#effectiveDate')
+                        field.up('form').down('#startDate')/*,
+                        field.up('form').down('#effectiveDate')*/
                     ];
 
             //enddate

@@ -46,6 +46,10 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                 layout: {
                                     type: 'hbox'
                                 },
+                                defaults: {
+                                   // width: 170,
+                                    flex: 1
+                                },
                                 items: [
                                     {
                                         xtype: 'datefield',
@@ -55,7 +59,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                         fieldLabel: 'Created',
                                         endDateField: 'endDate',
                                         vtype: 'moddaterange',
-                                        labelWidth: 75,
+                                        labelWidth: 60,
                                         allowBlank: false,
                                         listeners : {
                                             change: function(field, newValue, oldValue) {
@@ -65,7 +69,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                             }
                                         }
                                     },
-                                    {
+                                   /* {
                                         xtype: 'daterangefield',
                                         itemId: 'effectiveDate',
                                         name: 'effectivedate',
@@ -73,7 +77,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                         vfield: 'endDate',
                                         startDateField: 'startDate',
                                         vtype: 'daterange',
-                                        labelWidth: 75
+                                        labelWidth: 50
                                     }
                                 ]
                             },
@@ -83,7 +87,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                     type: 'hbox'
                                 },
                                 anchor: '100%',
-                                items: [
+                                items: [*/
                                     {
                                         xtype: 'daterangefield',
                                         itemId: 'startDate',
@@ -91,20 +95,18 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                         name: 'startdate',
                                         fieldLabel: 'Start',
                                         vfield: 'beginDate',
-                                        endDateField: 'effectiveDate',
+                                        //endDateField: 'effectiveDate',
                                         vtype: 'daterange',
-                                        labelWidth: 75,
-                                        flex: 0
+                                        labelWidth: 45
                                     },
                                     {
                                         xtype: 'datefield',
                                         itemId: 'endDate',
                                         name: 'enddate',
                                         fieldLabel: 'End',
-                                          startDateField: 'dateCreated',
+                                        startDateField: 'dateCreated',
                                         vtype: 'moddaterange',
-                                        labelWidth: 75,
-                                        flex: 0,
+                                        labelWidth: 40,
                                         listeners : {
                                             change: function(field, newValue, oldValue) {
                                                 if (newValue === null) {
