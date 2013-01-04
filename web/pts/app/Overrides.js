@@ -406,4 +406,19 @@ Ext.define('PTS.Overrides', {
             return me.callParent([options]);
         }
     });
+    //Fixes grid scrolling issues when in a container with 'fit' layout
+    //http://www.sencha.com/forum/showthread.php?137993-4.0.2-only-layout-fit-grid-scrollbar-when-used-does-not-scroll-content/page4
+    //http://stackoverflow.com/questions/6835618/extjs-4-grid-autoscroll?rq=1
+    //TODO: Fixed in 4.1
+    //
+    Ext.override(Ext.grid.Scroller, {
+        onAdded: function() {
+            this.callParent(arguments);
+            var me = this;
+            if (me.scrollEl) {
+                me.mun(me.scrollEl, 'scroll', me.onElScroll, me);
+                me.mon(me.scrollEl, 'scroll', me.onElScroll, me);
+            }
+        }
+    });
 });
