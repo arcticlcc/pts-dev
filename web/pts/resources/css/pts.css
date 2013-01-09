@@ -194,6 +194,9 @@
 .pts-zoom {
     background-image: url("../images/icons/zoom.png");
     }
+.pts-world-link {
+    background-image: url("../images/icons/world_link.png");
+    }
 .pts-icon-download {
     background: url("../images/download.png") no-repeat scroll 2px 0px transparent;
     width: 60px !important;

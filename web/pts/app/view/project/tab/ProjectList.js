@@ -103,6 +103,18 @@ Ext.define('PTS.view.project.tab.ProjectList', {
             }],
             columns: [
                 {
+                    xtype:'actioncolumn',
+                    width:25,
+                    items: [{
+                        iconCls: 'pts-world-link',
+                        tooltip: 'Open Website',
+                        handler: function(grid, rowIndex, colIndex) {
+                            var val = grid.getStore().getAt(rowIndex).get('projectcode');
+                            window.open('http://arcticlcc.org/projects/'+val);
+                        }
+                    }]
+                },
+                {
                     xtype: 'gridcolumn',
                     dataIndex: 'projectcode',
                     text: 'Project'
