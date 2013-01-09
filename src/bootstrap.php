@@ -109,7 +109,8 @@ $app->error(function (\Exception $ex, $code) use ($app) {
         return new Response(file_get_contents(__DIR__.'/../web/404.html'));
     } else {
         // Do something more sophisticated here (logging etc.)
-        return new Response('<h1>Error!</h1>');
+        return new Response(file_get_contents(__DIR__.'/../web/500.html'));
+        //return new Response('<h1>Error!</h1>');
     }
 
 });

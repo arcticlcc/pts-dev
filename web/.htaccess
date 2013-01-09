@@ -1,4 +1,7 @@
-SetEnv SILEX_ENV "dev"
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+SetEnv SILEX_ENV "prod"
 
 RewriteEngine On
 
@@ -8,7 +11,7 @@ RewriteRule ^(.*)$ index.php [QSA,L]
 # Session lifetime of 4 hours
 php_value session.gc_maxlifetime 14400
 
-# Enable session garbage collection with a 1% chance of
+# Enable session garbage collection with a 10% chance of
 # running on each session_start()
-php_value session.gc_probability 1
+php_value session.gc_probability 10
 php_value session.gc_divisor 100
