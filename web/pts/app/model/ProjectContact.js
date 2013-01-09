@@ -37,6 +37,14 @@ Ext.define('PTS.model.ProjectContact', {
             persist: false
         },
         {
+            name: 'role',
+            persist: false
+        },
+        {
+            name: 'type',
+            persist: false
+        },
+        {
             name: 'contactprojectcode'
         },
         {

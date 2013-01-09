@@ -15,6 +15,12 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
     title: 'Deliverables',
     store: 'DeliverableListings',
 
+    /**
+     * @cfg {String} initFilter
+     * The default checked option for the filter button.
+     */
+    initFilter: 'over',
+
     initComponent: function() {
         var me = this;
 
@@ -25,7 +31,7 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
             dockedItems: [
                     {
                         xtype: 'pagingtoolbar',
-                        store: 'DeliverableListings',   // same store GridPanel is using
+                        store: me.store,   // same store GridPanel is using
                         dock: 'top',
                         displayInfo: true,
                         plugins: [
@@ -53,31 +59,36 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                                             //xtype: 'menucheckitem',
                                             iconCls: 'pts-flag-red',
                                             text: 'Past Due',
-                                            filter: 'over'
+                                            filter: 'over',
+                                            checked: me.initFilter === 'over'
                                         },
                                         {
                                             //xtype: 'menucheckitem',
                                             iconCls: 'pts-flag-orange',
                                             text: 'Due Soon',
-                                            filter: 'soon'
+                                            filter: 'soon',
+                                            checked: me.initFilter === 'soon'
                                         },
                                         {
                                             //xtype: 'menucheckitem',
                                             iconCls: 'pts-flag-green',
                                             text: 'Incomplete',
-                                            filter: 'incomplete'
+                                            filter: 'incomplete',
+                                            checked: me.initFilter === 'incomplete'
                                         },
                                         {
                                             //xtype: 'menucheckitem',
                                             iconCls: 'pts-flag-white',
                                             text: 'All',
-                                            filter: 'all'
+                                            filter: 'all',
+                                            checked: me.initFilter === 'all'
                                         },
                                         {
                                             //xtype: 'menucheckitem',
                                             iconCls: 'pts-flag-gray',
                                             text: 'Completed',
-                                            filter: 'complete'
+                                            filter: 'complete',
+                                            checked: me.initFilter === 'complete'
                                         }
                                     ]
                                 }

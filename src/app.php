@@ -162,7 +162,7 @@ $app->get('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     return $app['json']->getResponse();
 });
 
-$app->get('{class}/{id}/{related}', function (Request $request, $class, $id, $related) use ($app) {
+$app->get('{class}/{id}/{related}.{format}', function (Request $request, $class, $id, $related, $format) use ($app) {
 
     $restricted = array(
         'userinfo' => true,
@@ -182,10 +182,11 @@ $app->get('{class}/{id}/{related}', function (Request $request, $class, $id, $re
         return $app['json']->getResponse();
     }
 
-    $app['getRelated']($request, $related, $class .'id', $id);
+    $app['getRelated']($request, $related, $class .'id', $id, null, $format);
 
-    return $app['json']->getResponse();
-});
+    return $app[$format]->getResponse();
+})
+->value('format', 'json');
 
 $app->put('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     $result = array();

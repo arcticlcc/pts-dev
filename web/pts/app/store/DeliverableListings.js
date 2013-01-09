@@ -9,7 +9,6 @@ Ext.define('PTS.store.DeliverableListings', {
     autoLoad: true,
     remoteSort: true,
     remoteFilter: true,
-    storeId: 'DeliverableListings',
     pageSize: PTS.Defaults.pageSize,
     sorters: [
         'duedate'

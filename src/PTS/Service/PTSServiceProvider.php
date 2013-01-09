@@ -206,7 +206,7 @@ class PTSServiceProvider implements ServiceProviderInterface
                 return $result;
             });
 
-        $app['getRelated'] = $app->protect(function($request, $class, $key, $id, array $where = null) use ($app) {
+        $app['getRelated'] = $app->protect(function($request, $class, $key, $id, array $where = null, $format = 'json') use ($app) {
             //if(!$key) $key = $class.'id';
 
             $page = $request->get('page') ?: $app['page'];
@@ -252,7 +252,7 @@ class PTSServiceProvider implements ServiceProviderInterface
 
                 $count = $count->count();
 
-                $app['json']->setTotal($count);
+                /*$app['json']->setTotal($count);
 
                 $app['json']->setData($result);
 
@@ -260,6 +260,22 @@ class PTSServiceProvider implements ServiceProviderInterface
                 $app['monolog']->addError($exc->getMessage());
 
                 $app['json']->setAll(null, 409, false, $exc->getMessage());
+            }*/
+
+                switch ($format) {
+                    case "csv":
+                        $app['csv']->setTitle($class);
+                        break;
+                    default:
+                        $app[$format]->setTotal($count);
+                }
+
+                $app[$format]->setData($result);
+
+            } catch (Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+
+                $app[$format]->setAll(null, 409, false, $exc->getMessage());
             }
         });
 

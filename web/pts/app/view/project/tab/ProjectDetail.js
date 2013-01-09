@@ -6,6 +6,8 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
     extend: 'Ext.tab.Panel',
     alias: 'widget.projectdetail',
     requires: [
+        'Ext.ux.grid.PrintGrid',
+        'Ext.ux.grid.SaveGrid'
     ],
 
     title: 'Project Details',
@@ -29,6 +31,7 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                     itemId: 'projectAgreements',
                     title: 'Agreements',
                     store: 'ProjectAgreementsTree',
+                    uri: 'tree',
                     //cls: 'pts-no-tree-icons',
                     lines: false,
                     useArrows: true,
@@ -56,14 +59,56 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                     ]
                 },
                 {
-                    xtype: 'panel',
+                    xtype: 'deliverablelist',
                     title: 'Deliverables',
-                    disabled: true
+                    store: 'ProjectDeliverables',
+                    initFilter: 'all',
+                    uri: 'deliverabledue'
                 },
                 {
-                    xtype: 'panel',
+                    xtype: 'gridpanel',
+                    itemId: 'projectContacts',
                     title: 'Contacts',
-                    disabled: true
+                    store: 'ProjectContacts',
+                    uri: 'projectcontactfull',
+                    dockedItems: [
+                        {
+                            xtype: 'pagingtoolbar',
+                            store: 'ProjectContacts',   // same store GridPanel is using
+                            dock: 'top',
+                            displayInfo: true,
+                            plugins: [
+                                Ext.create('Ext.ux.grid.PrintGrid', {
+                                    printHidden: true
+                                }),
+                                Ext.create('Ext.ux.grid.SaveGrid', {})
+                            ]
+                        }
+                    ],
+                    columns: [
+                        {
+                            xtype: 'gridcolumn',
+                            sortable: false,
+                            dataIndex: 'name',
+                            flex: 1,
+                            text: 'Name'
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'role',
+                            sortable: false,
+                            flex: 1,
+                            text: 'Role'
+                        },
+                        {
+                            xtype: 'booleancolumn',
+                            dataIndex: 'partner',
+                            sortable: false,
+                            text: 'Partner?',
+                            width: 55
+                        }
+
+                    ]
                 }/*,
                 {
                     xtype: 'panel',

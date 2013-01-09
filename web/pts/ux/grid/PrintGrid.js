@@ -53,6 +53,7 @@ Ext.define('Ext.ux.grid.PrintGrid', {
             mainTitle: this.title,
             printHidden: this.printHidden,
             iconCls: 'pts-printer',
+            itemId: 'printBtn',
             tooltip: 'Print the visible records',
             handler : function(){
                 var me = this,

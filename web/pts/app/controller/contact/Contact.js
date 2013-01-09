@@ -27,15 +27,17 @@ Ext.define('PTS.controller.contact.Contact', {
      * Creates and opens the contact window.
      * @param {Ext.Component/Number/String} type The card, itemId, or index to load.
      *
-     * - **0** : **Default** Person form
-     * - **1** : Group form
-     * @param {Object} [record] An optional contact record.
+     * - **person** : **Default** Person form
+     * - **group** : Group form
+     * @param {Object} [record] An optional contact record that has the following methods:
+     * - **getId** : Must return the id of the contact
+     * - **getContactName** : Returns the title for the contact window.
      */
     openContact: function(type,record) {
         var win, code,
             id = record ? record.getId() : false;
 
-        type = type ? type : 0;
+        type = type ? type : 'person';
 
         if(id !== false) {
             code = record.getContactName();

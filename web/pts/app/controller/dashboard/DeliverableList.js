@@ -23,7 +23,7 @@ Ext.define('PTS.controller.dashboard.DeliverableList', {
      * @param {Ext.menu.CheckItem} item The menu item that was selected
      */
     filterDeliverable: function(btn, itm) {
-        var store = this.getDeliverableListingsStore(),
+        var store = btn.up('deliverablelist').getStore(),
             dt;
 
         //TODO: Fixed in 4.1?
