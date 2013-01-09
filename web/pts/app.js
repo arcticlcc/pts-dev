@@ -131,8 +131,8 @@ Ext.application({
                 //setup activity monitor
                 PTS.util.ActivityMonitor.init({
                     verbose : false,
-                    interval: (1000*210*1),
-                    maxInactive: (1000*1200*1),
+                    interval: (1000*900*1), //15 minutes
+                    maxInactive: (1000*13470*1), //224.5 minutes
                     isActive: function() {
                         Ext.Ajax.request({
                             url: '../poll'

@@ -11,7 +11,9 @@ $app = new Application();
 $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new PTS\Controller\Feature());
 $app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/reports.yml"));
-$app->register(new Silex\Provider\SessionServiceProvider());
+$app->register(new Silex\Provider\SessionServiceProvider(), array(
+    'session.storage.save_path' => __DIR__.'/../sessions'
+));
 $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path'       => __DIR__.'/../views',
     'twig.class_path' => __DIR__.'/../vendor/twig/twig/lib',

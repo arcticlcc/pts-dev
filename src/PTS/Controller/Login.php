@@ -65,6 +65,7 @@ class Login implements ControllerProviderInterface
                 }
 
                 if ($hash === $password) {
+                    $app['session']->migrate(true); //regenerate the sessionid
                     $app['session']->set('user', array(
                         'username' => $result->username,
                         'loginid' => $result->loginid,
@@ -99,6 +100,7 @@ class Login implements ControllerProviderInterface
 
         $controllers->get('logout', function (Application $app, Request $request) {
             $app['session']->clear();
+            $app['session']->invalidate(); //kill the old session
 
             //reset token
             $token = time();

@@ -4,3 +4,11 @@ RewriteEngine On
 
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(.*)$ index.php [QSA,L]
+
+# Session lifetime of 4 hours
+php_value session.gc_maxlifetime 14400
+
+# Enable session garbage collection with a 1% chance of
+# running on each session_start()
+php_value session.gc_probability 1
+php_value session.gc_divisor 100

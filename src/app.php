@@ -45,6 +45,8 @@ $app->get('/home', function() use ($app) {
 });
 
 $app->get('/poll', function() use ($app) {
+    //regenerate the sessionid
+    $app['session']->migrate(true);
 
     $u = $app['session']->get('user');
     $json[] = array('success'=>true);
