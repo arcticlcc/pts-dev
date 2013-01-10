@@ -26,12 +26,13 @@ reports:
         descrip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract
         cols:
           - {text: Project, dataIndex: projectcode}
+          - {text: Status, dataIndex: status}
           - {text: Principal Investigators, dataIndex: principalinvestigators, flex: 1}
           - {text: Title, dataIndex: title, flex: 1}
           - {text: Short Title, dataIndex: shorttitle, hidden: true}
           - {text: Description, dataIndex: description, flex: 2}
           - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
-        fields: [projectcode, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
+        fields: [projectcode, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
   - text: Deliverable Reports
     descrip: Reports associated with Deliverables
     iconCls: folder
