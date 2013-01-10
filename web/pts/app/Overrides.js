@@ -13,7 +13,8 @@ Ext.define('PTS.Overrides', {
         'Ext.grid.RowEditor',
         'Ext.Array',
         'Ext.util.Sorter',
-        'Ext.data.TreeStore'
+        'Ext.data.TreeStore',
+        'Ext.grid.Scroller'
 
     ]
 }, function() {
