@@ -1,130 +1,115 @@
--- Table: cvl.notice
+--version 0.8
 
--- DROP TABLE cvl.notice;
+SET search_path = cvl, pg_catalog;
 
-CREATE TABLE cvl.notice
-(
-  noticeid integer NOT NULL, -- PK for NOTICE
-  title character varying NOT NULL, -- Full title of notice
-  code character varying NOT NULL, -- Short title of notice
-  description character varying NOT NULL,
-  CONSTRAINT notice_pk PRIMARY KEY (noticeid )
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE cvl.notice
+ALTER TABLE addresstype
+	ADD COLUMN adiwg character varying;
+
+ALTER TABLE contacttype
+	ADD COLUMN adiwg character varying;
+
+ALTER TABLE roletype
+	ADD COLUMN adiwg character varying;
+
+ALTER TABLE status
+	ADD COLUMN weight integer;
+
+SET search_path = pts, pg_catalog;
+
+--DROP VIEW projectlist;
+
+--DROP VIEW deliverablelist;
+
+--DROP VIEW projectcontactlist;
+
+ALTER TABLE project
+	ADD COLUMN exportmetadata boolean DEFAULT false NOT NULL;
+
+COMMENT ON COLUMN project.exportmetadata IS 'Specifies whether project metadata should be exported.';
+
+CREATE OR REPLACE FUNCTION project_status(pid integer) RETURNS integer
+    LANGUAGE plpgsql IMMUTABLE
+    AS $$
+DECLARE status integer;
+BEGIN
+    IF EXISTS(SELECT 1 FROM modification WHERE projectid = pid)
+    THEN --mods exist
+        --test for agreements
+        IF NOT EXISTS(SELECT 1 FROM modification WHERE projectid = pid AND modtypeid NOT IN (4,9))
+        THEN --no agreements, check for proposal status
+            status = statusid FROM modification JOIN modstatus USING(modificationid) WHERE projectid = pid
+                ORDER BY modstatus.effectivedate DESC LIMIT 1;
+            IF status IS NOT NULL
+            THEN
+                --return latest effective proposal status
+                RETURN status;
+            ELSE
+                --no proposal status recorded, default to 'proposed'
+                RETURN 7;
+            END IF;
+        --test for agreement status
+        ELSEIF EXISTS(SELECT 1 FROM modification JOIN modstatus USING(modificationid) WHERE projectid = pid
+             AND modtypeid NOT IN (4,9))
+        THEN --has status
+            -- check for latest status not eq cancelled or completed
+            status = statusid FROM modification JOIN (SELECT *,
+             row_number() OVER (PARTITION BY modificationid ORDER BY effectivedate DESC, weight DESC) AS rank
+            FROM modstatus
+            JOIN cvl.status USING(statusid)) AS modstatus USING(modificationid)
+            WHERE projectid = pid
+             AND modtypeid NOT IN (4,9) AND statusid NOT IN(1,2) AND RANK = 1
+            ORDER BY CASE statusid
+                WHEN 4 THEN 1
+                WHEN 8 THEN 2
+                WHEN 5 THEN 3
+                ELSE 4
+            END
+            LIMIT 1;
+            IF status IN(4,8,5)
+                THEN --return ordered status
+                    RETURN status;
+            ELSEIF status IS NOT NULL
+                THEN-- not ongoing or supsended, default to funded
+                RETURN 3;
+            ELSEIF EXISTS(SELECT 1 FROM modification JOIN modstatus USING(modificationid) WHERE projectid = pid
+                   AND modtypeid NOT IN (4,9) AND statusid IN(2))
+                THEN --completed
+                    RETURN 2;
+            ELSE --cancelled
+                RETURN 1;
+            END IF;
+        ELSE --no agreement status defaults to 'funded'
+            RETURN 3;
+        END IF;
+    ELSE
+        --no modifications, status is 'proposed'
+        RETURN 7;
+    END IF;
+END;
+$$;
+
+
+CREATE INDEX fki_project_modification_fk ON modification USING btree (projectid);
+
+CREATE INDEX project_status_idx ON project USING btree (project_status(projectid));
+
+CREATE INDEX fki_roletype_projectcontact_fk ON projectcontact USING btree (roletypeid);
+
+CREATE OR REPLACE VIEW projectlist AS
+	SELECT DISTINCT project.projectid, project.orgid, form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS allocated, COALESCE(invoice.amount, 0.00) AS invoiced, (COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference, project.shorttitle, status.status, project.exportmetadata FROM (((((project JOIN contactgroup ON ((project.orgid = contactgroup.contactid))) JOIN cvl.status ON ((project_status(project.projectid) = status.statusid))) LEFT JOIN modification USING (projectid)) LEFT JOIN funding ON (((funding.modificationid = modification.modificationid) AND (funding.fundingtypeid = 1)))) LEFT JOIN (SELECT modification.projectid, sum(invoice.amount) AS amount FROM ((invoice JOIN funding USING (fundingid)) JOIN modification USING (modificationid)) WHERE (funding.fundingtypeid = 1) GROUP BY modification.projectid) invoice USING (projectid));
+
+CREATE OR REPLACE VIEW deliverablelist AS
+	SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverablemod.devinterval, deliverablemod.invalid, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverable.deliverabletypeid, deliverable.title, deliverable.description, modification.projectid FROM (((deliverablemod LEFT JOIN (SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid FROM (deliverablemodstatus JOIN cvl.deliverablestatus USING (deliverablestatusid)) WHERE (deliverablemodstatus.deliverablestatusid = 10) ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)) JOIN deliverable USING (deliverableid)) JOIN modification USING (modificationid)) WHERE ((NOT deliverablemod.invalid) OR (NOT (EXISTS (SELECT 1 FROM deliverablemod dm WHERE ((deliverablemod.modificationid = dm.parentmodificationid) AND (deliverablemod.deliverableid = dm.parentdeliverableid))))));
+
+COMMENT ON VIEW deliverablelist IS 'List of all valid, non-modified deliverables';
+
+CREATE VIEW projectcontactfull AS
+	SELECT pc.projectcontactid, pc.projectid, pc.contactid, pc.roletypeid, pc.priority, pc.contactprojectcode, pc.partner, pc.name, roletype.code AS role, pc.type FROM ((SELECT projectcontact.projectcontactid, projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, pg_catalog.concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name, 'person'::text AS type FROM (projectcontact JOIN person USING (contactid)) UNION SELECT projectcontact.projectcontactid, projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, contactgrouplist.fullname, 'group'::text AS type FROM (projectcontact JOIN contactgrouplist USING (contactid))) pc JOIN cvl.roletype USING (roletypeid)) ORDER BY pc.priority;
+
+ALTER TABLE projectcontactfull
   OWNER TO bradley;
-GRANT ALL ON TABLE cvl.notice TO bradley;
-GRANT SELECT ON TABLE cvl.notice TO pts_read;
-COMMENT ON TABLE cvl.notice
-  IS 'CVL for types of notices';
-COMMENT ON COLUMN cvl.notice.noticeid IS 'PK for NOTICE';
-COMMENT ON COLUMN cvl.notice.title IS 'Full title of notice';
-COMMENT ON COLUMN cvl.notice.code IS 'Short title of notice';
+GRANT ALL ON TABLE projectcontactfull TO bradley;
+GRANT SELECT ON TABLE projectcontactfull TO pts_read;
 
--- Table: deliverablenotice
-
--- DROP TABLE deliverablenotice;
-
-CREATE TABLE deliverablenotice
-(
-  deliverablenoticeid serial NOT NULL, -- DELIVERABLENOTICE PK
-  modificationid integer NOT NULL, -- PK for MODIFICATION
-  deliverableid integer NOT NULL, -- PK for DELIVERABLE
-  noticeid integer NOT NULL, -- PK for NOTICE
-  recipientid integer NOT NULL, -- The person that the notice was sent to.
-  contactid integer NOT NULL, -- PERSON that sent the notice.
-  datesent date NOT NULL, -- Date that the notice was sent.
-  comment character varying,
-  CONSTRAINT deliverablenotice_pk PRIMARY KEY (deliverablenoticeid ),
-  CONSTRAINT deliverablemod_deliverablenotice_fk FOREIGN KEY (modificationid, deliverableid)
-      REFERENCES deliverablemod (modificationid, deliverableid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE CASCADE,
-  CONSTRAINT notice_deliverablenotice_fk FOREIGN KEY (noticeid)
-      REFERENCES cvl.notice (noticeid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT person_deliverablenotice_fk FOREIGN KEY (contactid)
-      REFERENCES person (contactid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION,
-  CONSTRAINT recipient_deliverablenotice_fk FOREIGN KEY (recipientid)
-      REFERENCES person (contactid) MATCH SIMPLE
-      ON UPDATE NO ACTION ON DELETE NO ACTION
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE deliverablenotice
-  OWNER TO bradley;
-GRANT ALL ON TABLE deliverablenotice TO bradley;
-GRANT SELECT ON TABLE deliverablenotice TO pts_read;
-GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE deliverablenotice TO pts_write;
-COMMENT ON TABLE deliverablenotice
-  IS 'Tracks notices sent to deliverable contacts';
-COMMENT ON COLUMN deliverablenotice.deliverablenoticeid IS 'DELIVERABLENOTICE PK';
-COMMENT ON COLUMN deliverablenotice.modificationid IS 'PK for MODIFICATION';
-COMMENT ON COLUMN deliverablenotice.deliverableid IS 'PK for DELIVERABLE';
-COMMENT ON COLUMN deliverablenotice.noticeid IS 'PK for NOTICE';
-COMMENT ON COLUMN deliverablenotice.recipientid IS 'The person that the notice was sent to.';
-COMMENT ON COLUMN deliverablenotice.contactid IS 'PERSON that sent the notice.';
-COMMENT ON COLUMN deliverablenotice.datesent IS 'Date that the notice was sent.';
-
-
--- Index: fki_person_deliverablenotice_user_fk
-
--- DROP INDEX fki_person_deliverablenotice_user_fk;
-
-CREATE INDEX fki_person_deliverablenotice_user_fk
-  ON deliverablenotice
-  USING btree
-  (recipientid );
-
-GRANT SELECT, UPDATE ON TABLE deliverablenotice_deliverablenoticeid_seq TO GROUP pts_write;
-
--- View: report.noticesent
-
--- DROP VIEW report.noticesent;
-
-CREATE OR REPLACE VIEW report.noticesent AS
- SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate, d.title, d.description, notice.code AS lastnotice, deliverablenotice.datesent, projectlist.projectcode, project.shorttitle AS project, (personlist.firstname::text || ' '::text) || personlist.lastname::text AS contact, personlist.priemail AS email, (folist.firstname::text || ' '::text) || folist.lastname::text AS fofficer, folist.priemail AS foemail,
-        CASE
-            WHEN status.deliverablestatusid >= 10 THEN 0
-            WHEN status.deliverablestatusid = 0 THEN 'now'::text::date - status.effectivedate + 1
-            ELSE 'now'::text::date - dm.duedate
-        END AS dayspastdue, COALESCE(status.status, 'Not Received'::character varying) AS status, modification.projectid, dm.modificationid, d.deliverableid
-   FROM deliverable d
-   JOIN ( SELECT deliverablemod.modificationid, deliverablemod.deliverableid, deliverablemod.duedate, deliverablemod.receiveddate, deliverablemod.devinterval, deliverablemod.invalid, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverablemod.personid
-           FROM deliverablemod
-          WHERE NOT deliverablemod.invalid OR NOT (EXISTS ( SELECT 1
-                   FROM deliverablemod dp
-                  WHERE dp.modificationid = dp.parentmodificationid AND dp.deliverableid = dp.parentdeliverableid))) dm USING (deliverableid)
-   JOIN modification USING (modificationid)
-   JOIN projectlist USING (projectid)
-   JOIN project USING (projectid)
-   LEFT JOIN ( SELECT projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, projectcontact.projectcontactid
-   FROM projectcontact
-  WHERE projectcontact.roletypeid = ANY (ARRAY[7])) projectcontact USING (projectid)
-   LEFT JOIN personlist USING (contactid)
-   LEFT JOIN ( SELECT projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, projectcontact.projectcontactid
-   FROM projectcontact
-  WHERE projectcontact.roletypeid = 5
-  ORDER BY projectcontact.priority) focontact USING (projectid)
-   LEFT JOIN personlist folist ON focontact.contactid = folist.contactid
-   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment
-   FROM deliverablemodstatus
-   JOIN deliverablestatus USING (deliverablestatusid)
-  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)
-   LEFT JOIN deliverablenotice USING (modificationid, deliverableid)
-   LEFT JOIN notice USING (noticeid)
-  WHERE NOT (d.deliverabletypeid = ANY (ARRAY[4, 7])) AND NOT COALESCE(status.deliverablestatusid >= 10, false) AND
-CASE
-    WHEN status.deliverablestatusid >= 10 THEN 0
-    WHEN status.deliverablestatusid = 0 THEN 'now'::text::date - status.effectivedate + 1
-    ELSE 'now'::text::date - dm.duedate
-END > (-30)
-  ORDER BY dm.duedate, d.deliverableid, projectcontact.roletypeid, projectcontact.priority, deliverablenotice.datesent DESC;
-
-ALTER TABLE report.noticesent
-  OWNER TO bradley;
-GRANT ALL ON TABLE report.noticesent TO bradley;
-GRANT SELECT ON TABLE report.noticesent TO pts_read;
+CREATE OR REPLACE VIEW projectcontactlist AS
+	SELECT pc.projectcontactid, pc.projectid, pc.contactid, pc.roletypeid, pc.priority, pc.contactprojectcode, pc.partner, pc.name, roletype.code AS role FROM ((SELECT projectcontact.projectcontactid, projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, pg_catalog.concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name FROM (projectcontact JOIN person USING (contactid)) UNION SELECT projectcontact.projectcontactid, projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, contactgroup.name FROM (projectcontact JOIN contactgroup USING (contactid))) pc JOIN cvl.roletype USING (roletypeid)) ORDER BY pc.priority;
