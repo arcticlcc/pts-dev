@@ -1,4 +1,4 @@
---version 0.9.1
+--version 0.8.1
 
 CREATE OR REPLACE VIEW report.shortprojectsummary AS
  SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear,
@@ -12,3 +12,6 @@ CREATE OR REPLACE VIEW report.shortprojectsummary AS
    LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid) pi USING (contactid)
    JOIN contactgroup ON project.orgid = contactgroup.contactid
    JOIN status ON project_status(project.projectid) = status.statusid;
+
+--insert canceled
+INSERT INTO deliverablestatus VALUES (70, 'Canceled', 'Canceled', 'Deliverable or Task has been canceled or superseded by a modification.', NULL);   
