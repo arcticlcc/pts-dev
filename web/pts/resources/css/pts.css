@@ -119,8 +119,11 @@
 .pts-grid-row-phantom {
     background-color: #DDFFD5;
     }
-.pts-deliverable-invalid {
+.pts-deliverable-invalid, .pts-deliverable-modified{
     color: #808080;
+    }
+.pts-deliverable-canceled {
+    text-decoration: line-through;
     }
 .pts-deliverable-highlight .x-grid-cell {
     background-color: #FFFFE0;

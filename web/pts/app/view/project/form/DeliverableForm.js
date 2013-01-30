@@ -92,12 +92,13 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         fieldLabel: 'Date Received',
                         disabled: true
                     },*/
-                    {
+                    //This field was deprecated in v0.9
+                    /*{
                         xtype: 'checkboxfield',
                         name: 'invalid',
                         fieldLabel: 'Invalid',
                         anchor: '100%'
-                    },
+                    },*/
                     {
                         xtype: 'checkboxgroup',
                         fieldLabel: 'Publication',

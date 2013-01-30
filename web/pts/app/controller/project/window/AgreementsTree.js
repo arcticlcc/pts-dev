@@ -236,67 +236,46 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                         orig.set('invalid', true);//invalidate the original tree record
                         orig.set('readonly', true); //lock the original tree record
 
-                        //edit original form record
-                        origRec.beginEdit();
-                        origRec.set('invalid', true);
-                        origRec.endEdit();
-                        //save the orginal
-                        origRec.save({
+                        view.addRowCls(orig,'pts-deliverable-invalid'); //visually invalidate node
+                        //edit new record
+                        newRec.beginEdit();
+                        newRec.phantom = true;
+                        newRec.data.id = null;
+                        newRec.set('deliverableid', null);
+                        newRec.set('modificationid', view.getDataId(overModel, 60));
+                        newRec.set('invalid', false);
+                        newRec.set('parentmodificationid', origRec.get('modificationid'));
+                        newRec.set('parentdeliverableid', origRec.get('deliverableid'));
+                        newRec.endEdit();
+
+                        //save the new rec, process the drop on success
+                        newRec.save({
                             success: function(model, op) {
-                                view.addRowCls(orig,'pts-deliverable-invalid'); //visually invalidate node
-                                //edit new record
-                                newRec.beginEdit();
-                                newRec.phantom = true;
-                                newRec.data.id = null;
-                                newRec.set('deliverableid', null);
-                                newRec.set('modificationid', view.getDataId(overModel, 60));
-                                newRec.set('invalid', false);
-                                newRec.set('parentmodificationid', origRec.get('modificationid'));
-                                newRec.set('parentdeliverableid', origRec.get('deliverableid'));
-                                newRec.endEdit();
+                                var processed,newnode,
+                                    newRec = op.records[0],
+                                    delid = newRec.get('deliverableid'),
+                                    modid = newRec.get('modificationid');
+                                //update the dropped node
+                                dropRec = orig.copy();
+                                dropRec.setId('d-'+ delid + '-' + modid);
+                                dropRec.set('dataid',modid + '/deliverable/' + delid);
+                                dropRec.set('invalid',false);
+                                dropRec.set('readonly',false);
+                                dropRec.set('cls','');
+                                dropRec.set('parentItm','d-'+ origRec.get('deliverableid') + '-' + origRec.get('modificationid'));
+                                dropRec.set('iconCls','pts-page-bluecopy');
 
-                                //save the new rec, process the drop on success
-                                newRec.save({
-                                    success: function(model, op) {
-                                        var processed,newnode,
-                                            newRec = op.records[0],
-                                            delid = newRec.get('deliverableid'),
-                                            modid = newRec.get('modificationid');
-                                        //update the dropped node
-                                        dropRec = orig.copy();
-                                        dropRec.setId('d-'+ delid + '-' + modid);
-                                        dropRec.set('dataid',modid + '/deliverable/' + delid);
-                                        dropRec.set('invalid',false);
-                                        dropRec.set('readonly',false);
-                                        dropRec.set('cls','');
-                                        dropRec.set('parentItm','d-'+ origRec.get('deliverableid') + '-' + origRec.get('modificationid'));
-                                        dropRec.set('iconCls','pts-page-bluecopy');
-
-                                        processed = dropHandlers.processDrop([dropRec]); //process updated record
-                                        newnode = view.getNode(processed.records[0]);//assumes 1 record
-                                        view.getSelectionModel().select(view.getTreeStore().getNodeById(newnode.id));//select first dropped record
-                                        tab.getEl().unmask();
-                                    },
-                                    failure: function(model, op) {
-                                        Ext.MessageBox.show({
-                                           title: 'Error',
-                                           msg: 'Could not update the new deliverable.</br>Error:' + PTS.app.getError(),
-                                           buttons: Ext.MessageBox.OK,
-                                           //animateTarget: 'mb9',
-                                           icon: Ext.Msg.ERROR
-                                        });
-                                        tab.getEl().unmask();
-                                    },
-                                    scope: this
-                                });
+                                processed = dropHandlers.processDrop([dropRec]); //process updated record
+                                newnode = view.getNode(processed.records[0]);//assumes 1 record
+                                view.getSelectionModel().select(view.getTreeStore().getNodeById(newnode.id));//select first dropped record
+                                tab.getEl().unmask();
                             },
                             failure: function(model, op) {
                                 Ext.MessageBox.show({
                                    title: 'Error',
-                                   msg: 'Could not update the original deliverable.</br>Error:' + PTS.app.getError(),
+                                   msg: 'Could not update the new deliverable.</br>Error:' + PTS.app.getError(),
                                    buttons: Ext.MessageBox.OK,
                                    //animateTarget: 'mb9',
-                                   //fn: showResult,
                                    icon: Ext.Msg.ERROR
                                 });
                                 tab.getEl().unmask();

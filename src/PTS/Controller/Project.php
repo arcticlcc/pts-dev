@@ -93,6 +93,7 @@ class Project implements ControllerProviderInterface
                     $delRecs = $app['idiorm']->getRelated(true, 'deliverableall', 'modificationid', $aid, null, 'duedate', 'ASC');
                     $dfkey = $fkey;
                     foreach($delRecs as $d) {
+                        $cls = false;
                         $did = $d['deliverableid'] .'-'. $d['modificationid'];
                         $dataid = $d['modificationid'] .'/deliverable/'. $d['deliverableid'];
                         //create deliverable node
@@ -106,11 +107,19 @@ class Project implements ControllerProviderInterface
 
                         $dnode->setAttribute('dataid',$dataid);
                         if($d['invalid']) {
-                            $dnode->setAttribute('cls','pts-deliverable-invalid');
+                            $cls = 'pts-deliverable-invalid';
                         }
                         if($d['modified']) {
                             $dnode->setAttribute('readonly','true');
+                            $cls .= ' pts-deliverable-modified';
                         }
+                        if($d['status'] == 'Canceled') {
+                            $cls .= ' pts-deliverable-canceled';
+                        }
+                        if($cls) {
+                            $dnode->setAttribute('cls',$cls);
+                        }
+
                         if($d['parentdeliverableid']) {
                             $dnode->setAttribute('parentItm','d-'. $d['parentdeliverableid'] .'-'. $d['parentmodificationid']);
                         }
