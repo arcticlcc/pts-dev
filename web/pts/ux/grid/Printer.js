@@ -41,6 +41,7 @@
  *
  * Modified by Joshua Bradley - 2012-06-01
  *
+ * Modified by Joshua Bradley - 2013-01-30
  */
 Ext.define("Ext.ux.grid.Printer", {
 
@@ -57,7 +58,7 @@ Ext.define("Ext.ux.grid.Printer", {
             var columns = [];
             //account for grouped columns
             Ext.each(grid.columns, function(c) {
-                if(c.items.length > 0) {
+                if(c.isGroupHeader) {
                     columns = columns.concat(c.items.items);
                 } else {
                     columns.push(c);
