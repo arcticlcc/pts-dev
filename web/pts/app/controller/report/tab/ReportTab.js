@@ -62,6 +62,10 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
             remoteSort: true
         };
 
+        if(rec.data.nolimit) {
+            storecfg.pageSize = 1000;
+        }
+
         if(rec.data.model) {
             storecfg.model = rec.data.model;
         }else {
@@ -81,7 +85,17 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                     store: Ext.create('Ext.data.Store', storecfg)
                 };
                 if(rec.data.cols) {
+                    Ext.each(rec.data.cols, function(c) {
+                        if(c.renderer) {
+                            c.renderer = Ext.util.Format[c.renderer];
+                        }
+                    });
                     tab.columns = rec.data.cols;
+                }
+                if(rec.data.summary) {
+                    tab.features = [{
+                        ftype: 'summary'
+                    }];
                 }
                 rp.add(tab);
             }

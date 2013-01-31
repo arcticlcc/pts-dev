@@ -11,6 +11,15 @@
     height: 16px;
     width: 16px;
     }
+.x-grid-row-summary {
+    color:#333;
+    background: #f1f2f4;
+}
+.x-grid-row-summary  .x-grid-cell-inner {
+    font-weight: bold;
+    font-size: 11px;
+    padding-bottom: 4px;
+}
 #pts-main-toolbar {
     background-image: none !important;
     }

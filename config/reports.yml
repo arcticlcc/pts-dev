@@ -55,4 +55,23 @@ reports:
           - {text: FO Email, dataIndex: foemail, flex: 1}
           - {text: Past Due, dataIndex: dayspastdue, hidden:true}
           - {text: Status, dataIndex: status, hidden:true}
-        fields: [duedate, title, description, lastnotice, datesent, projectcode, project, contact, email, fofficer, foemail, dayspastdue, status]             
+        fields: [duedate, title, description, lastnotice, datesent, projectcode, project, contact, email, fofficer, foemail, dayspastdue, status]
+  - text: Funding Reports
+    descrip: Reports detailing funding activity
+    iconCls: folder
+    leaf: false
+    children:
+      - text: Project Funding
+        url: ../projectfunding
+        descrip: Lists allocated, invoiced, leveraged, and total(allocated + leveraged) funding for each project.
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: Title, dataIndex: title, flex: 1}
+          - {text: Short Title, dataIndex: shorttitle, hidden: true, flex: 1}
+          - {text: Allocated, dataIndex: allocated, renderer: usMoney}
+          - {text: Invoiced, dataIndex: invoiced, renderer: usMoney}
+          - {text: Difference, dataIndex: difference, renderer: usMoney}
+          - {text: Leveraged, dataIndex: leveraged, renderer: usMoney}
+          - {text: Total, dataIndex: total, renderer: usMoney}
+          - {text: Status, dataIndex: status, hidden:true}
+        fields: [projectcode, fiscalyear, number, title, shorttitle, {name: allocated, type: number}, invoiced, difference, leveraged, total, status]                   

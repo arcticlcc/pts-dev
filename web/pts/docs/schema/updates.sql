@@ -78,3 +78,32 @@ CREATE OR REPLACE VIEW projectlist AS
 LEFT JOIN (SELECT DISTINCT projectid, sum(amount) OVER (PARTITION BY projectid) AS leveraged FROM funding
 JOIN modification USING(modificationid)
 WHERE NOT fundingtypeid = 1) leveraged USING(projectid);
+
+-- View: report.projectfunding
+
+-- DROP VIEW report.projectfunding;
+
+CREATE OR REPLACE VIEW report.projectfunding AS
+ SELECT DISTINCT form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.fiscalyear, project.number, project.title, project.shorttitle, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS allocated, COALESCE(invoice.amount, 0.00) AS invoiced, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) - COALESCE(invoice.amount, 0.00) AS difference, COALESCE(leveraged.leveraged, 0.00) AS leveraged, COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS total, status.status
+   FROM project
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+   JOIN status ON project_status(project.projectid) = status.statusid
+   LEFT JOIN modification USING (projectid)
+   LEFT JOIN funding ON funding.modificationid = modification.modificationid AND funding.fundingtypeid = 1
+   LEFT JOIN ( SELECT modification.projectid, sum(invoice.amount) AS amount
+   FROM invoice
+   JOIN funding USING (fundingid)
+   JOIN modification USING (modificationid)
+  WHERE funding.fundingtypeid = 1
+  GROUP BY modification.projectid) invoice USING (projectid)
+   LEFT JOIN ( SELECT DISTINCT modification.projectid, sum(funding.amount) OVER (PARTITION BY modification.projectid) AS leveraged
+   FROM funding
+   JOIN modification USING (modificationid)
+  WHERE NOT funding.fundingtypeid = 1) leveraged USING (projectid)
+  ORDER BY project.fiscalyear, project.number;
+
+ALTER TABLE report.projectfunding
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.projectfunding TO bradley;
+GRANT SELECT ON TABLE report.projectfunding TO pts_read;
+GRANT SELECT ON TABLE report.projectfunding TO pts_write;
