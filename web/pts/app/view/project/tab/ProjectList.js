@@ -174,6 +174,15 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                             width : 75,
                             sortable : true,
                             renderer: PTS.util.Format.netFunds
+                        },
+                        {
+                            //xtype: 'gridcolumn',
+                            dataIndex: 'leveraged',
+                            text: 'Leveraged',
+                            width : 75,
+                            sortable : true,
+                            hidden: true,
+                            renderer: Ext.util.Format.usMoney
                         }
                     ]
                 }

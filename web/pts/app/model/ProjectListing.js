@@ -47,6 +47,10 @@ Ext.define('PTS.model.ProjectListing', {
             type: 'number'
         },
         {
+            name: 'leveraged',
+            type: 'number'
+        },
+        {
             name: 'startdate',
             type: 'mydate'
         },

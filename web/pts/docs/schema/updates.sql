@@ -59,3 +59,22 @@ WHERE d.invalid AND
     FROM deliverablemod dm
     WHERE d.modificationid = dm.parentmodificationid AND d.deliverableid = dm.parentdeliverableid
 );
+
+--add leveraged to project list
+CREATE OR REPLACE VIEW projectlist AS
+ SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS allocated, COALESCE(invoice.amount, 0.00) AS invoiced, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) - COALESCE(invoice.amount, 0.00) AS difference, project.shorttitle, status.status, project.exportmetadata
+,COALESCE(leveraged, 0.00) as leveraged  FROM project
+
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+   JOIN status ON project_status(project.projectid) = status.statusid
+   LEFT JOIN modification USING (projectid)
+   LEFT JOIN funding ON funding.modificationid = modification.modificationid AND funding.fundingtypeid = 1
+   LEFT JOIN ( SELECT modification.projectid, sum(invoice.amount) AS amount
+   FROM invoice
+   JOIN funding USING (fundingid)
+   JOIN modification USING (modificationid)
+  WHERE funding.fundingtypeid = 1
+  GROUP BY modification.projectid) invoice USING (projectid)
+LEFT JOIN (SELECT DISTINCT projectid, sum(amount) OVER (PARTITION BY projectid) AS leveraged FROM funding
+JOIN modification USING(modificationid)
+WHERE NOT fundingtypeid = 1) leveraged USING(projectid);
