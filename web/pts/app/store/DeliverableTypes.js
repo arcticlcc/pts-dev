@@ -8,6 +8,12 @@ Ext.define('PTS.store.DeliverableTypes', {
     model: 'PTS.model.DeliverableType',
 
     autoLoad: true,
+    sorters: [
+        {
+            property : 'code',
+            direction: 'ASC'
+        }
+    ],
     listeners: {
         load: { //create store for task types
             fn: function(store, recs, success, op){
