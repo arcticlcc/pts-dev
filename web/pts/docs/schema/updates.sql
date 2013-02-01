@@ -107,3 +107,39 @@ ALTER TABLE report.projectfunding
 GRANT ALL ON TABLE report.projectfunding TO bradley;
 GRANT SELECT ON TABLE report.projectfunding TO pts_read;
 GRANT SELECT ON TABLE report.projectfunding TO pts_write;
+
+-- View: report.projectkeywords
+
+-- DROP VIEW report.projectkeywords;
+
+CREATE OR REPLACE VIEW report.projectkeywords AS
+ SELECT form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.shorttitle, kw.keywords, kw.joined
+   FROM project
+   JOIN ( SELECT projectkeyword.projectid, string_agg(keyword.preflabel::text, ', '::text) AS keywords, string_agg(replace(keyword.preflabel::text, ' '::text, '-'::text), ', '::text) AS joined
+           FROM projectkeyword
+      JOIN keyword USING (keywordid)
+     GROUP BY projectkeyword.projectid) kw USING (projectid)
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+   ORDER BY fiscalyear, number;
+
+ALTER TABLE report.projectkeywords
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.projectkeywords TO bradley;
+GRANT SELECT ON TABLE report.projectkeywords TO pts_read;
+
+-- View: report.projectagreementnumbers
+
+-- DROP VIEW report.projectagreementnumbers;
+
+CREATE OR REPLACE VIEW report.projectagreementnumbers AS
+ SELECT form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.shorttitle, modification.modificationcode AS agreementnumber, modification.title AS agreementtitle
+   FROM project
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+   JOIN modification USING (projectid)
+  WHERE modification.modificationcode IS NOT NULL AND (modification.modtypeid <> ALL (ARRAY[4, 9, 10]))
+  ORDER BY project.fiscalyear, project.number;
+
+ALTER TABLE report.projectagreementnumbers
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.projectagreementnumbers TO bradley;
+GRANT SELECT ON TABLE report.projectagreementnumbers TO pts_read;

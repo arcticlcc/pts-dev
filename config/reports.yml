@@ -33,6 +33,24 @@ reports:
           - {text: Description, dataIndex: description, flex: 2}
           - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
         fields: [projectcode, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
+      - text: Project Keywords
+        url: ../projectkeywords
+        descrip: Lists keywords for each project
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: Short Title, dataIndex: shorttitle, flex: 1}
+          - {text: Keywords, dataIndex: keywords, flex: 2}
+          - {text: Joined Keywords, dataIndex: joined, flex: 2, hidden: true}
+        fields: [projectcode, shorttitle, keywords, joined]
+      - text: Project Agreement Numbers
+        url: ../projectagreementnumbers
+        descrip: Lists agreement numbers for each project
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: Agreement Number, dataIndex: agreementnumber, flex: 1}
+          - {text: Agreement Title, dataIndex: agreementtitle, flex: 1}
+          - {text: Short Title, dataIndex: shorttitle, flex: 2}
+        fields: [projectcode, shorttitle, agreementnumber, agreementtitle]
   - text: Deliverable Reports
     descrip: Reports associated with Deliverables
     iconCls: folder
