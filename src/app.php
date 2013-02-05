@@ -74,7 +74,7 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
 
     try {
         if(isset($restricted[$class])) {
-            throw new Exception("Unauthorized.");
+            throw new \Exception("Unauthorized.");
         }
 
         $query = $app['idiorm']->getTable($class);
@@ -137,8 +137,17 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
 
 $app->get('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     $result = array();
+    $restricted = array(
+        'userinfo' => true,
+        'login' => true,
+    );
 
     try {
+        $u = $app['session']->get('user');
+
+        if(isset($restricted[$class]) && $u['loginid'] != $id) {
+            throw new \Exception("Unauthorized.");
+        }
         $object = $app['idiorm']->getTable($class)
                   ->find_one($id);
 
@@ -171,7 +180,7 @@ $app->get('{class}/{id}/{related}.{format}', function (Request $request, $class,
 
     try {
         if(isset($restricted[$class])) {
-            throw new Exception("Unauthorized.");
+            throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
@@ -197,7 +206,7 @@ $app->put('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
 
     try {
         if(isset($restricted[$class])) {
-            throw new Exception("Unauthorized.");
+            throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
@@ -223,7 +232,7 @@ $app->post('/{class}', function (Request $request, $class) use ($app) {
 
     try {
         if(isset($restricted[$class])) {
-            throw new Exception("Unauthorized.");
+            throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
@@ -249,7 +258,7 @@ $app->delete('/{class}/{id}', function ($class, $id) use ($app) {
 
     try {
         if(isset($restricted[$class])) {
-            throw new Exception("Unauthorized.");
+            throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
