@@ -18,10 +18,12 @@ Ext.define('PTS.controller.contact.tab.ContactTab', {
 
     init: function() {
 
-        var list = this.getController('contact.tab.ContactList');
+        var list = this.getController('contact.tab.ContactList'),
+            det = this.getController('contact.tab.ContactTabDetail');
 
         // Remember to call the init method manually
         list.init();
+        det.init();
 
         this.control({
             'contacttab button[action=addcontact]': {

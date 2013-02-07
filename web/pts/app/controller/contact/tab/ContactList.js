@@ -26,13 +26,13 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
             'contacttab personlist': {
                 itemdblclick: this.editContact,
                 viewready: this.onContactListReady,
-                selectionchange: this.onContactListSelect,
+                select: this.onContactListSelect,
                 activate: this.onContactListActivate
             },
             'contacttab grouplist': {
                 itemdblclick: this.editContact,
                 viewready: this.onContactListReady,
-                selectionchange: this.onContactListSelect,
+                select: this.onContactListSelect,
                 activate: this.onContactListActivate
             }
         });
@@ -74,8 +74,8 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
         store.load();
     },
 
-    onContactListSelect: function(selModel, selection) {
-        this.application.fireEvent('contactlistselect', selection[0]);
+    onContactListSelect: function(rowModel, record) {
+        this.application.fireEvent('contactlistselect', record);
     },
 
     onContactListActivate: function(grid) {

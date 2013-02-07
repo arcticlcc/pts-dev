@@ -8,8 +8,8 @@ Ext.define('PTS.view.contact.tab.ContactTab', {
     alias: 'widget.contacttab',
     requires: [
         'PTS.view.contact.PersonList',
-        'PTS.view.contact.GroupList'/*,
-        'ArcticPTS.view.ContactDetailsTabPanel',*/
+        'PTS.view.contact.GroupList',
+        'PTS.view.contact.tab.ContactTabDetail'
     ],
 
     border: 0,
@@ -88,10 +88,10 @@ Ext.define('PTS.view.contact.tab.ContactTab', {
                     split: true,
                     items: [
                         {
-                            xtype: 'panel',//'contactdetailstabpanel',
-                            region: 'center'
-                            //id: 'alcc-contactdetails-tp'
-                        },
+                            xtype: 'contacttabdetail',
+                            region: 'center',
+                            preventHeader: true
+                        }/*,
                         {
                             xtype: 'form',
                             collapsible: true,
@@ -101,7 +101,7 @@ Ext.define('PTS.view.contact.tab.ContactTab', {
                             flex: 1,
                             region: 'south',
                             split: true
-                        }
+                        }*/
                     ]
                 }
             ]

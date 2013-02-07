@@ -58,6 +58,16 @@ Ext.define('PTS.model.ProjectContact', {
                 }
                 return (v !== 'false') && !!v;
             }
+        },
+        {
+            name: 'projectcode',
+            type: 'mystring',
+            persist: false
+        },
+        {
+            name: 'shorttitle',
+            type: 'mystring',
+            persist: false
         }
     ],
     idProperty: 'projectcontactid',

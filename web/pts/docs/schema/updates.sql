@@ -143,3 +143,96 @@ ALTER TABLE report.projectagreementnumbers
   OWNER TO bradley;
 GRANT ALL ON TABLE report.projectagreementnumbers TO bradley;
 GRANT SELECT ON TABLE report.projectagreementnumbers TO pts_read;
+
+-- add project status
+-- View: report.shortprojectsummary
+
+-- DROP VIEW report.shortprojectsummary;
+
+CREATE OR REPLACE VIEW report.shortprojectsummary AS
+ SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(string_agg(pi.fullname, '; '::text) OVER (PARTITION BY project.projectid), 'No PI listed'::text) AS principalinvestigators, project.shorttitle, project.abstract, project.description, status.status
+   FROM project
+   JOIN status ON project_status(project.projectid) = status.statusid
+   LEFT JOIN projectcontact pc ON project.projectid = pc.projectid AND pc.roletypeid = 7
+   LEFT JOIN ( SELECT person.contactid, ((person.firstname::text || ' '::text) || person.lastname::text) || COALESCE(', '::text || cg.name::text, ''::text) AS fullname
+   FROM person
+   LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+           FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+   LEFT JOIN contactgroup cg ON cg.contactid = ccg.groupid) pi USING (contactid)
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+  ORDER BY project.fiscalyear, project.number;
+
+--support for contact group tree queries
+-- View: contactgrouplist
+
+-- DROP VIEW contactgrouplist;
+
+CREATE OR REPLACE VIEW contactgrouplist AS
+ WITH RECURSIVE grouptree AS (
+                 SELECT contactgroup.contactid, contactgroup.organization, contactgroup.name, contactgroup.acronym, contactcontactgroup.groupid, contactgroup.name::text AS fullname, NULL::text AS parentname, ARRAY[contactgroup.contactid] AS contactids
+                   FROM contactgroup
+              LEFT JOIN contactcontactgroup USING (contactid)
+             WHERE contactcontactgroup.groupid IS NULL
+        UNION ALL
+                 SELECT ccg.contactid, cg.organization, cg.name, cg.acronym, gt.contactid, (gt.fullname || ' -> '::text) || cg.name::text AS full_name, gt.name, array_append(gt.contactids, cg.contactid) AS array_append
+                   FROM contactgroup cg
+              JOIN contactcontactgroup ccg USING (contactid)
+         JOIN grouptree gt ON ccg.groupid = gt.contactid
+        )
+ SELECT grouptree.contactid, grouptree.groupid AS parentgroupid, grouptree.organization, grouptree.name, grouptree.acronym, grouptree.fullname, grouptree.parentname, grouptree.contactids
+   FROM grouptree;
+
+ALTER TABLE contactgrouplist
+  OWNER TO bradley;
+GRANT ALL ON TABLE contactgrouplist TO bradley;
+GRANT SELECT ON TABLE contactgrouplist TO pts_read;
+
+-- View: projectcontactfull
+
+-- DROP VIEW projectcontactfull;
+
+CREATE OR REPLACE VIEW projectcontactfull AS
+ SELECT pc.projectcontactid, pc.projectid, pc.contactid, pc.roletypeid, pc.priority, pc.contactprojectcode, pc.partner, pc.name, roletype.code AS role, pc.type, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.shorttitle, pc.contactids
+   FROM (         SELECT projectcontact.projectcontactid, projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, pg_catalog.concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name, 'person'::text AS type, ARRAY[person.contactid] AS contactids
+                   FROM projectcontact
+              JOIN person USING (contactid)
+        UNION
+                 SELECT projectcontact.projectcontactid, projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, contactgrouplist.fullname, 'group'::text AS type, contactgrouplist.contactids
+                   FROM projectcontact
+              JOIN contactgrouplist USING (contactid)) pc
+   JOIN roletype USING (roletypeid)
+   JOIN project USING (projectid)
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+  ORDER BY pc.priority;
+
+ALTER TABLE projectcontactfull
+  OWNER TO bradley;
+GRANT ALL ON TABLE projectcontactfull TO bradley;
+GRANT SELECT ON TABLE projectcontactfull TO pts_read;
+
+-- View: grouppersonfull
+
+-- DROP VIEW grouppersonfull;
+
+CREATE OR REPLACE VIEW grouppersonfull AS
+ WITH RECURSIVE grouptree AS (
+                 SELECT contactgroup.contactid AS groupid, contactgroup.name::text AS fullname, contactgroup.acronym, contactgroup.name, ARRAY[contactgroup.contactid] AS groupids
+                   FROM contactgroup
+              LEFT JOIN contactcontactgroup USING (contactid)
+             WHERE contactcontactgroup.groupid IS NULL
+        UNION ALL
+                 SELECT ccg.contactid, (gt.fullname || ' -> '::text) || cg.name::text AS full_name, cg.acronym, cg.name, array_append(gt.groupids, cg.contactid) AS array_append
+                   FROM contactgroup cg
+              JOIN contactcontactgroup ccg USING (contactid)
+         JOIN grouptree gt ON ccg.groupid = gt.groupid
+        )
+ SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, grouptree.groupid, grouptree.fullname AS groupfullname, grouptree.acronym, grouptree.name AS groupname, "position".code AS "position", contactcontactgroup.positionid, grouptree.groupids
+   FROM grouptree
+   JOIN contactcontactgroup USING (groupid)
+   JOIN "position" USING (positionid)
+   JOIN person ON person.contactid = contactcontactgroup.contactid;
+
+ALTER TABLE grouppersonfull
+  OWNER TO bradley;
+GRANT ALL ON TABLE grouppersonfull TO bradley;
+GRANT SELECT ON TABLE grouppersonfull TO pts_read;

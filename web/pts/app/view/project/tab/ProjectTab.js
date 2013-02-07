@@ -80,14 +80,14 @@ Ext.define('PTS.view.project.tab.ProjectTab', {
                             //xtype: 'panel',
                             //title: 'Project Details',
                             region: 'center'
-                        },
+                        }/*,
                         {
                             //xtype: 'projectdetailscsm',
                             xtype: 'panel',
                             flex: 1,
                             region: 'south',
                             split: true
-                        }
+                        }*/
                     ]
                 }
             ]
