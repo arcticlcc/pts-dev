@@ -272,7 +272,7 @@ class PTSServiceProvider implements ServiceProviderInterface
 
                 $app[$format]->setData($result);
 
-            } catch (Exception $exc) {
+            } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
 
                 $app[$format]->setAll(null, 409, false, $exc->getMessage());
@@ -418,8 +418,12 @@ class PTSServiceProvider implements ServiceProviderInterface
                     case 'where not in':
                         $query->where_not_in($filter->property, $filter->value[1]);
                         break;
+                    case 'where in array':
+                        $col = $app['db']->quoteIdentifier($filter->property);
+                        $query->where_raw("? = ANY({$col})", $filter->value[1]);
+                        break;
                     default:
-                        throw new Exception("Invalid filter operator.");
+                        throw new \Exception("Invalid filter operator.");
                 }
             }else {
                 $query->where($filter->property,$filter->value);
