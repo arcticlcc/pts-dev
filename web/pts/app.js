@@ -190,6 +190,11 @@ Ext.application({
 
         });
 
+        //Use Notifications for Ext errors
+        Ext.Error.handle = function(err) {
+            PTS.app.showError(err.msg);
+        };
+
         //Handle Ajax exceptions globally
         //TODO: Make Ajax exception handling better, remove redundant code
         Ext.Ajax.on('requestexception',function(conn, response, op){
