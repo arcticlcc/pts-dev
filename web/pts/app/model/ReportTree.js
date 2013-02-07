@@ -26,10 +26,13 @@ Ext.define('PTS.model.ReportTree', {
             name: 'xtype', type: 'mystring', useNull: true
         },
         {
-            name: 'nolimit', type: 'myboolean', defaultValue: false
+            name: 'limit', type: 'myboolean', defaultValue: false
         },
         {
             name: 'summary', type: 'myboolean', defaultValue: false
+        },
+        {
+            name: 'pbarPlugins', type: 'auto'
         }
     ],
     idProperty: 'id'

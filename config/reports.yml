@@ -9,6 +9,9 @@ reports:
         descrip: Lists members of the ALCC Steering Committee
         xtype: personlist
         model: PTS.model.Person
+        pbarPlugins:
+          - type: Ext.ux.grid.GrabField
+            cfg: {text: e-mail, dataindex: priemail}
       - text: ALCC Staff
         url: ../alccstaff
         descrip: Lists staff of the ALCC
@@ -42,14 +45,17 @@ reports:
           - {text: Keywords, dataIndex: keywords, flex: 2}
           - {text: Joined Keywords, dataIndex: joined, flex: 2, hidden: true}
         fields: [projectcode, shorttitle, keywords, joined]
+        pbarPlugins:
+          - type: Ext.ux.grid.GrabField
+            cfg: {text: Keywords, iconCls: pts-menu-key, dataindex: keywords, tooltip: 'Get a list of all visible keywords', windowTitle: 'Project Keywords'}
       - text: Project Agreement Numbers
         url: ../projectagreementnumbers
         descrip: Lists agreement numbers for each project
         cols:
           - {text: Project, dataIndex: projectcode}
-          - {text: Agreement Number, dataIndex: agreementnumber, flex: 1}
-          - {text: Agreement Title, dataIndex: agreementtitle, flex: 1}
-          - {text: Short Title, dataIndex: shorttitle, flex: 2}
+          - {text: Short Title, dataIndex: shorttitle, flex: 1}
+          - {text: Agreement Number, dataIndex: agreementnumber, width: 150}
+          - {text: Agreement Title, dataIndex: agreementtitle, flex: 2}
         fields: [projectcode, shorttitle, agreementnumber, agreementtitle]
   - text: Deliverable Reports
     descrip: Reports associated with Deliverables
@@ -92,4 +98,4 @@ reports:
           - {text: Leveraged, dataIndex: leveraged, renderer: usMoney}
           - {text: Total, dataIndex: total, renderer: usMoney}
           - {text: Status, dataIndex: status, hidden:true}
-        fields: [projectcode, fiscalyear, number, title, shorttitle, {name: allocated, type: number}, invoiced, difference, leveraged, total, status]                   
+        fields: [projectcode, fiscalyear, number, title, shorttitle, {name: allocated, type: number}, invoiced, difference, leveraged, total, status]

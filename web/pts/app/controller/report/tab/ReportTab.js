@@ -43,7 +43,7 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
      * Click listener for report tree items.
      */
     onClickItem: function(rm, rec, index,opts) {
-        var grid, storecfg,
+        var grid, storecfg, plugins,
             itemId = rec.internalId + '-reportgrid',
             rp = this.getReportPanel(),
             tab = rp.down('#'+itemId);
@@ -62,8 +62,8 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
             remoteSort: true
         };
 
-        if(rec.data.nolimit) {
-            storecfg.pageSize = 1000;
+        if(rec.data.limit) {
+            storecfg.pageSize = limit;
         }
 
         if(rec.data.model) {
@@ -96,6 +96,15 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                     tab.features = [{
                         ftype: 'summary'
                     }];
+                }
+                if(rec.data.pbarPlugins) {
+                    tab.pbarPlugins = [];
+
+                    Ext.each(rec.data.pbarPlugins, function(p){
+                        tab.pbarPlugins.push(
+                            Ext.create(p.type, p.cfg)
+                        );
+                    });
                 }
                 rp.add(tab);
             }

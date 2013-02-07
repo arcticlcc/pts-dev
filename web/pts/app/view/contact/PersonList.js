@@ -9,7 +9,8 @@ Ext.define('PTS.view.contact.PersonList', {
     requires: [
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid',
-        'Ext.ux.grid.FilterBar'
+        'Ext.ux.grid.FilterBar',
+        'Ext.ux.grid.GrabField'
     ],
 
     title:'Person',
@@ -96,6 +97,13 @@ Ext.define('PTS.view.contact.PersonList', {
                 store: me.store,
                 displayInfo: true,
                 plugins: [
+                    Ext.create('Ext.ux.grid.GrabField', {
+                        iconCls: 'pts-menu-email',
+                        dataindex: 'priemail',
+                        tooltip: 'Get all visible e-mail addresses',
+                        delimiter: ', \n',
+                        windowTitle: 'E-mail addresses'
+                    }),
                     Ext.create('Ext.ux.grid.PrintGrid', {}),
                     Ext.create('Ext.ux.grid.SaveGrid', {})
                 ],

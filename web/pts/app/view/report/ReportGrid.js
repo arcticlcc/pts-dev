@@ -7,12 +7,17 @@ Ext.define('PTS.view.report.ReportGrid', {
     alias: 'widget.reportgrid',
     requires: [
         'Ext.ux.grid.PrintGrid',
-        'Ext.ux.grid.SaveGrid'
+        'Ext.ux.grid.SaveGrid',
+        'Ext.ux.grid.GrabField',
+        'Ext.ux.grid.PagingToolbarResizer'
     ],
 
     autoScroll: true,
     title: 'Report',
     store: undefined,
+
+
+    pbarPlugins: [],
 
     initComponent: function() {
         var me = this;
@@ -28,14 +33,15 @@ Ext.define('PTS.view.report.ReportGrid', {
                 store: me.store,   // same store GridPanel is using
                 dock: 'top',
                 displayInfo: true,
-                plugins: [
+                plugins: me.pbarPlugins.concat([
                     Ext.create('Ext.ux.grid.PrintGrid', {
                         /*title: function(){
                             return this.child('cycle#filter').getActiveItem().text + ' (Tasks)';
                         }*/
                     }),
-                    Ext.create('Ext.ux.grid.SaveGrid', {})
-                ]
+                    Ext.create('Ext.ux.grid.SaveGrid', {}),
+                    Ext.create('Ext.ux.grid.PagingToolbarResizer', {options : [ 25, 50, 100 ] })
+                ])
             }
         );
     }
