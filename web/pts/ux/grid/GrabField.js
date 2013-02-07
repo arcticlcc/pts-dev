@@ -11,6 +11,7 @@ Ext.define('Ext.ux.grid.GrabField', {
     requires: [
         'Ext.button.Button'
     ],
+    alias: 'plugin.pagingtoolbargrabfield',
 
     /**
      * @cfg {String} text
@@ -98,8 +99,6 @@ Ext.define('Ext.ux.grid.GrabField', {
                     } else {
                         Ext.Error.raise('Ext.ux.grid.GrabField: No dataindex specified.');
                     }
-console.info((gf.delimiter));
-
             }
         });
 
