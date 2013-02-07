@@ -1,5 +1,9 @@
 --version 0.9
 
+ALTER TABLE cvl.polygon RENAME TO commonpolygon;
+ALTER TABLE cvl.line RENAME TO commonline;
+ALTER TABLE cvl.point RENAME TO commonpoint;
+
 CREATE OR REPLACE VIEW report.shortprojectsummary AS
  SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear,
  project.number, project.startdate, project.enddate, project.uuid, COALESCE(string_agg(pi.fullname, '; '::text) OVER (PARTITION BY project.projectid), 'No PI listed'::text) AS principalinvestigators, project.shorttitle, project.abstract, project.description
