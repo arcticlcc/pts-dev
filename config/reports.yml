@@ -36,6 +36,26 @@ reports:
           - {text: Description, dataIndex: description, flex: 2}
           - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
         fields: [projectcode, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
+      - text: Long Project Summary
+        url: ../longprojectsummary
+        descrip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract, funding
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: UUID, dataIndex: uuid, hidden: true}
+          - {text: Status, dataIndex: status, hidden: true}
+          - {text: Start, dataIndex: startdate, hidden: true}
+          - {text: End, dataIndex: enddate}
+          - {text: Principal Investigators, dataIndex: principalinvestigators, flex: 1}
+          - {text: Title, dataIndex: title, flex: 1}
+          - {text: Short Title, dataIndex: shorttitle, hidden: true}
+          - {text: Description, dataIndex: description, flex: 2}
+          - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
+          - {text: Allocated, dataIndex: allocated, renderer: usMoney}
+          - {text: Invoiced, dataIndex: invoiced, renderer: usMoney}
+          - {text: Difference, dataIndex: difference, renderer: usMoney}
+          - {text: Leveraged, dataIndex: leveraged, renderer: usMoney}
+          - {text: Total, dataIndex: total, renderer: usMoney}
+        fields: [projectcode, uuid, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract, allocated, invoiced, difference, leveraged, total]
       - text: Project Keywords
         url: ../projectkeywords
         descrip: Lists keywords for each project
