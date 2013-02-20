@@ -58,6 +58,10 @@ Ext.define('PTS.controller.dashboard.DeliverableList', {
                     {
                         property: 'receiveddate',
                         value   : ['null']
+                    },
+                    {
+                        property: 'status',
+                        value   : ['not','Canceled']
                     }
                 ]);
                 break;

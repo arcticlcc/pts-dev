@@ -388,6 +388,9 @@ class PTSServiceProvider implements ServiceProviderInterface
             //TODO: Implement all Idiorm operators
             if(is_array($filter->value)) {
                 switch ($filter->value[0]) {
+                    case 'not':
+                        $query->where_not_equal($filter->property, $filter->value[1]);
+                        break;
                     case '>':
                         $query->where_gt($filter->property, $filter->value[1]);
                         break;
