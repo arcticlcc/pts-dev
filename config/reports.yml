@@ -77,6 +77,42 @@ reports:
           - {text: Agreement Number, dataIndex: agreementnumber, width: 150}
           - {text: Agreement Title, dataIndex: agreementtitle, flex: 2}
         fields: [projectcode, shorttitle, agreementnumber, agreementtitle]
+      - text: National Project Catalog
+        url: ../projectcatalog
+        descrip: Data for reporting to the Simple National Project Catalog
+        cols:
+          - {text: LCC Name, dataIndex: lccname, flex: 1, hidden: true}
+          - {text: Id, dataIndex: id, flex: 1, hidden: false}
+          - {text: Project Title, dataIndex: ptitle, flex: 2, hidden: false}
+          - {text: Description, dataIndex: description, flex: 1, hidden: true}
+          - {text: Status, dataIndex: pstatus, flex: 1, hidden: false}
+          - {text: Start Date, dataIndex: pstart, flex: 1, hidden: false}
+          - {text: End Date, dataIndex: pend, flex: 1, hidden: false}
+          - {text: URL, dataIndex: purl, flex: 1, hidden: true}
+          - {text: Project Lead, dataIndex: leadcontact, flex: 2, hidden: false}
+          - {text: Lead Org, dataIndex: leadorg, flex: 2, hidden: false}
+          - {text: Partner Org, dataIndex: partnerorg, flex: 2, hidden: false}
+          - {text: Target Audience, dataIndex: endusers, flex: 1, hidden: true}
+          - {text: Fiscal Year Allocation, dataIndex: fiscalyears, flex: 1, hidden: true}
+          - {text: LCC Co-funding, dataIndex: cofundlcc1, flex: 1, hidden: true}
+          - {text: LCC Co-funding, dataIndex: cofundlcc2, flex: 1, hidden: true}
+          - {text: ScienceBase, dataIndex: scibaseq, flex: 1, hidden: true}
+          - {text: Total LCC Funding, dataIndex: lccfundall, flex: 1, hidden: false}
+          - {text: Funding Year/Source, dataIndex: lccfundby, flex: 2, hidden: false}
+          - {text: Total Matching Funds, dataIndex: matchfundall, flex: 1, hidden: false}
+          - {text: Matching Year/Source, dataIndex: matchfundby, flex: 2, hidden: false}
+          - {text: Match Notes, dataIndex: matchfundnote, flex: 1, hidden: true}
+          - {text: Primary Category, dataIndex: category1, flex: 1, hidden: true}
+          - {text: Project Category, dataIndex: category2, flex: 1, hidden: true}
+          - {text: Project Category, dataIndex: category3, flex: 1, hidden: true}
+          - {text: Deliverable Type, dataIndex: deliver1, flex: 1, hidden: true}
+          - {text: Deliverable Type, dataIndex: deliver2, flex: 1, hidden: true}
+          - {text: Deliverable Type, dataIndex: deliver3, flex: 1, hidden: true}
+          - {text: Subject Keywords, dataIndex: subject, flex: 1, hidden: true}
+          - {text: Geographic Keywords, dataIndex: geog, flex: 1, hidden: true}
+          - {text: Congress District, dataIndex: congdist, flex: 1, hidden: true}
+          - {text: Comments, dataIndex: comments, flex: 1, hidden: true}
+        fields: [lccname,id,ptitle,description,pstatus,pstart,pend,purl,leadcontact,leadorg,partnerorg,endusers,fiscalyears,cofundlcc1,cofundlcc2,scibaseq,lccfundall,lccfundby,matchfundall,matchfundby,matchfundnote,category1,category2,category3,deliver1,deliver2,deliver3,subject,geog,congdist,comments]
   - text: Deliverable Reports
     descrip: Reports associated with Deliverables
     iconCls: folder
