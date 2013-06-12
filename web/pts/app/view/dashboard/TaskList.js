@@ -102,7 +102,7 @@ Ext.define('PTS.view.dashboard.TaskList', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'status',
-                    hidden: true,
+                    //hidden: true,
                     text: 'Status'
                 }
             ]
