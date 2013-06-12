@@ -80,8 +80,8 @@ class Deliverable implements ControllerProviderInterface
                         FROM deliverable
                         WHERE deliverableid = :parentdeliverableid
                     ), dmod as (INSERT INTO deliverablemod
-                        (deliverableid, personid, modificationid,duedate,receiveddate,invalid,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
-                        SELECT del.deliverableid,:personid, :modificationid, :duedate,:receiveddate,:invalid,:publish,
+                        (deliverableid, personid, modificationid,duedate,receiveddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
+                        SELECT del.deliverableid,:personid, :modificationid, :duedate,:receiveddate,:publish,
                             :restricted,:accessdescription,:parentmodificationid,del.deliverableid
                         FROM del
                     RETURNING *
@@ -97,8 +97,8 @@ class Deliverable implements ControllerProviderInterface
                         VALUES (:deliverabletypeid, :title, :description)
                         RETURNING *
                     ), dmod as (INSERT INTO deliverablemod
-                        (deliverableid, personid, modificationid,duedate,receiveddate,invalid,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
-                        SELECT deliverableid,:personid, :modificationid, :duedate,:receiveddate,:invalid,:publish,
+                        (deliverableid, personid, modificationid,duedate,receiveddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
+                        SELECT deliverableid,:personid, :modificationid, :duedate,:receiveddate,:publish,
                             :restricted,:accessdescription,:parentmodificationid,:parentdeliverableid
                         FROM del
                     RETURNING *

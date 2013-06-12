@@ -1,150 +1,240 @@
---version 0.9.1
+--version 0.9.2
 
--- View: report.longprojectsummary
+SET search_path = pts, pg_catalog;
 
--- DROP VIEW report.longprojectsummary;
+-- View: deliverableall
 
-CREATE OR REPLACE VIEW report.longprojectsummary AS
- SELECT DISTINCT project.projectid, project.orgid, project.projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, COALESCE(string_agg(pi.fullname, '; '::text) OVER (PARTITION BY project.projectid), 'No PI listed'::text) AS principalinvestigators, project.shorttitle, project.abstract, project.description, project.status, project.allocated, project.invoiced, project.difference, project.leveraged, project.total
-   FROM ( SELECT DISTINCT project.projectid, project.orgid, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, project.title, project.parentprojectid, project.fiscalyear, project.number, project.startdate, project.enddate, project.uuid, project.shorttitle, project.abstract, project.description, status.status, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS allocated, COALESCE(invoice.amount, 0.00) AS invoiced, COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) - COALESCE(invoice.amount, 0.00) AS difference, COALESCE(leveraged.leveraged, 0.00) AS leveraged, COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY project.projectid), 0.00) AS total, pc.contactid
-           FROM project
-      LEFT JOIN modification USING (projectid)
-   LEFT JOIN funding ON funding.modificationid = modification.modificationid AND funding.fundingtypeid = 1
-   LEFT JOIN ( SELECT modification.projectid, sum(invoice.amount) AS amount
-         FROM invoice
-    JOIN funding USING (fundingid)
-   JOIN modification USING (modificationid)
-  WHERE funding.fundingtypeid = 1
-  GROUP BY modification.projectid) invoice USING (projectid)
-   LEFT JOIN ( SELECT DISTINCT modification.projectid, sum(funding.amount) OVER (PARTITION BY modification.projectid) AS leveraged
-    FROM funding
-   JOIN modification USING (modificationid)
-  WHERE NOT funding.fundingtypeid = 1) leveraged USING (projectid)
-   JOIN status ON project_status(project.projectid) = status.statusid
-   LEFT JOIN projectcontact pc ON project.projectid = pc.projectid AND pc.roletypeid = 7
-   JOIN contactgroup ON project.orgid = contactgroup.contactid) project
-   LEFT JOIN ( WITH RECURSIVE grouptree AS (
-                         SELECT contactgroup.contactid, contactgroup.organization, contactgroup.name, contactgroup.acronym, contactcontactgroup.groupid, contactgroup.name::text AS fullname, NULL::text AS parentname, ARRAY[contactgroup.contactid] AS contactids
-                           FROM contactgroup
-                      LEFT JOIN contactcontactgroup USING (contactid)
-                     WHERE contactcontactgroup.groupid IS NULL
-                UNION ALL
-                         SELECT ccg.contactid, cg.organization, cg.name, cg.acronym, gt.contactid, (gt.acronym::text || ' -> '::text) || cg.name::text AS full_name, gt.name, array_append(gt.contactids, cg.contactid) AS array_append
-                           FROM contactgroup cg
-                      JOIN contactcontactgroup ccg USING (contactid)
-                 JOIN grouptree gt ON ccg.groupid = gt.contactid
-                )
-         SELECT person.contactid, ((person.firstname::text || ' '::text) || person.lastname::text) || COALESCE(', '::text || cg.fullname, ''::text) AS fullname
-           FROM person
-      LEFT JOIN ( SELECT contactcontactgroup.groupid, contactcontactgroup.contactid, contactcontactgroup.positionid, contactcontactgroup.contactcontactgroupid, contactcontactgroup.priority, row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
-                   FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
-   LEFT JOIN grouptree cg ON cg.contactid = ccg.groupid) pi USING (contactid)
-  ORDER BY project.fiscalyear, project.number;
+DROP VIEW deliverableall;
 
-ALTER TABLE report.longprojectsummary
+CREATE OR REPLACE VIEW deliverableall AS
+ SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverablemod.devinterval, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverable.deliverabletypeid, deliverable.title, deliverable.description, (EXISTS ( SELECT 1
+           FROM deliverablemod dm
+          WHERE dm.parentdeliverableid = deliverablemod.deliverableid AND dm.parentmodificationid = deliverablemod.modificationid)) AS modified, status.status, status.effectivedate, status.deliverablestatusid
+   FROM deliverablemod
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment
+           FROM deliverablemodstatus
+      JOIN deliverablestatus USING (deliverablestatusid)
+     ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (deliverableid)
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid
+      FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  WHERE deliverablemodstatus.deliverablestatusid = 10
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid)
+   JOIN deliverable USING (deliverableid);
+
+ALTER TABLE deliverableall
   OWNER TO bradley;
-GRANT ALL ON TABLE report.longprojectsummary TO bradley;
-GRANT SELECT ON TABLE report.longprojectsummary TO pts_read;
+GRANT ALL ON TABLE deliverableall TO bradley;
+GRANT SELECT ON TABLE deliverableall TO pts_read;
 
-﻿-- Table: report.catalogprojectcategory
+-- View: deliverablecalendar
 
--- DROP TABLE report.catalogprojectcategory;
+DROP VIEW deliverablecalendar;
 
-CREATE TABLE report.catalogprojectcategory
-(
-  projectcode character varying,
-  category1 character varying,
-  category2 character varying,
-  category3 character varying,
-  projectid integer NOT NULL,
-  CONSTRAINT catalogprojectcategory_pkey PRIMARY KEY (projectid)
-)
-WITH (
-  OIDS=FALSE
-);
-ALTER TABLE report.catalogprojectcategory
+CREATE OR REPLACE VIEW deliverablecalendar AS
+ SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverable.title, deliverable.description, (person.firstname::text || ' '::text) || person.lastname::text AS manager, deliverabletype.type, form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode, modification.projectid,
+        CASE
+            WHEN status.status IS NOT NULL AND NOT (status.deliverablestatusid = 0 AND ('now'::text::date - deliverablemod.duedate) < 0) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status, status.effectivedate, COALESCE(status.deliverablestatusid >= 40, false) AS completed
+   FROM deliverablemod
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment
+           FROM deliverablemodstatus
+      JOIN deliverablestatus USING (deliverablestatusid)
+     ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (deliverableid)
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.deliverableid
+      FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  WHERE deliverablemodstatus.deliverablestatusid = 10
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid)
+   JOIN modification USING (modificationid)
+   JOIN project USING (projectid)
+   JOIN contactgroup ON project.orgid = contactgroup.contactid
+   JOIN deliverable USING (deliverableid)
+   JOIN deliverabletype USING (deliverabletypeid)
+   JOIN person ON deliverablemod.personid = person.contactid
+  WHERE NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dm
+  WHERE deliverablemod.modificationid = dm.parentmodificationid AND deliverablemod.deliverableid = dm.parentdeliverableid));
+
+ALTER TABLE deliverablecalendar
   OWNER TO bradley;
-COMMENT ON TABLE report.catalogprojectcategory
-  IS 'Project Categories for the Simple National Project Catalog';
+GRANT ALL ON TABLE deliverablecalendar TO bradley;
+GRANT SELECT ON TABLE deliverablecalendar TO pts_read;
 
---
--- PostgreSQL database dump
---
+-- View: deliverablelist
 
--- Dumped from database version 9.1.6
--- Dumped by pg_dump version 9.1.6
--- Started on 2013-04-23 08:31:06 AKDT
+DROP VIEW deliverablelist;
 
-SET statement_timeout = 0;
-SET client_encoding = 'UTF8';
-SET standard_conforming_strings = on;
-SET check_function_bodies = false;
-SET client_min_messages = warning;
+CREATE OR REPLACE VIEW deliverablelist AS
+ SELECT deliverablemod.personid, deliverablemod.deliverableid, deliverablemod.modificationid, deliverablemod.duedate, efd.effectivedate AS receiveddate, deliverablemod.devinterval, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverable.deliverabletypeid, deliverable.title, deliverable.description, modification.projectid
+   FROM deliverablemod
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.deliverableid
+           FROM deliverablemodstatus
+      JOIN deliverablestatus USING (deliverablestatusid)
+     WHERE deliverablemodstatus.deliverablestatusid = 10
+     ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid)
+   JOIN deliverable USING (deliverableid)
+   JOIN modification USING (modificationid)
+  WHERE NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dm
+  WHERE deliverablemod.modificationid = dm.parentmodificationid AND deliverablemod.deliverableid = dm.parentdeliverableid));
+
+ALTER TABLE deliverablelist
+  OWNER TO bradley;
+GRANT ALL ON TABLE deliverablelist TO bradley;
+GRANT SELECT ON TABLE deliverablelist TO pts_read;
+COMMENT ON VIEW deliverablelist
+  IS 'List of all valid, non-modified deliverables';
+
+-- View: task
+
+DROP VIEW task;
+
+CREATE OR REPLACE VIEW task AS
+ SELECT deliverablemod.duedate, deliverable.title, efd.effectivedate AS receiveddate, (person.firstname::text || ' '::text) || person.lastname::text AS assignee, deliverable.description, deliverablemod.deliverableid, person.contactid, modification.projectid, deliverablemod.modificationid,
+        CASE
+            WHEN status.deliverablestatusid >= 10 THEN 0
+            WHEN status.deliverablestatusid = 0 AND ('now'::text::date - deliverablemod.duedate) > 0 THEN 'now'::text::date - status.effectivedate + 1
+            ELSE 'now'::text::date - deliverablemod.duedate
+        END AS dayspastdue,
+        CASE
+            WHEN status.status IS NOT NULL AND NOT (status.deliverablestatusid = 0 AND ('now'::text::date - deliverablemod.duedate) < 0) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status, status.effectivedate, COALESCE(status.deliverablestatusid >= 40, false) AS completed, projectlist.projectcode
+   FROM deliverablemod
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment
+           FROM deliverablemodstatus
+      JOIN deliverablestatus USING (deliverablestatusid)
+     ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid
+      FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  WHERE deliverablemodstatus.deliverablestatusid = 10
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (modificationid, deliverableid)
+   JOIN deliverable USING (deliverableid)
+   JOIN person ON deliverablemod.personid = person.contactid
+   JOIN modification USING (modificationid)
+   JOIN projectlist USING (projectid)
+  WHERE (deliverable.deliverabletypeid = ANY (ARRAY[4, 7])) AND NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dm
+  WHERE deliverablemod.modificationid = dm.parentmodificationid AND deliverablemod.deliverableid = dm.parentdeliverableid))
+  ORDER BY deliverablemod.duedate DESC;
+
+ALTER TABLE task
+  OWNER TO bradley;
+GRANT ALL ON TABLE task TO bradley;
+GRANT SELECT ON TABLE task TO pts_read;
+COMMENT ON VIEW task
+  IS 'Lists all tasks that are not invalid or modified';
+
+-- Function: deliverable_status(integer)
+
+-- DROP FUNCTION deliverable_status(integer);
+
+CREATE OR REPLACE FUNCTION deliverable_status(sid integer)
+  RETURNS character varying AS
+$BODY$
+
+   SELECT
+        CASE
+            WHEN status.status IS NOT NULL AND NOT (status.deliverablestatusid = 0 AND ('now'::text::date - dm.duedate) < 0) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status
+   FROM deliverable d
+   JOIN deliverablemod dm USING (deliverableid)
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) *
+   FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (deliverableid)
+  WHERE NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dp
+  WHERE dm.modificationid = dp.parentmodificationid AND dm.deliverableid = dp.parentdeliverableid)) AND deliverableid = $1
+$BODY$
+  LANGUAGE sql IMMUTABLE
+  COST 100;
+ALTER FUNCTION deliverable_status(integer)
+  OWNER TO bradley;
+
+-- Function: deliverable_statusid(integer)
+
+-- DROP FUNCTION deliverable_statusid(integer);
+
+CREATE OR REPLACE FUNCTION deliverable_statusid(sid integer)
+  RETURNS integer AS
+$BODY$
+
+   SELECT status.deliverablestatusid
+   FROM deliverable d
+   JOIN deliverablemod dm USING (deliverableid)
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) *
+   FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (deliverableid)
+  WHERE NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dp
+  WHERE dm.modificationid = dp.parentmodificationid AND dm.deliverableid = dp.parentdeliverableid)) AND deliverableid = $1
+$BODY$
+  LANGUAGE sql IMMUTABLE
+  COST 100;
+ALTER FUNCTION deliverable_statusid(integer)
+  OWNER TO bradley;
 
 SET search_path = report, pg_catalog;
 
---
--- TOC entry 3278 (class 0 OID 93173)
--- Dependencies: 326 3279
--- Data for Name: catalogprojectcategory; Type: TABLE DATA; Schema: report; Owner: bradley
---
+-- View: report.noticesent
 
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-22', 'Monitoring', 'Traditional Ecological Knowledge', NULL, 82);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-02', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 60);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-08', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 66);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-15', 'Population & Habitat Evaluation/Projection', NULL, NULL, 77);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-16', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 78);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-18', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 79);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-04', 'Data Acquisition and Development', 'Conservation Planning', NULL, 87);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-08', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 99);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-05', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 50);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-03', 'Data Acquisition and Development', 'Data Management and Integration', 'Informing Conservation Delivery', 47);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-10', 'Monitoring', 'Population & Habitat Evaluation/Projection', NULL, 73);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-03', 'Conservation Planning', NULL, NULL, 86);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-1001', 'Data Management and Integration', NULL, NULL, 108);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-08', 'Monitoring', NULL, NULL, 53);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-12', 'Monitoring', NULL, NULL, 57);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-06', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 51);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-04', 'Data Management and Integration', 'Decision Support', NULL, 49);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-01', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', 'Conservation Planning', 45);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-07', 'Monitoring', 'Socio-economics/Ecosystem Services', NULL, 65);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-06', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 43);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-10', 'Data Acquisition and Development', 'Informing Conservation Delivery', 'Data Management and Integration', 55);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-12', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 104);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-15', 'Monitoring', NULL, NULL, 106);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-05', 'Data Acquisition and Development', NULL, NULL, 101);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-09', 'Population & Habitat Evaluation/Projection', NULL, NULL, 54);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-11', 'Population & Habitat Evaluation/Projection', 'Conservation Planning', 'Vulnerability Assessment', 56);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-07', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 44);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-13', 'Monitoring', NULL, NULL, 58);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-21', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 81);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-09', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 103);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-11', 'Vulnerability Assessment', 'Conservation Planning', NULL, 74);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-02', 'Population & Habitat Evaluation/Projection', 'Conservation Planning', NULL, 46);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-14', 'Data Acquisition and Development', NULL, NULL, 76);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2010-07', 'Monitoring', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', 52);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-19', 'Data Management and Integration', NULL, NULL, 80);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-10', 'Data Acquisition and Development', 'Data Management and Integration', NULL, 100);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-05', 'Monitoring', NULL, NULL, 63);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-01', 'Informing Conservation Delivery', 'Data Acquisition and Development', NULL, 59);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-11', 'Data Acquisition and Development', NULL, NULL, 88);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-13', 'Monitoring', NULL, NULL, 105);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-03', 'Population & Habitat Evaluation/Projection', 'Vulnerability Assessment', NULL, 61);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-09', 'Data Acquisition and Development', NULL, NULL, 72);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-13', 'Conservation Planning', NULL, NULL, 75);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-02', 'Data Acquisition and Development', 'Population & Habitat Evaluation/Projection', NULL, 85);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2012-01', 'Data Acquisition and Development', 'Conservation Planning', NULL, 84);
-INSERT INTO catalogprojectcategory (projectcode, category1, category2, category3, projectid) VALUES ('ALCC2011-06', 'Data Acquisition and Development', 'Data Management and Integration', 'Conservation Planning', 64);
+DROP VIEW report.noticesent;
 
+CREATE OR REPLACE VIEW report.noticesent AS
+ SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate, d.title, d.description, notice.code AS lastnotice, deliverablenotice.datesent, projectlist.projectcode, project.shorttitle AS project, (personlist.firstname::text || ' '::text) || personlist.lastname::text AS contact, personlist.priemail AS email, (folist.firstname::text || ' '::text) || folist.lastname::text AS fofficer, folist.priemail AS foemail,
+        CASE
+            WHEN status.deliverablestatusid >= 10 THEN 0
+            WHEN status.deliverablestatusid = 0 THEN 'now'::text::date - status.effectivedate + 1
+            ELSE 'now'::text::date - dm.duedate
+        END AS dayspastdue, COALESCE(status.status, 'Not Received'::character varying) AS status, modification.projectid, dm.modificationid, d.deliverableid
+   FROM deliverable d
+   JOIN ( SELECT deliverablemod.modificationid, deliverablemod.deliverableid, deliverablemod.duedate, deliverablemod.receiveddate, deliverablemod.devinterval, deliverablemod.publish, deliverablemod.restricted, deliverablemod.accessdescription, deliverablemod.parentmodificationid, deliverablemod.parentdeliverableid, deliverablemod.personid
+           FROM deliverablemod
+          WHERE NOT (EXISTS ( SELECT 1
+                   FROM deliverablemod dp
+                  WHERE dp.modificationid = dp.parentmodificationid AND dp.deliverableid = dp.parentdeliverableid))) dm USING (deliverableid)
+   JOIN modification USING (modificationid)
+   JOIN projectlist USING (projectid)
+   JOIN project USING (projectid)
+   LEFT JOIN ( SELECT projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, projectcontact.projectcontactid
+   FROM projectcontact
+  WHERE projectcontact.roletypeid = ANY (ARRAY[7])) projectcontact USING (projectid)
+   LEFT JOIN personlist USING (contactid)
+   LEFT JOIN ( SELECT projectcontact.projectid, projectcontact.contactid, projectcontact.roletypeid, projectcontact.priority, projectcontact.contactprojectcode, projectcontact.partner, projectcontact.projectcontactid
+   FROM projectcontact
+  WHERE projectcontact.roletypeid = 5
+  ORDER BY projectcontact.priority) focontact USING (projectid)
+   LEFT JOIN personlist folist ON focontact.contactid = folist.contactid
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment
+   FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (modificationid, deliverableid)
+   LEFT JOIN deliverablenotice USING (deliverableid)
+   LEFT JOIN notice USING (noticeid)
+  WHERE NOT (d.deliverabletypeid = ANY (ARRAY[4, 7])) AND NOT COALESCE(status.deliverablestatusid >= 10, false) AND
+CASE
+    WHEN status.deliverablestatusid >= 10 THEN 0
+    WHEN status.deliverablestatusid = 0 THEN 'now'::text::date - status.effectivedate + 1
+    ELSE 'now'::text::date - dm.duedate
+END > (-30) AND NOT (EXISTS ( SELECT 1
+   FROM deliverablemod d
+  WHERE dm.modificationid = d.parentmodificationid AND dm.deliverableid = d.parentdeliverableid))
+  ORDER BY dm.duedate, d.deliverableid, projectcontact.roletypeid, projectcontact.priority, deliverablenotice.datesent DESC;
 
--- Completed on 2013-04-23 08:31:06 AKDT
-
---
--- PostgreSQL database dump complete
+ALTER TABLE report.noticesent
+  OWNER TO bradley;
+GRANT ALL ON TABLE report.noticesent TO bradley;
+GRANT SELECT ON TABLE report.noticesent TO pts_read;
 
 -- View: report.projectcatalog
 
--- DROP VIEW report.projectcatalog;
+DROP VIEW report.projectcatalog;
 
 CREATE OR REPLACE VIEW report.projectcatalog AS
  WITH RECURSIVE grouptree AS (

@@ -106,9 +106,11 @@ class Project implements ControllerProviderInterface
                         }*/
 
                         $dnode->setAttribute('dataid',$dataid);
+                        /*
+                        //invalid field is deprecated
                         if($d['invalid']) {
                             $cls = 'pts-deliverable-invalid';
-                        }
+                        }*/
                         if($d['modified']) {
                             $dnode->setAttribute('readonly','true');
                             $cls .= ' pts-deliverable-modified';
