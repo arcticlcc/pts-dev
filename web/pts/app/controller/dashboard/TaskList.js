@@ -40,13 +40,6 @@ Ext.define('PTS.controller.dashboard.TaskList', {
         store.clearFilter(true);
         store.remoteFilter = true;
 
-        if(!this.showComplete) {
-            store.filters.add(new Ext.util.Filter({
-                property: 'completed',
-                value: 'false'
-            }));
-        }
-
         switch(itm.filter) {
             case 'user':
                 store.filters.add(new Ext.util.Filter({
@@ -63,6 +56,13 @@ Ext.define('PTS.controller.dashboard.TaskList', {
                 break;
             default:
                 store.clearFilter();
+        }
+
+        if(!this.showComplete) {
+            store.filters.add(new Ext.util.Filter({
+                property: 'completed',
+                value: 'false'
+            }));
         }
 
         store.load();
