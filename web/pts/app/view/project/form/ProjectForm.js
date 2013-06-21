@@ -153,7 +153,7 @@ Ext.define('PTS.view.project.form.ProjectForm', {
                             displayField: 'projectcode',
                             listConfig: {
                                 getInnerTpl: function() {
-                                    return '<div>{projectcode}: {title}</div>';
+                                    return '<div>{projectcode}: {shorttitle}</div>';
                                 }
                             },
                             store: 'ProjectIDs',
