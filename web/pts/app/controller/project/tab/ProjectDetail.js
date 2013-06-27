@@ -26,7 +26,8 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
 
        this.control({
             'projectdetail > #projectAgreements': {
-                beforeitemdblclick: this.onProjectAgreementsDblClick//,
+                beforeitemdblclick: this.onProjectAgreementsDblClick,
+                load: this.onProjectAgreementsLoad//,
                 //itemclick: this.onProjectAgreementsClick
             },
             'projectdetail > deliverablelist': {
@@ -123,6 +124,20 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
             };
             this.openProjectAgreement(setPath);
             return false;
+    },
+
+    /**
+     * ProjectAgreements grid load handler,
+     * Expand the Agreements node
+     * @param {Ext.data.Store} store The store
+     * @param Ext.util.Grouper[] records
+     * @param Boolean successful
+     * @param Ext.data.Operation operation
+     */
+    onProjectAgreementsLoad: function(store, records, successful, operation) {
+        if(successful) {
+            this.getProjectAgreements().expandPath('/root/art-0');
+        }
     },
 
     /**

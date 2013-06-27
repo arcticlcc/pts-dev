@@ -38,6 +38,9 @@ Ext.define('PTS.model.Task', {
         },
         {
             name: 'projectcode', type: 'mystring', useNull: true
+        },
+        {
+            name: 'shorttitle', type: 'mystring', useNull: true
         }
     ],
     idProperty: 'deliverableid',
