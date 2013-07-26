@@ -161,6 +161,20 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                     renderer: function(value) {
                         return value ? '<a href="mailto:' + value + '">' + value + '</a>' : '';
                     }
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'agreementnumber',
+                    hidden: true,
+                    text: 'Agreement'
+
+                },
+                {
+                    xtype: 'gridcolumn',
+                    dataIndex: 'staffcomments',
+                    hidden: true,
+                    text: 'Staff Comments'
+
                 }
             ]
         });
