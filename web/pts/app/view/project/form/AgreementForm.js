@@ -176,33 +176,8 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                 defaults:{bodyStyle:'padding:10px'},
                 items:[{
                     xtype: 'roweditgrid',
-                    store: 'PurchaseRequests',
-                    uri: 'purchaserequest',
-                    title:'Reference Number',
-                    columns: [
-                        {
-                            header: 'Reference #',
-                            dataIndex: 'purchaserequest',
-                            sortable: true,
-                            hideable: false,
-                            flex: 1,
-                            editor: {
-                                xtype: 'textfield',
-                                allowBlank: false
-                            }
-                        },
-                        {
-                            header: 'Comment',
-                            dataIndex: 'comment',
-                            flex: 2,
-                            editor: {
-                                xtype: 'textfield'
-                            }
-                        }
-                    ]
-                },{
-                    xtype: 'roweditgrid',
                     store: 'ModStatuses',
+                    itemId: 'statusGrid',
                     uri: 'modstatus',
                     title:'Status',
                     columns: [
@@ -241,6 +216,32 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                             },
                             flex: 2,
                             text: 'Comment'
+                        }
+                    ]
+                },{
+                    xtype: 'roweditgrid',
+                    store: 'PurchaseRequests',
+                    uri: 'purchaserequest',
+                    title:'Reference Number',
+                    columns: [
+                        {
+                            header: 'Reference #',
+                            dataIndex: 'purchaserequest',
+                            sortable: true,
+                            hideable: false,
+                            flex: 1,
+                            editor: {
+                                xtype: 'textfield',
+                                allowBlank: false
+                            }
+                        },
+                        {
+                            header: 'Comment',
+                            dataIndex: 'comment',
+                            flex: 2,
+                            editor: {
+                                xtype: 'textfield'
+                            }
                         }
                     ]
                 },{

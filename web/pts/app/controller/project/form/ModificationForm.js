@@ -31,6 +31,9 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             'modificationform#itemCard-60 roweditgrid': {
                 edit: this.onDetailRowEdit,
                 activate: this.onDetailActivate
+            },
+            'agreementform#itemCard-60 #statusGrid': {
+                validateedit: this.validateStatus
             }
         });
 
@@ -40,5 +43,6 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             newitem: this.onNewItem,
             scope: this
         });
+
     }
 });

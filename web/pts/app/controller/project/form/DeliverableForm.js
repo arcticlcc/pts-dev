@@ -8,7 +8,8 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         'project.form.DeliverableForm'
     ],
     models: [
-        'DeliverableType'
+        'DeliverableType',
+        'ModStatus'
     ],
     stores: [
         'DeliverableTypes',
@@ -32,6 +33,9 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             'deliverableform#itemCard-30 #relatedDetails>roweditgrid': {
                 edit: this.onDetailRowEdit,
                 activate: this.onDetailActivate
+            },
+            'deliverableform#itemCard-30 #relatedDetails>#statusGrid': {
+                validateedit: this.validateStatus
             }
         });
 
@@ -157,5 +161,118 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                 root: 'data'
             }
         });
+    },
+
+    /**
+     * Validate the deliverable status.
+     */
+    validateStatus: function(editor, e) {
+        var newStatus = e.newValues.deliverablestatusid,
+            newDate = e.newValues.effectivedate.getTime(),
+            oldDate = e.originalValues.effectivedate.getTime(),
+            oldStatus = e.originalValues.deliverablestatusid;
+
+        if(newStatus === oldStatus && newDate === oldDate) {
+            return true;
+        } else {
+            var rec = e.record,
+                modId = this.getDeliverableForm().getRecord().get('modificationid'),
+                mask = new Ext.LoadMask(e.grid, {msg:"Validating. Please wait..."});
+
+            mask.show();
+            //query database for agreement status
+            Ext.Ajax.request({
+                url: '../modificationstatus',
+                params: {
+                    filter: '[{"property":"modificationid","value":'+ modId +'}]'
+                },
+                method: 'GET',
+                success: function(response){
+                    var resp = Ext.JSON.decode(response.responseText),
+                        data = resp.data[0],
+                        msg = 'The agreement has has been marked <b>Completed</b>. ',
+                        ctl = this,
+                        //get the persisted records and filter for max date
+                        delStatus = e.store.data.filter('phantom',false);
+                        //get current deliverable status
+                        delStatus.sort([
+                            {
+                                property: 'effectivedate',
+                                direction:'DESC'
+                            },{
+                                property: 'deliverablestatusid',
+                                direction: 'DESC'
+                            }
+                        ]);
+                        delStatus = delStatus.first();
+
+                    //test that modication status exists, is completed and that *current* del status is being set to < completed
+                    if(resp.total > 0 && data.weight >= 90 && (delStatus && delStatus.getId() === rec.getId() &&
+                        (newStatus < 40 || newDate < delStatus.get('effectivedate').getTime()))) {
+                    //if records are found, raise error and cancel the update
+                        e.column.getEditor().markInvalid(msg);
+                        Ext.create('widget.uxNotification', {
+                            title: 'Error',
+                            iconCls: 'ux-notification-icon-error',
+                            html: msg + 'Change the status of the agreement first.'
+                        }).show();
+                    } else {
+                        //no errors, save the record
+                        editor.getEditor().completeEdit();
+                        ctl.onDetailRowEdit(e);
+                        //check to see if agreement status is null or
+                        // not completed and this is the only incomplete deliverable
+                        if(newStatus >= 40 && (resp.total === 0 || (data.weight < 90 && data.incdeliverables <= 1))) {
+                            msg = 'This agreement status is currently <i>' + data.status +
+                                '</i>.<br/>Do you want to set the status to <b>Completed</b>?</br>' +
+                                'You may also enter a comment (optional).</br></br>';
+                            Ext.Msg.show({
+                                 title:'Set Agreement Status?',
+                                 msg: msg,
+                                 buttons: Ext.Msg.YESNO,
+                                 icon: Ext.Msg.QUESTION,
+                                 prompt: true,
+                                 fn: function(btn, text) {
+                                    if(btn === 'yes') {
+                                        var rec = ctl.getModStatusModel().create({
+                                                modificationid: modId,
+                                                statusid: 2,
+                                                effectivedate: new Date(),
+                                                comment: text
+                                            }),
+                                            wait = Ext.Msg.show({
+                                                title: 'Saving...',
+                                                msg: 'Saving status. Please wait...',
+                                                wait: true,
+                                                icon: Ext.window.MessageBox.INFO
+                                            });
+
+                                        rec.save({
+                                            callback: function(record, op) {
+                                                wait.close();
+                                            }
+                                        });
+                                    }
+                                 },
+                                 scope: ctl
+                            });
+                        }
+                    }
+                    mask.destroy();
+                },
+                failure: function() {
+                    mask.destroy();
+                    Ext.create('widget.uxNotification', {
+                        title: 'Error',
+                        iconCls: 'ux-notification-icon-error',
+                        html: 'There was an error validating the status entry. </br>Error:' + PTS.app.getError()
+                    }).show();
+                },
+                scope: this
+            });
+
+            //we have to handle the update manually after the response is returned
+            return false;
+        }
     }
 });

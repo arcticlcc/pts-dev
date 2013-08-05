@@ -24,8 +24,8 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
 
     init: function() {
         /*this.control({
-            '#relatedDetails gridcolumn[dataIndex=statusid]': {
-                beforerender: this.setStatusComboFilter
+            'agreementform #statusGrid': {
+                validateedit: this.validateStatus
             }
         });*/
 
@@ -35,6 +35,7 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
             newitem: this.onNewItem,
             scope: this
         });*/
+
     },
 
     /**
@@ -147,6 +148,62 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
                 root: 'data'
             }
         });
+    },
+
+    /**
+     * Validate the agreement status.
+     */
+    validateStatus: function(editor, e) {
+        var newStatus = e.newValues.statusid;
+
+        if(newStatus === 2 && newStatus !== e.originalValues.statusid) {
+            var modId = this.getAgreementForm().getRecord().getId(),
+                rec = e.record,
+                ctl = this,
+                mask = new Ext.LoadMask(e.grid, {msg:"Validating. Please wait..."});
+
+            mask.show();
+            //query database for incomplete deliverables
+            Ext.Ajax.request({
+                url: '../deliverablestatuslist',
+                params: {
+                    filter: '[{"property":"deliverablestatusid","value":["<",40]},{"property":"modificationid","value":'+ modId +'}]'
+                },
+                method: 'GET',
+                success: function(response){
+                    var data = Ext.JSON.decode(response.responseText);
+
+                    //if records are found, raise error and cancel the update
+                    if(data.total > 0) {
+                        e.column.getEditor().markInvalid('This agreement has incomplete deliverables.');
+                        Ext.create('widget.uxNotification', {
+                            title: 'Error',
+                            iconCls: 'ux-notification-icon-error',
+                            html: 'This agreement has incomplete deliverables.'
+                        }).show();
+                    } else {
+                        //no errors, save the record
+                        editor.getEditor().completeEdit();
+                        ctl.onDetailRowEdit(e);
+                        //rec.set('modificationid',modId);
+                        //rec.save();
+                    }
+                    mask.destroy();
+                },
+                failure: function() {
+                    mask.destroy();
+                    Ext.create('widget.uxNotification', {
+                        title: 'Error',
+                        iconCls: 'ux-notification-icon-error',
+                        html: 'There was an error validating the status entry. </br>Error:' + PTS.app.getError()
+                    }).show();
+                },
+                scope: this
+            });
+
+            //we have to handle the update manually after the response is returned
+            return false;
+        }
     }/*,
 
     setStatusComboFilter: function(cmp) {

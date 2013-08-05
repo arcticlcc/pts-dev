@@ -160,6 +160,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                     xtype: 'roweditgrid',
                     store: 'DeliverableModStatuses',
                     uri: 'deliverablemodstatus',
+                    itemId: 'statusGrid',
                     title:'Status',
                     disabled: false,
                     columns: [
