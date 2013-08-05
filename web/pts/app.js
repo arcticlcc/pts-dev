@@ -89,6 +89,7 @@ Ext.application({
      */
     launch: function() {
         var me = this,
+            task,
             myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"});
 
         myMask.show(); //mask the window body
@@ -174,7 +175,11 @@ Ext.application({
                     }
                 });
 
-                PTS.util.ActivityMonitor.start();
+                //delay the monitor start for 20 sec
+                task = new Ext.util.DelayedTask(function() {
+                    PTS.util.ActivityMonitor.start();
+                });
+                task.delay(20000);
             },
             failure: function(user, op) {
                 Ext.MessageBox.show({
