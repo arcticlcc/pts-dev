@@ -44,63 +44,63 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
      */
     onClickItem: function(rm, rec, index,opts) {
         var grid, storecfg, plugins,
+            data = rec.data,
             itemId = rec.internalId + '-reportgrid',
             rp = this.getReportPanel(),
             tab = rp.down('#'+itemId);
-
-        storecfg = {
-            //fields: rec.data.fields,
-            proxy: {
-                type: 'ajax',
-                url : rec.data.url,
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            },
-            autoLoad: true,
-            remoteSort: true
-        };
-
-        if(rec.data.limit) {
-            storecfg.pageSize = limit;
-        }
-
-        if(rec.data.model) {
-            storecfg.model = rec.data.model;
-        }else {
-            storecfg.fields = rec.data.fields;
-        }
 
         if(rec.isLeaf()) {
             if(tab) {
                 rp.setActiveTab(tab);
             }else {
+                storecfg = {
+                    //fields: data.fields,
+                    proxy: {
+                        type: 'ajax',
+                        url : data.url,
+                        reader: {
+                            type: 'json',
+                            root: 'data'
+                        }
+                    },
+                    autoLoad: true,
+                    remoteSort: true
+                };
+
+                if(data.limit) {
+                    storecfg.pageSize = data.limit;
+                }
+
+                if(data.model) {
+                    storecfg.model = data.model;
+                }else {
+                    storecfg.fields = data.fields;
+                }
                 tab = {
-                    xtype: rec.data.xtype ? rec.data.xtype : 'reportgrid',
-                    filterBar: !!rec.data.filterBar,
+                    xtype: data.xtype ? data.xtype : 'reportgrid',
+                    filterBar: !!data.filterBar,
                     itemId: itemId,
                     closable: true,
-                    title: rec.data.text,
+                    title: data.text,
                     store: Ext.create('Ext.data.Store', storecfg)
                 };
-                if(rec.data.cols) {
-                    Ext.each(rec.data.cols, function(c) {
+                if(data.cols) {
+                    Ext.each(data.cols, function(c) {
                         if(c.renderer) {
                             c.renderer = Ext.util.Format[c.renderer];
                         }
                     });
-                    tab.columns = rec.data.cols;
+                    tab.columns = data.cols;
                 }
-                if(rec.data.summary) {
+                if(data.summary) {
                     tab.features = [{
                         ftype: 'summary'
                     }];
                 }
-                if(rec.data.pbarPlugins) {
+                if(data.pbarPlugins) {
                     tab.pbarPlugins = [];
 
-                    Ext.each(rec.data.pbarPlugins, function(p){
+                    Ext.each(data.pbarPlugins, function(p){
                         tab.pbarPlugins.push(
                             Ext.create(p.type, p.cfg)
                         );

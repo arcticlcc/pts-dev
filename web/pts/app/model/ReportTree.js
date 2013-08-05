@@ -26,7 +26,7 @@ Ext.define('PTS.model.ReportTree', {
             name: 'xtype', type: 'mystring', useNull: true
         },
         {
-            name: 'limit', type: 'myboolean', defaultValue: false
+            name: 'limit', type: 'int', defaultValue: PTS.Defaults.pageSize
         },
         {
             name: 'summary', type: 'myboolean', defaultValue: false

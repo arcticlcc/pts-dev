@@ -9,6 +9,7 @@ reports:
         descrip: Lists members of the ALCC Steering Committee
         xtype: personlist
         model: PTS.model.Person
+        limit: 30
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
             cfg: {text: e-mail, dataindex: priemail}
