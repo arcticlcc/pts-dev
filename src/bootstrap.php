@@ -53,7 +53,8 @@ $app->register(new Idiorm\IdiormServiceProvider(), array(
     'country' => 'countryiso',
     'personlist' => 'contactid',
     'projectkeywordlist' => 'projectkeywordid',
-    'projectfeature' => 'id'
+    'projectfeature' => 'id',
+    'modstatuslist' => 'modstatusid'
 ));
 
 // Add services to the DI container

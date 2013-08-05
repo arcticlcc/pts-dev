@@ -23,8 +23,16 @@ class Modification implements ControllerProviderInterface
         $controllers = new ControllerCollection();
         $table = 'modification';
 
+        $controllers->get('modification/{modid}/modstatus', function (Application $app, Request $request, $modid) {
+            $table = 'modstatuslist'; //need to use modstatuslist view
+            $query = array('modificationid' => $modid);
 
-        $controllers->get('modification/{modid}/deliverable/{id}', function (Application $app, Request $request, $modid, $id) use ($table){
+            $app['getRelated']($request, $table, 'modificationid', $modid, $query);
+
+            return $app['json']->getResponse();
+        });
+
+        $controllers->get('modification/{modid}/deliverable/{id}', function (Application $app, Request $request, $modid, $id) {
             $table = 'deliverableall';
             $query = array('modificationid' => $modid);
 

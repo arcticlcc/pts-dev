@@ -18,7 +18,7 @@ class PTSServiceProvider implements ServiceProviderInterface
 {
     public function register(Application $app)
     {
-        $app['saveTable'] = $app->protect(function ($request, $class, $id = null, $list = false) use ($app) {
+        $app['saveTable'] = $app->protect(function ($request, $class, $id = null, $list = false, $strip = array()) use ($app) {
                 $result = array();
 
                 try {
@@ -39,8 +39,10 @@ class PTSServiceProvider implements ServiceProviderInterface
                     unset($values->$pcol);
 
                     foreach ($values as $k => $v)  {
-                        $v = is_string($v) ? trim($v) : $v;
-                        $object->set($k, $v);
+                        if(!isset($strip[$k])) {
+                            $v = is_string($v) ? trim($v) : $v;
+                            $object->set($k, $v);
+                        }
                     }
 
                     $object->save();

@@ -138,3 +138,75 @@ ALTER TABLE report.noticesent
   OWNER TO bradley;
 GRANT ALL ON TABLE report.noticesent TO bradley;
 GRANT SELECT ON TABLE report.noticesent TO pts_read;
+
+-- View: deliverablestatuslist
+
+-- DROP VIEW deliverablestatuslist;
+
+CREATE OR REPLACE VIEW deliverablestatuslist AS
+ SELECT d.title,
+        CASE
+            WHEN status.status IS NOT NULL AND NOT (status.deliverablestatusid = 0 AND ('now'::text::date - dm.duedate) < 0) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status, COALESCE(status.deliverablestatusid, (-1)) AS deliverablestatusid, d.deliverableid, dm.modificationid
+   FROM deliverable d
+   JOIN deliverablemod dm USING (deliverableid)
+   LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid, deliverablemodstatus.deliverablemodstatusid, deliverablemodstatus.modificationid, deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate, deliverablemodstatus.comment, deliverablemodstatus.contactid, deliverablestatus.code, deliverablestatus.status, deliverablestatus.description, deliverablestatus.comment
+      FROM deliverablemodstatus
+   JOIN deliverablestatus USING (deliverablestatusid)
+  ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status USING (deliverableid)
+  WHERE NOT (EXISTS ( SELECT 1
+   FROM deliverablemod dp
+  WHERE dm.modificationid = dp.parentmodificationid AND dm.deliverableid = dp.parentdeliverableid));
+
+ALTER TABLE deliverablestatuslist
+  OWNER TO bradley;
+GRANT ALL ON TABLE deliverablestatuslist TO bradley;
+GRANT SELECT ON TABLE deliverablestatuslist TO pts_read;
+
+-- View: modificationstatus
+
+-- DROP VIEW modificationstatus;
+
+CREATE OR REPLACE VIEW modificationstatus AS
+ SELECT modification.modificationid, modstatus.modstatusid, modstatus.statusid, modstatus.effectivedate, modstatus.comment, modstatus.weight, modstatus.status, (( SELECT count(deliverablemod.deliverableid) AS count
+           FROM deliverablemod
+          WHERE deliverablemod.modificationid = modification.modificationid AND (deliverable_statusid(deliverablemod.deliverableid) < 40 OR deliverable_statusid(deliverablemod.deliverableid) IS NULL)))::integer AS incdeliverables
+   FROM modification
+   JOIN ( SELECT modstatus.modificationid, modstatus.statusid, modstatus.effectivedate, modstatus.modstatusid, modstatus.comment, status.weight, status.status, row_number() OVER (PARTITION BY modstatus.modificationid ORDER BY modstatus.effectivedate DESC, status.weight DESC) AS rank
+           FROM modstatus
+      JOIN status USING (statusid)) modstatus USING (modificationid)
+  WHERE modstatus.rank = 1
+  ORDER BY
+   CASE modstatus.statusid
+       WHEN 4 THEN 1
+       WHEN 8 THEN 2
+       WHEN 5 THEN 3
+       ELSE 4
+   END;
+
+ALTER TABLE modificationstatus
+  OWNER TO bradley;
+GRANT ALL ON TABLE modificationstatus TO bradley;
+GRANT SELECT ON TABLE modificationstatus TO pts_read;
+
+COMMENT ON COLUMN modificationstatus.incdeliverables IS 'Indicates if this modification has incomplete deliverables.';
+
+-- View: modstatuslist
+
+-- DROP VIEW modstatuslist;
+
+CREATE OR REPLACE VIEW modstatuslist AS
+ SELECT modification.modificationid, modstatus.modstatusid, modstatus.statusid, modstatus.effectivedate, modstatus.comment, modstatus.weight
+   FROM modification
+   JOIN ( SELECT modstatus.modificationid, modstatus.statusid, modstatus.effectivedate, modstatus.modstatusid, modstatus.comment, status.weight
+           FROM modstatus
+      JOIN status USING (statusid)) modstatus USING (modificationid)
+  ORDER BY modstatus.effectivedate DESC, modstatus.weight DESC;
+
+ALTER TABLE modstatuslist
+  OWNER TO bradley;
+GRANT ALL ON TABLE modstatuslist TO bradley;
+GRANT SELECT ON TABLE modstatuslist TO pts_read;
+COMMENT ON VIEW modstatuslist
+  IS 'Lists all statuses for each modification with status weight.';

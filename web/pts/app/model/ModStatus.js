@@ -22,6 +22,11 @@ Ext.define('PTS.model.ModStatus', {
             useNull: true
         },
         {
+            name: 'weight',
+            type: 'int',
+            useNull: true
+        },
+        {
             name: 'effectivedate',
             type: 'mydate',
             useNull: true
@@ -49,6 +54,9 @@ Ext.define('PTS.model.ModStatus', {
     proxy: {
         type: 'rest',
         url : '../modstatus',
+        api: {
+            read: '../modstatuslist'
+        },
         reader: {
             type: 'json',
             root: 'data'
