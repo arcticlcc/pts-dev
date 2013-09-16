@@ -60,6 +60,7 @@ Ext.define('PTS.model.PersonGroup', {
         reader: {
             type: 'json',
             root: 'data'
-        }
+        },
+        limitParam: undefined
     }
 });
