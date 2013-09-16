@@ -32,6 +32,7 @@ Ext.define('PTS.controller.dashboard.Calendar', {
             PersonId:       {name: 'PersonID', mapping:'personid', type:'int'},
             Type:           {name: 'Type', mapping:'type', type:'string'},
             ProjectCode:    {name: 'ProjectCode', mapping:'projectcode', type:'string'},
+            ProjectTitle:   {name: 'ProjectTitle', mapping:'shorttitle', type:'string'},
             ProjectId:      {name: 'projectid', mapping:'projectid', type:'int'},
             ModificationId: {name: 'modificationid', mapping:'modificationid', type:'int'},
             Status:         {name: 'Status', mapping:'status', type:'string',

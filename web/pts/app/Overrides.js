@@ -334,18 +334,18 @@ Ext.define('PTS.Overrides', {
 
              tpl = !(Ext.isIE || Ext.isOpera) ?
                 Ext.create('Ext.XTemplate',
-                   '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evr">',
+                   '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evr">',
                       body,
                    '</div>'
                 )
                 : Ext.create('Ext.XTemplate',
                    '<tpl if="_renderAsAllDay">',
-                      '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evo">',
+                      '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evo">',
                          '<div class="ext-cal-evm">',
                             '<div class="ext-cal-evi">',
                    '</tpl>',
                    '<tpl if="!_renderAsAllDay">',
-                      '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} ext-cal-evt ext-cal-evr">',
+                      '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} ext-cal-evt ext-cal-evr">',
                    '</tpl>',
                    body,
                    '<tpl if="_renderAsAllDay">',
