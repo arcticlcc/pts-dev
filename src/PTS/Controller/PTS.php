@@ -20,7 +20,7 @@ class PTS implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
             
         $controllers->get('/pts/', function (Application $app, Request $request) {
             $user = $app['session']->get('user');

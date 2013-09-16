@@ -21,7 +21,7 @@ class Keyword implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'projectkeyword';
 
         $controllers->get('keyword/tree', function (Application $app, Request $request) {

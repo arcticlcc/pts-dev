@@ -20,7 +20,7 @@ class Project implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'project';
 
         //TODO: make rest variables singular

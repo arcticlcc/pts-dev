@@ -20,7 +20,7 @@ class Deliverable implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'deliverable';
 
  //TODO: replace redirect with new method in Idiorm provider

@@ -20,7 +20,7 @@ class Invoice implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'invoice';
         $related = array(
             'costcodes'=>array('name' =>'costcodeinvoice')

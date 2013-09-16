@@ -20,7 +20,7 @@ class ContactGroup implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'contactgroup';
         $related = array(
             'addresses'=>array('name' =>'address'),

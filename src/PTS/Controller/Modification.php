@@ -20,7 +20,7 @@ class Modification implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'modification';
 
         $controllers->get('modification/{modid}/modstatus', function (Application $app, Request $request, $modid) {

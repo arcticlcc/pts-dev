@@ -23,6 +23,10 @@ class IdiormServiceProvider implements ServiceProviderInterface
             return new IdiormWrapper($app);
         });
     }
+    
+    public function boot(Application $app)
+    {
+    }    
 }
 
 class IdiormWrapper

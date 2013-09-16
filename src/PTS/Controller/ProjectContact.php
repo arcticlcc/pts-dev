@@ -20,7 +20,7 @@ class ProjectContact implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'projectcontact';
 
         $controllers->get('projectcontact', function (Application $app, Request $request) use ($table){

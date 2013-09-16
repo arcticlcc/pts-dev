@@ -20,7 +20,7 @@ class Login implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'login';
 
         $controllers->get('login', function (Application $app, Request $request) use ($table){

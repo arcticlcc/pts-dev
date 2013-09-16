@@ -94,9 +94,13 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
         });
     }
 
+    public function boot(Application $app)
+    {
+    }
+    
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $types = array(
             'Polygon' => 'projectpolygon',
             'LineString' => 'projectline',

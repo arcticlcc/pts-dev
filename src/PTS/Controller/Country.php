@@ -20,7 +20,7 @@ class Country implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'country';
 
         $controllers->get('country/{id}/postalcode/{rid}', function (Application $app, Request $request, $id, $rid) use ($table){

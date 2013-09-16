@@ -20,7 +20,7 @@ class Funding implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'funding';
 
         $controllers->get('funding/{id}/invoice', function (Application $app, Request $request, $id) {

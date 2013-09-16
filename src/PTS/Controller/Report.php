@@ -21,7 +21,7 @@ class Report implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
 
         $controllers->get('report/tree', function (Application $app, Request $request) {
 

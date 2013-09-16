@@ -20,7 +20,7 @@ class ModStatus implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'modstatus';
         $strip = array(
             'weight' => true

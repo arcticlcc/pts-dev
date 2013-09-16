@@ -20,7 +20,7 @@ class Person implements ControllerProviderInterface
 {
     public function connect(Application $app)
     {
-        $controllers = new ControllerCollection();
+        $controllers = $app['controllers_factory'];
         $table = 'person';
         $related = array(
             'addresses'=>array('name' =>'address'),
