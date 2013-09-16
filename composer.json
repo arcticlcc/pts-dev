@@ -1,12 +1,13 @@
 {
     "require": {
-        "silex/silex": "1.0.*",
-        "monolog/monolog": "1.1.*",
+        "silex/silex": "1.1.*",
+        "symfony/monolog-bridge": "2.3.*",
         "twig/twig": "1.8.*",
         "doctrine/dbal": "2.2.*",
-        "igorw/config-service-provider": "1.0.*",
+        "igorw/config-service-provider": "1.2.*",
         "symfony/yaml": "2.1.*",
-        "geokit/geokit": "dev-doctrine"
+        "geokit/geokit": "dev-doctrine",
+        "openid/php-openid": "dev-master"
     },
 
     "autoload": {
