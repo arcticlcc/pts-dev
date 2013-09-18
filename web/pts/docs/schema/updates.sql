@@ -35,3 +35,9 @@ ALTER TABLE deliverablecalendar
   OWNER TO bradley;
 GRANT ALL ON TABLE deliverablecalendar TO bradley;
 GRANT SELECT ON TABLE deliverablecalendar TO pts_read;
+
+ALTER TABLE login
+   ADD COLUMN openid character varying;
+COMMENT ON COLUMN login.openid IS 'Identifier to use with OpenId.';
+
+ALTER TABLE login ADD UNIQUE (openid);

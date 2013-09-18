@@ -22,7 +22,6 @@ class Login implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
         $table = 'login';
-
         $controllers->get('login', function (Application $app, Request $request) use ($table){
             $app['session']->start();
             //set token
@@ -115,6 +114,80 @@ class Login implements ControllerProviderInterface
             ));
         });
 
+        $controllers->match('openid', function (Application $app, Request $request) use ($table){
+            $init = $request->get('init');
+            $redirect = $request->get('r');
+
+
+            //get e-mail from database
+            /*$query = $app['idiorm']->getTable('login')
+                    ->join('person', array('login.contactid', '=', 'person.contactid'))
+                    ->where('username',$username);*/
+
+            try {
+                if($init){
+                    $app['tryOpenIDAuth']($redirect);
+                    //reset token
+                    $token = time();
+                    $app['session']->set('token', $token);                    
+                    //show login page with error
+                    return $app['twig']->render('login.twig', array(
+                        'token' => $token,
+                        'redirect' => $redirect,
+                        'salt' => $app['salt'],
+                        'message' => 'Please wait...contacting Google.'
+                    ));
+                }elseif($obj = $app['finishOpenIDAuth']()) {                    
+                    $first = $obj->data['http://axschema.org/namePerson/first'][0];
+                    $last = $obj->data['http://axschema.org/namePerson/last'][0];
+                    $email = $obj->data['http://axschema.org/contact/email'][0];
+                    
+                    //get user from database
+                    $query = $app['idiorm']->getTable('login')
+                            ->join('person', array('login.contactid', '=', 'person.contactid'))
+                            //->where('firstname',$first)
+                            ->where(strtolower('username'),strtolower($last))
+                            ->where('openid',$email);
+                            
+                    $result = $query->find_one();
+                                                                   
+                    if ($result) {
+                        $app['session']->migrate(true); //regenerate the sessionid
+                        $app['session']->set('user', array(
+                            'username' => $result->username,
+                            'loginid' => $result->loginid,
+                            'firstname' => $result->firstname
+                        ));
+                        if($redirect) {
+                            return $app->redirect($redirect);
+                        }else {
+                            return $app->redirect('/home');
+                        }
+                    }else{
+                        throw new \Exception("Login failed. No login matched the Google account.");                        
+                    }                                  
+                }
+
+                throw new \Exception("Google login failed. Try Again.");
+
+            } catch (\Exception $exc) {
+                $msg = $exc->getMessage();
+                $app['monolog']->addError($msg);
+
+                //reset token
+                $token = time();
+                $app['session']->set('token', $token);
+
+                //show login page with error
+                return $app['twig']->render('login.twig', array(
+                    'token' => $token,
+                    'redirect' => $redirect,
+                    'salt' => $app['salt'],
+                    'message' => $msg
+                ));
+            }
+        })->method('GET|POST');
+        
         return $controllers;
     }
 }

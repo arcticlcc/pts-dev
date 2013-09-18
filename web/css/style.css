@@ -210,7 +210,138 @@ td { vertical-align: top; }
 /* ==|== primary styles =====================================================
    Author: 
    ========================================================================== */
+body { text-align: center;}
+h1 { font-size: 50px; text-align: center }
+span[frown] { transform: rotate(90deg); display:inline-block; color: #bbb; }
+body { font: 20px Constantia, 'Hoefler Text',  "Adobe Caslon Pro", Baskerville, Georgia, Times, serif; color: #999; text-shadow: 2px 2px 2px rgba(200, 200, 200, 0.5); }
+::-moz-selection{ background:#FF5E99; color:#fff; }
+::selection { background:#FF5E99; color:#fff; }
+article {display:block; text-align: left; width: 500px; margin: 0 auto; }
 
+a, a:visited { color: rgb(36, 109, 56); text-decoration:none; }
+a:hover { color: rgb(96, 73, 141) ; text-shadow: 2px 2px 2px rgba(36, 109, 56, 0.5); }
+form {
+    margin: 0 auto 1em;
+    clear: both;
+    max-width: 500px;
+}
+.formcontrols {
+  border: 1px solid #D7D7D7;
+  border-radius: 4px 4px 4px 4px;
+  background: none no-repeat scroll 0 0 #FFFFFF;
+  padding: 1em;
+  font-size: 0.9em;  
+}
+.formcontrols input{
+  font-size: 14px;  
+}
+.formcontrols .heading {
+  color: #96B5C5;
+  font-size: 1em;
+  margin: 5px auto 15px;
+  width: 90%;
+}
+.formcontrols .row {
+  margin: 5px auto;
+  width: 90%;
+}
+.formcontrols .row label {
+  float: left;
+  font-weight: bold;
+  width: 150px;
+}
+form .footer {
+  margin-top: 12px;
+}
+form .footer .submit{
+  text-align: right;
+}
+.error {
+  color: red;
+  font-size: 0.9em;
+  margin-bottom: 0.5em;
+}
+a.btn {
+text-decoration: none;
+}
+.btn-large {
+    border-radius: 5px 5px 5px 5px;
+    font-size: 15px;
+    line-height: normal;
+    padding: 9px 14px;
+}
+.btn, a.btn {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #F5F5F5;
+    background-image: -moz-linear-gradient(center top , #FFFFFF, #E6E6E6);
+    background-repeat: repeat-x;
+    border-color: #CCCCCC #CCCCCC #B3B3B3;
+    border-image: none;
+    border-radius: 4px 4px 4px 4px;
+    border-style: solid;
+    border-width: 1px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.2) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    color: #333333;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 13px;
+    font-family: sans-serif;    
+    line-height: 18px;
+    margin-bottom: 0;
+    padding: 4px 10px;
+    text-align: center;
+    text-shadow: 0 1px 1px rgba(255, 255, 255, 0.75);
+    vertical-align: middle;
+}
+.btn img {
+    vertical-align: middle;
+}
+.btn:hover, .btn:active, .btn.active, .btn.disabled, .btn[disabled] {
+    background-color: #E6E6E6;
+}
+.btn:hover {
+    background-color: #E6E6E6;
+    background-position: 0 -15px;
+    color: #333333;
+    text-decoration: none;
+    transition: background-position 0.1s linear 0s;
+}
+.btn:focus {
+    outline: thin dotted #333333;
+    outline-offset: -2px;
+}
+.btn.active, .btn:active {
+    background-color: #E6E6E6;
+    background-image: none;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15) inset, 0 1px 2px rgba(0, 0, 0, 0.05);
+    outline: 0 none;
+}
+.btn.disabled, .btn[disabled] {
+    background-color: #E6E6E6;
+    background-image: none;
+    box-shadow: none;
+    cursor: default;
+    opacity: 0.65;
+}
+.btn-primary, .btn-primary:hover, .btn-warning, .btn-warning:hover, .btn-danger, .btn-danger:hover, .btn-success, .btn-success:hover, .btn-info, .btn-info:hover, .btn-inverse, .btn-inverse:hover {
+    color: #FFFFFF;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+}
+.btn-primary.active, .btn-warning.active, .btn-danger.active, .btn-success.active, .btn-info.active, .btn-inverse.active {
+    color: rgba(255, 255, 255, 0.75);
+}
+.btn-primary {
+    background-color: #0073CC;
+    background-image: -moz-linear-gradient(center top , #0088CC, #0055CC);
+    background-repeat: repeat-x;
+    border-color: #0055CC #0055CC #003580;
+}
+.btn-primary:hover, .btn-primary:active, .btn-primary.active, .btn-primary.disabled, .btn-primary[disabled] {
+    background-color: #0055CC;
+} 
 
 
 

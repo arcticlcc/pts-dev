@@ -2,6 +2,8 @@
 
 use Silex\Application;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Debug\ErrorHandler;
+use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
 
 // Create the application
 $app = new Application();
@@ -39,6 +41,16 @@ $app->register(new Idiorm\IdiormServiceProvider(), array(
     'idiorm.dsn'      => 'pgsql:host=localhost;port=5432;dbname=pts;',
     'idiorm.username' => 'bradley',
     'idiorm.password' => '123'
+));
+
+$app->register(new PTS\Service\OpenIDServiceProvider(), array(
+    'openid.uri'      => 'https://www.google.com/accounts/o8/id',
+    'openid.attribute'=> array(
+        // Usage: make($type_uri, $count=1, $required=false, $alias=null)
+        \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/contact/email',1,1, 'email'),
+        \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson/first',1,1, 'firstname'),
+        \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson/last',1,1, 'lastname'),  
+    )
 ));
 
 \ORM::configure('id_column_overrides', array(
@@ -95,8 +107,13 @@ $app['limit'] = 1000;
 $env = getenv("SILEX_ENV") ? $_ENV['SILEX_ENV'] : 'dev';
 
 if ('dev' == $env) {
-    $app['debug'] = true;
+    $app['debug'] = false;
     //$app['my.param'] = '...';
+}
+
+ErrorHandler::register();
+if ('cli' !== php_sapi_name()) {
+    ExceptionHandler::register();
 }
 
 // Error handling

@@ -16,7 +16,7 @@ $app->before(function (Request $request)  use ($app) {
     ));*/
 
     //check for user, ignore requests to login/logout uri
-    if (!$app['session']->has('user') && $uri_root != "/login" && $uri_root != "/logout") {
+    if (!$app['session']->has('user') && $uri_root != "/login" && $uri_root != "/logout" && $uri_root != "/openid") {
         //redirect after login
         return $app->redirect("/login?r=$uri");
     }
