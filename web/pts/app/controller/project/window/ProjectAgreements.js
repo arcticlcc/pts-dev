@@ -351,14 +351,19 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                             ms = 'There was an error saving the record';
                         }
 
-                    Ext.MessageBox.show({
+                    /*Ext.MessageBox.show({
                        title: 'Error',
                        msg: ms + '.</br>Error:' + PTS.app.getError(),
                        buttons: Ext.MessageBox.OK,
                        //animateTarget: 'mb9',
                        icon: Ext.Msg.ERROR
-                   });
-                   tab.getEl().unmask();
+                   });*/
+                    Ext.create('widget.uxNotification', {
+                        title: 'Error',
+                        iconCls: 'ux-notification-icon-error',
+                        html: ms + '.</br>Error:' + PTS.app.getError()
+                    }).show();                   
+                    tab.getEl().unmask();
                 },
                 scope: tab
             });

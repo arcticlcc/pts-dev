@@ -54,6 +54,8 @@ class Modification implements ControllerProviderInterface
                     ), dmod as (UPDATE deliverablemod
                         SET  duedate = :duedate,
                           receiveddate = :receiveddate,
+                          startdate = :startdate,
+                          enddate = :enddate,
                           publish = :publish,
                           restricted = :restricted,
                           personid = :personid,

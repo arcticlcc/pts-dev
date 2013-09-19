@@ -35,7 +35,10 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                 activate: this.onDetailActivate
             },
             'deliverableform#itemCard-30 #relatedDetails>#statusGrid': {
-                validateedit: this.validateStatus
+                validateedit: this.validateStatus          
+            },
+            'deliverableform#itemCard-30 #mainCon combobox[name=deliverabletypeid]': {
+                change: this.onChangeDelType
             }
         });
 
@@ -141,6 +144,17 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                 store.load();
             }
         }
+    },
+
+    /**
+     * Change handler for deliverabletype combo.
+     * Toggle visibility of period fieldcontainer.
+     */
+    onChangeDelType: function(field,newVal, oldVal) {
+        var period = field.up('form').down('#delPeriod');
+        
+        //show period if type is financial or progress report
+        period.setVisible(newVal === 6 || newVal === 13);
     },
 
     /**

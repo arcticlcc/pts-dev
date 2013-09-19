@@ -77,6 +77,41 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         ]
                     },
                     {
+                        xtype: 'fieldcontainer',
+                        itemId: 'delPeriod',
+                        hidden: true,
+                        defaults: {
+                            width: 155,
+                            labelWidth: 35
+                        },
+                        layout: {
+                            align: 'stretchmax',
+                            type: 'hbox'
+                        },
+                        fieldLabel: 'Period',
+                        items: [
+                            {
+                                xtype: 'daterangefield',
+                                itemId: 'startDate',
+                                name: 'startdate',
+                                fieldLabel: 'Start',
+                                margin: '0 20 0 0',                                
+                                vfield: 'beginDate',
+                                endDateField: 'endDate',
+                                vtype: 'daterange'
+                            },
+                            {
+                                xtype: 'daterangefield',
+                                itemId: 'endDate',
+                                name: 'enddate',
+                                vfield: 'endDate',
+                                startDateField: 'startDate',
+                                vtype: 'daterange',
+                                fieldLabel: 'End'
+                            }                            
+                        ]
+                    },                    
+                    {
                         xtype: 'managercombo'
                     },
                     {
@@ -98,7 +133,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         name: 'invalid',
                         fieldLabel: 'Invalid',
                         anchor: '100%'
-                    },*/
+                    },*/                   
                     {
                         xtype: 'checkboxgroup',
                         fieldLabel: 'Publication',

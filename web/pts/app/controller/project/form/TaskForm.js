@@ -73,6 +73,7 @@ Ext.define('PTS.controller.project.form.TaskForm', {
         idx = cont.items.indexOf(cbx);
         cont.remove(cbx);
         cont.insert(idx,myGroup);
-
+        //hide period fields
+        form.down('#delPeriod').hide();
     }
 });
