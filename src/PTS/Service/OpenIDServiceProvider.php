@@ -66,7 +66,7 @@ class OpenIDServiceProvider implements ServiceProviderInterface {
     }
 
     public function getSelf() {
-        return '/' == dirname($_SERVER['PHP_SELF']) ? '' : dirname($_SERVER['PHP_SELF']);      
+        return '/' == dirname($_SERVER['PHP_SELF']) || '\\' == dirname($_SERVER['PHP_SELF'])? '' : dirname($_SERVER['PHP_SELF']);
     }
 
     public function getReturnTo($r=false) {
@@ -145,10 +145,10 @@ class OpenIDServiceProvider implements ServiceProviderInterface {
             // Check the response status.
             if ($response->status == \Auth_OpenID_CANCEL) {
                 // This means the authentication was cancelled.
-                $msg = 'Verification cancelled.';
+                throw new \Exception('Verification cancelled.');
             } else if ($response->status == \Auth_OpenID_FAILURE) {
                 // Authentication failed; display the error message.
-                $msg = "OpenID authentication failed: " . $response->message;
+                throw new \Exception("OpenID authentication failed: " . $response->message);
             } else if ($response->status == \Auth_OpenID_SUCCESS) {
                 // This means the authentication succeeded; extract the
                 // identity URL and Simple Registration data (if it was
