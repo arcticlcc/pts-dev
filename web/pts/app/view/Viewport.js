@@ -9,7 +9,8 @@ Ext.define('PTS.view.Viewport', {
         'PTS.view.dashboard.Dashboard',
         'PTS.view.project.tab.ProjectTab',
         'PTS.view.contact.tab.ContactTab',
-        'PTS.view.report.tab.ReportTab'
+        'PTS.view.report.tab.ReportTab',
+        'PTS.view.tps.tab.TpsTab' 
     ],
 
     layout: {
@@ -46,16 +47,10 @@ Ext.define('PTS.view.Viewport', {
                         },
                         {
                             xtype: 'reporttab'
+                        },
+                        {
+                            xtype: 'tpsreport'
                         }
-                        /*{
-                            xtype: 'panel',
-                            html: '\'Reports go here\'',
-                            tpl: Ext.create('Ext.XTemplate',
-                                ''
-                            ),
-                            title: 'Reports',
-                            disabled: true
-                        }*/
                     ]
                 },
                 {
