@@ -17,7 +17,30 @@ Ext.define('PTS.util.Format', {
         }
         return val;
     },
-
+    
+    /**
+     * Formats documemt status for TPS report
+     * @param {String} value The value to format
+     */
+    docStatus: function (val) {
+        switch(val) {
+            case 'Completed':
+                return '<span style="color:green;">' + val + '</span>';
+                break;
+            case 'Not Started':
+                return '<span style="color:red;">' + val + '</span>';
+                break;
+            case 'In Progress':
+                return '<span style="color:blue;">' + val + '</span>';
+                break;
+            case null:
+                return 'N/A';
+                break;
+            default:
+                return val;        
+        }
+    },
+    
     /**
      * Formats project code
      * @param {Number/String} fiscalyear The fiscal year of the project

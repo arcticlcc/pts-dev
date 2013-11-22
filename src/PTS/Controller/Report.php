@@ -43,6 +43,48 @@ class Report implements ControllerProviderInterface
             return $app['json']->getResponse(true);
         });
 
+        $controllers->get('report/tps', function (Application $app, Request $request) {
+
+            try {
+                //grab all possible document types
+                $doctypes = $app['idiorm']->getTable('moddoctype')->find_many();
+                $fl = 'modificationid int,modificationcode varchar,shorttitle varchar, projectcode varchar, modtype varchar';
+                
+                $metadata = array('fields' => 
+                    array(
+                        'modificationid', 'modificationcode', 'shorttitle', 'projectcode', 'modtype'
+                    ) 
+                );
+                
+                //loop through and build field list for query
+                foreach ($doctypes as $object) {
+                    $fname = 'doctype_'. $object->moddoctypeid;
+                    $fl .= ', '. $fname . ' varchar';
+                    $metadata['fields'][] = $fname;
+                }
+
+                $sql = "SELECT *
+                   FROM crosstab ('
+                   SELECT * FROM report.allmoddocstatus',
+                   'SELECT moddoctypeid
+                   FROM moddoctype') AS ct(" . $fl . ")";
+                
+                $stmt = $app['db']->prepare($sql);
+                $stmt->execute();
+                $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                
+                $app['json']->setData($result);
+                $app['json']->setMetadata($metadata);
+                
+            } catch (Exception $exc) {
+                $this->app['monolog']->addError($exc->getMessage());
+
+                $this->app['json']->setAll(null, 409, false, $exc->getMessage());
+            }
+
+            return $app['json']->getResponse();
+        });
+
         return $controllers;
     }
 }

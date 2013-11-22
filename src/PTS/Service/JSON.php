@@ -20,18 +20,20 @@ class JSON
     private $msg;
     private $total;
 
-    public function __construct(array $data = null, $statusCode = 200, $success=true, $msg = false,$total = null)
+    public function __construct(array $data = null, array $metadata = null, $statusCode = 200, $success=true, $msg = false,$total = null)
     {
         $this->data = $data;
+        $this->metadata = $metadata;
         $this->statusCode = $statusCode;
         $this->success = $success;
         $this->msg = $msg;
         $this->total = $total;
     }
 
-    public function setAll(array $data = null, $statusCode = 200, $success=true, $msg = false, $total = null)
+    public function setAll(array $data = null, array $metadata = null, $statusCode = 200, $success=true, $msg = false, $total = null)
     {
         $this->data = $data;
+        $this->metadata = $metadata;
         $this->statusCode = $statusCode;
         $this->success = $success;
         $this->msg = $msg;
@@ -43,6 +45,12 @@ class JSON
     public function setData($data)
     {
         $this->data = $data;
+        return $this;
+    }
+
+    public function setMetadata($metadata)
+    {
+        $this->metadata = $metadata;
         return $this;
     }
 
@@ -82,6 +90,10 @@ class JSON
                 $this->json['data'] = $this->data;
             }else{
                 $this->json['data'] = array();
+            }
+
+            if($this->metadata) {
+                $this->json['metaData'] = $this->metadata;
             }
 
             if(!is_null($this->total)) {

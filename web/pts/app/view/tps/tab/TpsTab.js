@@ -6,9 +6,9 @@
 
 Ext.define('PTS.view.tps.tab.TpsTab', {
     extend: 'Ext.panel.Panel',
-    alias: 'widget.tpsreport',
+    alias: 'widget.tpstab',
     requires: [
-        //'PTS.view.report.ReportGrid'
+        'PTS.view.tps.tab.TpsGrid'
     ],
 
     layout: {
@@ -22,7 +22,7 @@ Ext.define('PTS.view.tps.tab.TpsTab', {
         Ext.applyIf(me, {
             items: [
                 {
-                    xtype: 'panel',
+                    xtype: 'tpsgrid',
                     itemId: 'tpsGrid',
                     region: 'center'
                 },

@@ -49,7 +49,7 @@ Ext.define('PTS.view.Viewport', {
                             xtype: 'reporttab'
                         },
                         {
-                            xtype: 'tpsreport'
+                            xtype: 'tpstab'
                         }
                     ]
                 },

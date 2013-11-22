@@ -44,7 +44,8 @@ Ext.application({
         'dashboard.Dashboard',
         'project.Project',
         'contact.Contact',
-        'report.Report'
+        'report.Report',
+        'tps.Tps'
 
     ],
 
