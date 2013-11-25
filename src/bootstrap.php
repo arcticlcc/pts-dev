@@ -49,7 +49,7 @@ $app->register(new PTS\Service\OpenIDServiceProvider(), array(
         // Usage: make($type_uri, $count=1, $required=false, $alias=null)
         \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/contact/email',1,1, 'email'),
         \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson/first',1,1, 'firstname'),
-        \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson/last',1,1, 'lastname'),  
+        \Auth_OpenID_AX_AttrInfo::make('http://axschema.org/namePerson/last',1,1, 'lastname'),
     )
 ));
 
@@ -104,7 +104,7 @@ $app['limit'] = 1000;
 //$app['my.param'] = '...';
 
 // Override settings for your dev environment
-$env = getenv("SILEX_ENV") ? $_ENV['SILEX_ENV'] : 'dev';
+$env = getenv("SILEX_ENV") ? $_SERVER['SILEX_ENV'] : 'dev';
 
 if ('dev' == $env) {
     $app['debug'] = false;
