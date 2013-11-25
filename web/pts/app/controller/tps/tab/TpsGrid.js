@@ -14,32 +14,41 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         'tps.tab.TpsGrid'
     ],
 
-    /*refs: [{
-        ref: 'reportTree',
-        selector: 'reporttab #reportTree'
-    },{
-        ref: 'reportPanel',
-        selector: 'reporttab #reportPanel'
-    },{
-        ref: 'helpTab',
-        selector: 'reporttab #helpTab'
-    }],*/
+    refs: [{
+        ref: 'tpsGrid',
+        selector: 'tpstab tpsgrid#tpsGrid'
+    }],
 
     init: function() {
 
         this.control({
             'tpstab tpsgrid#tpsGrid': {
-                beforerender: this.onBeforeRender
+                afterrender: this.onAfterRender
             }
         });
 
     },
     
     /**
-     * TpsGrid beforerender listener. 
-     * Configure the grid columns and load the data store.
+     * TpsGrid afterrender listener.
+     * Configure the refresh event to fix scrolling.
      */
-    onBeforeRender: function(grid) {
-        //return false;
-    }    
+    onAfterRender: function(grid) {
+        grid.normalGrid.getView().on('refresh', this.fixScroll, grid);
+    },
+
+    /**
+     * Fix to sync scrolling of TpsGrid locked/normal views.
+     * TODO: Fixed in 4.1+?
+     */
+    fixScroll: function(view) {
+	var grid = this,
+		normal = grid.normalGrid,
+		h = normal.horizontalScroller.rendered ? normal.horizontalScroller.getHeight() : 0;
+
+		if(h > 0) {
+		grid.spacerHidden = false;
+		grid.getSpacerEl().removeCls(Ext.baseCSSPrefix + 'hidden');
+		}
+    }
 });
