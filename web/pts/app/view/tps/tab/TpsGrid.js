@@ -14,9 +14,10 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
     autoScroll: true,
     //title: 'Tasks',
     store: 'TpsRecords',
-
+    selType: 'cellmodel',
+    
     initComponent: function() {
-        var me = this,
+        var me = this, sm,
             cols = [
                 {
                     xtype: 'gridcolumn',
@@ -125,7 +126,56 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
             columns: cols
         });
 
+        me.addEvents(
+            /**
+             * @event beforeselect
+             * Fired before a record is selected. If any listener returns false, the
+             * selection is cancelled.
+             * @param {Ext.grid.View} The selected view
+             * @param {Ext.data.Model} record The selected record
+             * @param {Object} position The position of selected cell
+             */
+            'beforeselect'
+        );
+
         me.callParent(arguments);
+        
+        sm = me.getSelectionModel();
+        //Override onMouseDown to prevent clicks on the locked view       
+        sm.onMouseDown = function(view, cell, cellIndex, record, row, rowIndex, e) {
+            if(sm.primaryView !== view) return false;
+            sm.setCurrentPosition({
+                row: rowIndex,
+                column: cellIndex
+            }, view);
+        };                
+        
+        //Override setCurrentPosition to accept/pass the clicked view
+        /*sm.setCurrentPosition = function(pos, view) {
+            var me = sm;
+    
+            if (me.position) {
+                me.onCellDeselect(me.position);
+            }
+            if (pos) {
+                me.onCellSelect(pos, view);
+            }
+            me.position = pos;
+        };        
+        
+        //Override onCellSelect, adding beforeselect listener        
+        sm.onCellSelect = function(position, view) {
+            var sm = me.getSelectionModel(),
+                store = sm.view.getStore(),
+                record = store.getAt(position.row);
+
+            if(sm.fireEvent('beforeselect', view, record, position)) {
+                sm.doSelect(record);
+                sm.primaryView.onCellSelect(position);
+                sm.primaryView.onCellFocus(position);
+                sm.fireEvent('select', sm, record, position.row, position.column);
+            }
+        };*/        
         
         //code below will "fix" the loadmask, i.e. masks entire panel
         //http://www.sencha.com/forum/showthread.php?188261-OPEN-Bugs-on-Grid-with-Column-Locking-load-mask-error-grid-not-resized-etc&p=784431&viewfull=1#post784431

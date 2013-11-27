@@ -140,7 +140,7 @@
 .pts-deliverable-canceled {
     text-decoration: line-through;
     }
-.pts-deliverable-highlight .x-grid-cell {
+.pts-deliverable-highlight .x-grid-cell, .pts-tps-highlight .x-grid-cell {
     background-color: #FFFFE0;
     }
 .pts-delete-highlight .x-grid-cell {

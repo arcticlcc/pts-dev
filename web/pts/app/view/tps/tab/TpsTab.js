@@ -8,7 +8,8 @@ Ext.define('PTS.view.tps.tab.TpsTab', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.tpstab',
     requires: [
-        'PTS.view.tps.tab.TpsGrid'
+        'PTS.view.tps.tab.TpsGrid',
+        'PTS.view.tps.tab.TpsDetailGrid'
     ],
 
     layout: {
@@ -27,12 +28,14 @@ Ext.define('PTS.view.tps.tab.TpsTab', {
                     region: 'center'
                 },
                 {
-                    xtype: 'panel',
+                    xtype: 'tpsdetailgrid',
                     itemId: 'tpsDetail',
                     title: 'Details',
-                    region: 'south',
+                    region: 'east',
                     split: true,
-                    height: 250
+                    flex: .5,
+                    minWidth: 350,
+                    collapsible: true
                 }
             ]
         });

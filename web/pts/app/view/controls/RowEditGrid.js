@@ -94,8 +94,11 @@ Ext.define('PTS.view.controls.RowEditGrid', {
                     store.sync({
                         success: function() {
                             el.unmask();
+                            grid.fireEvent('removerow', selection, store);                            
                         }
                     });
+                } else {
+                    grid.fireEvent('beforeremoverow', selection, store);
                 }
             }
     },
@@ -134,7 +137,15 @@ Ext.define('PTS.view.controls.RowEditGrid', {
              * @param {Ext.data.Model} record
              * @param {Ext.data.Store} store
              */
-            'beforeremoverow'
+            'beforeremoverow',
+            /**
+             * @event removerow
+             * Fires after a row is removed.
+             * If {@link #syncOnRemoveRow} is true, the event fires on sync success
+             * @param {Ext.data.Model} record
+             * @param {Ext.data.Store} store
+             */
+            'removerow'            
         );
         me.getSelectionModel().on('selectionchange', function(selModel, selections){
             me.down('#removeRow').setDisabled(selections.length === 0);

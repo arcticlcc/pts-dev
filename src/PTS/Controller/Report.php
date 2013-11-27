@@ -53,7 +53,7 @@ class Report implements ControllerProviderInterface
                 $metadata = array('fields' => 
                     array(
                         'modificationid', 'modificationcode', 'shorttitle', 'projectcode', 'modtype'
-                    ) 
+                    ), 'idProperty' => 'modificationid' 
                 );
                 
                 //loop through and build field list for query

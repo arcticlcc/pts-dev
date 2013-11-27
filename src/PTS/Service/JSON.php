@@ -30,7 +30,7 @@ class JSON
         $this->total = $total;
     }
 
-    public function setAll(array $data = null, array $metadata = null, $statusCode = 200, $success=true, $msg = false, $total = null)
+    public function setAll(array $data = null, $statusCode = 200, $success=true, $msg = false, $total = null, array $metadata = null)
     {
         $this->data = $data;
         $this->metadata = $metadata;

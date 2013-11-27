@@ -66,7 +66,8 @@ $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     'personlist' => 'contactid',
     'projectkeywordlist' => 'projectkeywordid',
     'projectfeature' => 'id',
-    'modstatuslist' => 'modstatusid'
+    'modstatuslist' => 'modstatusid',
+    'moddocstatuslist' => 'moddocstatusid'
 ));
 
 // Add services to the DI container

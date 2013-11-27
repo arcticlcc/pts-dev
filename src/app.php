@@ -308,4 +308,5 @@ $app->mount('/', new PTS\Controller\Report());
 $app->mount('/', new PTS\Controller\Keyword());
 $app->mount('/', new PTS\Controller\Feature());
 $app->mount('/', new PTS\Controller\ModStatus());
+$app->mount('/', new PTS\Controller\ModDocStatus());
 ?>

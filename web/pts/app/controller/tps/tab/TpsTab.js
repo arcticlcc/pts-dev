@@ -6,7 +6,8 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
 
     stores: [
         'ModDocTypes',
-        'TpsRecords'
+        'TpsRecords',
+        'ModDocStatusTypes'
     ],
     models: [
         'ModDocType'
@@ -44,12 +45,12 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
             grid = this.getTpsGrid(),
             cols = grid.columns,
             docStore = this.getModDocTypesStore();
-            
+                    
         //load store
         docStore.load({
             callback: function(rec, op, success) {
-console.info(arguments);
                 if(success) {
+                    //create columns
                     Ext.each(rec, function(r){
                         cols.push({
                             xtype: 'gridcolumn',
@@ -60,8 +61,19 @@ console.info(arguments);
                         });
                     });
                     
+                    //add columns to grid
                     grid.reconfigure(false, cols);
                     mask.destroy();
+                    //just select the first cell on load to avoid issues with detailGrid
+                    grid.getStore().on('load', function(store, records, success, oper){
+                        if(store.count() > 0) {
+                            this.getSelectionModel().setCurrentPosition({
+                                row: 0,
+                                column: 0
+                            });
+                        }
+                    },grid);
+                                        
                     grid.getStore().load();
                 }
             },
