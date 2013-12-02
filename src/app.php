@@ -1,19 +1,18 @@
 <?php
-
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-$app->before(function (Request $request)  use ($app) {
+$app->before(function(Request $request) use ($app) {
     // redirect the user to the login screen if access to the Resource is protected
-    $uri_root = parse_url($request->server->get("REQUEST_URI"),PHP_URL_PATH);
+    $uri_root = parse_url($request->server->get("REQUEST_URI"), PHP_URL_PATH);
     $uri = $request->server->get("REQUEST_URI");
 
     //uncomment for building and comment the check below
     /*$app['session']->set('user', array(
-        'username' => 'Dev',
-        'loginid' => 1,
-        'firstname' => 'Dev'
-    ));*/
+     'username' => 'Dev',
+     'loginid' => 1,
+     'firstname' => 'Dev'
+     ));*/
 
     //check for user, ignore requests to login/logout uri
     if (!$app['session']->has('user') && $uri_root != "/login" && $uri_root != "/logout" && $uri_root != "/openid") {
@@ -27,9 +26,7 @@ $app->get('/', function() use ($app) {
     //return phpinfo();
     $u = $app['session']->get('user');
 
-    return $app['twig']->render('home.twig', array (
-        'name' => $u['firstname']
-    ));
+    return $app['twig']->render('home.twig', array('name' => $u['firstname']));
 
 });
 
@@ -38,9 +35,7 @@ $app->get('/home', function() use ($app) {
     //return phpinfo();
     $u = $app['session']->get('user');
 
-    return $app['twig']->render('home.twig', array (
-        'name' => $u['firstname']
-    ));
+    return $app['twig']->render('home.twig', array('name' => $u['firstname']));
 
 });
 
@@ -49,9 +44,8 @@ $app->get('/poll', function() use ($app) {
     $app['session']->migrate(false);
 
     $u = $app['session']->get('user');
-    $json[] = array('success'=>true);
-    $response = $app['json']->setData($json)
-                ->getResponse(true);
+    $json[] = array('success' => true);
+    $response = $app['json']->setData($json)->getResponse(true);
     return $response;
 
 });
@@ -59,7 +53,7 @@ $app->get('/poll', function() use ($app) {
 //TODO: $request->get() should be $request->query->get() for better performance
 
 //TODO: create method in PTS provider to abstract get requests
-$app->get('/{class}.{format}', function (Request $request, $class, $format) use ($app) {
+$app->get('/{class}.{format}', function(Request $request, $class, $format) use ($app) {
 
     $result = array();
     $restricted = array(
@@ -68,14 +62,14 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
     );
 
     try {
-        if(isset($restricted[$class])) {
+        if (isset($restricted[$class])) {
             throw new \Exception("Unauthorized.");
         }
 
-				$query = $app['idiorm']->getTable($class);
+        $query = $app['idiorm']->getTable($class);
 
         //create the count query with only filters applied
-				$count = clone $app['applyParams']($request, $query, true);
+        $count = clone $app['applyParams']($request, $query, true);
 
         //add sorting and paging to query
         $app['applyParams']($request, $query, false, true, true);
@@ -85,28 +79,25 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
         }
 
         switch ($format) {
-            case "csv":
+            case "csv" :
                 $app['csv']->setTitle($class);
                 break;
-            default:
+            default :
                 $app[$format]->setTotal($count->count());
         }
 
-        $response = $app[$format]->setData($result)
-                    ->getResponse();
+        $response = $app[$format]->setData($result)->getResponse();
 
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
 
-        $response = $app[$format]->setAll(null, 409, false, $exc->getMessage())
-                    ->getResponse();
+        $response = $app[$format]->setAll(null, 409, false, $exc->getMessage())->getResponse();
     }
 
     return $response;
-})
-->value('format', 'json');
+})->value('format', 'json');
 
-$app->get('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
+$app->get('/{class}/{id}', function(Request $request, $class, $id) use ($app) {
     $result = array();
     $restricted = array(
         'userinfo' => true,
@@ -116,33 +107,32 @@ $app->get('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     try {
         $u = $app['session']->get('user');
 
-        if(isset($restricted[$class]) && $u['loginid'] != $id) {
+        if (isset($restricted[$class]) && $u['loginid'] != $id) {
             throw new \Exception("Unauthorized.");
         }
-        $object = $app['idiorm']->getTable($class)
-                  ->find_one($id);
+        $object = $app['idiorm']->getTable($class)->find_one($id);
 
-        if($object) {
+        if ($object) {
             $result = $object->as_array();
             $app['json']->setData($result);
-        }else {
+        } else {
             $message = "No record found in table '$class' with id of $id.";
             $success = false;
             $code = 404;
-            $app['json']->setAll($result,$code,$success,$message);
+            $app['json']->setAll($result, $code, $success, $message);
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
         $message = $exc->getMessage();
         $success = false;
         $code = 400;
-        $app['json']->setAll($result,$code,$success,$message);
+        $app['json']->setAll($result, $code, $success, $message);
     }
 
     return $app['json']->getResponse();
 });
 
-$app->get('{class}/{id}/{related}.{format}', function (Request $request, $class, $id, $related, $format) use ($app) {
+$app->get('{class}/{id}/{related}.{format}', function(Request $request, $class, $id, $related, $format) use ($app) {
 
     $restricted = array(
         'userinfo' => true,
@@ -150,25 +140,23 @@ $app->get('{class}/{id}/{related}.{format}', function (Request $request, $class,
     );
 
     try {
-        if(isset($restricted[$class])) {
+        if (isset($restricted[$class])) {
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
 
-        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())
-                    ->getResponse();
+        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
         return $app['json']->getResponse();
     }
 
-    $app['getRelated']($request, $related, $class .'id', $id, null, $format);
+    $app['getRelated']($request, $related, $class . 'id', $id, null, $format);
 
     return $app[$format]->getResponse();
-})
-->value('format', 'json');
+})->value('format', 'json');
 
-$app->put('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
+$app->put('/{class}/{id}', function(Request $request, $class, $id) use ($app) {
     $result = array();
     $restricted = array(
         'userinfo' => true,
@@ -176,14 +164,13 @@ $app->put('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     );
 
     try {
-        if(isset($restricted[$class])) {
+        if (isset($restricted[$class])) {
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
 
-        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())
-                    ->getResponse();
+        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
         return $app['json']->getResponse();
     }
@@ -194,7 +181,7 @@ $app->put('/{class}/{id}', function (Request $request, $class, $id) use ($app) {
     return $app['json']->getResponse();
 });
 
-$app->post('/{class}', function (Request $request, $class) use ($app) {
+$app->post('/{class}', function(Request $request, $class) use ($app) {
     $result = array();
     $restricted = array(
         'userinfo' => true,
@@ -202,14 +189,13 @@ $app->post('/{class}', function (Request $request, $class) use ($app) {
     );
 
     try {
-        if(isset($restricted[$class])) {
+        if (isset($restricted[$class])) {
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
 
-        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())
-                    ->getResponse();
+        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
         return $app['json']->getResponse();
     }
@@ -220,7 +206,7 @@ $app->post('/{class}', function (Request $request, $class) use ($app) {
     return $app['json']->getResponse();
 });
 
-$app->delete('/{class}/{id}', function ($class, $id) use ($app) {
+$app->delete('/{class}/{id}', function($class, $id) use ($app) {
     $result = array();
     $restricted = array(
         'userinfo' => true,
@@ -228,37 +214,36 @@ $app->delete('/{class}/{id}', function ($class, $id) use ($app) {
     );
 
     try {
-        if(isset($restricted[$class])) {
+        if (isset($restricted[$class])) {
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
 
-        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())
-                    ->getResponse();
+        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
         return $app['json']->getResponse();
     }
 
     try {
         $object = $app['idiorm']->getTable($class)->find_one($id);
-        if($object) {
+        if ($object) {
             $result = $object->as_array();
 
             $object->delete();
             $app['json']->setData($result);
-        }else {
+        } else {
             $message = "No record found in table '$class' with id of $id.";
             $success = false;
             $code = 404;
-            $app['json']->setAll($result,$code,$success,$message);
+            $app['json']->setAll($result, $code, $success, $message);
         }
     } catch (Exception $exc) {
         $app['monolog']->addError($exc->getMessage());
         $message = $exc->getMessage();
         $success = false;
         $code = 400;
-        $app['json']->setAll($result,$code,$success,$message);
+        $app['json']->setAll($result, $code, $success, $message);
     }
 
     return $app['json']->getResponse();

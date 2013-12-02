@@ -17,18 +17,16 @@ use Symfony\Component\HttpFoundation\Response;
  *
  */
 
-class Report implements ControllerProviderInterface
-{
-    public function connect(Application $app)
-    {
+class Report implements ControllerProviderInterface {
+    public function connect(Application $app) {
         $controllers = $app['controllers_factory'];
 
-        $controllers->get('report/tree', function (Application $app, Request $request) {
+        $controllers->get('report/tree', function(Application $app, Request $request) {
 
             try {
                 //create root node($id,$text,$iconCls,$leaf)
-                $rootNode = $app['tree']->node('root','.','',false);
-                $node = $app['tree']->node(null,'Contact Reports','pts-agreement-folder',false);
+                $rootNode = $app['tree']->node('root', '.', '', false);
+                $node = $app['tree']->node(null, 'Contact Reports', 'pts-agreement-folder', false);
                 $rootNode->addChildren($app['reports'], $rootNode);
                 $app['tree']->add($rootNode);
 
@@ -43,24 +41,28 @@ class Report implements ControllerProviderInterface
             return $app['json']->getResponse(true);
         });
 
-        $controllers->get('report/tps.{format}', function (Application $app, Request $request, $format) {
+        $controllers->get('report/tps.{format}', function(Application $app, Request $request, $format) {
 
             try {
                 //grab all possible document types
                 $doctypes = $app['idiorm']->getTable('moddoctype')->find_many();
                 $fl = 'modificationid int,modificationcode varchar,shorttitle varchar, projectcode varchar, modtype varchar, status varchar, weight int';
-                
-                $metadata = array('fields' => 
-                    array(
-                        'modificationid', 'modificationcode', 'shorttitle', 'projectcode', 'modtype'
+
+                $metadata = array(
+                    'fields' => array(
+                        'modificationid',
+                        'modificationcode',
+                        'shorttitle',
+                        'projectcode',
+                        'modtype'
                     ),
                     'idProperty' => 'modificationid'
                 );
-                
+
                 //loop through and build field list for query
                 foreach ($doctypes as $object) {
-                    $fname = 'doctype_'. $object->moddoctypeid;
-                    $fl .= ', '. $fname . ' varchar';
+                    $fname = 'doctype_' . $object->moddoctypeid;
+                    $fl .= ', ' . $fname . ' varchar';
                     $metadata['fields'][] = $fname;
                 }
 
@@ -70,40 +72,37 @@ class Report implements ControllerProviderInterface
 											status, COALESCE(weight,-1) ,moddoctypeid, code FROM report.allmoddocstatus',
                    'SELECT moddoctypeid
                    FROM moddoctype') AS ct(" . $fl . "))";
-                
+
                 $query = $app['idiorm']->getTable($sql)->subquery()->table_alias('q');
 
-				        //create the count query with only filters applied
-								$count = clone $app['applyParams']($request, $query, true);
+                //create the count query with only filters applied
+                $count = clone $app['applyParams']($request, $query, true);
 
+                //add sorting and paging to query
+                $app['applyParams']($request, $query, false, true, true);
 
-								//add sorting and paging to query
-				        $app['applyParams']($request, $query, false, true, true);
+                foreach ($query->find_many() as $object) {
+                    $result[] = $object->as_array();
+                }
 
-				        foreach ($query->find_many() as $object) {
-				            $result[] = $object->as_array();
-				        }
-
-								//$queryBuilder = $app['db']->createQueryBuilder();
+                //$queryBuilder = $app['db']->createQueryBuilder();
 
                 /*$stmt = $app['db']->prepare($sql);
-                $stmt->execute();
-                $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);*/
-                
+                 $stmt->execute();
+                 $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);*/
+
                 $app['json']->setMetadata($metadata);
 
-				        switch ($format) {
-				            case "csv":
-				                $app['csv']->setTitle('TPS Report');
-				                break;
-				            default:
-				                $app[$format]->setTotal($count->count());
-				        }
+                switch ($format) {
+                    case "csv" :
+                        $app['csv']->setTitle('TPS Report');
+                        break;
+                    default :
+                        $app[$format]->setTotal($count->count());
+                }
 
-				        $response = $app[$format]->setData($result)
-				                    ->getResponse();
+                $response = $app[$format]->setData($result)->getResponse();
 
-                
             } catch (Exception $exc) {
                 $this->app['monolog']->addError($exc->getMessage());
 
@@ -116,6 +115,6 @@ class Report implements ControllerProviderInterface
 
         return $controllers;
     }
-}
 
+}
 ?>
