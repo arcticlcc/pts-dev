@@ -30,7 +30,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         this.control({
             'tpstab tpsgrid#tpsGrid': {
                 afterrender: this.onAfterRender,
-                beforeselect: this.onBeforeSelect
+                beforeselect: this.onBeforeSelect               
             },
             'tpstab tpsdetailgrid#tpsDetail': {
                 edit: this.onDetailRowEdit,
@@ -49,6 +49,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      */
     onAfterRender: function(grid) {
         grid.normalGrid.getView().on('refresh', this.fixScroll, grid);
+        grid.lockedGrid.getView().on('itemdblclick', this.onTpsGridDblClick, this);
         grid.getSelectionModel().on('select', this.onSelect, this);
         grid.getSelectionModel().on('deselect', this.onDeselect, this);
         
@@ -209,5 +210,58 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         }
 
         store.load();
-    }
+    },
+
+    /**
+     * TPS grid double click handler
+     * @param {Ext.view.View} view
+     * @param {Ext.data.Model} record The record that belongs to the item
+     * @param {HTMLElement} item The item's element
+     */    
+    onTpsGridDblClick: function(view, rec, el) {
+        console.info(rec);
+        this.openProject(rec);       
+    },
+    
+    /**
+     * Open the project window and show the agreement
+     * @param {Ext.data.Model} rec The record for the clicked row
+     * 
+     * TODO: Create method in main project controller to handle this.
+     * Similar methods currently implemented in multiple controllers.
+     */
+    openProject: function(rec) {
+        var id = rec.get('modificationid'),
+            callBack = function() {
+            var win = this,
+                store = win.down('agreementstree').getStore(),
+                tab = win.down('projectagreements'),
+                setPath = function(store) {
+                    var path = store.getNodeById("af-" + id).getPath();
+                    this.down('agreementstree').selectPath(path);
+                    this.getEl().unmask();
+                };
+
+            //Ext.getBody().unmask();
+            win.getEl().mask('Loading...');
+            win.down('tabpanel').setActiveTab(tab);
+
+            if(store.getRootNode().hasChildNodes()) {
+                setPath(store);
+            }else {
+                store.on('load', setPath, win, {
+                    single: true
+                });
+            }
+        };
+        //set the getProjectCode method, if it doesn't exist
+        //we assume that the record contains the projectcode
+        if(rec.getProjectCode === undefined) {
+            rec.getProjectCode = function() {
+                return rec.get('projectcode');
+            };
+        }
+
+        this.getController('project.Project').openProject(rec,callBack);
+    }        
 });
