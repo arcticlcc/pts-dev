@@ -56,15 +56,10 @@ $app->get('/poll', function() use ($app) {
 
 });
 
-//TODO: $request->get() should be $request->request->get() for better performance
+//TODO: $request->get() should be $request->query->get() for better performance
 
 //TODO: create method in PTS provider to abstract get requests
 $app->get('/{class}.{format}', function (Request $request, $class, $format) use ($app) {
-    $page = $request->get('page') ?: $app['page'];
-    $start = $request->get('start') ?: $app['start'];
-    $limit = $request->get('limit') ?: $app['limit'];
-    $sort = json_decode($request->get('sort'));
-    $filter = json_decode($request->get('filter'));
 
     $result = array();
     $restricted = array(
@@ -77,37 +72,13 @@ $app->get('/{class}.{format}', function (Request $request, $class, $format) use 
             throw new \Exception("Unauthorized.");
         }
 
-        $query = $app['idiorm']->getTable($class);
+				$query = $app['idiorm']->getTable($class);
 
-        //add the filters
-        if (isset($filter)) {
-            //loop thru filter array
-            foreach($filter as $val) {
-                $app['addFilter']($query, $val);
-            }
-        }
+        //create the count query with only filters applied
+				$count = clone $app['applyParams']($request, $query, true);
 
-        //create the count query with filters applied
-        $count = clone $query;
-
-        //add the sort params
-        if (isset($sort)) {
-            //loop thru sort array
-            foreach($sort as $val) {
-                switch ($val->direction) {
-                    case 'ASC':
-                        $query->order_by_asc($val->property);
-                        break;
-                    case 'DESC':
-                        $query->order_by_desc($val->property);
-                        break;
-                }
-            }
-        }
-
-        //add offset and limit
-        $query->offset($start)
-            ->limit($limit);
+        //add sorting and paging to query
+        $app['applyParams']($request, $query, false, true, true);
 
         foreach ($query->find_many() as $object) {
             $result[] = $object->as_array();

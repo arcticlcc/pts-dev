@@ -330,56 +330,60 @@ class PTSServiceProvider implements ServiceProviderInterface
             }
         });
 
-        //getable method should implement query and sort
-        /*$app['getTable'] = $app->protect(function($request, $class, array $where = null) use ($app) {
-            //if(!$key) $key = $class.'id';
+        /**
+         * @app applyParams
+         * Applies paging and filter params to a query
+         */
+        $app['applyParams'] = $app->protect(function(Request $request, $query, $addfilter = FALSE , $addsort = FALSE, $addpage = FALSE ) use ($app) {
 
-            $page = $request->get('page') ?: $app['page'];
-            $start = $request->get('start') ?: $app['start'];
-            $limit = $request->get('limit') ?: $app['limit'];
-            $sort = $request->get('sort');
-
-            $result = array();
+				    $page = $request->query->get('page') ?: $app['page'];
+				    $start = $request->query->get('start') ?: $app['start'];
+				    $limit = $request->query->get('limit') ?: $app['limit'];
+				    $sort = json_decode($request->query->get('sort'));
+				    $filter = json_decode($request->query->get('filter'));
 
             try {
+							if($addfilter){
+				        //add the filters
+				        if (isset($filter)) {
+				            //loop thru filter array
+				            foreach($filter as $val) {
+				                $app['addFilter']($query, $val);
+				            }
+				        }
+							}
 
-                $query = $app['idiorm']->getTable($class);
+							if($addsort){
+				        //add the sort params
+				        if (isset($sort)) {
+				            //loop thru sort array
+				            foreach($sort as $val) {
+				                switch ($val->direction) {
+				                    case 'ASC':
+				                        $query->order_by_asc($val->property);
+				                        break;
+				                    case 'DESC':
+				                        $query->order_by_desc($val->property);
+				                        break;
+				                }
+				            }
+				        }
+							}
 
-                if($where) {
-                    foreach ($where as $k => $v) {
-                        $query->where($k, $v);
-                    }
-                }
+							if($addpage){
+				        //add offset and limit
+				        $query->offset($start)
+				            ->limit($limit);
+							}
 
-                $count = clone $query;
-
-                if(isset($sort)) {
-                    switch ($request->get('dir')) {
-                        case 'ASC':
-                            $query->order_by_asc($sort);
-                            break;
-                        case 'DESC':
-                            $query->order_by_desc($sort);
-                            break;
-                    }
-                }
-
-                foreach ($query->find_many() as $object) {
-                    $result[] = $object->as_array();
-                }
-
-                $count = $count->count();
-
-                $app['json']->setTotal($count);
-
-                $app['json']->setData($result);
+							return $query;
 
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
 
                 $app['json']->setAll(null, 409, false, $exc->getMessage());
             }
-        });*/
+        });
 
         /**
          *@app addFilter
