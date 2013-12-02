@@ -37,11 +37,7 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
     'monolog.class_path'    => __DIR__.'/../vendor/monolog/monolog/src',
 ));
 
-$app->register(new Idiorm\IdiormServiceProvider(), array(
-    'idiorm.dsn'      => 'pgsql:host=localhost;port=5432;dbname=pts;',
-    'idiorm.username' => 'bradley',
-    'idiorm.password' => '123'
-));
+$app->register(new Idiorm\IdiormServiceProvider(), array());
 
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     'openid.uri'      => 'https://www.google.com/accounts/o8/id',
@@ -53,7 +49,7 @@ $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     )
 ));
 
-\ORM::configure('id_column_overrides', array(
+Idiorm\PTSORM::configure('id_column_overrides', array(
     'contactgroup' => 'contactid',
     'person' => 'contactid',
     'projectcontactlist' => 'projectcontactid',
