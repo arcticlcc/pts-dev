@@ -8,7 +8,8 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
     requires: [
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid',
-        'PTS.util.Format'        
+        'PTS.util.Format',
+        'Ext.ux.grid.HeaderToolTip'        
     ],
 
     autoScroll: true,
@@ -149,34 +150,7 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                 column: cellIndex
             }, view);
         };                
-        
-        //Override setCurrentPosition to accept/pass the clicked view
-        /*sm.setCurrentPosition = function(pos, view) {
-            var me = sm;
-    
-            if (me.position) {
-                me.onCellDeselect(me.position);
-            }
-            if (pos) {
-                me.onCellSelect(pos, view);
-            }
-            me.position = pos;
-        };        
-        
-        //Override onCellSelect, adding beforeselect listener        
-        sm.onCellSelect = function(position, view) {
-            var sm = me.getSelectionModel(),
-                store = sm.view.getStore(),
-                record = store.getAt(position.row);
-
-            if(sm.fireEvent('beforeselect', view, record, position)) {
-                sm.doSelect(record);
-                sm.primaryView.onCellSelect(position);
-                sm.primaryView.onCellFocus(position);
-                sm.fireEvent('select', sm, record, position.row, position.column);
-            }
-        };*/        
-        
+                
         //code below will "fix" the loadmask, i.e. masks entire panel
         //http://www.sencha.com/forum/showthread.php?188261-OPEN-Bugs-on-Grid-with-Column-Locking-load-mask-error-grid-not-resized-etc&p=784431&viewfull=1#post784431
         /*if(me.normalGrid && me.lockedGrid) {

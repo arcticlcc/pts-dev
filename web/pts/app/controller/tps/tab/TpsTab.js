@@ -56,6 +56,7 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
                             xtype: 'gridcolumn',
                             dataIndex: 'doctype_' + r.data.moddoctypeid,
                             //flex: 1,
+                            tooltip: r.data.description || r.data.text,
                             text: r.data.code,
                             renderer: PTS.util.Format.docStatus
                         });

@@ -48,10 +48,17 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * Configure the refresh event to fix scrolling.
      */
     onAfterRender: function(grid) {
-        grid.normalGrid.getView().on('refresh', this.fixScroll, grid);
+        var normal = grid.normalGrid,
+            sm = grid.getSelectionModel(),
+            tip = new Ext.ux.grid.HeaderToolTip;
+        
+        tip.createTip.call(normal);
+        tip.destroy();
+        
+        normal.getView().on('refresh', this.fixScroll, grid);
         grid.lockedGrid.getView().on('itemdblclick', this.onTpsGridDblClick, this);
-        grid.getSelectionModel().on('select', this.onSelect, this);
-        grid.getSelectionModel().on('deselect', this.onDeselect, this);
+        sm.on('select', this.onSelect, this);
+        sm.on('deselect', this.onDeselect, this);                
         
     },    
 
