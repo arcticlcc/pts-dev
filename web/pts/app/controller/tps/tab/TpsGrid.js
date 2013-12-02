@@ -35,6 +35,9 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             'tpstab tpsdetailgrid#tpsDetail': {
                 edit: this.onDetailRowEdit,
                 removerow: this.onDetailRowRemove
+            },
+            'tpstab tpsgrid#tpsGrid button[action=filterrecords]': {
+                change: this.filterRecords
             }
         });
 
@@ -173,5 +176,38 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             html = PTS.util.Format.docStatus('Not Started');
         }       
         me.getTpsGrid().getView().getCell(rec, col).down('div').dom.innerHTML = html;
+    },
+
+    /**
+     * Filter the records
+     * @param {Ext.button.Cycle} btn The cycle button
+     * @param {Ext.menu.CheckItem} item The menu item that was selected
+     */
+    filterRecords: function(btn, itm) {
+        var store = this.getTpsRecordsStore();
+        //TODO: Fixed in 4.1?
+        //http://www.sencha.com/forum/showthread.php?139210-3461-ExtJS4-store-suspendEvents-clearFilter-problem
+        store.remoteFilter = false;
+        store.clearFilter(true);
+        store.remoteFilter = true;
+
+        switch(itm.filter) {
+            case 'active':
+                store.filters.add(new Ext.util.Filter({
+                    property: 'weight',
+                    value: ['<',40]
+                }));
+                break;
+            case 'funded':
+                store.filters.add(new Ext.util.Filter({
+                    property: 'weight',
+                    value: ['>=',40]
+                }));
+                break;
+            default:
+                store.clearFilter();
+        }
+
+        store.load();
     }
 });

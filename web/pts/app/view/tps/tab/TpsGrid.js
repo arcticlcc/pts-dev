@@ -82,7 +82,7 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                     plugins: [
                         Ext.create('Ext.ux.grid.PrintGrid', {
                             title: function(){
-                                return this.child('cycle#filter').getActiveItem().text + ' (Tasks)';
+                                return this.child('cycle#filter').getActiveItem().text + ' (TPS Report)';
                             }
                         }),
                         Ext.create('Ext.ux.grid.SaveGrid', {})
@@ -101,20 +101,20 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                                 items: [
                                     {
                                         //xtype: 'menucheckitem',
-                                        iconCls: 'pts-menu-users',
-                                        text: 'Show Active',
+                                        iconCls: 'pts-flag-red',
+                                        text: 'Active',
                                         filter: 'active'
                                     },
                                     {
                                         //xtype: 'menucheckitem',
-                                        iconCls: 'pts-menu-user',
-                                        text: 'Show Submitted',
-                                        filter: 'submit'
+                                        iconCls: 'pts-flag-green',
+                                        text: 'Funded',
+                                        filter: 'funded'
                                     },
                                     {
                                         //xtype: 'menucheckitem',
-                                        iconCls: 'pts-menu-exclamation',
-                                        text: 'Show all',
+                                        iconCls: 'pts-flag-white',
+                                        text: 'All',
                                         filter: 'all'
                                     }
                                 ]

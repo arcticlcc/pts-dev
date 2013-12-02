@@ -43,17 +43,18 @@ class Report implements ControllerProviderInterface
             return $app['json']->getResponse(true);
         });
 
-        $controllers->get('report/tps', function (Application $app, Request $request) {
+        $controllers->get('report/tps.{format}', function (Application $app, Request $request, $format) {
 
             try {
                 //grab all possible document types
                 $doctypes = $app['idiorm']->getTable('moddoctype')->find_many();
-                $fl = 'modificationid int,modificationcode varchar,shorttitle varchar, projectcode varchar, modtype varchar';
+                $fl = 'modificationid int,modificationcode varchar,shorttitle varchar, projectcode varchar, modtype varchar, status varchar, weight int';
                 
                 $metadata = array('fields' => 
                     array(
                         'modificationid', 'modificationcode', 'shorttitle', 'projectcode', 'modtype'
-                    ), 'idProperty' => 'modificationid' 
+                    ),
+                    'idProperty' => 'modificationid'
                 );
                 
                 //loop through and build field list for query
@@ -63,18 +64,45 @@ class Report implements ControllerProviderInterface
                     $metadata['fields'][] = $fname;
                 }
 
-                $sql = "SELECT *
+                $sql = "(SELECT *
                    FROM crosstab ('
-                   SELECT * FROM report.allmoddocstatus',
+                   SELECT modificationid, modificationcode, shorttitle, projectcode, modtype,
+											status, COALESCE(weight,-1) ,moddoctypeid, code FROM report.allmoddocstatus',
                    'SELECT moddoctypeid
-                   FROM moddoctype') AS ct(" . $fl . ")";
+                   FROM moddoctype') AS ct(" . $fl . "))";
                 
-                $stmt = $app['db']->prepare($sql);
+                $query = $app['idiorm']->getTable($sql)->subquery()->table_alias('q');
+
+				        //create the count query with only filters applied
+								$count = clone $app['applyParams']($request, $query, true);
+
+
+								//add sorting and paging to query
+				        $app['applyParams']($request, $query, false, true, true);
+
+				        foreach ($query->find_many() as $object) {
+				            $result[] = $object->as_array();
+				        }
+
+								//$queryBuilder = $app['db']->createQueryBuilder();
+
+                /*$stmt = $app['db']->prepare($sql);
                 $stmt->execute();
-                $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);
+                $result = $stmt->fetchAll(\PDO::FETCH_ASSOC);*/
                 
-                $app['json']->setData($result);
                 $app['json']->setMetadata($metadata);
+
+				        switch ($format) {
+				            case "csv":
+				                $app['csv']->setTitle('TPS Report');
+				                break;
+				            default:
+				                $app[$format]->setTotal($count->count());
+				        }
+
+				        $response = $app[$format]->setData($result)
+				                    ->getResponse();
+
                 
             } catch (Exception $exc) {
                 $this->app['monolog']->addError($exc->getMessage());
@@ -82,8 +110,9 @@ class Report implements ControllerProviderInterface
                 $this->app['json']->setAll(null, 409, false, $exc->getMessage());
             }
 
-            return $app['json']->getResponse();
-        });
+            return $response;
+
+        })->value('format', 'json');
 
         return $controllers;
     }
