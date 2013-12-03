@@ -72,7 +72,12 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
         });
 
         //load the store
-        store.load();
+        store.load({
+            scope   : this,
+            callback: function(records, operation, success) {
+                this.expandAll(tree.down('tool[type=expand]'));
+            }
+        });
     },
 
     /**
