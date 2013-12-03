@@ -23,14 +23,12 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'modtype',
-                    flex: 1,
                     text: 'Agreement Type',
                     locked: true
                 },
                 {
                     xtype: 'gridcolumn',
                     dataIndex: 'shorttitle',
-                    flex: 1,
                     text: 'Project',
                     locked: true
                 },

@@ -248,7 +248,6 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * @param {HTMLElement} item The item's element
      */    
     onTpsGridDblClick: function(view, rec, el) {
-        console.info(rec);
         this.openProject(rec);       
     },
     
