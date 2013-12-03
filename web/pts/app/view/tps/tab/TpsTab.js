@@ -33,7 +33,7 @@ Ext.define('PTS.view.tps.tab.TpsTab', {
                     title: 'Details',
                     region: 'east',
                     split: true,
-                    flex: .5,
+                    flex: 0.5,
                     minWidth: 350,
                     collapsible: true
                 }

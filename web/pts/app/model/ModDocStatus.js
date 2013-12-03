@@ -46,7 +46,7 @@ Ext.define('PTS.model.ModDocStatus', {
             type: 'int',
             useNull: true,
             persist: false
-        },        
+        }        
     ],
     idProperty: 'moddocstatusid',
     validations: [{

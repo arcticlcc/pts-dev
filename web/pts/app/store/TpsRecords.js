@@ -12,6 +12,6 @@ Ext.define('PTS.store.TpsRecords', {
     filters: [{
         property: 'weight',
         value: ['<',40]
-    }],
+    }]
     //sorters: { property: 'text', direction : 'ASC' }
 });

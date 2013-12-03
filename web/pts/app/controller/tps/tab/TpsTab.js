@@ -29,7 +29,6 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
         
         this.control({
             'tpstab': {
-                //beforerender: this.onBeforeRender,
                 render: this.onRender
             }
         });
@@ -40,8 +39,8 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
      * TpsTab render listener. 
      * The tab is masked initially.
      */
-    onRender: function(grid) {
-        var mask = new Ext.LoadMask(grid, {msg:"Configuring. Please wait..."}),
+    onRender: function(tab) {
+        var mask = new Ext.LoadMask(tab, {msg:"Configuring. Please wait..."}),
             grid = this.getTpsGrid(),
             cols = grid.columns,
             docStore = this.getModDocTypesStore();
@@ -68,7 +67,7 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
                     //just select the first cell on load to avoid issues with detailGrid
                     grid.getStore().on('load', function(store, records, success, oper){
                         if(store.count() > 0) {
-                            this.getSelectionModel().setCurrentPosition({
+                            this.normalGrid.getSelectionModel().setCurrentPosition({
                                 row: 0,
                                 column: 0
                             });

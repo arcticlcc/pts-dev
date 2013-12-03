@@ -26,16 +26,12 @@ Ext.define('PTS.util.Format', {
         switch(val) {
             case 'Completed':
                 return '<span style="color:green;">' + val + '</span>';
-                break;
             case 'Not Started':
                 return '<span style="color:red;">' + val + '</span>';
-                break;
             case 'In Progress':
                 return '<span style="color:blue;">' + val + '</span>';
-                break;
             case null:
                 return '<span style="color:gray;">N/A</span>';
-                break;
             default:
                 return val;        
         }

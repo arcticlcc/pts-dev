@@ -29,9 +29,11 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
 
         this.control({
             'tpstab tpsgrid#tpsGrid': {
-                afterrender: this.onAfterRender,
-                beforeselect: this.onBeforeSelect               
+                afterrender: this.onAfterRender
             },
+            'tpstab tpsgrid#tpsGrid dataview': {
+                beforerefresh: this.onBeforeRefresh               
+            },            
             'tpstab tpsdetailgrid#tpsDetail': {
                 edit: this.onDetailRowEdit,
                 removerow: this.onDetailRowRemove
@@ -50,7 +52,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
     onAfterRender: function(grid) {
         var normal = grid.normalGrid,
             sm = grid.getSelectionModel(),
-            tip = new Ext.ux.grid.HeaderToolTip;
+            tip = new Ext.ux.grid.HeaderToolTip();
         
         tip.createTip.call(normal);
         tip.destroy();
@@ -60,6 +62,18 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         sm.on('select', this.onSelect, this);
         sm.on('deselect', this.onDeselect, this);                
         
+    }, 
+       
+    /**
+     * TpsGrid View beforerefresh listener.
+     * Set the position to null to prevent detailGrid from loading twice.
+     * The refesh method of the selectionModel will attempt to select the cell.
+     * However, this is not working properly in v4.0.7.
+     */
+    onBeforeRefresh: function(view) {
+        var sm = view.getSelectionModel();
+
+        sm.setCurrentPosition();    
     },    
 
     /**
@@ -68,8 +82,8 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * Highlight the locked cells of the row selected.
      * Update the title of the detailGrid.
      */
-    onSelect: function(sm, record, row, col) {
-        var col = sm.primaryView.ownerCt.columns[col],
+    onSelect: function(sm, record, row, column) {
+        var col = sm.primaryView.ownerCt.columns[column],
             val = record.data[col.dataIndex],
             doctypeid = col.dataIndex.split('_')[1],
             modid = record.get('modificationid'),
@@ -84,8 +98,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             appendId: true,
             //batchActions: true,
             api: {
-                read: '../modification/' + modid + '/moddoctype/' + doctypeid + '/moddocstatus',
-                //update: '../modification/' + modid + '/moddoctype/' + doctypeid + '/moddocstatus'
+                read: '../modification/' + modid + '/moddoctype/' + doctypeid + '/moddocstatus'
             },
             reader: {
                 type: 'json',
@@ -161,14 +174,14 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * TODO: Fixed in 4.1+?
      */
     fixScroll: function(view) {
-    	var grid = this,
-    		normal = grid.normalGrid,
-    		h = normal.horizontalScroller.rendered ? normal.horizontalScroller.getHeight() : 0;
+        var grid = this,
+            normal = grid.normalGrid,
+            h = normal.horizontalScroller.rendered ? normal.horizontalScroller.getHeight() : 0;
 
-		if(h > 0) {
-    		grid.spacerHidden = false;
-    		grid.getSpacerEl().removeCls(Ext.baseCSSPrefix + 'hidden');
-		}
+        if(h > 0) {
+            grid.spacerHidden = false;
+            grid.getSpacerEl().removeCls(Ext.baseCSSPrefix + 'hidden');
+        }
     },
 
     /**
