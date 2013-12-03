@@ -64,7 +64,8 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
             bFilter = [{
                 id: "type",
                 property: "modtypeid",
-                value: model.get('modtypeid')
+                value: model.get('modtypeid'),
+                exactMatch: true
             }];
 
         //we have to check the itemId since this controller is extended by project.form.{Modification|Proposal}Form
