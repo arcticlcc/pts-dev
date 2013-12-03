@@ -17,7 +17,7 @@ Ext.define('PTS.model.TpsRecord', {
 
     proxy: {
         type: 'ajax',
-        url : '../reports/tps',
+        url : '../report/tps',
         reader: {
             type: 'json',
             root: 'data'

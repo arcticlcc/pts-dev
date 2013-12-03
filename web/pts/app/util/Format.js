@@ -34,7 +34,7 @@ Ext.define('PTS.util.Format', {
                 return '<span style="color:blue;">' + val + '</span>';
                 break;
             case null:
-                return 'N/A';
+                return '<span style="color:gray;">N/A</span>';
                 break;
             default:
                 return val;        

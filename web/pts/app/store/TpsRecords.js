@@ -13,14 +13,5 @@ Ext.define('PTS.store.TpsRecords', {
         property: 'weight',
         value: ['<',40]
     }],
-    //sorters: { property: 'text', direction : 'ASC' },
-
-    proxy: {
-        type: 'rest',
-        url : '../report/tps',
-        reader: {
-            type: 'json',
-            root: 'data'
-        }
-    }
+    //sorters: { property: 'text', direction : 'ASC' }
 });

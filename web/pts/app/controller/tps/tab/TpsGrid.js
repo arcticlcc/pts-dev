@@ -69,7 +69,8 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * Update the title of the detailGrid.
      */
     onSelect: function(sm, record, row, col) {
-        var col = sm.primaryView.ownerCt.columns[col];
+        var col = sm.primaryView.ownerCt.columns[col],
+            val = record.data[col.dataIndex],
             doctypeid = col.dataIndex.split('_')[1],
             modid = record.get('modificationid'),
             store = this.getModDocStatusesStore();        
@@ -91,15 +92,25 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
                 root: 'data'
             }
         });
-        
-        store.load({
-            callback: function(records, operation, success) {
-                var title = success ? 'Details for <i>' + col.text + '</i> (' + record.get('projectcode') + ')' : 'Load Failed!';
-                
-                this.getDetailGrid().setTitle(title);
-            },
-            scope: this
-        });      
+
+        if(val === null) {
+            this.getDetailGrid().disable();
+            var title = 'Details for <i>' + col.text + '</i> (' + record.get('projectcode') + ')';
+            
+            this.getDetailGrid().setTitle(title);            
+        }else{
+            this.getDetailGrid().enable();
+            
+            store.load({
+                callback: function(records, operation, success) {
+                    var title = success ? 'Details for <i>' + col.text + '</i> (' + record.get('projectcode') + ')' : 'Load Failed!';
+                    
+                    this.getDetailGrid().setTitle(title);
+                },
+                scope: this
+            });            
+        }        
+      
     },
 
     /**
@@ -201,22 +212,20 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
 
         switch(itm.filter) {
             case 'active':
-                store.filters.add(new Ext.util.Filter({
+                store.filter({
                     property: 'weight',
                     value: ['<',40]
-                }));
+                });
                 break;
             case 'funded':
-                store.filters.add(new Ext.util.Filter({
+                store.filter({
                     property: 'weight',
                     value: ['>=',40]
-                }));
+                });
                 break;
             default:
-                store.clearFilter();
+                store.loadPage(1);
         }
-
-        store.load();
     },
 
     /**
