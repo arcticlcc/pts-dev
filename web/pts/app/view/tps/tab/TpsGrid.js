@@ -83,8 +83,10 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                             title: function(){
                                 return this.child('cycle#filter').getActiveItem().text + ' (TPS Report)';
                             }
-                        }),
-                        Ext.create('Ext.ux.grid.SaveGrid', {})
+                        })/*,
+                        Ext.create('Ext.ux.grid.SaveGrid', {
+                            hidden: true
+                        })*/
                     ],
                     items: [
                         '-',
