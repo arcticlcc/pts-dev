@@ -120,6 +120,50 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                         ]
                     },
                     {
+                        xtype: 'fieldcontainer',
+                        itemId: 'modcodeCon',
+                        //minWidth: 400,
+                        hidden: true,
+                        layout: {
+                            align: 'stretchmax',
+                            type: 'hbox'
+                        },
+                        combineErrors: true,
+                        fieldLabel: 'Agreement #',
+                        items: [
+                            {
+                                xtype: 'displayfield',
+                                padding: '0 35 0 0',
+                                name: 'parentcode',
+                                hideLabel: true,
+                                width: 85,
+                                valueToRaw: function(value) {
+                                    return Ext.String.ellipsis(value,14);
+                                }                                
+                            },
+                            {
+                                xtype: 'displayfield',
+                                name: 'codedelimiter',
+                                margin: '0 2',
+                                value: '/',
+                                hideLabel: true
+                            },
+                            {
+                                xtype: 'textfield',
+                                name: 'modcode',
+                                hideLabel: true,
+                                validator: function(val) {
+                                    console.info(this);
+                                    if(this.up('fieldcontainer').isHidden() || val.length > 0) {
+                                        return true;
+                                    }else {
+                                        return 'You must enter a number for Modifications.';
+                                    }
+                                }
+                            }
+                        ]
+                    },                    
+                    {
                         xtype: 'textfield',
                         name: 'modificationcode',
                         fieldLabel: 'Agreement #',

@@ -11,10 +11,13 @@ Ext.define('PTS.view.project.form.ModificationForm', {
     title: 'Modification',
 
     initComponent: function() {
-        var me = this;
+        var me = this, form;
         me.callParent(arguments);
 
         //TODO: probably move this to controller??
-        this.down('#itemForm').getForm().findField('modtypeid').disable(true);
+        form = me.down('#itemForm');
+        form.getForm().findField('modtypeid').disable(true);
+        form.down('#modcodeCon').show();
+        form.getForm().findField('modificationcode').hide();
     }
 });

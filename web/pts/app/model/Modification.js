@@ -16,6 +16,11 @@ Ext.define('PTS.model.Modification', {
         {name: 'modtypeid', type: 'int', useNull: true},
         {name: 'personid', type: 'int', useNull: true},
         {name: 'parentmodificationid', type: 'int',useNull: true},
+        {
+            name: 'parentcode',
+            type: 'mystring',
+            persist: false
+        },        
         {name: 'startdate', type: 'mydate'},
         {name: 'enddate', type: 'mydate'},
         {name: 'effectivedate', type: 'mydate'},
