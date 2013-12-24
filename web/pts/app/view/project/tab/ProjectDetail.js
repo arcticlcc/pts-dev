@@ -54,7 +54,13 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                             //align: 'center',
                             dataIndex: 'type',
                             text: 'Type',
-                            flex: 1
+                            width: 75
+                        },
+                        {
+                            xtype: 'gridcolumn',
+                            flex: 1,
+                            dataIndex: 'code',
+                            text: 'Agreement #'
                         }
                     ]
                 },

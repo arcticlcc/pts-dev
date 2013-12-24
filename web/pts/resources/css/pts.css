@@ -71,6 +71,12 @@
 .x-grid-tree-node-expanded .pts-agreement-folder {
     background-image: url("../images/icons/folder_page_open.png");
     }
+.pts-modified-agreement-folder {
+    background-image: url("../images/icons/folder_page_purple.png");
+    }
+.x-grid-tree-node-expanded .pts-modified-agreement-folder {
+    background-image: url("../images/icons/folder_page_purple_open.png");
+    }
 .pts-menu-settings {
     background-image: url("../images/icons/cog.png");
     }

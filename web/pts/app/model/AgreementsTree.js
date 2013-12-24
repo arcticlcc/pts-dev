@@ -22,6 +22,9 @@ Ext.define('PTS.model.AgreementsTree', {
             name: 'text', type: 'mystring', useNull: true
         },
         {
+            name: 'code', type: 'mystring', useNull: true
+        },
+        {
             name: 'type', type: 'mystring', useNull: true
         },
         {

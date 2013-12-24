@@ -66,9 +66,11 @@ class Project implements ControllerProviderInterface
                 $aid = $rec['modificationid'];
                 $fkey = array('modificationid'=>$aid); //foreign key for modification(agreement)
                 //create nodes
-                $node = $app['tree']->node("af-$aid",$rec['title'],'pts-agreement-folder',false);
+                $icon = $rec['ismodified'] ? 'pts-modified-agreement-folder' : 'pts-agreement-folder';                              
+                $node = $app['tree']->node("af-$aid",$rec['title'],$icon,false);
                 $node->setAttribute('dataid',$aid);
                 $node->setAttribute('type',$rec['typecode']);
+                $node->setAttribute('code',$rec['modificationcode']);
                 /*$node->setAttribute('fkey',array(
                     'projectid' => $rec['projectid'],
                     'parentmodificationid' => $rec['parentmodificationid']

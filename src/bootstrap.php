@@ -63,7 +63,8 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'projectkeywordlist' => 'projectkeywordid',
     'projectfeature' => 'id',
     'modstatuslist' => 'modstatusid',
-    'moddocstatuslist' => 'moddocstatusid'
+    'moddocstatuslist' => 'moddocstatusid',
+    'modificationlist' => 'modificationid'    
 ));
 
 // Add services to the DI container

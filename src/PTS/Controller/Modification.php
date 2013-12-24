@@ -7,6 +7,7 @@ use Silex\ControllerProviderInterface;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Controller for project contacts.
@@ -22,6 +23,37 @@ class Modification implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
         $table = 'modification';
+
+        $controllers->get('modification/{modid}', function (Application $app, Request $request, $modid) {
+            $uri = "/modificationlist/$modid"; //need to use modificationlist view
+            
+            $subRequest = Request::create($uri, 'GET', $request->query->all(), $request->cookies->all(), array(), $request->server->all());
+            if ($request->getSession()) {
+                $subRequest->setSession($request->getSession());
+            }
+
+            $response = $app->handle($subRequest, HttpKernelInterface::SUB_REQUEST, TRUE);
+            return $response;
+        });
+
+        //need to return list
+        $controllers->put('modification/{id}', function (Application $app, Request $request, $id) use ($table) {
+            $result = array();
+
+            $result = $app['saveTable']($request, $table, $id, true);
+            $app['json']->setData($result);
+
+            return $app['json']->getResponse();
+        });
+
+        //need to return list
+        $controllers->post('modification', function (Application $app, Request $request) use ($table) {
+            $result = array();
+            $result = $app['saveTable']($request, $table, null, true);
+            $app['json']->setData($result);
+
+            return $app['json']->getResponse();
+        });
 
         $controllers->get('modification/{modid}/modstatus', function (Application $app, Request $request, $modid) {
             $table = 'modstatuslist'; //need to use modstatuslist view
