@@ -54,10 +54,10 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
      */
     onNewItem: function(model, form) {
         //only needed for modifications
-        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {        
+        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {
             var code = form.up('#projecttabpanel').down('agreementstree').getSelectionModel().selected.first().get('parentcode'),
                 bform = form.getForm();
-    
+
             model.set('parentcode', code);
             bform.findField('parentcode').setValue(code);
             //reset the modcode
@@ -127,7 +127,7 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
         }
         this.callParent(arguments);
     },
-        
+
     /**
      * Update the modificationcode.
      */
@@ -137,7 +137,7 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             val = form.findField('modcode').getValue(),
             del = form.findField('codedelimiter').getValue(),
             code = rec.get('parentcode') + del + val;
-            
-        form.findField('modificationcode').setRawValue(code);      
+
+        form.findField('modificationcode').setRawValue(code);
     }
 });

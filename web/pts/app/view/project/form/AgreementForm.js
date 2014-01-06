@@ -139,7 +139,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                 width: 85,
                                 valueToRaw: function(value) {
                                     return Ext.String.ellipsis(value,14);
-                                }                                
+                                }
                             },
                             {
                                 xtype: 'displayfield',
@@ -164,7 +164,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                 }
                             }
                         ]
-                    },                    
+                    },
                     {
                         xtype: 'textfield',
                         name: 'modificationcode',

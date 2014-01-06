@@ -7,13 +7,13 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
     alias: 'widget.tpsdetailgrid',
     requires: [
         'PTS.store.GroupUsers',
-        'PTS.store.ModDocStatusTypes',        
-        'PTS.view.controls.TextareaTriggerField'                
+        'PTS.store.ModDocStatusTypes',
+        'PTS.view.controls.TextareaTriggerField'
     ],
 
     autoScroll: true,
     store: 'ModDocStatuses',
-    
+
     initComponent: function() {
         var me = this,
             cols = [
@@ -34,8 +34,8 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                         xtype: 'statuscombo',
                         store: 'ModDocStatusTypes',
                         valueField: 'moddocstatustypeid',
-                        allowBlank: false                        
-                    }                    
+                        allowBlank: false
+                    }
                 },
                 {
                     xtype: 'datecolumn',
@@ -72,7 +72,7 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                     },
                     text: 'User'
                 }
-                                                               
+
             ];
 
         Ext.applyIf(me, {
@@ -91,6 +91,6 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                     rec.set('contactid', PTS.user.get('contactid'));
                 }
             });
-        });                
+        });
     }
 });

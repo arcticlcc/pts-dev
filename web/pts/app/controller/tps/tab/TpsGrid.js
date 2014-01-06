@@ -4,11 +4,11 @@
 Ext.define('PTS.controller.tps.tab.TpsGrid', {
     extend: 'Ext.app.Controller',
 
-    stores: [    
-        'TpsRecords',    
+    stores: [
+        'TpsRecords',
         'ModDocTypes',
         'ModDocStatuses',
-        'ModDocStatusTypes'        
+        'ModDocStatusTypes'
     ],
     models: [
         //'ModDocType'
@@ -32,8 +32,8 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
                 afterrender: this.onAfterRender
             },
             'tpstab tpsgrid#tpsGrid dataview': {
-                beforerefresh: this.onBeforeRefresh               
-            },            
+                beforerefresh: this.onBeforeRefresh
+            },
             'tpstab tpsdetailgrid#tpsDetail': {
                 edit: this.onDetailRowEdit,
                 removerow: this.onDetailRowRemove
@@ -44,7 +44,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         });
 
     },
-    
+
     /**
      * TpsGrid afterrender listener.
      * Configure the refresh event to fix scrolling.
@@ -53,17 +53,17 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         var normal = grid.normalGrid,
             sm = grid.getSelectionModel(),
             tip = new Ext.ux.grid.HeaderToolTip();
-        
+
         tip.createTip.call(normal);
         tip.destroy();
-        
+
         normal.getView().on('refresh', this.fixScroll, grid);
         grid.lockedGrid.getView().on('itemdblclick', this.onTpsGridDblClick, this);
         sm.on('select', this.onSelect, this);
-        sm.on('deselect', this.onDeselect, this);                
-        
-    }, 
-       
+        sm.on('deselect', this.onDeselect, this);
+
+    },
+
     /**
      * TpsGrid View beforerefresh listener.
      * Set the position to null to prevent detailGrid from loading twice.
@@ -73,8 +73,8 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
     onBeforeRefresh: function(view) {
         var sm = view.getSelectionModel();
 
-        sm.setCurrentPosition();    
-    },    
+        sm.setCurrentPosition();
+    },
 
     /**
      * TpsGrid select listener.
@@ -87,10 +87,10 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             val = record.data[col.dataIndex],
             doctypeid = col.dataIndex.split('_')[1],
             modid = record.get('modificationid'),
-            store = this.getModDocStatusesStore();        
+            store = this.getModDocStatusesStore();
 
         sm.view.up('tpsgrid').lockedGrid.getView().addRowCls(row, 'pts-tps-highlight');
-        
+
         //override store proxy based on contactid
         store.setProxy({
             type: 'rest',
@@ -109,21 +109,21 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         if(val === null) {
             this.getDetailGrid().disable();
             var title = 'Details for <i>' + col.text + '</i> (' + record.get('projectcode') + ')';
-            
-            this.getDetailGrid().setTitle(title);            
+
+            this.getDetailGrid().setTitle(title);
         }else{
             this.getDetailGrid().enable();
-            
+
             store.load({
                 callback: function(records, operation, success) {
                     var title = success ? 'Details for <i>' + col.text + '</i> (' + record.get('projectcode') + ')' : 'Load Failed!';
-                    
+
                     this.getDetailGrid().setTitle(title);
                 },
                 scope: this
-            });            
-        }        
-      
+            });
+        }
+
     },
 
     /**
@@ -131,7 +131,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * Remove highlight.
      */
     onDeselect: function(sm, record, row, col) {
-        sm.view.up('tpsgrid').lockedGrid.getView().removeRowCls(row, 'pts-tps-highlight');        
+        sm.view.up('tpsgrid').lockedGrid.getView().removeRowCls(row, 'pts-tps-highlight');
     },
 
     /**
@@ -139,7 +139,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      */
     onDetailRowEdit: function(editor, e) {
         var tgrid = this.getTpsGrid(),
-            cell = tgrid.getSelectionModel().getCurrentPosition(),        
+            cell = tgrid.getSelectionModel().getCurrentPosition(),
             rec = Ext.getStore('TpsRecords').getAt(cell.row),
             col = tgrid.normalGrid.columns[cell.column],
             doctypeid = col.dataIndex.split('_')[1],
@@ -149,10 +149,10 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         editor.record.set('moddoctypeid', doctypeid);
 
         editor.store.sync({
-            success: function(batch) {                    
+            success: function(batch) {
                 if(batch.isComplete && !batch.hasException) {
                     this.updateCell(rec, col);
-                }    
+                }
             },
             scope: this
         });
@@ -165,7 +165,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
     onDetailRowRemove: function(record, store) {
         var rec = this.getTpsRecordsStore().findRecord('modificationid',record.get('modificationid') , 0, false, true, true),
             col = this.getTpsGrid().normalGrid.headerCt.child('gridcolumn[dataIndex=doctype_' + record.get('moddoctypeid') + ']');
-            
+
         this.updateCell(rec, col);
     },
 
@@ -192,7 +192,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             typestore = me.getModDocStatusTypesStore(),
             store = me.getModDocStatusesStore(),
             typeid,
-            html,                        
+            html,
             sorter = [{
                 property: 'effectivedate',
                 direction: 'DESC'
@@ -200,13 +200,13 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
                 property: 'weight',
                 direction: 'DESC'
             }];
-        if(store.count() > 0) {                    
+        if(store.count() > 0) {
             store.sort(sorter);
             typeid = store.first().get('moddocstatustypeid');
-            html = PTS.util.Format.docStatus(typestore.findRecord('moddocstatustypeid', typeid, 0, false, true, true).get('code')); 
+            html = PTS.util.Format.docStatus(typestore.findRecord('moddocstatustypeid', typeid, 0, false, true, true).get('code'));
         }else {
             html = PTS.util.Format.docStatus('Not Started');
-        }       
+        }
         me.getTpsGrid().getView().getCell(rec, col).down('div').dom.innerHTML = html;
     },
 
@@ -246,15 +246,15 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * @param {Ext.view.View} view
      * @param {Ext.data.Model} record The record that belongs to the item
      * @param {HTMLElement} item The item's element
-     */    
+     */
     onTpsGridDblClick: function(view, rec, el) {
-        this.openProject(rec);       
+        this.openProject(rec);
     },
-    
+
     /**
      * Open the project window and show the agreement
      * @param {Ext.data.Model} rec The record for the clicked row
-     * 
+     *
      * TODO: Create method in main project controller to handle this.
      * Similar methods currently implemented in multiple controllers.
      */
@@ -291,5 +291,5 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         }
 
         this.getController('project.Project').openProject(rec,callBack);
-    }        
+    }
 });

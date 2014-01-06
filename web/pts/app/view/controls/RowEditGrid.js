@@ -94,7 +94,7 @@ Ext.define('PTS.view.controls.RowEditGrid', {
                     store.sync({
                         success: function() {
                             el.unmask();
-                            grid.fireEvent('removerow', selection, store);                            
+                            grid.fireEvent('removerow', selection, store);
                         }
                     });
                 } else {
@@ -145,7 +145,7 @@ Ext.define('PTS.view.controls.RowEditGrid', {
              * @param {Ext.data.Model} record
              * @param {Ext.data.Store} store
              */
-            'removerow'            
+            'removerow'
         );
         me.getSelectionModel().on('selectionchange', function(selModel, selections){
             me.down('#removeRow').setDisabled(selections.length === 0);

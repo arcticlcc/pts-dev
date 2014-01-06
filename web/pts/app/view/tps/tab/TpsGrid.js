@@ -9,14 +9,14 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid',
         'PTS.util.Format',
-        'Ext.ux.grid.HeaderToolTip'        
+        'Ext.ux.grid.HeaderToolTip'
     ],
 
     autoScroll: true,
     //title: 'Tasks',
     store: 'TpsRecords',
     selType: 'cellmodel',
-    
+
     initComponent: function() {
         var me = this, sm,
             cols = [
@@ -65,7 +65,7 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                     hidden: true,
                     text: 'Funding Recipient',
                     locked: true
-                }                                                                
+                }
             ];
 
         Ext.applyIf(me, {
@@ -140,17 +140,17 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
         );
 
         me.callParent(arguments);
-        
+
         sm = me.getSelectionModel();
-        //Override onMouseDown to prevent clicks on the locked view       
+        //Override onMouseDown to prevent clicks on the locked view
         sm.onMouseDown = function(view, cell, cellIndex, record, row, rowIndex, e) {
-            if(sm.primaryView !== view) return false;
+            if(sm.primaryView !== view) {return false;}
             sm.setCurrentPosition({
                 row: rowIndex,
                 column: cellIndex
             }, view);
-        };                
-                
+        };
+
         //code below will "fix" the loadmask, i.e. masks entire panel
         //http://www.sencha.com/forum/showthread.php?188261-OPEN-Bugs-on-Grid-with-Column-Locking-load-mask-error-grid-not-resized-etc&p=784431&viewfull=1#post784431
         /*if(me.normalGrid && me.lockedGrid) {
@@ -168,6 +168,6 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                 };
                 me.lockedGrid.view.loadMask = false;
             }
-        }*/        
+        }*/
     }
 });

@@ -20,7 +20,7 @@ Ext.define('PTS.model.Modification', {
             name: 'parentcode',
             type: 'mystring',
             persist: false
-        },        
+        },
         {name: 'startdate', type: 'mydate'},
         {name: 'enddate', type: 'mydate'},
         {name: 'effectivedate', type: 'mydate'},

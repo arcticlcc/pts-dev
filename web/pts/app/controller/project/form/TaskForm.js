@@ -13,7 +13,7 @@ Ext.define('PTS.controller.project.form.TaskForm', {
     stores: [
         'DeliverableTypes',
         'DeliverableComments',
-        'TaskStatuses'       
+        'TaskStatuses'
     ],
     refs: [{
         ref: 'deliverableForm',

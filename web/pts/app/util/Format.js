@@ -17,7 +17,7 @@ Ext.define('PTS.util.Format', {
         }
         return val;
     },
-    
+
     /**
      * Formats documemt status for TPS report
      * @param {String} value The value to format
@@ -33,10 +33,10 @@ Ext.define('PTS.util.Format', {
             case null:
                 return '<span style="color:gray;">N/A</span>';
             default:
-                return val;        
+                return val;
         }
     },
-    
+
     /**
      * Formats project code
      * @param {Number/String} fiscalyear The fiscal year of the project

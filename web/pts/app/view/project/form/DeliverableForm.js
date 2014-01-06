@@ -95,7 +95,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 itemId: 'startDate',
                                 name: 'startdate',
                                 fieldLabel: 'Start',
-                                margin: '0 20 0 0',                                
+                                margin: '0 20 0 0',
                                 vfield: 'beginDate',
                                 endDateField: 'endDate',
                                 vtype: 'daterange'
@@ -108,9 +108,9 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 startDateField: 'startDate',
                                 vtype: 'daterange',
                                 fieldLabel: 'End'
-                            }                            
+                            }
                         ]
-                    },                    
+                    },
                     {
                         xtype: 'managercombo'
                     },
@@ -133,7 +133,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         name: 'invalid',
                         fieldLabel: 'Invalid',
                         anchor: '100%'
-                    },*/                   
+                    },*/
                     {
                         xtype: 'checkboxgroup',
                         fieldLabel: 'Publication',

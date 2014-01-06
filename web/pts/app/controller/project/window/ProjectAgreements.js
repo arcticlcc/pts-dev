@@ -372,7 +372,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         title: 'Error',
                         iconCls: 'ux-notification-icon-error',
                         html: ms + '.</br>Error:' + PTS.app.getError()
-                    }).show();                   
+                    }).show();
                     tab.getEl().unmask();
                 },
                 scope: tab

@@ -10,7 +10,7 @@ Ext.define('PTS.view.Viewport', {
         'PTS.view.project.tab.ProjectTab',
         'PTS.view.contact.tab.ContactTab',
         'PTS.view.report.tab.ReportTab',
-        'PTS.view.tps.tab.TpsTab' 
+        'PTS.view.tps.tab.TpsTab'
     ],
 
     layout: {

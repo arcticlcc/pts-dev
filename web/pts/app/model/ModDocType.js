@@ -29,6 +29,6 @@ Ext.define('PTS.model.ModDocType', {
             type: 'json',
             root: 'data'
         },
-        limitParam: undefined        
+        limitParam: undefined
     }
 });

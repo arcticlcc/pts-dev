@@ -14,4 +14,4 @@ Ext.define('PTS.store.TaskStatuses', {
         },
         limitParam: undefined
     }
-}); 
+});

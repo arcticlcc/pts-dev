@@ -26,7 +26,7 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
 
         // Remember to call the init method manually
         grid.init();
-        
+
         this.control({
             'tpstab': {
                 render: this.onRender
@@ -34,9 +34,9 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
         });
 
     },
-    
+
     /**
-     * TpsTab render listener. 
+     * TpsTab render listener.
      * The tab is masked initially.
      */
     onRender: function(tab) {
@@ -44,7 +44,7 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
             grid = this.getTpsGrid(),
             cols = grid.columns,
             docStore = this.getModDocTypesStore();
-                    
+
         //load store
         docStore.load({
             callback: function(rec, op, success) {
@@ -60,7 +60,7 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
                             renderer: PTS.util.Format.docStatus
                         });
                     });
-                    
+
                     //add columns to grid
                     grid.reconfigure(false, cols);
                     mask.destroy();
@@ -73,7 +73,7 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
                             });
                         }
                     },grid);
-                                        
+
                     grid.getStore().load();
                 }
             },
