@@ -71,6 +71,9 @@ class Project implements ControllerProviderInterface
                 $node->setAttribute('dataid',$aid);
                 $node->setAttribute('type',$rec['typecode']);
                 $node->setAttribute('code',$rec['modificationcode']);
+                if($rec['parentcode']) {
+                    $node->setAttribute('parentcode',$rec['parentcode']);
+                }
                 /*$node->setAttribute('fkey',array(
                     'projectid' => $rec['projectid'],
                     'parentmodificationid' => $rec['parentmodificationid']
@@ -236,6 +239,7 @@ class Project implements ControllerProviderInterface
                             'parentmodificationid'=>$aid
                         ));
                         $modNode->setAttribute('defIcon','pts-agreement-folder');
+                        $modNode->setAttribute('parentcode', $r['modificationcode']);
                     }
 
                     //get mod records for this agreement

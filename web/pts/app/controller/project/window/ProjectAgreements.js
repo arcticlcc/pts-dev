@@ -246,6 +246,8 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                     };
                     //insert tree node
                     if(newRecord) {
+                        //add parentcode
+                        tNode.parentcode = model.get('parentcode');
                         //if item is a modification or agreement,  we need to add child branches
                         if(itemid === 'itemCard-20' || itemid === 'itemCard-60') {
                             children = [{
@@ -290,6 +292,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                                 modChild = {
                                     "children": [],
                                     "text": "Modifications",
+                                    "parentcode": model.get('modificationcode'),
                                     "id": "mf-" + model.getId(),
                                     "iconCls": "task-folder",
                                     "leaf": false,
@@ -334,7 +337,14 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         tree.getView().select(nNode);
                         //expand tree
                         tree.expandPath(nNode.getPath());
-                    }//TODO: else update record, i.e. title,validity
+                    }else {
+                        //TODO: update record, i.e. title,validity
+                        //update parentcode for modification sub-folder node
+                        pNode = treeRecord.findChild('text','Modifications');
+                        if(pNode) {
+                            pNode.set('parentcode',model.get('modificationcode'));
+                        }
+                    }
 
 
                     panel.setTitle(title);

@@ -145,16 +145,18 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                                 xtype: 'displayfield',
                                 name: 'codedelimiter',
                                 margin: '0 2',
+                                width: 5,
                                 value: '/',
                                 hideLabel: true
                             },
                             {
                                 xtype: 'textfield',
                                 name: 'modcode',
+                                width: 150,
+                                submitValue: false,
                                 hideLabel: true,
                                 validator: function(val) {
-                                    console.info(this);
-                                    if(this.up('fieldcontainer').isHidden() || val.length > 0) {
+                                    if(this.isVisible(true) !== true || val.length > 0) {
                                         return true;
                                     }else {
                                         return 'You must enter a number for Modifications.';

@@ -37,9 +37,6 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             },
             'agreementform#itemCard-60 textfield[name=modcode]': {
                 change: this.onChangeCode
-            },
-            'agreementform#itemCard-60 textfield[name=modificationcode]': {
-                change: this.onChangeParentCode
             }
         });
 
@@ -50,6 +47,85 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             scope: this
         });
 
+    },
+
+    /**
+     * Set the parent code in the form and record.
+     */
+    onNewItem: function(model, form) {
+        //only needed for modifications
+        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {        
+            var code = form.up('#projecttabpanel').down('agreementstree').getSelectionModel().selected.first().get('parentcode'),
+                bform = form.getForm();
+    
+            model.set('parentcode', code);
+            bform.findField('parentcode').setValue(code);
+            //reset the modcode
+            bform.findField('modcode').setValue('').resetOriginalValue();
+        }
+        this.callParent(arguments);
+    },
+
+    /**
+     * Set the parent code in the form and record.
+     */
+    onItemLoad: function(model, form) {
+        //only needed for modifications
+        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {
+            var bform = form.getForm(),
+                modcode =  bform.findField('modcode'),
+                del = bform.findField('codedelimiter').getValue(),
+                val = model.get('modificationcode').split(del),
+                parentcode = String(model.get('parentcode')),
+                code, msg;
+
+            //set the code
+            if(val.length > 1) {
+                code = val.slice(1).join(del);
+            }else {
+                code = val[0];
+            }
+
+            //don't print null, use an empty string
+            if(code === null || code == 'null') {
+                code = '';
+            }
+
+            //modcode.originalValue = code;
+            modcode.setValue(code).resetOriginalValue();
+
+            //check parentcode against model
+            if(model.get('modificationcode') && val[0] !== parentcode) {
+                msg = 'The parent code for this modification has changed.' +
+                    '<br/>Do you want to update the code for this modification now?</br>';
+
+                Ext.Msg.show({
+                     title:'Update Code?',
+                     msg: msg,
+                     buttons: Ext.Msg.YESNO,
+                     icon: Ext.Msg.QUESTION,
+                     fn: function(btn, text) {
+                        if(btn === 'yes') {
+                            var wait = Ext.Msg.show({
+                                    title: 'Saving...',
+                                    msg: 'Saving Mod. Please wait...',
+                                    wait: true,
+                                    icon: Ext.window.MessageBox.INFO
+                                });
+                            bform.findField('modificationcode').setRawValue(parentcode + del + code);
+                            bform.updateRecord(model);
+                            model.save({
+                                callback: function(record, op) {
+                                    wait.close();
+                                }
+                            });
+                        }
+                     },
+                     scope: this
+                });
+            }
+        }
+        this.callParent(arguments);
     },
         
     /**
@@ -63,21 +139,5 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             code = rec.get('parentcode') + del + val;
             
         form.findField('modificationcode').setRawValue(code);      
-    },
-    
-    /**
-     * Update the modcode, should only fire on inital load.
-     */
-    onChangeParentCode: function(field) {
-        var form = field.up('form').getForm(),
-            modcode =  form.findField('modcode'),
-            del = form.findField('codedelimiter').getValue(),            
-            val = field.getValue().split(del),
-            code = val[1] ? val[1] : val[0];
-        
-        if(code !== null) {    
-            modcode.originalValue = code;    
-            modcode.setValue(code);
-        }        
     }
 });
