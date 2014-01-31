@@ -85,6 +85,14 @@ Ext.define('PTS.controller.dashboard.DeliverableList', {
                     }
                 ]);
                 break;
+            case 'notcompleted':
+                store.filter([
+                    {
+                        property: 'status',
+                        value   : ['where not in',["Completed","Archived","Published","Canceled"]]
+                    }
+                ]);
+                break;
             default:
                 store.clearFilter();
         }
