@@ -43,6 +43,9 @@ Ext.define('PTS.model.GroupUser', {
                 return record.data.lastname + ', ' + record.data.firstname;
             }
 
+        },
+        {
+            name: 'inactive', type: 'myboolean'
         }
 
     ],

@@ -14,6 +14,18 @@ Ext.define('PTS.view.controls.ManagerCombo', {
     forceSelection: true,
     allowBlank: false,
     queryMode: 'local',
+    listConfig: {
+        getInnerTpl: function() {
+            return '<span <tpl if="inactive">style="color:gray;"</tpl>>{fullname}</span>';
+        }
+    },
+    listeners: {
+        beforeselect: {
+            fn: function(combo, rec){
+                if(rec.get('inactive')) {return false;}
+            }
+        }
+    },
 
     initComponent: function() {
         var me = this;

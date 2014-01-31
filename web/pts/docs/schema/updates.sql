@@ -1,4 +1,3 @@
--- Version 0.11.1
 -- Version 0.11.2
 
 -- View: modificationlist
@@ -13,7 +12,13 @@ CREATE OR REPLACE VIEW modificationlist AS
    JOIN modtype mt USING (modtypeid)
    LEFT JOIN modification p ON p.modificationid = m.parentmodificationid;
 
-ALTER TABLE modificationlist
-  OWNER TO bradley;
-GRANT ALL ON TABLE modificationlist TO bradley;
-GRANT SELECT ON TABLE modificationlist TO pts_read;
+-- View: grouppersonlist
+
+-- DROP VIEW grouppersonlist;
+
+CREATE OR REPLACE VIEW grouppersonlist AS
+ SELECT person.contactid, person.firstname, person.lastname, person.middlename, person.suffix, contactcontactgroup.groupid, contactgroup.acronym, contactgroup.name, contactcontactgroup.positionid, contact.inactive
+   FROM contactcontactgroup
+   JOIN contact USING (contactid)
+   JOIN contactgroup ON contactgroup.contactid = contactcontactgroup.groupid
+   JOIN person ON person.contactid = contactcontactgroup.contactid;
