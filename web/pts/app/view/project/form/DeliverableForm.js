@@ -10,7 +10,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
         'PTS.view.controls.StatusCombo',
         'PTS.view.controls.RowEditGrid',
         'PTS.view.controls.CommentEditGrid',
-        'Ext.form.CheckboxGroup'
+        'Ext.form.CheckboxGroup',
+        'PTS.view.controls.TextareaTriggerField'
     ],
 
     itemId: 'itemCard-30',
@@ -249,7 +250,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             xtype: 'gridcolumn',
                             dataIndex: 'comment',
                             editor: {
-                                xtype: 'textfield'
+                                xtype: 'areatrigger',
+                                text: 'Comment'
                             },
                             flex: 1,
                             text: 'Comment'
