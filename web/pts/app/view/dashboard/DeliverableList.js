@@ -182,6 +182,26 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                     hidden: true,
                     text: 'Staff Comments'
 
+                },
+                {
+                    text: 'Period',
+                    hidden: true,
+                    columns: [
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'startdate',
+                            text: 'Start',
+                            width : 75,
+                            sortable : true
+                        },
+                        {
+                            xtype: 'datecolumn',
+                            dataIndex: 'enddate',
+                            text: 'End',
+                            width : 75,
+                            sortable : true
+                        }
+                    ]
                 }
             ]
         });

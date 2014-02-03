@@ -22,6 +22,8 @@ Ext.define('PTS.model.DeliverableListing', {
             useNull: true
         },
         {name: 'duedate', type: 'mydate'},
+        {name: 'startdate', type: 'mydate'},
+        {name: 'enddate', type: 'mydate'},
         {name: 'receiveddate', type: 'mydate'},
         {name: 'title', type: 'mystring', useNull: true},
 //        {name: 'description', type: 'mystring', useNull: true},

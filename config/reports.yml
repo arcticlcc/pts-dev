@@ -128,6 +128,7 @@ reports:
           - {text: Description, dataIndex: description, flex: 2, hidden: false}
           - {text: Last Notice, dataIndex: lastnotice}
           - {text: Date Sent, dataIndex: datesent}
+          - {text: Reporting Period, flex: 1, hidden:true, columns: [{text: Start, dataIndex: startdate},{text: End, dataIndex: enddate}]}
           - {text: Project, dataIndex: projectcode}
           - {text: Project Title, dataIndex: project, flex: 1}
           - {text: Pri. Investigator, dataIndex: contact, flex: 1}
@@ -138,7 +139,7 @@ reports:
           - {text: Status, dataIndex: status, hidden:false}
           - {text: Agreement, dataIndex: agreementnumber, hidden:false}
           - {text: Staff Comments, dataIndex: staffcomments, flex: 2, hidden:false}
-        fields: [duedate, title, description, lastnotice, datesent, projectcode, project, contact, email, fofficer, foemail, dayspastdue, status, agreementnumber, staffcomments]
+        fields: [duedate, title, description, lastnotice, datesent, startdate, enddate, projectcode, project, contact, email, fofficer, foemail, dayspastdue, status, agreementnumber, staffcomments]
   - text: Funding Reports
     descrip: Reports detailing funding activity
     iconCls: folder
