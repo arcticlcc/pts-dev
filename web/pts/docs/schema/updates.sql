@@ -22,6 +22,88 @@ CREATE OR REPLACE VIEW grouppersonlist AS
    JOIN contact USING (contactid)
    JOIN contactgroup ON contactgroup.contactid = contactcontactgroup.groupid
    JOIN person ON person.contactid = contactcontactgroup.contactid;
+
+-- Index: modstatus_modificationid_statusid_idx
+
+DROP INDEX modstatus_modificationid_statusid_idx;
+
+CREATE UNIQUE INDEX modstatus_modificationid_statusid_idx
+  ON modstatus
+  USING btree
+  (modificationid , statusid, effectivedate );
+
+-- Function: project_status(integer)
+
+-- DROP FUNCTION project_status(integer);
+
+CREATE OR REPLACE FUNCTION project_status(pid integer)
+  RETURNS integer AS
+$BODY$
+DECLARE status integer;
+BEGIN
+    IF EXISTS(SELECT 1 FROM modification WHERE projectid = pid)
+    THEN --mods exist
+        --test for agreements
+        IF NOT EXISTS(SELECT 1 FROM modification WHERE projectid = pid AND modtypeid NOT IN (4,9))
+        THEN --no agreements, check for proposal status
+            status = statusid FROM modification JOIN modstatus USING(modificationid)
+		JOIN status USING (statusid)
+		WHERE projectid = pid
+                ORDER BY modstatus.effectivedate DESC, status.weight DESC LIMIT 1;
+            IF status IS NOT NULL
+            THEN
+                --return latest effective proposal status
+                RETURN status;
+            ELSE
+                --no proposal status recorded, default to 'proposed'
+                RETURN 7;
+            END IF;
+        --test for agreement status
+        ELSEIF EXISTS(SELECT 1 FROM modification JOIN modstatus USING(modificationid) WHERE projectid = pid
+             AND modtypeid NOT IN (4,9))
+        THEN --has status
+            -- check for latest status not eq cancelled or completed
+            status = statusid FROM modification JOIN (SELECT *,
+             row_number() OVER (PARTITION BY modificationid ORDER BY effectivedate DESC, weight DESC) AS rank
+            FROM modstatus
+            JOIN cvl.status USING(statusid)) AS modstatus USING(modificationid)
+            WHERE projectid = pid
+             AND modtypeid NOT IN (4,9) AND statusid NOT IN(1,2) AND RANK = 1
+            ORDER BY CASE statusid
+                WHEN 4 THEN 1
+                WHEN 8 THEN 2
+                WHEN 5 THEN 3
+                ELSE 4
+            END
+            LIMIT 1;
+            IF status IN(4,8,5)
+                THEN --return ordered status
+                    RETURN status;
+            ELSEIF status IS NOT NULL
+                THEN-- not ongoing or supsended, default to funded
+                RETURN 3;
+            ELSEIF EXISTS(SELECT 1 FROM modification JOIN modstatus USING(modificationid) WHERE projectid = pid
+                   AND modtypeid NOT IN (4,9) AND statusid IN(2))
+                THEN --completed
+                    RETURN 2;
+            ELSE --cancelled
+                RETURN 1;
+            END IF;
+        ELSE --no agreement status defaults to 'funded'
+            RETURN 3;
+        END IF;
+    ELSE
+        --no modifications, status is 'proposed'
+        RETURN 7;
+    END IF;
+END;
+$BODY$
+  LANGUAGE plpgsql IMMUTABLE
+  COST 100;
+ALTER FUNCTION project_status(integer)
+  OWNER TO bradley;
+
+
 -- View: deliverabledue
 
 -- DROP VIEW deliverabledue;
