@@ -204,6 +204,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                 success: function(response){
                     var resp = Ext.JSON.decode(response.responseText),
                         data = resp.data[0],
+                        status = data === undefined ? 'Not Defined' : data.status,
                         msg = 'The agreement has has been marked <b>Completed</b>. ',
                         ctl = this,
                         //get the persisted records and filter for max date
@@ -220,7 +221,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                         ]);
                         delStatus = delStatus.first();
 
-                    //test that modication status exists, is completed and that *current* del status is being set to < completed
+                    //test that modification status exists, is completed and that *current* del status is being set to < completed
                     if(resp.total > 0 && data.weight >= 90 && (delStatus && delStatus.getId() === rec.getId() &&
                         (newStatus < 40 || newDate < delStatus.get('effectivedate').getTime()))) {
                     //if records are found, raise error and cancel the update
@@ -237,7 +238,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                         //check to see if agreement status is null or
                         // not completed and this is the only incomplete deliverable
                         if(newStatus >= 40 && (resp.total === 0 || (data.weight < 90 && data.incdeliverables <= 1))) {
-                            msg = 'This agreement status is currently <i>' + data.status +
+                            msg = 'This agreement status is currently <i>' + status +
                                 '</i>.<br/>Do you want to set the status to <b>Completed</b>?</br>' +
                                 'You may also enter a comment (optional).</br></br>';
                             Ext.Msg.show({
