@@ -191,6 +191,7 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                             xtype: 'datecolumn',
                             dataIndex: 'startdate',
                             text: 'Start',
+                            hidden: true,
                             width : 75,
                             sortable : true
                         },
@@ -198,6 +199,7 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                             xtype: 'datecolumn',
                             dataIndex: 'enddate',
                             text: 'End',
+                            hidden: true,
                             width : 75,
                             sortable : true
                         }
