@@ -128,7 +128,7 @@ reports:
           - {text: Description, dataIndex: description, flex: 2, hidden: false}
           - {text: Last Notice, dataIndex: lastnotice}
           - {text: Date Sent, dataIndex: datesent}
-          - {text: Reporting Period, flex: 1, hidden:true, columns: [{text: Start, dataIndex: startdate, hidden: true, width: 70},{text: End, dataIndex: enddate, hidden: true, width: 70}]}
+          - {text: Reporting Period, hidden:true, columns: [{text: Start, dataIndex: startdate, hidden: true, width: 70},{text: End, dataIndex: enddate, hidden: true, width: 70}]}
           - {text: Project, dataIndex: projectcode}
           - {text: Project Title, dataIndex: project, flex: 1}
           - {text: Pri. Investigator, dataIndex: contact, flex: 1}
