@@ -6,5 +6,11 @@ Ext.define('PTS.store.ModDocTypes', {
     model: 'PTS.model.ModDocType',
 
     autoLoad: false,
-    sorters: { property: 'moddoctypeid', direction : 'ASC' }
+    sorters: [{
+        property: 'sort',
+        direction: 'ASC'
+    },{
+        property: 'code',
+        direction: 'ASC'
+    }]
 });
