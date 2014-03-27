@@ -32,7 +32,7 @@ Ext.define('PTS.view.project.form.ProjectForm', {
                             xtype: 'button',
                             text: 'Edit',
                             iconCls: 'pts-menu-editbasic',
-                            //disabled: true,
+                            hidden: true,
                             action: 'editproject'
                         },
                         {

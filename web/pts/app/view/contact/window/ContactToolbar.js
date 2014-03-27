@@ -19,7 +19,7 @@ Ext.define('PTS.view.contact.window.ContactToolbar', {
                     xtype: 'button',
                     text: 'Edit',
                     iconCls: 'pts-menu-editbasic',
-                    //disabled: true,
+                    hidden: true,
                     action: 'editcontact'
                 },
                 {
