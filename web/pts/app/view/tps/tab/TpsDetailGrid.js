@@ -54,7 +54,7 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                     editor: {
                         xtype: 'areatrigger',
                         text: 'Comment',
-                        allowBlank: false
+                        allowBlank: true
                     }
                 },
                 {

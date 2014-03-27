@@ -40,6 +40,13 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
                 },
                 {
                     xtype: 'gridcolumn',
+                    dataIndex: 'title',
+                    hidden: true,
+                    text: 'Title',
+                    locked: true
+                },
+                {
+                    xtype: 'gridcolumn',
                     dataIndex: 'modificationcode',
                     hidden: true,
                     text: 'Agreement #',

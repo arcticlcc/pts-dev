@@ -46,13 +46,14 @@ class Report implements ControllerProviderInterface {
             try {
                 //grab all possible document types
                 $doctypes = $app['idiorm']->getTable('moddoctype')->find_many();
-                $fl = 'modificationid int, projectid int,modificationcode varchar,shorttitle varchar, projectcode varchar, modtype varchar, status varchar, weight int';
+                $fl = 'modificationid int, projectid int,modificationcode varchar,title varchar,shorttitle varchar, projectcode varchar, modtype varchar, status varchar, weight int';
 
                 $metadata = array(
                     'fields' => array(
                         'modificationid',
                         'projectid',
                         'modificationcode',
+                        'title',
                         'shorttitle',
                         'projectcode',
                         'modtype'
@@ -69,8 +70,8 @@ class Report implements ControllerProviderInterface {
 
                 $sql = "(SELECT *
                    FROM crosstab ('
-                   SELECT modificationid, projectid, modificationcode, shorttitle, projectcode, modtype,
-											status, COALESCE(weight,-1) ,moddoctypeid, code FROM report.allmoddocstatus',
+                   SELECT modificationid, projectid, modificationcode, title, shorttitle, projectcode, modtype,
+                                            status, COALESCE(weight,-1) ,moddoctypeid, code FROM allmoddocstatus',
                    'SELECT moddoctypeid
                    FROM moddoctype') AS ct(" . $fl . "))";
 
