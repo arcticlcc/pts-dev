@@ -64,7 +64,7 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'projectfeature' => 'id',
     'modstatuslist' => 'modstatusid',
     'moddocstatuslist' => 'moddocstatusid',
-    'modificationlist' => 'modificationid'    
+    'modificationlist' => 'modificationid'
 ));
 
 // Add services to the DI container
@@ -105,7 +105,7 @@ $app['limit'] = 1000;
 $env = getenv("SILEX_ENV") ? $_SERVER['SILEX_ENV'] : 'dev';
 
 if ('dev' == $env) {
-    $app['debug'] = false;
+    $app['debug'] = TRUE;
     //$app['my.param'] = '...';
 }
 

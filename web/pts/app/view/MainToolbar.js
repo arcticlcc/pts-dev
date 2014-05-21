@@ -22,7 +22,7 @@ Ext.define('PTS.view.MainToolbar', {
             items: [
                 {
                     xtype: 'tbtext',
-                    html: '<h1>Arctic LCC Project Tracking System <span class="pts-version">v' + PTS.app.version + '</span></h1>',
+                    html: '<h1>' + PTS.UserId.title + ' Project Tracking System <span class="pts-version">v' + PTS.app.version + '</span></h1>',
                     style: {
                         textAlign: 'center',
                         fontSize: '18px'
@@ -49,6 +49,18 @@ Ext.define('PTS.view.MainToolbar', {
                                         xtype: 'menuitem',
                                         iconCls: 'pts-menu-settings',
                                         text: 'Settings'
+                                    },
+                                    {
+                                        itemId: 'switchPTS',
+                                        iconCls: 'pts-menu-switch',
+                                        text: 'Switch PTS',
+                                        menu: {
+                                            /*defaults: {
+                                                iconCls: 'pts-menu-switch'
+                                            },*/
+                                            plain: true,
+                                            items: []
+                                        }
                                     },
                                     {
                                         xtype: 'menuitem',

@@ -31,7 +31,7 @@ Ext.application({
         'Ext.ux.window.Notification'
     ],
     name: 'PTS',
-    version: '0.11.2',
+    version: '0.12.0',
 
     appFolder: 'app',
     autoCreateViewport: false,
@@ -96,7 +96,7 @@ Ext.application({
         myMask.show(); //mask the window body
 
         //get user details
-        me.getModel('PTS.model.User').load(UserId.id,{
+        me.getModel('PTS.model.User').load(PTS.UserId.id,{
 
             success: function(user) {
                 var store = this.getStore('GroupUsers');

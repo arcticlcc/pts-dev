@@ -53,6 +53,9 @@
 .pts-menu-email {
     background-image: url("../images/icons/email.png");
     }
+.pts-menu-switch {
+    background-image: url("../images/icons/arrow_switch.png");
+    }
 .pts-menu-key {
     background-image: url("../images/icons/key.png");
     }

@@ -22,6 +22,24 @@ class Login implements ControllerProviderInterface
     {
         $controllers = $app['controllers_factory'];
         $table = 'login';
+
+        $getSchemas = function ($loginid) use ($app){
+            $query = $app['idiorm']->getTable('logingroupschema')
+                    ->join('groupschema', array('logingroupschema.groupschemaid', '=', 'groupschema.groupschemaid'))
+                    ->select('logingroupschema.groupschemaid')->select('displayname')
+                    ->where('loginid',$loginid)
+                    ->order_by_asc('priority');
+
+            $result = $query->find_many();
+            if(!$result) {
+                throw new \Exception("That account is not authorized. Contact the system admin.");
+            }
+            foreach($result as $record) {
+                $schemas[$record->groupschemaid] = $record->displayname;
+            }
+            return $schemas;
+        };
+
         $controllers->get('login', function (Application $app, Request $request) use ($table){
             $app['session']->start();
             //set token
@@ -38,7 +56,7 @@ class Login implements ControllerProviderInterface
             ));
 
         });
-        $controllers->post('login', function (Application $app, Request $request) use ($table){
+        $controllers->post('login', function (Application $app, Request $request) use ($table, $getSchemas){
             $redirect = $request->get('r');
             $username = $app['request']->get('login_username', false);
             $password = $app['request']->get('login_spassword');
@@ -47,8 +65,10 @@ class Login implements ControllerProviderInterface
 
             //get password from database
             $query = $app['idiorm']->getTable('login')
-                    ->join('person', array('login.contactid', '=', 'person.contactid'))
-                    ->where('username',$username);
+                    ->join('logingroupschema', array('login.loginid', '=', 'logingroupschema.loginid'))
+                    ->join('groupschema', array('logingroupschema.groupschemaid', '=', 'groupschema.groupschemaid'))
+                    ->where('username',$username)
+                    ->order_by_asc('priority');
 
             try {
                 if((time() - $stoken) > 300 || $token != $stoken) {
@@ -65,11 +85,16 @@ class Login implements ControllerProviderInterface
 
                 if ($hash === $password) {
                     $app['session']->migrate(true); //regenerate the sessionid
-                    $app['session']->set('user', array(
-                        'username' => $result->username,
-                        'loginid' => $result->loginid,
-                        'firstname' => $result->firstname
+                    $app['session']->replace(array(
+                        'user' => array(
+                            'username' => $result->username,
+                            'loginid' => $result->loginid,
+                            'firstname' => $result->firstname //TODO:Get this from database after setting path
+                        ),
+                        'schema' => $result->groupschemaid,
+                        'schemas' => $getSchemas($result->loginid),
                     ));
+
                     if($redirect) {
                         return $app->redirect($redirect);
                     }else {
@@ -114,7 +139,8 @@ class Login implements ControllerProviderInterface
             ));
         });
 
-        $controllers->match('openid', function (Application $app, Request $request) use ($table){
+        $controllers->match('openid', function (Application $app, Request $request) use ($table, $getSchemas){
+            $app['session']->start();
             $init = $request->get('init');
             $redirect = $request->get('r');
 
@@ -129,7 +155,7 @@ class Login implements ControllerProviderInterface
                     $app['tryOpenIDAuth']($redirect);
                     //reset token
                     $token = time();
-                    $app['session']->set('token', $token);                    
+                    $app['session']->set('token', $token);
                     //show login page with error
                     return $app['twig']->render('login.twig', array(
                         'token' => $token,
@@ -137,35 +163,42 @@ class Login implements ControllerProviderInterface
                         'salt' => $app['salt'],
                         'message' => 'Please wait...contacting Google.'
                     ));
-                }elseif($obj = $app['finishOpenIDAuth']()) {                    
+                }elseif($obj = $app['finishOpenIDAuth']()) {
                     $first = $obj->data['http://axschema.org/namePerson/first'][0];
                     $last = $obj->data['http://axschema.org/namePerson/last'][0];
                     $email = $obj->data['http://axschema.org/contact/email'][0];
-                    
+
                     //get user from database
                     $query = $app['idiorm']->getTable('login')
-                            ->join('person', array('login.contactid', '=', 'person.contactid'))
-                            //->where('firstname',$first)
-                            ->where(strtolower('username'),strtolower($last))
-                            ->where('openid',$email);
-                            
+                            ->join('logingroupschema', array('login.loginid', '=', 'logingroupschema.loginid'))
+                            ->join('groupschema', array('logingroupschema.groupschemaid', '=', 'groupschema.groupschemaid'))
+                            ->where('lastname',$last) //TODO: Add first name to auth?
+                            ->where('openid',$email)
+                            ->order_by_asc('priority');
+
                     $result = $query->find_one();
-                                                                   
+
                     if ($result) {
                         $app['session']->migrate(true); //regenerate the sessionid
-                        $app['session']->set('user', array(
-                            'username' => $result->username,
-                            'loginid' => $result->loginid,
-                            'firstname' => $result->firstname
+                        $app['session']->replace(array(
+                                'user'=> array(
+                                    'username' => $result->username,
+                                    'loginid' => $result->loginid,
+                                    'firstname' => $result->firstname
+                                    ),
+                                'schema' => $result->groupschemaid,
+                                'schemas' => $getSchemas($result->loginid),
                         ));
+
                         if($redirect) {
                             return $app->redirect($redirect);
                         }else {
                             return $app->redirect('/home');
                         }
                     }else{
-                        throw new \Exception("Login failed. No login matched the Google account.");                        
-                    }                                  
+                        throw new \Exception('No login matched that Google account: '. $email . '
+                            <a href="https://accounts.google.com/Login">Try using a different account.</a>');
+                    }
                 }
 
                 throw new \Exception("Google login failed. Try Again.");
@@ -187,7 +220,7 @@ class Login implements ControllerProviderInterface
                 ));
             }
         })->method('GET|POST');
-        
+
         return $controllers;
     }
 }

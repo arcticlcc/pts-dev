@@ -79,6 +79,13 @@ class IdiormWrapper
         $this->app = $app;
     }
 
+    public function setPath($schema) {
+        $sql = "SET search_path=common, $schema, cvl, gcmd, public;";
+//echo $sql;
+        $stmt = $this->getDb()->prepare($sql);
+        $stmt->execute();
+    }
+
     public function getTable($tableName) {
         return PTSORM::for_table($tableName);
     }

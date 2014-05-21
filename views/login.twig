@@ -12,7 +12,7 @@
             <h1><span>Login</span></h1>
             {% if message is defined %}
             <div class="error">
-                {{ message }}
+                {{ message|striptags('<a>')|raw }}
             </div>
             {% endif %}
             <form class="form" method="post" action="login{% if redirect %}?r={{ redirect }}{% endif %}" onsubmit="pwhash(login_password, login_spassword, token, s)">

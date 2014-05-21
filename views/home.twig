@@ -3,15 +3,24 @@
     <head>
         <meta charset="utf-8">
         <title>Login</title>
-        <link rel="stylesheet" type="text/css" href="css/style.css"/>
+        <link rel="stylesheet" type="text/css" href="/css/style.css"/>
         <style>
         </style>
     </head>
     <body>
         <article>
             <h1>Hello, {{ name }}</h1>
-            <a href="/pts">Load PTS</a>
-            <br/>
+            {% if message is defined %}
+            <div class="error">
+                {{ message|striptags('<a>')|raw }}
+            </div>
+            {% endif %}
+            Choose PTS:
+            <ul style="margin:.5em;">
+                {% for path, name in paths %}
+                    <li><a href="/pts/{{ path|e('url') }}">{{ name|e }}</a></li>
+                {% endfor %}
+            </ul>
             <a href="/pts/docs/guide/PTS_QuickGuide.pdf" title="Download PDF">PTS QuickGuide</a>
             <br/>
             <a href="/logout">Logout</a>

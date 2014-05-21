@@ -8,20 +8,23 @@
     <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css">
     <link rel="stylesheet" type="text/css" href="extensible-1.5.1/resources/css/extensible-all.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/pts.css">
-    <!--<link rel="stylesheet" type="text/css" href="resources/css/dev.css">-->
+    <link rel="stylesheet" type="text/css" href="resources/css/dev.css">
 
-    <script type="text/javascript" src="extjs/ext.js"></script>
-    <!--<script type="text/javascript" src="extensible-1.5.1/src/Extensible.js"></script>
+    <script type="text/javascript" src="extjs/ext-all-debug.js"></script>
+    <script type="text/javascript" src="extensible-1.5.1/src/Extensible.js"></script>
 
-    <script src="lib/OpenLayers/OpenLayers.js"></script>-->
+    <script src="lib/openlayers/OpenLayers.js"></script>
     <script type="text/javascript">
-        Ext.define('UserId', {
+        Ext.namespace('PTS');
+        Ext.define('PTS.UserId', {
             singleton: true,
 
-            id: 1
+            id: '2',
+            paths: [{title:"Arctic\x20LCC",  path:"/pts/alcc"}, {title:"Development",  path:"/pts/dev"}],
+            title: "Arctic\x20LCC"
         });
     </script>
-    <script type="text/javascript" src="app-all.js"></script>
+    <script type="text/javascript" src="app.js"></script>
 </head>
 <body></body>
 </html>

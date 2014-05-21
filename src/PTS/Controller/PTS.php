@@ -10,7 +10,7 @@ use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Controller for PTS routes.
- * 
+ *
  * @uses ControllerProviderInterface
  * @version .1
  * @author Joshua Bradley <joshua_bradley@fws.gov>
@@ -21,19 +21,47 @@ class PTS implements ControllerProviderInterface
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
-            
-        $controllers->get('/pts/', function (Application $app, Request $request) {
-            $user = $app['session']->get('user');
-            
-            return $app['twig']->render('pts.twig', array(
-                'loginid' => $user['loginid']
-            ));
-        });                    
 
         $controllers->get('/pts/logout', function (Application $app, Request $request) {
             return $app->redirect("/logout");
-        }); 
-                                                                         
+        });
+
+        $controllers->get('/pts/{schema}', function (Application $app, Request $request, $schema) {
+            $user = $app['session']->get('user');
+
+            try{
+                $schemas = $app['session']->get('schemas');
+
+                if(!isset($schemas[$schema])) {
+                    throw new \Exception("Access is not authorized ($schema).");
+                }
+
+                $app['session']->set('schema',$schema);
+
+                return $app['twig']->render('pts.twig', array(
+                    'loginid' => $user['loginid'],
+                    'paths' => $schemas,
+                    'apptitle' => $schemas[$schema]
+                ));
+            } catch(\Exception $exc) {
+                $msg = $exc->getMessage();
+                $app['monolog']->addError($msg);
+
+                //show home page with error
+                return $app['twig']->render('home.twig', array(
+                    'message' => $msg,
+                    'name' => $user['firstname'],
+                    'paths' => $schemas
+                ));
+            }
+        });
+
+        $controllers->get('/pts/', function (Application $app, Request $request) {
+            $schema = $app['session']->get('schema');
+
+            return $app->redirect('/pts/'. $schema);
+        });
+
         return $controllers;
     }
 }

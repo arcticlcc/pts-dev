@@ -13,29 +13,37 @@ $app->before(function(Request $request) use ($app) {
      'loginid' => 1,
      'firstname' => 'Dev'
      ));*/
-
-    //check for user, ignore requests to login/logout uri
-    if (!$app['session']->has('user') && $uri_root != "/login" && $uri_root != "/logout" && $uri_root != "/openid") {
-        //redirect after login
-        return $app->redirect("/login?r=$uri");
+    //check for user, ignore requests to login/logout/openid uri
+    if ($uri_root != "/login" && $uri_root != "/logout" && $uri_root != "/openid") {
+        if(!$app['session']->has('user')) {
+            //redirect after login
+            return $app->redirect("/login?r=$uri");
+        } else {
+            //set database search_path
+            //TODO: white-list schemas?
+            $schema = $app['session']->get('schema');
+            $app['idiorm']->setPath($schema);
+        }
     }
 });
 
 $app->get('/', function() use ($app) {
 
-    //return phpinfo();
     $u = $app['session']->get('user');
 
-    return $app['twig']->render('home.twig', array('name' => $u['firstname']));
+    return $app->redirect('/home');
 
 });
 
 $app->get('/home', function() use ($app) {
 
-    //return phpinfo();
     $u = $app['session']->get('user');
+    $schemas = $app['session']->get('schemas');
 
-    return $app['twig']->render('home.twig', array('name' => $u['firstname']));
+    return $app['twig']->render('home.twig', array(
+        'name' => $u['firstname'],
+        'paths' => $schemas
+    ));
 
 });
 

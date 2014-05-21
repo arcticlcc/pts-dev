@@ -97,7 +97,7 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
     public function boot(Application $app)
     {
     }
-    
+
     public function connect(Application $app)
     {
         $controllers = $app['controllers_factory'];
