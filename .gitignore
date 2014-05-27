@@ -1,3 +1,4 @@
+/config/db.yml
 log/development.log
 
 web/pts/build
