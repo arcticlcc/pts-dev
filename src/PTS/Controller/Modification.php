@@ -26,7 +26,7 @@ class Modification implements ControllerProviderInterface
 
         $controllers->get('modification/{modid}', function (Application $app, Request $request, $modid) {
             $uri = "/modificationlist/$modid"; //need to use modificationlist view
-            
+
             $subRequest = Request::create($uri, 'GET', $request->query->all(), $request->cookies->all(), array(), $request->server->all());
             if ($request->getSession()) {
                 $subRequest->setSession($request->getSession());
@@ -138,7 +138,6 @@ class Modification implements ControllerProviderInterface
                 ->where('deliverableid', $id)
                 ->find_one();
 
-//var_dump($mod);exit;
             if($mod->modified) {
                 // cannot delete a record with existing mods
                 $message = "This deliverable has been modified. Please delete modifications before deleting this record.";
@@ -158,7 +157,7 @@ class Modification implements ControllerProviderInterface
                         ->raw_query($sql,$data)
                         ->find_one();
 
-                    }else { //we're deleing the root deliverable, so that's done from the deliverables table
+                    }else { //we're deleting the root deliverable, so that's done from the deliverables table
                         $object = $app['idiorm']->getTable('deliverable')->find_one($id);
                         $object->delete();
                     }

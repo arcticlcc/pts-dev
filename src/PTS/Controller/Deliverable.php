@@ -69,6 +69,10 @@ class Deliverable implements ControllerProviderInterface
 
         });
 
+        /*$controllers->put('deliverable/{id}', function (Application $app, Request $request, $id) {
+            $app['put']($request, 'deliverable', $id);
+        });*/
+
         $controllers->post('deliverable', function (Application $app, Request $request) use ($table){
             $result = array();
 
@@ -122,6 +126,90 @@ class Deliverable implements ControllerProviderInterface
                 $success = false;
                 $code = 400;
                 $app['json']->setAll($result,$code,$success,$message);
+            }
+
+            return $app['json']->getResponse();
+        });
+
+        $controllers->match('deliverable/calendar/event/{id}', function (Application $app, Request $request, $id) {
+            $values = json_decode($request->getContent());
+            $calId = isset($values->calendar) ? $values->calendar : $app['session']->get('deliverablecalid');
+
+            $eventData = array(
+                'id' => bin2hex($app['session']->get('schema') . '-' . $values->deliverableid),
+                'date' => $values->duedate,
+                'summary' => $values->title,
+                'desc' => $values->description
+            );
+
+            try {
+                $event = $app['createEvent']($eventData, $calId);
+                if($id) {
+                    $app['updateEvent']($event, $calId);
+                } else {
+                    $app['insertEvent']($event, $calId);
+                }
+
+                $json[] = array('success' => true);
+                $app['json']->setData($json)->getResponse(true);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+                $message = $exc->getMessage();
+                $success = false;
+                $code = 400;
+                $app['json']->setAll(null,$code,$success,$message);
+            }
+
+            return $app['json']->getResponse();
+        })
+        ->value('id', FALSE)
+        ->method('PUT|POST');
+
+        $controllers->delete('deliverable/calendar/event/{id}', function (Application $app, Request $request, $id) {
+            $values = json_decode($request->getContent());
+            $calId = isset($values->calendar) ? $values->calendar : $app['session']->get('deliverablecalid');
+
+            try {
+                $result = $app['deleteEvent'](bin2hex($app['session']->get('schema') . '-' . $id), $calId);
+
+                $json[] = array('success' => true);
+                $app['json']->setData($json)->getResponse(true);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+                $message = $exc->getMessage();
+                $success = false;
+                $code = 400;
+                $app['json']->setAll(null,$code,$success,$message);
+            }
+
+            return $app['json']->getResponse();
+        });
+
+        $controllers->match('deliverable/calendar/sync', function (Application $app, Request $request) {
+            $calendar = ($request->query->get('calendar') ?: $request->request->get('calendar')) ?: $app['session']->get('deliverablecalid');
+
+            try {
+                $query = $app['idiorm']->getTable('deliverablecalendar');
+
+                $events = $query->find_many();
+
+                /*foreach ($events as $object) {
+                    var_dump($object->as_array());
+                }*/
+
+
+                $result = $app['gcalSync']($events, $calendar);
+
+                $app['json']->setData($result)->getResponse(true);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+                $message = $exc->getMessage();
+                $success = false;
+                $code = 400;
+                $app['json']->setAll(null,$code,$success,$message);
             }
 
             return $app['json']->getResponse();

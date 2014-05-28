@@ -37,6 +37,10 @@ class PTS implements ControllerProviderInterface
                 }
 
                 $app['session']->set('schema',$schema);
+                //get calendarids from database
+                $result = $app['idiorm']->getTable('groupschema')
+                        ->where('groupschemaid',$schema)->find_one();
+                $app['session']->set('deliverablecalid',$result->deliverablecalendarid);
 
                 return $app['twig']->render('pts.twig', array(
                     'loginid' => $user['loginid'],

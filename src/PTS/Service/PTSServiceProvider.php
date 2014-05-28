@@ -15,7 +15,32 @@ use Symfony\Component\HttpFoundation\Request;
  */
 
 class PTSServiceProvider implements ServiceProviderInterface {
+
+    public $restricted = array(
+        'userinfo' => true,
+        'login' => true,
+    );
+
     public function register(Application $app) {
+        $restricted = $this->restricted;
+
+        $app['put'] = $app->protect(function (Request $request, $class, $id) use ($app, $restricted) {
+            $result = array();
+
+            try {
+                if (isset($restricted[$class])) {
+                    throw new \Exception("Unauthorized.");
+                }
+            } catch (Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+
+                $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
+            }
+
+            $result = $app['saveTable']($request, $class, $id);
+            $app['json']->setData($result);
+        });
+
         $app['saveTable'] = $app->protect(function($request, $class, $id = null, $list = false, $strip = array()) use ($app) {
             $result = array();
 

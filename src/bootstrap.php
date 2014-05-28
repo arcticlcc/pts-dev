@@ -34,6 +34,11 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 
 $app->register(new Idiorm\IdiormServiceProvider(), array());
 
+$app->register(new PTS\Service\GcalServiceProvider(), array(
+    'gcal.service_account'      => '446561781403-4k46rnbg48b6e0o963qqkcc83li40ffm@developer.gserviceaccount.com',
+    'gcal.key' => __DIR__.'/../config/client.p12',
+));
+
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     'openid.uri'      => 'https://www.google.com/accounts/o8/id',
     'openid.attribute'=> array(

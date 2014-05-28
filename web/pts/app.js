@@ -58,6 +58,10 @@ Ext.application({
      */
 
     /**
+     * @event savedeliverable
+     */
+
+    /**
      * Store the last application error.
      * @param {String} txt The error string.
      */

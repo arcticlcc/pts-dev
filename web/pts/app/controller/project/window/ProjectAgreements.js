@@ -142,6 +142,8 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                             success: function(model, op) {
                                 var pid  = treeRecord.get('parentItm');
 
+                                PTS.app.fireEvent('savedeliverable', op.records[0], op);
+
                                 //select parent node
                                 tree.getView().select(treeRecord.parentNode);
                                 treeRecord.remove(true);
@@ -234,6 +236,8 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         itemid = card.itemId,
                         pNode;
                     //TODO: update title
+
+                    PTS.app.fireEvent('savedeliverable', model, op);
 
                     form.loadRecord(model); //load the model to get desired trackresetonload behaviour
                     //build node
