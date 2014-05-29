@@ -46,6 +46,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         this.application.on({
             itemload: this.onItemLoad,
             newitem: this.onNewItem,
+            savedeliverable: this.onSave,
             scope: this
         });
     },
@@ -155,6 +156,39 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
 
         //show period if type is financial or progress report
         period.setVisible(newVal === 6 || newVal === 13);
+    },
+
+    /**
+     * Handler fired when the deliverable is saved.
+     * Publishes deliverable to calendar.
+     */
+    onSave: function(model, operation) {
+        var method = operation.request.method,
+            data = model.data,
+            url;
+
+        switch (method) {
+            case 'POST':
+                url = '../deliverable/calendar/event';
+                break;
+            case 'PUT':
+            case 'DELETE':
+                url = '../deliverable/calendar/event/' + data.deliverableid;
+                break;
+        }
+
+        Ext.Ajax.request({
+            url: url,
+            method: method,
+            jsonData: Ext.encode(data),
+            failure: function(response, opts) {
+                Ext.create('widget.uxNotification', {
+                    title: 'Error',
+                    iconCls: 'ux-notification-icon-error',
+                    html: 'Publishing to calendar failed </br>Error:' + PTS.app.getError()
+                }).show();
+            }
+        });
     },
 
     /**

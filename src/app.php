@@ -165,27 +165,7 @@ $app->get('{class}/{id}/{related}.{format}', function(Request $request, $class, 
 })->value('format', 'json');
 
 $app->put('/{class}/{id}', function(Request $request, $class, $id) use ($app) {
-    $result = array();
-    $restricted = array(
-        'userinfo' => true,
-        'login' => true,
-    );
-
-    try {
-        if (isset($restricted[$class])) {
-            throw new \Exception("Unauthorized.");
-        }
-    } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
-
-        $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
-
-        return $app['json']->getResponse();
-    }
-
-    $result = $app['saveTable']($request, $class, $id);
-    $app['json']->setData($result);
-
+    $app['put']($request, $class, $id);
     return $app['json']->getResponse();
 });
 
