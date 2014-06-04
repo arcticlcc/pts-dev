@@ -237,7 +237,9 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         pNode;
                     //TODO: update title
 
-                    PTS.app.fireEvent('savedeliverable', model, op);
+                    if(Ext.getClassName(model) === 'PTS.model.Deliverable') {
+                        PTS.app.fireEvent('savedeliverable', model, op);
+                    }
 
                     form.loadRecord(model); //load the model to get desired trackresetonload behaviour
                     //build node
