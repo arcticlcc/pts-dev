@@ -13,10 +13,17 @@
 
     <script src="lib/openlayers/OpenLayers.js"></script>
     <script type="text/javascript">
-        Ext.define('UserId', {
+        Ext.namespace('PTS');
+        Ext.define('PTS.UserId', {
             singleton: true,
 
-            id: '{{ loginid }}'
+            id: '{{ loginid }}',
+            paths: [
+            {%- for path, name in paths -%}
+                {text:"{{ name|e('js') }}",  url:"/pts/{{ path|e('url') }}"}{% if not loop.last %}, {% endif %}
+            {%- endfor -%}
+            ],
+            title: "{{ apptitle|e('js') }}"
         });
     </script>
     <script type="text/javascript" src="app-all.js"></script>
