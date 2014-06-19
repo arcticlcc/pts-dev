@@ -29,12 +29,12 @@ class ContactGroup implements ControllerProviderInterface
             'contactcontactgroups'=>array('name' => 'contactcontactgroup')
         );
  //TODO: replace redirect with new method in PTS provider
-        $controllers->get('contactgroup', function (Application $app, Request $request) use ($table){
+        $controllers->get('contactgroup.{format}', function (Application $app, Request $request, $format) use ($table){
             $table .= 'list'; //need to use projectcontactlist view
             $query = $request->getQueryString(); //pass the query through
 
-            return $app->redirect("/$table?$query");
-        });
+            return $app->redirect("/$table.$format?$query");
+        })->value('format', 'json');
 
         $controllers->get('contactgroup/{id}', function (Application $app, Request $request, $id) use ($table) {
             $result = array();
