@@ -4,7 +4,7 @@ reports:
     iconCls: folder
     leaf: false
     children:
-      - text: ALCC Steering Committee
+      - text: LCC Steering Committee
         url: ../alccsteeringcommittee
         descrip: Lists members of the ALCC Steering Committee
         xtype: personlist
@@ -13,7 +13,7 @@ reports:
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
             cfg: {text: e-mail, dataindex: priemail}
-      - text: ALCC Staff
+      - text: LCC Staff
         url: ../alccstaff
         descrip: Lists staff of the ALCC
         cols:
