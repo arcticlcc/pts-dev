@@ -155,7 +155,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         var period = field.up('form').down('#delPeriod');
 
         //show period if type is financial or progress report
-        period.setVisible(newVal === 6 || newVal === 13);
+        period.setVisible(newVal === 6 || newVal === 13 || newVal === 25);
     },
 
     /**
