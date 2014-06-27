@@ -42,6 +42,7 @@ class Report implements ControllerProviderInterface {
         });
 
         $controllers->get('report/tps.{format}', function(Application $app, Request $request, $format) {
+            $result = array();
 
             try {
                 //grab all possible document types
