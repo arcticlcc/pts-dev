@@ -8,6 +8,7 @@
         "symfony/yaml": "2.1.*",
         "geokit/geokit": "dev-doctrine",
         "openid/php-openid": "dev-master",
+        "league/oauth2-client": "0.3.*@dev",
         "google/apiclient": "1.0.*@beta"
     },
 

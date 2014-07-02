@@ -7,6 +7,7 @@ use Silex\ControllerProviderInterface;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+//use League\OAuth2\Client\Provider;
 
 /**
  * Controller hack for logins.
@@ -140,16 +141,107 @@ class Login implements ControllerProviderInterface
             ));
         });
 
+        $controllers->match('oauth2', function (Application $app, Request $request) use ($table, $getSchemas){
+            $app['session']->start();
+            $code = $request->get('code');
+            $redirect = $request->get('r') ?: $app['session']->get('redirect');
+
+            $provider = new \League\OAuth2\Client\Provider\Google(array(
+                'clientId'  =>  '446561781403-f95nkovq67ho8aelvoho006j7hmrqpve.apps.googleusercontent.com',
+                'clientSecret'  =>  'DH_udqhOBZK9R3W64ogncLTv',
+                'redirectUri'   =>  'http://' . $_SERVER['HTTP_HOST'] . '/oauth2'
+            ));
+
+            if ( ! $code) {
+                //store any redirect
+                $app['session']->set('redirect', $redirect);
+                // If we don't have an authorization code then get one
+                $provider->authorize();
+
+            } else {
+
+                try {
+
+                    // Try to get an access token (using the authorization code grant)
+                    $t = $provider->getAccessToken('authorization_code', array('code' => $code));
+
+                    // NOTE: If you are using Eventbrite you will need to add the grant_type parameter (see below)
+                    // $t = $provider->getAccessToken('authorization_code', array('code' => $_GET['code'], 'grant_type' => 'authorization_code'));
+
+                    try {
+
+                        // We got an access token, let's now get the user's details
+                        $userDetails = $provider->getUserDetails($t);
+                        $first = $userDetails->firstName;
+                        $last = $userDetails->lastName;
+                        $email = $userDetails->email;
+
+                        //get user from database
+                        $query = $app['idiorm']->getTable('login')
+                                ->join('logingroupschema', array('login.loginid', '=', 'logingroupschema.loginid'))
+                                ->join('groupschema', array('logingroupschema.groupschemaid', '=', 'groupschema.groupschemaid'))
+                                ->where('lastname',$last) //TODO: Add first name to auth?
+                                ->where('openid',$email)
+                                ->order_by_asc('priority');
+
+                        $result = $query->find_one();
+
+                        if ($result) {
+                            $app['session']->migrate(true); //regenerate the sessionid
+                            $app['session']->replace(array(
+                                    'user'=> array(
+                                        'username' => $result->username,
+                                        'loginid' => $result->loginid,
+                                        'firstname' => $result->firstname
+                                        ),
+                                    'schema' => $result->groupschemaid,
+                                    'schemas' => $getSchemas($result->loginid),
+                            ));
+
+                            if($redirect) {
+                                return $app->redirect($redirect);
+                            }else {
+                                return $app->redirect('/home');
+                            }
+                        }else{
+                            throw new \Exception('No login matched that Google account: '. $email . '
+                                <a href="https://accounts.google.com/Login">Try using a different account.</a>');
+                        }
+                    } catch (\Exception $exc) {
+
+                        // Failed to get user details
+                        $msg = $exc->getMessage();
+                        $app['monolog']->addError($msg);
+                    }
+                } catch (\Exception $exc) {
+
+                    // Failed to get access token
+                    // If you have a refesh token you can use it here:
+                    //$grant = new \League\OAuth2\Client\Grant\RefreshToken();
+                    //$t = $provider->getAccessToken($grant, array('refresh_token' => $refreshToken));
+
+                    $msg = 'Google login failed. Try again.';
+                    $app['monolog']->addError($msg);
+                }
+
+                //reset login token
+                $token = time();
+                $app['session']->set('token', $token);
+
+                //show login page with error
+                return $app['twig']->render('login.twig', array(
+                    'token' => $token,
+                    'redirect' => $redirect,
+                    'salt' => $app['salt'],
+                    'message' => $msg
+                ));
+            }
+        })->method('GET|POST');
+
         $controllers->match('openid', function (Application $app, Request $request) use ($table, $getSchemas){
             $app['session']->start();
             $init = $request->get('init');
             $redirect = $request->get('r');
-
-
-            //get e-mail from database
-            /*$query = $app['idiorm']->getTable('login')
-                    ->join('person', array('login.contactid', '=', 'person.contactid'))
-                    ->where('username',$username);*/
 
             try {
                 if($init){
