@@ -54,6 +54,7 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'person' => 'contactid',
     'projectcontactlist' => 'projectcontactid',
     'deliverablelist' => 'deliverableid',
+    'deliverabledue' => 'deliverableid',
     'userinfo' => 'loginid',
     'membergrouplist' => 'contactcontactgroupid',
     'groupmemberlist' => 'contactcontactgroupid',
