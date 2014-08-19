@@ -253,25 +253,12 @@ class PTSServiceProvider implements ServiceProviderInterface {
                         $query->where($k, $v);
                     }
                 }
-                //add the filters
-                if (isset($filter)) {
-                    //loop thru filter array
-                    foreach ($filter as $val) {
-                        $app['addFilter']($query, $val);
-                    }
-                }
-                $count = clone $query;
 
-                if (isset($sort)) {
-                    switch ($request->get('dir')) {
-                        case 'ASC' :
-                            $query->order_by_asc($sort);
-                            break;
-                        case 'DESC' :
-                            $query->order_by_desc($sort);
-                            break;
-                    }
-                }
+                //create the count query with only filters applied
+                $count = clone $app['applyParams']($request, $query, true);
+
+                //add sorting and paging to query
+                $app['applyParams']($request, $query, false, true, true);
 
                 foreach ($query->find_many() as $object) {
                     $result[] = $object->as_array();
@@ -326,16 +313,8 @@ class PTSServiceProvider implements ServiceProviderInterface {
                     }
                 }
 
-                if (isset($sort)) {
-                    switch ($request->get('dir')) {
-                        case 'ASC' :
-                            $query->order_by_asc($sort);
-                            break;
-                        case 'DESC' :
-                            $query->order_by_desc($sort);
-                            break;
-                    }
-                }
+                //add sorting to query
+                $app['applyParams']($request, $query, false, true, false);
 
                 if ($object = $query->find_one()) {
                     $result = $object->as_array();
