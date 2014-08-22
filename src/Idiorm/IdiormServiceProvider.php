@@ -94,7 +94,7 @@ class IdiormWrapper
         return PTSORM::get_db();
     }
 
-    public function getRelated($array, $class, $key, $id, array $where = null, $sort = null, $dir = null) {
+    public function getRelated($array, $class, $key, $id, array $where = null, $sort = null, $dir = null, $limit = null) {
 
         $query = $this->app['idiorm']->getTable($class)->where($key, $id);
 
@@ -118,6 +118,10 @@ class IdiormWrapper
             }
         }
 
+        if (isset($limit)) {
+            $query->limit($limit);
+        }
+
         if ($array) {
             $result = array();
             foreach ($query->find_many() as $object) {
@@ -129,6 +133,19 @@ class IdiormWrapper
 
         return ($result);
 
+    }
+
+    public function getFirstRelated($array, $class, $key, $id, array $where = null, $sort = null, $dir = null) {
+        $args = func_get_args();
+        array_push($args, 1);
+
+        $result = call_user_func_array(array('Idiorm\IdiormWrapper','getRelated'), $args);
+
+        if($result) {
+            return array($result[0]);
+        } else {
+            return $result;
+        }
     }
 
 }

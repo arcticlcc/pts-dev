@@ -37,17 +37,29 @@ class Person implements ControllerProviderInterface
                     ->where('person.contactid', $id)
                     ->find_one();
 
-                //get primary mail/physical addresses, assumes priority is set to 1
-                $addresses = $app['idiorm']->getRelated(true, 'address', 'contactid', $id,
-                    array('priority'=>1, 'addresstypeid' => array(1,2)));
+                //get primary mail/physical addresses
+                $addresses = $app['idiorm']->getFirstRelated(true, 'address', 'contactid', $id,
+                    array('addresstypeid' => 1),'priority','ASC');
 
-                //get primary office/mobile/fax phone#s, assumes priority is set to 1
-                $phones = $app['idiorm']->getRelated(true, 'phone', 'contactid', $id,
-                    array('priority'=>1, 'phonetypeid' => array(1,2,3)));
+                $addresses = array_merge($addresses, $app['idiorm']->getFirstRelated(true, 'address', 'contactid', $id,
+                    array('addresstypeid' => 2),'priority','ASC'));
 
-                //get primary website and e-mail, assumes priority is set to 1
-                $eaddresses = $app['idiorm']->getRelated(true, 'eaddress', 'contactid', $id,
-                    array('priority'=>1, 'eaddresstypeid' => array(1,2)));
+                //get primary office/mobile/fax phone#s
+                $phones = $app['idiorm']->getFirstRelated(true, 'phone', 'contactid', $id,
+                    array('phonetypeid' => 1),'priority','ASC');
+
+                $phones = array_merge($phones, $app['idiorm']->getFirstRelated(true, 'phone', 'contactid', $id,
+                    array('phonetypeid' => 2),'priority','ASC'));
+
+                $phones = array_merge($phones, $app['idiorm']->getFirstRelated(true, 'phone', 'contactid', $id,
+                    array('phonetypeid' => 3),'priority','ASC'));
+
+                //get primary website and e-mail
+                $eaddresses = $app['idiorm']->getFirstRelated(true, 'eaddress', 'contactid', $id,
+                    array('eaddresstypeid' => 1),'priority','ASC');
+
+                $eaddresses = array_merge($eaddresses, $app['idiorm']->getFirstRelated(true, 'eaddress', 'contactid', $id,
+                    array('eaddresstypeid' => 2),'priority','ASC'));
 
                 if($object) {
                     $result = $object->as_array();
