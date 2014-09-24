@@ -78,6 +78,12 @@ $app['json'] = $app->share(function() {
     return new PTS\Service\JSON();
 });
 
+$app['twig'] = $app->share($app->extend('twig', function($twig, $app) {
+    //$json = $app["json"]->encode;
+    $twig->getExtension('core')->setEscaper('json', array('PTS\Service\JSON', 'encode'));
+    return $twig;
+}));
+
 $app['csv'] = $app->share(function() {
 
     return new PTS\Service\CSV();

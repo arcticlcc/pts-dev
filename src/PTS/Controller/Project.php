@@ -25,6 +25,23 @@ class Project implements ControllerProviderInterface
 
         //TODO: make rest variables singular
 
+        $controllers->get('project/{id}/metadata', function (Application $app, Request $request, $id) {
+            $table = 'metadatacontact';
+
+            $contacts = $query = $app['idiorm']->getTable("metadatacontact")
+                ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
+                -> where('projectid', $id)
+                ->find_many();;
+
+
+            $json = $app['twig']->render('metadata/project.json.twig', array(
+                'contacts' => $contacts
+            ));
+
+            return $json; //mb_detect_encoding($contacts[0]->organizationName);
+
+        });
+
         $controllers->get('project/{id}/contacts', function (Application $app, Request $request, $id) {
             $table = 'projectcontactlist'; //need to use projectcontactlist view
 
@@ -66,7 +83,7 @@ class Project implements ControllerProviderInterface
                 $aid = $rec['modificationid'];
                 $fkey = array('modificationid'=>$aid); //foreign key for modification(agreement)
                 //create nodes
-                $icon = $rec['ismodified'] ? 'pts-modified-agreement-folder' : 'pts-agreement-folder';                              
+                $icon = $rec['ismodified'] ? 'pts-modified-agreement-folder' : 'pts-agreement-folder';
                 $node = $app['tree']->node("af-$aid",$rec['title'],$icon,false);
                 $node->setAttribute('dataid',$aid);
                 $node->setAttribute('type',$rec['typecode']);

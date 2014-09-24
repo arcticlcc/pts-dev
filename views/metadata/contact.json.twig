@@ -1,0 +1,33 @@
+{% autoescape 'json' %}
+	{
+      "contactId": "{{ contact.contactId }}",
+      "individualName": {{ contact.individualName }},
+      "organizationName": {{ contact.organizationName }},
+      "positionName": {{ contact.positionName }},
+      "onlineResource": [
+        {
+          "uri": "http://thisisanexample.com",
+          "protocol": "test test",
+          "name": "",
+          "description": "",
+          "function": ""
+        }
+      ],
+      "contactInstructions": "",
+      "phoneBook": [
+        {
+          "phoneName": "",
+          "phoneNumber": "999-999-9999",
+          "service": [""]
+        }
+      ],
+      "address": {
+        "deliveryPoint": [""],
+        "city": "",
+        "administrativeArea": "",
+        "postalCode": "",
+        "country": "",
+        "electronicMailAddress": ["hello@example.com"]
+      }
+    }{% if loop.last == false %},{% endif %}
+{% endautoescape %}
