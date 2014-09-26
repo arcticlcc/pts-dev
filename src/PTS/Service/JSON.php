@@ -42,9 +42,8 @@ class JSON
 
     }
 
-    public function encode($twig, $string, $charset)
-    {
-        return json_encode($string);
+    public function encode($twig, $string, $charset) {
+        return trim(json_encode($string),'"');
     }
 
     public function setData($data)

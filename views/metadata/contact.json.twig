@@ -1,33 +1,40 @@
 {% autoescape 'json' %}
-	{
+    {
       "contactId": "{{ contact.contactId }}",
-      "individualName": {{ contact.individualName }},
-      "organizationName": {{ contact.organizationName }},
-      "positionName": {{ contact.positionName }},
+      "individualName": "{{ contact.individualName }}",
+      "organizationName": "{{ contact.organizationName }}",
+      "positionName": "{{ contact.positionName }}"
+      {% if contact.uri %}
+      ,
       "onlineResource": [
         {
-          "uri": "http://thisisanexample.com",
-          "protocol": "test test",
-          "name": "",
-          "description": "",
-          "function": ""
+          "uri": "{{ contact.uri }}",
+          "protocol": "http",
+          "function": "information"
         }
-      ],
-      "contactInstructions": "",
+      ]
+      {% endif %}
+      {% if contact.officePhone %}
+      ,
       "phoneBook": [
         {
-          "phoneName": "",
-          "phoneNumber": "999-999-9999",
-          "service": [""]
+          "phoneNumber": "{{ contact.officePhone }}",
+          "service": ["voice"]
         }
-      ],
+      ]
+      {% endif %}
+      {% if contact.deliveryPoint1 %}
+      ,
       "address": {
-        "deliveryPoint": [""],
-        "city": "",
-        "administrativeArea": "",
-        "postalCode": "",
-        "country": "",
-        "electronicMailAddress": ["hello@example.com"]
+        "deliveryPoint": ["{{ contact.deliveryPoint1 }}","{{ contact.deliveryPoint2 }}"],
+        "city": "{{ contact.city }}",
+        "administrativeArea": "{{ contact.administrativeArea }}",
+        "postalCode": "{{ contact.postalCode }}",
+        "country": "{{ contact.country }}"
+        {% if not contact.email is null %},
+        "electronicMailAddress": ["{{ contact.email }}"]
+        {% endif %}
       }
+      {% endif %}
     }{% if loop.last == false %},{% endif %}
 {% endautoescape %}

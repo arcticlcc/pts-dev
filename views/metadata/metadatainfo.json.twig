@@ -1,0 +1,66 @@
+    {% import "metadata/contactref.twig" as contactref %}
+    {
+      "metadataIdentifier": {
+        "identifier": "{{ project.projectIdentifier }}",
+        "type": "uuid"
+      },
+      {% if parentMetadata is defined %}
+      {# TODO #}
+      "parentMetadata": {
+        "title": "",
+        "date": [
+          {
+            "date": "0000-00-00",
+            "dateType": ""
+          }
+        ],
+        "edition": "",
+        "responsibleParty": [
+          {
+            "contactId": "",
+            "role": ""
+          }
+        ],
+        "presentationForm": [""],
+        "identifier": [
+          {
+            "identifier": "",
+            "type": ""
+          }
+        ],
+        "onlineResource": [
+          {
+            "uri": "http://thisisanexample.com",
+            "protocol": "",
+            "name": "",
+            "description": "",
+            "function": ""
+          }
+        ]
+      },
+      {% endif %}
+      "metadataScope": ["{{ metadataScope }}"],
+      "metadataContact": [
+        {
+          "contactId": "",
+          "role": ""
+        }
+      ],
+      "metadataCreationDate": "{{ "now"|date('c') }}",
+      "metadataLastUpdate": "{{ "now"|date('c') }}",
+      "metadataCharacterSet": "utf8",
+      {# TODO "metadataUri": "http://thisisanexample.com",#}
+      "metadataStatus": "completed",
+      "metadataMaintenance": {
+        "maintenanceFrequency": "asNeeded",
+        "maintenanceNote": ["Metadata records are generated from database"],
+        "maintenanceContact": [
+          {
+            "contactId": "{{ organization.contactId }}",
+            "role": "author"
+          }
+          {{ contactref.ref(roles,[8,3],true) }}
+
+        ]
+      }
+    }

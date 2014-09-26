@@ -1,18 +1,20 @@
+{% autoescape 'json' %}
 {
   "version": {
     "name": "adiwgJSON",
     "version": "0.8.0"
   },
   "contact": [
-	{% for contact in contacts %}
-		{% include "metadata/contact.json.twig" %}
-	{% endfor %}
+  {% for contact in contacts %}
+    {% include "metadata/contact.json.twig" %}
+  {% endfor %}
   ],
   "metadata": {
-    "metadataInfo": {},
-    "resourceInfo": {},
+    "metadataInfo": {% include "metadata/metadatainfo.json.twig" %},
+    "resourceInfo": {% include "metadata/resourceinfo.json.twig" %},
     "distributionInfo": [],
     "associatedResource": [],
     "additionalDocumentation": []
   }
 }
+{% endautoescape %}

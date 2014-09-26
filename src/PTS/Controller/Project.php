@@ -23,25 +23,55 @@ class Project implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
         $table = 'project';
 
-        //TODO: make rest variables singular
-
         $controllers->get('project/{id}/metadata', function (Application $app, Request $request, $id) {
-            $table = 'metadatacontact';
+            $schemaid = $app['session']->get('schema');
+            $contacts = array();
+            $roles = array();
 
-            $contacts = $query = $app['idiorm']->getTable("metadatacontact")
+            $project  = $app['idiorm']->getTable('metadataproject')->select('metadataproject.*')
+                ->find_one()->as_array();
+
+            //get LCC contact
+            $org = $app['idiorm']->getTable('metadatacontact')
+                -> where('contactId', $project['orgid'])
+                ->find_one()->as_array();
+
+            $contacts[] = $org;
+
+            //get other contacts for project
+            foreach ( $app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
                 ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
                 -> where('projectid', $id)
-                ->find_many();;
+                -> where_not_equal('contactId', $org['contactId'])
+                ->find_many() as $object) {
+                    $contacts[] = $object->as_array();
+                }
 
+            //get other project contact roles for project
+            foreach ( $app['idiorm']->getTable('projectcontact')
+                ->select('projectcontact.*','roletype','adiwg')
+                ->select('roletype')
+                ->select('adiwg')
+                ->join('roletype', array('projectcontact.roletypeid', '=', 'roletype.roletypeid'))
+                -> where('projectid', $id)
+                ->find_many() as $object) {
+                    $roles[] = $object->as_array();
+                }
 
+var_dump($roles);
             $json = $app['twig']->render('metadata/project.json.twig', array(
-                'contacts' => $contacts
+                'metadataScope' => "project",
+                'organization' => $org,
+                'project' => $project,
+                'contacts' => $contacts,
+                'roles' => $roles
             ));
 
             return $json; //mb_detect_encoding($contacts[0]->organizationName);
 
         });
 
+        //TODO: make rest variables singular
         $controllers->get('project/{id}/contacts', function (Application $app, Request $request, $id) {
             $table = 'projectcontactlist'; //need to use projectcontactlist view
 
