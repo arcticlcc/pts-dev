@@ -23,15 +23,19 @@
         }
       ]
       {% endif %}
-      {% if contact.deliveryPoint1 %}
+      {% if contact.deliveryPoint1 or contact.email %}
       ,
       "address": {
+        {% if not contact.deliveryPoint1 is null %}
+          {% set comma = true %}
         "deliveryPoint": ["{{ contact.deliveryPoint1 }}","{{ contact.deliveryPoint2 }}"],
         "city": "{{ contact.city }}",
         "administrativeArea": "{{ contact.administrativeArea }}",
         "postalCode": "{{ contact.postalCode }}",
         "country": "{{ contact.country }}"
-        {% if not contact.email is null %},
+        {% endif %}
+        {% if not contact.email is null %}
+          {{ comma is defined ? ',' : '' }}
         "electronicMailAddress": ["{{ contact.email }}"]
         {% endif %}
       }
