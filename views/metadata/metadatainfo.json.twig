@@ -1,7 +1,6 @@
-    {% import "metadata/contactref.twig" as contactref %}
     {
       "metadataIdentifier": {
-        "identifier": "{{ project.projectIdentifier }}",
+        "identifier": "{{ resource.projectIdentifier }}",
         "type": "uuid"
       },
       {% if parentMetadata is defined %}
@@ -41,10 +40,11 @@
       {% endif %}
       "metadataScope": ["{{ metadataScope }}"],
       "metadataContact": [
-        {
-          "contactId": "",
-          "role": ""
-        }
+          {
+            "contactId": "{{ organization.contactId }}",
+            "role": "author"
+          }
+          {{ contactref.ref(roles,[8,3],true) }}
       ],
       "metadataCreationDate": "{{ "now"|date('c') }}",
       "metadataLastUpdate": "{{ "now"|date('c') }}",
@@ -59,8 +59,7 @@
             "contactId": "{{ organization.contactId }}",
             "role": "author"
           }
-          {{ contactref.ref(roles,[8,3],true) }}
-
+          {{ contactref.ref(roles,[8],true) }}
         ]
       }
     }

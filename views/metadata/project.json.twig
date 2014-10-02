@@ -1,8 +1,9 @@
+{% import "metadata/contactref.twig" as contactref %}
 {% autoescape 'json' %}
 {
   "version": {
-    "name": "adiwgJSON",
-    "version": "0.8.0"
+    "name": "adiwgJson",
+    "version": "0.8.1"
   },
   "contact": [
   {% for contact in contacts %}

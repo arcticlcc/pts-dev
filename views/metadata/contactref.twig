@@ -1,11 +1,11 @@
 {% macro ref(contacts, values, comma) %}
   {% for contact in contacts %}
     {% if contact.roletypeid in values %}
-      {% if comma == true and loop.first %},{% endif %}
+      {% if (comma == true and loop.first) or not loop.first %},{% endif %}
       {
         "contactId": "{{ contact.contactid }}",
         "role": "{{ contact.adiwg }}"
-      }{% if loop.last == false %},{% endif %}
+      }
     {% endif %}
   {% endfor %}
 {% endmacro %}

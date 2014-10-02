@@ -7,6 +7,7 @@ use Silex\ControllerProviderInterface;
 use Silex\ControllerCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\HttpKernelInterface;
 
 /**
  * Controller for project.
@@ -23,53 +24,98 @@ class Project implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
         $table = 'project';
 
-        $controllers->get('project/{id}/metadata', function (Application $app, Request $request, $id) {
-            $schemaid = $app['session']->get('schema');
-            $contacts = array();
-            $roles = array();
+        $controllers->get('project/{id}/metadata.{format}', function (Application $app, Request $request, $id, $format) {
+            try{
+                $schemaid = $app['session']->get('schema');
+                $contacts = array();
+                $roles = array();
 
-            $project  = $app['idiorm']->getTable('metadataproject')->select('metadataproject.*')
-                ->find_one()->as_array();
+                $pquery  = $app['idiorm']->getTable('metadataproject')->select('metadataproject.*');
 
-            //get LCC contact
-            $org = $app['idiorm']->getTable('metadatacontact')
-                -> where('contactId', $project['orgid'])
-                ->find_one()->as_array();
-
-            $contacts[] = $org;
-
-            //get other contacts for project
-            foreach ( $app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
-                ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
-                -> where('projectid', $id)
-                -> where_not_equal('contactId', $org['contactId'])
-                ->find_many() as $object) {
-                    $contacts[] = $object->as_array();
+                if(strpos($id, '-') === FALSE) {
+                    $probject = $pquery->find_one($id);
+                } else {
+                    $probject = $pquery->where("projectcode", $id)->find_one();
                 }
 
-            //get other project contact roles for project
-            foreach ( $app['idiorm']->getTable('projectcontact')
-                ->select('projectcontact.*','roletype','adiwg')
-                ->select('roletype')
-                ->select('adiwg')
-                ->join('roletype', array('projectcontact.roletypeid', '=', 'roletype.roletypeid'))
-                -> where('projectid', $id)
-                ->find_many() as $object) {
-                    $roles[] = $object->as_array();
+                if($probject){
+                    $project = $probject->as_array();
+                } else {
+                    throw new \Exception("Couldn't find a project with id = $id.");
+                };
+
+                //get LCC contact
+                $org = $app['idiorm']->getTable('metadatacontact')
+                    -> where('contactId', $project['orgid'])
+                    ->find_one()->as_array();
+
+                $contacts[] = $org;
+
+                //get other contacts for project
+                foreach ( $app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
+                    ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
+                    -> where('projectid', $project['projectid'])
+                    -> where_not_equal('contactId', $org['contactId'])
+                    ->find_many() as $object) {
+                        $contacts[] = $object->as_array();
+                    }
+
+                //get other project contact roles for project
+                foreach ( $app['idiorm']->getTable('projectcontact')
+                    ->select('projectcontact.*','roletype','adiwg')
+                    ->select('roletype')
+                    ->select('adiwg')
+                    ->join('roletype', array('projectcontact.roletypeid', '=', 'roletype.roletypeid'))
+                    -> where('projectid', $project['projectid'])
+                    ->find_many() as $object) {
+                        $roles[] = $object->as_array();
+                    }
+
+                $json = $app['twig']->render('metadata/project.json.twig', array(
+                    'metadataScope' => "project",
+                    'organization' => $org,
+                    'resource' => $project,
+                    'keywords' => array_filter(explode('|', $project['keywords'])),
+                    'contacts' => $contacts,
+                    'roles' => $roles
+                ));
+
+                switch ($format) {
+                    case 'xml':
+                        //write to temp file to support cross-platform
+                        $temp = tmpfile();
+                        fwrite($temp, $json);
+                        fseek($temp, 0);
+                        $meta = stream_get_meta_data($temp);
+                        exec("mdtranslator translate -o -w iso19115_2 ". $meta['uri'], $meta, $code);
+                        fclose($temp); // this removes the file
+                        $xml = json_decode($meta[0]);
+
+                        if($code > 0) {
+                            throw new \Exception("mdTranslator error.");
+                        } elseif (!is_object($xml) || !$xml->writerPass) {
+                            throw new \Exception("JSON did not validate.");
+                        }
+
+                        $out = $xml->writerOutput;
+                        break;
+                    case 'json':
+                    default:
+                       $out = $request->get('pretty') ? json_encode(json_decode($json), JSON_PRETTY_PRINT) : $json;
                 }
 
-var_dump($roles);
-            $json = $app['twig']->render('metadata/project.json.twig', array(
-                'metadataScope' => "project",
-                'organization' => $org,
-                'project' => $project,
-                'contacts' => $contacts,
-                'roles' => $roles
-            ));
+                $response = new Response($out, 200, array(
+                    'Content-type' => "application/$format; charset=utf-8"
+                ));
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
 
-            return $json; //mb_detect_encoding($contacts[0]->organizationName);
+                $response = $app['json']->setAll(null, 500, false, $exc->getMessage())->getResponse();
+            }
 
-        });
+            return $response;
+
+        })->value('format', 'json');;
 
         //TODO: make rest variables singular
         $controllers->get('project/{id}/contacts', function (Application $app, Request $request, $id) {

@@ -1,45 +1,52 @@
     {
       "citation": {
-        "title": "",
+        "title": "{{ resource.title }}",
         "date": [
           {
-            "date": "0000-00-00",
-            "dateType": ""
+            "date": "{{ resource.datecreated|default(resource.startdate) }}",
+            "dateType": "creation"
           }
         ],
-        "edition": "",
+        {# "edition": "", #}
         "responsibleParty": [
           {
-            "contactId": "",
-            "role": ""
+            "contactId": "{{ organization.contactId }}",
+            "role": "owner"
           }
+          {{ contactref.ref(roles,[7,10,1,4,9],true) }}
         ],
-        "presentationForm": [""],
+        {# "presentationForm": [""], #}
         "identifier": [
           {
-            "identifier": "",
-            "type": "",
+            "identifier": "{{ resource.projectIdentifier }}",
+            "type": "uuid",
             "authority": {
-              "title": "",
-              "date": [
-                {
-                  "date": "0000-00-00",
-                  "dateType": ""
-                }
-              ],
+              "title": "{{ organization.organizationName }}",
+              "date": [{
+                "date": "{{ resource.datecreated|default(resource.startdate) }}",
+                "dateType": "creation"
+              }],
               "responsibleParty": [
                 {
-                  "contactId": "",
-                  "role": ""
+                  "contactId": "{{ organization.contactId }}",
+                  "role": "originator"
                 }
-              ],
-              "onlineResource": [
+              ]
+            }
+          },
+          {
+            "identifier": "{{ resource.projectcode }}",
+            "type": "projectCode",
+            "authority": {
+              "title": "{{ organization.organizationName }}",
+              "date": [{
+                "date": "{{ resource.datecreated|default(resource.startdate) }}",
+                "dateType": "creation"
+              }],
+              "responsibleParty": [
                 {
-                  "uri": "http://thisisanexample.com",
-                  "protocol": "",
-                  "name": "",
-                  "description": "",
-                  "function": ""
+                  "contactId": "{{ organization.contactId }}",
+                  "role": "originator"
                 }
               ]
             }
@@ -47,27 +54,28 @@
         ],
         "onlineResource": [
           {
-            "uri": "http://thisisanexample.com",
-            "protocol": "",
-            "name": "",
-            "description": "",
-            "function": ""
+            "uri": "{{ resource.uri }}",
+            "protocol": "http",
+            "name": "Project website",
+            "description": "Web page with detailed information about the resource.",
+            "function": "information"
           }
         ]
       },
       "pointOfContact": [
         {
-          "contactId": "",
-          "role": ""
+          "contactId": "{{ organization.contactId }}",
+          "role": "pointOfContact"
         }
+        {{ contactref.ref(roles,[6,2,8],true) }}
       ],
-      "abstract": "",
-      "shortAbstract": "",
-      "status": "",
-      "hasMapLocation": true,
+      "abstract": "{{ resource.abstract }}",
+      "shortAbstract": "{{ resource.shortAbstract }}",
+      "status": "{{ resource.adiwg }}",
+      "hasMapLocation": {{ resource.features is empty ? 'false' : 'true'}},
       "hasDataAvailable": true,
-      "language": [""],
-      "purpose": "",
+      "language": ["eng; USA"],
+      {#"purpose": "",
       "credit": [""],
       "topicCategory": [""],
       "environmentDescription": "",
@@ -76,70 +84,38 @@
           "formatName": "",
           "version": ""
         }
-      ],
+      ],#}
+      {% if keywords %}
       "keyword": [
         {
-          "keyword": [""],
-          "keywordType": "",
-          "thesaurus": {
-            "title": "",
-            "date": [
+          "keyword": [
+            {% for kw in keywords %}
+                "{{ kw }}"{% if loop.last == false %},{% endif %}
+            {% endfor %}
+          ],
+          "keywordType": "theme",
+          "thesaurus":{
+            "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+            "date":[
               {
-                "date": "0000-00-00",
-                "dateType": ""
+                "date":"2013-04-01",
+                "dateType":"revision"
               }
             ],
-            "edition": "",
-            "responsibleParty": [
-              {
-                "contactId": "",
-                "role": ""
-              }
+            "edition":"Version 8.0.0",
+            "presentationForm":[
+              "documentDigital"
             ],
-            "presentationForm": [""],
-            "identifier": [
+            "onlineResource":[
               {
-                "identifier": "",
-                "type": "",
-                "authority": {
-                  "title": "",
-                  "date": [
-                    {
-                      "date": "0000-00-00",
-                      "dateType": ""
-                    }
-                  ],
-                  "responsibleParty": [
-                    {
-                      "contactId": "",
-                      "role": ""
-                    }
-                  ],
-                  "onlineResource": [
-                    {
-                      "uri": "http://thisisanexample.com",
-                      "protocol": "",
-                      "name": "",
-                      "description": "",
-                      "function": ""
-                    }
-                  ]
-                }
-              }
-            ],
-            "onlineResource": [
-              {
-                "uri": "http://thisisanexample.com",
-                "protocol": "",
-                "name": "",
-                "description": "",
-                "function": ""
+                "uri":"http://gcmd.nasa.gov/learn/keywords.html"
               }
             ]
           }
         }
       ],
-      "resourceMaintenance": [
+      {% endif %}
+      {#"resourceMaintenance": [
         {
           "maintenanceFrequency": "",
           "maintenanceNote": [""],
@@ -188,8 +164,8 @@
             "userNote": ""
           }
         ]
-      },
-      "taxonomy": {
+      },#}
+      {#"taxonomy": {
         "classificationSystem": [
           {
             "title": "",
@@ -270,13 +246,11 @@
             "taxonValue": ""
           }
         ]
-      },
+      },#}
       "spatialReferenceSystem": {
-        "name": [""],
-        "epsgNumber": [0],
-        "wkt": [""]
+        "epsgNumber": [4326]
       },
-      "spatialRepresentation": [""],
+      {#"spatialRepresentation": [""],
       "spatialResolution": [
         {
           "equivalentScale": 0
@@ -284,284 +258,46 @@
           "distance": 0,
           "uom": ""
         }
-      ],
+      ],#}
+      {% if resource.features %}
       "extent": [
         {
-          "description": "",
-          "geographicElement": [
+          "description":"Project bounding box",
+          "geographicElement":[
             {
-              "type": "Point",
-              "bbox": [0, 0, 0, 0],
-              "coordinates": [0, 0, 0],
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
-                }
-              }
-            }, {
-              "type": "LineString",
-              "bbox": [0, 0, 0, 0],
-              "coordinates": [
-                [0, 0, 0],
-                [0, 0, 0]
-              ],
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
-                }
-              }
-            }, {
-              "type": "Polygon",
-              "bbox": [0, 0, 0, 0],
-              "coordinates": [
-                [
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0]
-                ],
-                [
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0]
-                ]
-              ],
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
-                }
-              }
-            }, {
-              "type": "MultiPoint",
-              "bbox": [0, 0, 0, 0],
-              "coordinates": [
-                [0, 0, 0],
-                [0, 0, 0]
-              ],
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
-                }
-              }
-            }, {
-              "type": "MultiLineString",
-              "bbox": [0, 0, 0, 0],
-              "coordinates": [
-                [
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0]
-                ],
-                [
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0],
-                  [0, 0, 0]
-                ]
-              ],
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
-                }
-              }
-            }, {
-              "type": "MultiPolygon",
-              "bbox": [0, 0, 0, 0],
-              "coordinates": [
-                [
-                  [
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
-                  ],
-                  [
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
-                  ]
-                ],
-                [
-                  [
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
-                  ],
-                  [
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
-                  ]
-                ]
-              ],
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
-                }
-              }
-            }, {
-              "type": "GeometryCollection",
-              "geometries": []
-            }, {
-              "type": "Feature",
-              "id": "",
-              "bbox": [0, 0, 0, 0],
-              "geometry": {
-                "type": "Point",
-                "coordinates": [0, 0, 0]
+              "type":"Feature",
+              "bbox": {{ resource.bbox }},
+              "id": "boundingExtent",
+              "geometry":null,
+              "properties":{
+                "description":"Project bounding box"
               },
-              "geometry": {
-                "type": "LineString",
-                "coordinates": [
-                  [0, 0, 0],
-                  [0, 0, 0]
-                ]
-              },
-              "geometry": {
-                "type": "Polygon",
-                "coordinates": [
-                  [
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
-                  ],
-                  [
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0],
-                    [0, 0, 0]
-                  ]
-                ]
-              },
-              "crs": {
-                "type": "name",
-                "properties": {
-                  "name": ""
+              "crs":{
+                "type":"name",
+                "properties":{
+                  "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
                 }
-              },
-              "properties": {
-                "featureName": "",
-                "description": "",
-                "includesData": true,
-                "temporalElement": {
-                  "date": ["0000-00-00"],
-                  "timeInstant": [
-                    {
-                      "id": "",
-                      "description": "",
-                      "timePosition": "0000-00-00T00:00:00.0+00:00"
-                    }
-                  ],
-                  "timePeriod": [
-                    {
-                      "id": "",
-                      "description": "",
-                      "beginPosition": "0000-00-00T00:00:00.0+00:00",
-                      "endPosition": "0000-00-00T00:00:00.0+00:00"
-                    }
-                  ]
-                },
-                "verticalElement": [
-                  {
-                    "minimumValue": 0,
-                    "maximumValue": 0,
-                    "verticalCRSTitle": "",
-                    "verticalCRSUri": "http://thisisanexample.com"
-                  }
-                ],
-                "identifier": [
-                  {
-                    "identifier": "",
-                    "type": "",
-                    "authority": {
-                      "title": "",
-                      "date": [
-                        {
-                          "date": "0000-00-00",
-                          "dateType": ""
-                        }
-                      ],
-                      "responsibleParty": [
-                        {
-                          "contactId": "",
-                          "role": ""
-                        }
-                      ],
-                      "onlineResource": [
-                        {
-                          "uri": "http://thisisanexample.com",
-                          "protocol": "",
-                          "name": "",
-                          "description": "",
-                          "function": ""
-                        }
-                      ]
-                    }
-                  }
-                ],
-                "featureScope": "",
-                "featureAcquisitionMethod": ""
               }
-            }, {
-              "type": "FeatureCollection",
-              "id": "",
-              "bbox": [0, 0, 0, 0],
-              "properties": {
-                "name": "",
-                "description": "",
-                "includesData": true
-              },
-              "crs": {
-                "type": "link",
-                "properties": {
-                  "href": "http://thisisanexample.com",
-                  "type": ""
-                }
-              },
-              "features": []
             }
-          ],
-          "temporalElement": {
-            "date": ["0000-00-00"],
-            "timeInstant": [
-              {
-                "id": "",
-                "description": "",
-                "timePosition": "0000-00-00T00:00:00.0+00:00"
-              }
-            ],
-            "timePeriod": [
-              {
-                "id": "",
-                "description": "",
-                "beginPosition": "0000-00-00T00:00:00.0+00:00",
-                "endPosition": "0000-00-00T00:00:00.0+00:00"
-              }
-            ]
-          },
-          "verticalElement": [
+          ]
+        },{
+          "description":"Project locations",
+          "geographicElement":[
             {
-              "minimumValue": 0,
-              "maximumValue": 0,
-              "verticalCRSTitle": "",
-              "verticalCRSUri": "http://thisisanexample.com"
+              "type": "FeatureCollection",
+              "crs":{
+                "type":"name",
+                "properties":{
+                  "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
+                }
+              },
+              "features": {{ resource.features|raw }}
             }
           ]
         }
       ],
-      "dataQualityInfo": [
+      {% endif %}
+      {#"dataQualityInfo": [
         {
           "scope": "",
           "lineage": {
@@ -648,6 +384,6 @@
             ]
           }
         }
-      ],
+      ],#}
       "supplementalInfo": ""
     }
