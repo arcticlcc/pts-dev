@@ -22,7 +22,7 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.class_path' => __DIR__.'/../vendor/twig/twig/lib',
 ));
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'db.options'            => $app['dbOptions'],
+    'dbs.options'            => $app['dbOptions'],
     'db.dbal.class_path'    => __DIR__.'/../vendor/doctrine/dbal/lib',
     'db.common.class_path'  => __DIR__.'/../vendor/doctrine/common/lib',
 ));
@@ -77,6 +77,11 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
 $app['json'] = $app->share(function() {
 
     return new PTS\Service\JSON();
+});
+
+$app['adiwg'] = $app->share(function($app) {
+
+    return new PTS\Service\ADIwg($app);
 });
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {

@@ -26,78 +26,11 @@ class Project implements ControllerProviderInterface
 
         $controllers->get('project/{id}/metadata.{format}', function (Application $app, Request $request, $id, $format) {
             try{
-                $schemaid = $app['session']->get('schema');
-                $contacts = array();
-                $roles = array();
-
-                $pquery  = $app['idiorm']->getTable('metadataproject')->select('metadataproject.*');
-
-                if(strpos($id, '-') === FALSE) {
-                    $probject = $pquery->find_one($id);
-                } else {
-                    $probject = $pquery->where("projectcode", $id)->find_one();
-                }
-
-                if($probject){
-                    $project = $probject->as_array();
-                } else {
-                    throw new \Exception("Couldn't find a project with id = $id.");
-                };
-
-                //get LCC contact
-                $org = $app['idiorm']->getTable('metadatacontact')
-                    -> where('contactId', $project['orgid'])
-                    ->find_one()->as_array();
-
-                $contacts[] = $org;
-
-                //get other contacts for project
-                foreach ( $app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
-                    ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
-                    -> where('projectid', $project['projectid'])
-                    -> where_not_equal('contactId', $org['contactId'])
-                    ->find_many() as $object) {
-                        $contacts[] = $object->as_array();
-                    }
-
-                //get other project contact roles for project
-                foreach ( $app['idiorm']->getTable('projectcontact')
-                    ->select('projectcontact.*','roletype','adiwg')
-                    ->select('roletype')
-                    ->select('adiwg')
-                    ->join('roletype', array('projectcontact.roletypeid', '=', 'roletype.roletypeid'))
-                    -> where('projectid', $project['projectid'])
-                    ->find_many() as $object) {
-                        $roles[] = $object->as_array();
-                    }
-
-                $json = $app['twig']->render('metadata/project.json.twig', array(
-                    'metadataScope' => "project",
-                    'organization' => $org,
-                    'resource' => $project,
-                    'keywords' => array_filter(explode('|', $project['keywords'])),
-                    'contacts' => $contacts,
-                    'roles' => $roles
-                ));
+                $json = $app['adiwg']->getProject($id);
 
                 switch ($format) {
                     case 'xml':
-                        //write to temp file to support cross-platform
-                        $temp = tmpfile();
-                        fwrite($temp, $json);
-                        fseek($temp, 0);
-                        $meta = stream_get_meta_data($temp);
-                        exec("mdtranslator translate -o -w iso19115_2 ". $meta['uri'], $meta, $code);
-                        fclose($temp); // this removes the file
-                        $xml = json_decode($meta[0]);
-
-                        if($code > 0) {
-                            throw new \Exception("mdTranslator error.");
-                        } elseif (!is_object($xml) || !$xml->writerPass) {
-                            throw new \Exception("JSON did not validate.");
-                        }
-
-                        $out = $xml->writerOutput;
+                        $out = $app['adiwg']->translate($json);
                         break;
                     case 'json':
                     default:
