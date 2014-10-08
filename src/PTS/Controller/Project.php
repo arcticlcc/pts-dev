@@ -48,7 +48,41 @@ class Project implements ControllerProviderInterface
 
             return $response;
 
-        })->value('format', 'json');;
+        })->value('format', 'json');
+
+        $controllers->match('project/{id}/metadata/publish', function (Application $app, Request $request, $id) {
+            try{
+                $app['adiwg']->saveProject($id);
+
+                $json[] = array('success' => true);
+                $response = $app['json']->setData($json)->getResponse(true);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+
+                $response = $app['json']->setAll(null, 500, false, $exc->getMessage())->getResponse();
+            }
+
+            return $response;
+
+        })->method('GET|PUT|POST');
+
+        $controllers->match('project/{id}/metadata/publish', function (Application $app, Request $request, $id) {
+            try{
+                $app['adiwg']->deleteProject($id);
+
+                $json[] = array('success' => true);
+                $response = $app['json']->setData($json)->getResponse(true);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+
+                $response = $app['json']->setAll(null, 500, false, $exc->getMessage())->getResponse();
+            }
+
+            return $response;
+
+        })->method('DELETE');
 
         //TODO: make rest variables singular
         $controllers->get('project/{id}/contacts', function (Application $app, Request $request, $id) {

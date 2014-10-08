@@ -12,6 +12,7 @@ namespace PTS\Service;
 class ADIwg {
 
     private $app;
+    protected $project;
 
     public function __construct($app) {
         $this->app = $app;
@@ -31,6 +32,7 @@ class ADIwg {
 
         if ($probject) {
             $project = $probject->as_array();
+            $this->project = $project;
         } else {
             throw new \Exception("Couldn't find a project with id = $id.");
         };
@@ -71,18 +73,32 @@ class ADIwg {
 
     }
 
-    function saveProject() {
+    function saveProject($id) {
+        $conn = $this->app['dbs'][$this->app['session']->get('schema')];
         $sql = "SELECT * FROM project WHERE projectid = ?";
-        $project = $this->app['dbs']['sqlite']->fetchAssoc($sql, array((int) $id));
 
+        $project = $conn->fetchAssoc($sql, array((int) $id));
+
+        $json = $this->getProject($id);
+        $xml = $this->translate($json);
+        $data = array(
+                'uuid' => $this->project['projectIdentifier'],
+                'projectcode' => $this->project['projectcode'],
+                'json' => $json,
+                'xml' => $xml
+            );
+
+        if($project) {
+            $conn->update('project', $data, array('projectid' => $id));
+        } else {
+            $data['projectid'] = $id;
+            $conn->insert('project', $data);
+        }
     }
 
-    function deleteProject() {
-
-    }
-
-    function updateProject() {
-
+    function deleteProject($id) {
+        $conn = $this->app['dbs'][$this->app['session']->get('schema')];
+        $conn->delete('project', array('projectid' => $id));
     }
 
     function translate($json, $format='iso19115_2') {
