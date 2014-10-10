@@ -130,19 +130,22 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
      * Preview button click handler.
      */
     clickPreview: function(btn) {
-        var prev = this.getMetadataPreview(), id = prev.up('projectwindow').projectId, tab = this.getProjectMetadata(), openBtn = tab.down('button[action=openpreview]');
+        var prev = this.getMetadataPreview(),
+            el = prev.getEl(),
+            id = prev.up('projectwindow').projectId,
+            tab = this.getProjectMetadata(),
+            openBtn = tab.down('button[action=openpreview]');
 
         tab.getLayout().setActiveItem(1);
-        prev.setLoading(true);
+        el.mask('Generating Preview...');
         //set the preview type
         openBtn.previewType = btn.action;
 
-        prev.getEl().child('code').load({
+        el.child('code').load({
             url: '/project/' + id + '/metadata.' + btn.action + '?pretty=1',
             renderer: function(loader, resp) {
                 loader.getTarget().update(hljs.highlight(btn.action, resp.responseText).value);
-                prev.setLoading(false);
-
+                el.unmask();
             }
         });
     },
