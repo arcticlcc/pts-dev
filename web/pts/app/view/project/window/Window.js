@@ -8,6 +8,7 @@ Ext.define('PTS.view.project.window.Window', {
     requires: [
         'PTS.view.project.form.ProjectForm',
         'PTS.view.project.window.ProjectContacts',
+        'PTS.view.project.window.ProjectMetadata',
         'PTS.view.project.window.ProjectAgreements',
         'PTS.view.controls.CommentEditGrid',
         'PTS.view.project.window.ProjectKeywords',
@@ -141,6 +142,9 @@ Ext.define('PTS.view.project.window.Window', {
                                     ]
                                 }
                             ]
+                        },
+                        {
+                            xtype: 'projectmetadata'
                         }
                     ]
                 }

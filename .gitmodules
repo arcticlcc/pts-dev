@@ -19,3 +19,6 @@
 [submodule "web/pts/lib/openlayers"]
 	path = web/pts/lib/openlayers
 	url = https://github.com/openlayers/openlayers.git
+[submodule "web/pts/lib/highlight"]
+	path = web/pts/lib/highlight
+	url = https://github.com/jlblcc/highlight.js.git

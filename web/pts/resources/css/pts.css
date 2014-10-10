@@ -128,6 +128,18 @@
 .pts-menu-exclamation {
     background-image: url("../images/icons/exclamation.png");
     }
+.pts-menu-publish {
+    background-image: url("../images/icons/page_white_lightning.png");
+    }
+.pts-menu-unpublish {
+    background-image: url("../images/icons/page_white_delete.png");
+    }
+.pts-menu-code {
+    background-image: url("../images/icons/page_white_code.png");
+    }
+.pts-menu-json {
+    background-image: url("../images/icons/page_white_curly.png");
+    }
 .pts-menu-user {
     background-image: url("../images/icons/user.png");
     }

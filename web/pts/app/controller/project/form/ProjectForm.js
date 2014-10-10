@@ -53,6 +53,13 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
     },
 
     /**
+     * Load project event.
+     */
+    onLoadProject: function(record) {
+        this.application.fireEvent('loadproject', record);
+    },
+
+    /**
      * Save project event.
      */
     onSaveProject: function(record, op) {
@@ -167,7 +174,8 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
      * Load project.
      */
     loadRecord: function(id) {
-        var model = this.getProjectModel(),
+        var ctl = this,
+            model = this.getProjectModel(),
             form = this.getProjectForm();
 
         if(id) {
@@ -198,6 +206,7 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
                     }
                     itemDetail.setTitle(rec.get('type') + ": " + rec.get('task'));
                     itemDetail.enable();*/
+                    ctl.onLoadProject(model);
                 },
                 failure: function(model, op) {
                     Ext.MessageBox.show({
@@ -211,6 +220,7 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
             });
         } else{
             form.loadRecord(Ext.create(model));
+            ctl.onLoadProject(form.getForm().getRecord());
         }
     }
 });
