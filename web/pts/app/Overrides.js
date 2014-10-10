@@ -14,7 +14,8 @@ Ext.define('PTS.Overrides', {
         'Ext.Array',
         'Ext.util.Sorter',
         'Ext.data.TreeStore',
-        'Ext.grid.Scroller'
+        'Ext.grid.Scroller',
+        'Ext.button.Cycle'
 
     ]
 }, function() {
@@ -419,6 +420,37 @@ Ext.define('PTS.Overrides', {
             if (me.scrollEl) {
                 me.mun(me.scrollEl, 'scroll', me.onElScroll, me);
                 me.mon(me.scrollEl, 'scroll', me.onElScroll, me);
+            }
+        }
+    });
+
+    //Fixes Ext.button.Cycle suppressEvent
+    //see http://www.sencha.com/forum/showthread.php?p=1033531&viewfull=1#post1033531
+    Ext.override(Ext.CycleButton, {
+        setActiveItem: function(item, suppressEvent) {
+            var me = this;
+
+            if (!Ext.isObject(item)) {
+                item = me.menu.getComponent(item);
+            }
+            if (item) {
+                if (!me.rendered) {
+                    me.text = me.getButtonText(item);
+                    me.iconCls = item.iconCls;
+                } else {
+                    me.setText(me.getButtonText(item));
+                    me.setIconCls(item.iconCls);
+                }
+                me.activeItem = item;
+                if (!item.checked) {
+                    item.setChecked(true, suppressEvent);
+                }
+                if (me.forceIcon) {
+                    me.setIconCls(me.forceIcon);
+                }
+                if (!suppressEvent) {
+                    me.fireEvent('change', me, item);
+                }
             }
         }
     });

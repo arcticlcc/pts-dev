@@ -205,6 +205,11 @@ Ext.application({
             PTS.app.showError(err.msg);
         };
 
+        Ext.Ajax.defaultHeaders = {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json'
+        };
+
         //Handle Ajax exceptions globally
         //TODO: Make Ajax exception handling better, remove redundant code
         Ext.Ajax.on('requestexception',function(conn, response, op){
@@ -212,9 +217,10 @@ Ext.application({
 
             //set the global app error
             PTS.app.setError(txt.message);
+
             //only fire the global handler if no failure handler is passed
             //we have to check for regular ajax and data operation callbacks
-            if(undefined === op.failure && undefined === op.operation.failure) {
+            if(undefined === op.failure && (undefined === op.operation || undefined === op.operation.failure)) {
                 /*Ext.MessageBox.show({
                    title: 'Error',
                    msg: txt.message,

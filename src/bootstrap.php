@@ -129,19 +129,24 @@ if ('cli' !== php_sapi_name()) {
 
 // Error handling
 $app->error(function (\Exception $ex, $code) use ($app) {
+    $json = $app["request"]->server->get('HTTP_ACCEPT') == 'application/json';
 
     if ($app['debug']) {
         return;
     }
 
-    if (404 == $code) {
-        return new Response(file_get_contents(__DIR__.'/../web/404.html'));
+    if($json) {
+        $app['monolog']->addError($ex->getMessage());
+         return $response = $app['json']->setAll(null, $code, false, "Sorry, there was an error. It's been logged and we'll look into it.")->getResponse();
     } else {
-        // Do something more sophisticated here (logging etc.)
-        return new Response(file_get_contents(__DIR__.'/../web/500.html'));
-        //return new Response('<h1>Error!</h1>');
+        if (404 == $code) {
+            return new Response(file_get_contents(__DIR__.'/../web/404.html'));
+        } else {
+            // Do something more sophisticated here (logging etc.)
+            return new Response(file_get_contents(__DIR__.'/../web/500.html'));
+            //return new Response('<h1>Error!</h1>');
+        }
     }
-
 });
 
 return $app;
