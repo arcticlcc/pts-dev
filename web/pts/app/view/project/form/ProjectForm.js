@@ -231,6 +231,21 @@ Ext.define('PTS.view.project.form.ProjectForm', {
                             anchor: '100%'
                         }
                     ]
+                },
+                {
+                    xtype: 'fieldset',
+                    collapsible: true,
+                    title: 'Supplemental',
+                    anchor: '-15',
+                    items: [
+                        {
+                            xtype: 'textareafield',
+                            name: 'supplemental',
+                            grow: true,
+                            growMin: 80,
+                            anchor: '100%'
+                        }
+                    ]
                 }
             ]
         });
