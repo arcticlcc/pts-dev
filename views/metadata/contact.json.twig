@@ -1,7 +1,7 @@
 {% autoescape 'json' %}
     {
       "contactId": "{{ contact.contactId }}",
-      "individualName": "{{ contact.individualName }}",
+      {% if contact.individualName %}"individualName": "{{ contact.individualName }}",{% endif %}
       "organizationName": "{{ contact.organizationName }}",
       "positionName": "{{ contact.positionName }}"
       {% if contact.uri %}
@@ -28,7 +28,7 @@
       "address": {
         {% if not contact.deliveryPoint1 is null %}
           {% set comma = true %}
-        "deliveryPoint": ["{{ contact.deliveryPoint1 }}","{{ contact.deliveryPoint2 }}"],
+        "deliveryPoint": ["{{ contact.deliveryPoint1 }}"{% if not contact.deliveryPoint2 is null %},"{{ contact.deliveryPoint2 }}"{% endif %}],
         "city": "{{ contact.city }}",
         "administrativeArea": "{{ contact.administrativeArea }}",
         "postalCode": "{{ contact.postalCode }}",
