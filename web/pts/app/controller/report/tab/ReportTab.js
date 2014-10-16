@@ -106,6 +106,18 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                         );
                     });
                 }
+                if(data.filterBar) {
+                    if(tab.dockedItems === undefined) {
+                        tab.dockedItems = [];
+                    }
+                    tab.dockedItems.push({
+                        xtype: 'filterbar',
+                        searchStore: tab.store,
+                        dock: 'bottom'
+                    });
+
+                    tab.store.remoteFilter = true;
+                }
                 rp.add(tab);
             }
         }

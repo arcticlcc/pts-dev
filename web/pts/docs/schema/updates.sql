@@ -208,3 +208,150 @@ ALTER TABLE report.noticesent
   OWNER TO bradley;
 GRANT ALL ON TABLE report.noticesent TO bradley;
 GRANT SELECT ON TABLE report.noticesent TO pts_read;     
+--sc position
+CREATE OR REPLACE VIEW alcc.alccsteeringcommittee AS
+ SELECT person.contactid,
+    person.firstname,
+    person.lastname,
+    person.middlename,
+    person.suffix,
+    ccg.groupid AS prigroupid,
+    cg.acronym AS priacronym,
+    cg.name AS prigroupname,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail,
+    position.title
+   FROM alcc.person
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM alcc.phone
+          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM alcc.eaddress
+          WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
+     LEFT JOIN ( SELECT contactcontactgroup.groupid,
+            contactcontactgroup.contactid,
+            contactcontactgroup.positionid,
+            contactcontactgroup.contactcontactgroupid,
+            contactcontactgroup.priority,
+            row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+           FROM alcc.contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+     LEFT JOIN alcc.contactgroup cg ON cg.contactid = ccg.groupid
+     JOIN alcc.contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42 AND sc.positionid IN (85, 96)
+     JOIN position ON (sc.positionid = position.positionid)
+  ORDER BY person.lastname;
+
+CREATE OR REPLACE VIEW walcc.walccsteeringcommittee AS
+ SELECT person.contactid,
+    person.firstname,
+    person.lastname,
+    person.middlename,
+    person.suffix,
+    ccg.groupid AS prigroupid,
+    cg.acronym AS priacronym,
+    cg.name AS prigroupname,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail,
+    position.title
+   FROM walcc.person
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM walcc.phone
+          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM walcc.eaddress
+          WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
+     LEFT JOIN ( SELECT contactcontactgroup.groupid,
+            contactcontactgroup.contactid,
+            contactcontactgroup.positionid,
+            contactcontactgroup.contactcontactgroupid,
+            contactcontactgroup.priority,
+            row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+           FROM walcc.contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+     LEFT JOIN walcc.contactgroup cg ON cg.contactid = ccg.groupid
+     JOIN walcc.contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42 AND sc.positionid IN (85, 96)
+     JOIN position ON (sc.positionid = position.positionid)
+  ORDER BY person.lastname;
+
+CREATE OR REPLACE VIEW dev.devsteeringcommittee AS
+ SELECT person.contactid,
+    person.firstname,
+    person.lastname,
+    person.middlename,
+    person.suffix,
+    ccg.groupid AS prigroupid,
+    cg.acronym AS priacronym,
+    cg.name AS prigroupname,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail,
+    position.title
+   FROM dev.person
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM dev.phone
+          WHERE phone.phonetypeid = 3) p ON person.contactid = p.contactid AND p.rank = 1
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM dev.eaddress
+          WHERE eaddress.eaddresstypeid = 1) e ON person.contactid = e.contactid AND e.rank = 1
+     LEFT JOIN ( SELECT contactcontactgroup.groupid,
+            contactcontactgroup.contactid,
+            contactcontactgroup.positionid,
+            contactcontactgroup.contactcontactgroupid,
+            contactcontactgroup.priority,
+            row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
+           FROM dev.contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
+     LEFT JOIN dev.contactgroup cg ON cg.contactid = ccg.groupid
+     JOIN dev.contactcontactgroup sc ON person.contactid = sc.contactid AND sc.groupid = 42 AND sc.positionid IN (85, 96)
+     JOIN position ON (sc.positionid = position.positionid)
+  ORDER BY person.lastname;

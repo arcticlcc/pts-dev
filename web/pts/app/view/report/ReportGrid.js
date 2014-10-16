@@ -9,7 +9,9 @@ Ext.define('PTS.view.report.ReportGrid', {
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid',
         'Ext.ux.grid.GrabField',
-        'Ext.ux.grid.PagingToolbarResizer'
+        'Ext.ux.grid.PagingToolbarResizer',
+        'Ext.ux.grid.FilterBar'
+
     ],
 
     autoScroll: true,

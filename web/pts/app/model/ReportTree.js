@@ -32,6 +32,9 @@ Ext.define('PTS.model.ReportTree', {
             name: 'summary', type: 'myboolean', defaultValue: false
         },
         {
+            name: 'filterBar', type: 'myboolean', defaultValue: false
+        },
+        {
             name: 'pbarPlugins', type: 'auto'
         }
     ],

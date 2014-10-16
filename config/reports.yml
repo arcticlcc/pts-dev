@@ -17,6 +17,7 @@ reports:
           - {text: Ext, dataIndex: priextension}
           - {text: Position, dataIndex: title}
         fields: [firstname, lastname, prigroupname, priemail, priareacode, priphnumber, priextension, title]
+        filterBar: true
         limit: 30
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
