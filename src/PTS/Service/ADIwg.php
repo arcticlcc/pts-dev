@@ -107,10 +107,10 @@ class ADIwg {
         fwrite($temp, $json);
         fseek($temp, 0);
         $meta = stream_get_meta_data($temp);
-        exec("mdtranslator translate -o -w $format " . $meta['uri'], $meta, $code);
+        exec("mdtranslator translate -o -w $format " . $meta['uri'], $out, $code);
         fclose($temp);
-        // this removes the file
-        $xml = json_decode($meta[0]);
+
+        $xml = empty($out) ? FALSE : json_decode($out[0]);
 
         if ($code > 0) {
             throw new \Exception("mdTranslator error.");

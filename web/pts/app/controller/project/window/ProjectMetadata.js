@@ -93,7 +93,9 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
      * Load project event.
      */
     onLoadProject: function(record) {
-        var idx = !!(record.get('exportmetadata')) ? 1 : 0, btn = this.getProjectMetadata().down('#publishBtn'), items = btn.menu.items;
+        var idx = !!(record.get('exportmetadata')) ? 1 : 0,
+            btn = this.getProjectMetadata().down('#publishBtn'),
+            items = btn.menu.items;
 
         btn.setActiveItem(items.get(idx), true);
     },
@@ -180,13 +182,17 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
                         Ext.create('widget.uxNotification', {
                             title: 'Error',
                             iconCls: 'ux-notification-icon-error',
-                            html: 'There was an error saving the project.</br>Error:' + PTS.app.getError()
+                            html: 'The metadata was ' + action === 'DELETE' ? 'unpublished' : 'published. ' +
+                                'However, there was an error saving the project.</br>Error:' + PTS.app.getError()
                         }).show();
                     }
                 });
 
             },
             failure: function(response) {
+                var items = btn.menu.items;
+                //reset the button
+                btn.setActiveItem(items.get(action === 'DELETE' ? 1 : 0), true);
                 Ext.create('widget.uxNotification', {
                     title: 'Error',
                     iconCls: 'ux-notification-icon-error',

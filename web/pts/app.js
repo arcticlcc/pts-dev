@@ -73,8 +73,10 @@ Ext.application({
      * Retrieve the last application error.
      * @return {String} The last recorded error.
      */
-    getError: function() {
-        return this.lastError;
+    getError: function(full) {
+        var error = this.lastError;
+
+        return (full || (error.length < 300)) ? error : error.substr(0,300) + '...';
     },
 
     /**
