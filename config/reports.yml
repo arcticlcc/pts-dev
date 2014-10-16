@@ -6,16 +6,24 @@ reports:
     children:
       - text: LCC Steering Committee
         url: ../alccsteeringcommittee
-        descrip: Lists members of the ALCC Steering Committee
-        xtype: personlist
-        model: PTS.model.Person
+        descrip: Lists members of the LCC Steering Committee
+        cols:
+          - {text: First, dataIndex: firstname}
+          - {text: Last, dataIndex: lastname}
+          - {text: Primary Group, dataIndex: prigroupname}
+          - {text: E-mail, dataIndex: priemail}
+          - {text: Area Code, dataIndex: priareacode}
+          - {text: Phone Number, dataIndex: priphnumber}
+          - {text: Ext, dataIndex: priextension}
+          - {text: Position, dataIndex: title}
+        fields: [firstname, lastname, prigroupname, priemail, priareacode, priphnumber, priextension, title]
         limit: 30
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
-            cfg: {text: e-mail, dataindex: priemail}
+            cfg: {text: e-mail, dataindex: priemail, iconCls: pts-menu-email, tooltip: Get all visible e-mail addresses, delimiter: ", \n", windowTitle: E-mail addresses}
       - text: LCC Staff
         url: ../alccstaff
-        descrip: Lists staff of the ALCC
+        descrip: Lists staff of the LCC
         cols:
           - {text: First, dataIndex: firstname}
           - {text: Last, dataIndex: lastname}
