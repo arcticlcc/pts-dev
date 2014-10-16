@@ -216,7 +216,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
         //get agreement id of drop target
         agreeDropId = view.getAgreementId(overModel);
 
-        if(same = (agreeCopyId === agreeDropId)) {
+        if((same = (agreeCopyId === agreeDropId))) {
             msg = 'Are you sure you want to copy this Deliverable? <br/>'+
                 'The original will be cancelled.';
         } else{

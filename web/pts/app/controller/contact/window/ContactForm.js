@@ -196,7 +196,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         if(save) {
             itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
 
-            if(itmRec = store.getById(itmId)) {
+            if((itmRec = store.getById(itmId))) {
                 //load the new data into existing model
                     itmRec.beginEdit();
                         Ext.each(fieldset.query('field'), function() {
@@ -228,7 +228,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             itmId = parseInt(field.getValue(), 10);
             //we grab the first record here
             //we assume the first record is the primary group
-            if(itmRec = store.getAt(0)) {
+            if((itmRec = store.getAt(0))) {
                 //load the new data into existing model
                     itmRec.beginEdit();
                             itmRec.set('groupid', field.getValue());
@@ -255,11 +255,11 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
 
             itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
 
-            if(itmRec = store.getById(itmId)) {
+            if((itmRec = store.getById(itmId))) {
                 store.remove(itmRec);
             }
             //disable the checkbox
-            if(del = fieldset.down('checkboxfield#delete')) {
+            if((del = fieldset.down('checkboxfield#delete'))) {
                 del.disable();
             }
     },
@@ -271,7 +271,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var itmRec;
 
         //we just remove the first record
-        if(itmRec = store.getAt(0)) {
+        if((itmRec = store.getAt(0))) {
             store.remove(itmRec);
         }
     },
@@ -333,7 +333,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         },this);
 
         //handle parent group for contactgroups
-        if(fieldset = panel.down('field#parentGroup')) {
+        if((fieldset = panel.down('field#parentGroup'))) {
             store = record.contactcontactgroups();
 
             if(null === fieldset.getValue() && fieldset.isDirty()) {
@@ -625,13 +625,13 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         //Allow management of additional addresses & phone#s
         if(model.addresses().count()) {//load addresses
             //mailing address
-            if(addRec = model.addresses().findRecord( 'addresstypeid',1)) {
+            if((addRec = model.addresses().findRecord( 'addresstypeid',1))) {
                 addSet = form.down('fieldset#mailAddress');
                 addCbx = addSet.down('checkbox[name=mailingCbx]');
                 this.loadFieldSet(addRec, addSet, addCbx);
             }
             //physical address
-            if(addRec = model.addresses().findRecord( 'addresstypeid',2)) {
+            if((addRec = model.addresses().findRecord( 'addresstypeid',2))) {
                 addSet = form.down('fieldset#physicalAddress');
                 addCbx = addSet.down('checkbox[name=physicalCbx]');
                 this.loadFieldSet(addRec, addSet, addCbx);
@@ -641,7 +641,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         if(model.phones().count()) {//load phones
             addCbx = form.down('checkbox[name=phoneCbx]');
             Ext.each(phone, function(itm){
-                if(addRec = model.phones().findRecord( 'phonetypeid',itm.val)) {
+                if((addRec = model.phones().findRecord( 'phonetypeid',itm.val))) {
                     addSet = form.down('fieldcontainer#' + itm.type + 'Phone');
                     this.loadFieldSet(addRec, addSet, addCbx);
                 }
@@ -650,15 +650,15 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
 
         if(model.eaddresses().count()) {//load electronic addresses
             Ext.each(eaddress, function(itm){
-                if(addRec = model.eaddresses().findRecord( 'eaddresstypeid',itm.val)) {
+                if((addRec = model.eaddresses().findRecord( 'eaddresstypeid',itm.val))) {
                     addSet = form.down('fieldcontainer#' + itm.type + 'Address');
                     this.loadFieldSet(addRec, addSet);
                 }
             },this);
         }
 
-        if(addSet = form.down('field#parentGroup')) {//load primary parent group
-            if(addRec = model.contactcontactgroups().getAt(0)) {
+        if((addSet = form.down('field#parentGroup'))) {//load primary parent group
+            if((addRec = model.contactcontactgroups().getAt(0))) {
                 //addRec = model.contactcontactgroups().getAt(0);
                 //addSet = form.down('field#parentGroup');
                 addSet.setValue(addRec.get('groupid'));
