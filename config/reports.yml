@@ -1,42 +1,54 @@
 reports:
   - text: Contact Reports
-    descrip: Reports associated with Persons and Groups
+    qtip: Reports associated with Persons and Groups
     iconCls: folder
     leaf: false
     children:
       - text: LCC Steering Committee
         url: ../alccsteeringcommittee
-        descrip: Lists members of the LCC Steering Committee
+        qtip: Lists members of the LCC Steering Committee
         cols:
           - {text: First, dataIndex: firstname}
           - {text: Last, dataIndex: lastname}
-          - {text: Primary Group, dataIndex: prigroupname}
-          - {text: E-mail, dataIndex: priemail}
-          - {text: Area Code, dataIndex: priareacode}
-          - {text: Phone Number, dataIndex: priphnumber}
-          - {text: Ext, dataIndex: priextension}
-          - {text: Position, dataIndex: title}
+          - {text: Primary Group, dataIndex: prigroupname, flex: 2}
+          - {text: E-mail, dataIndex: priemail, flex: 1}
+          - {text: Phone, columns: [{text: Area Code, dataIndex: priareacode},{text: Number, dataIndex: priphnumber},{text: Ext, dataIndex: priextension}]}
+          - {text: Position, dataIndex: title, flex: 1}
         fields: [firstname, lastname, prigroupname, priemail, priareacode, priphnumber, priextension, title]
         filterBar: true
+        limit: 40
+        pbarPlugins:
+          - type: Ext.ux.grid.GrabField
+            cfg: {text: e-mail, dataindex: priemail, iconCls: pts-menu-email, tooltip: Get all visible e-mail addresses, delimiter: ", \n", windowTitle: E-mail addresses}
+      - text: Project Admins
+        url: ../projectadmin
+        qtip: Contacts serving in an admin role for projects (i.e. Financial Officer, Primary Contact, Principal Investigator, Grants Admin).
+        cols:
+          - {text: First, dataIndex: firstname}
+          - {text: Last, dataIndex: lastname}
+          - {text: Primary Group, dataIndex: prigroupname, flex: 2}
+          - {text: E-mail, dataIndex: priemail, flex: 1}
+          - {text: Phone, columns: [{text: Area Code, dataIndex: priareacode},{text: Number, dataIndex: priphnumber},{text: Ext, dataIndex: priextension}]}
+        fields: [firstname, lastname, prigroupname, priemail, priareacode, priphnumber, priextension]
         limit: 30
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
             cfg: {text: e-mail, dataindex: priemail, iconCls: pts-menu-email, tooltip: Get all visible e-mail addresses, delimiter: ", \n", windowTitle: E-mail addresses}
       - text: LCC Staff
         url: ../alccstaff
-        descrip: Lists staff of the LCC
+        qtip: Lists staff of the LCC
         cols:
           - {text: First, dataIndex: firstname}
           - {text: Last, dataIndex: lastname}
         fields: [firstname, lastname]
   - text: Project Reports
-    descrip: Reports associated with Projects
+    qtip: Reports associated with Projects
     iconCls: folder
     leaf: false
     children:
       - text: Short Project Summary
         url: ../shortprojectsummary
-        descrip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract
+        qtip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract
         cols:
           - {text: Project, dataIndex: projectcode}
           - {text: Status, dataIndex: status}
@@ -48,7 +60,7 @@ reports:
         fields: [projectcode, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
       - text: Long Project Summary
         url: ../longprojectsummary
-        descrip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract, funding
+        qtip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract, funding
         cols:
           - {text: Project, dataIndex: projectcode}
           - {text: UUID, dataIndex: uuid, hidden: true}
@@ -68,7 +80,7 @@ reports:
         fields: [projectcode, uuid, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract, allocated, invoiced, difference, leveraged, total]
       - text: Project Keywords
         url: ../projectkeywords
-        descrip: Lists keywords for each project
+        qtip: Lists keywords for each project
         cols:
           - {text: Project, dataIndex: projectcode}
           - {text: Short Title, dataIndex: shorttitle, flex: 1}
@@ -80,7 +92,7 @@ reports:
             cfg: {text: Keywords, iconCls: pts-menu-key, dataindex: keywords, tooltip: 'Get a list of all visible keywords', windowTitle: 'Project Keywords'}
       - text: Project Agreement Numbers
         url: ../projectagreementnumbers
-        descrip: Lists agreement numbers for each project
+        qtip: Lists agreement numbers for each project
         cols:
           - {text: Project, dataIndex: projectcode}
           - {text: Short Title, dataIndex: shorttitle, flex: 1}
@@ -89,7 +101,7 @@ reports:
         fields: [projectcode, shorttitle, agreementnumber, agreementtitle]
       - text: National Project Catalog
         url: ../projectcatalog
-        descrip: Data for reporting to the Simple National Project Catalog
+        qtip: Data for reporting to the Simple National Project Catalog
         cols:
           - {text: LCC Name, dataIndex: lccname, flex: 1, hidden: true}
           - {text: Id, dataIndex: id, flex: 1, hidden: false}
@@ -124,13 +136,13 @@ reports:
           - {text: Comments, dataIndex: comments, flex: 1, hidden: true}
         fields: [lccname,id,ptitle,description,pstatus,pstart,pend,purl,leadcontact,leadorg,partnerorg,endusers,fiscalyears,cofundlcc1,cofundlcc2,scibaseq,lccfundall,lccfundby,matchfundall,matchfundby,matchfundnote,category1,category2,category3,deliver1,deliver2,deliver3,subject,geog,congdist,comments]
   - text: Deliverable Reports
-    descrip: Reports associated with Deliverables
+    qtip: Reports associated with Deliverables
     iconCls: folder
     leaf: false
     children:
       - text: Overdue/Due Soon Deliverables
         url: ../noticesent
-        descrip: Lists deliverables either overdue or due soon(30 days) and notice status
+        qtip: Lists deliverables either overdue or due soon(30 days) and notice status
         cols:
           - {text: Due Date, dataIndex: duedate}
           - {text: Title, dataIndex: title, flex: 1}
@@ -150,13 +162,13 @@ reports:
           - {text: Staff Comments, dataIndex: staffcomments, flex: 2, hidden:false}
         fields: [duedate, title, description, lastnotice, datesent, startdate, enddate, projectcode, project, contact, email, fofficer, foemail, dayspastdue, status, agreementnumber, staffcomments]
   - text: Funding Reports
-    descrip: Reports detailing funding activity
+    qtip: Reports detailing funding activity
     iconCls: folder
     leaf: false
     children:
       - text: Project Funding
         url: ../projectfunding
-        descrip: Lists allocated, invoiced, leveraged, and total(allocated + leveraged) funding for each project.
+        qtip: Lists allocated, invoiced, leveraged, and total(allocated + leveraged) funding for each project.
         cols:
           - {text: Project, dataIndex: projectcode}
           - {text: Title, dataIndex: title, flex: 1}

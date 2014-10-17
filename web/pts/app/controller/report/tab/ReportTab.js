@@ -82,7 +82,10 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                     itemId: itemId,
                     closable: true,
                     title: data.text,
-                    store: Ext.create('Ext.data.Store', storecfg)
+                    store: Ext.create('Ext.data.Store', storecfg),
+                    tabConfig: {
+                        tooltip: data.qtip
+                    }
                 };
                 if(data.cols) {
                     Ext.each(data.cols, function(c) {

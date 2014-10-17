@@ -42,7 +42,7 @@ Ext.define('PTS.view.report.ReportGrid', {
                         }*/
                     }),
                     Ext.create('Ext.ux.grid.SaveGrid', {}),
-                    Ext.create('Ext.ux.grid.PagingToolbarResizer', {options : [ 25, 50, 100 ] })
+                    Ext.create('Ext.ux.grid.PagingToolbarResizer', {options : [ 25, 50, 100, 200 ] })
                 ])
             }
         );
