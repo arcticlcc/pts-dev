@@ -29,7 +29,9 @@ reports:
           - {text: Primary Group, dataIndex: prigroupname, flex: 2}
           - {text: E-mail, dataIndex: priemail, flex: 1}
           - {text: Phone, columns: [{text: Area Code, dataIndex: priareacode},{text: Number, dataIndex: priphnumber},{text: Ext, dataIndex: priextension}]}
-        fields: [firstname, lastname, prigroupname, priemail, priareacode, priphnumber, priextension]
+          - {text: Project Active?, dataIndex: active}
+        fields: [firstname, lastname, prigroupname, priemail, priareacode, priphnumber, priextension, {name: active, type: string}]
+        filterBar: true
         limit: 30
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
