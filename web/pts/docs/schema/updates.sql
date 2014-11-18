@@ -1190,3 +1190,166 @@ CREATE OR REPLACE VIEW projectfunding AS
              JOIN walcc.modification modification_1 USING (modificationid))
           WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))) leveraged USING (projectid))
   ORDER BY project.fiscalyear, project.number;
+
+SET search_path = alcc, pg_catalog;
+
+CREATE VIEW fundingtotals AS
+    SELECT DISTINCT mod.fiscalyear,
+    COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) AS allocated,
+    COALESCE(invoice.amount, 0.00) AS invoiced,
+    (COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference,
+    COALESCE(leveraged.leveraged, 0.00) AS leveraged,
+    (COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00)) AS total
+   FROM (((( SELECT modification.modificationid,
+            modification.projectid,
+            modification.personid,
+            modification.modtypeid,
+            modification.title,
+            modification.description,
+            modification.modificationcode,
+            modification.effectivedate,
+            modification.startdate,
+            modification.enddate,
+            modification.datecreated,
+            modification.parentmodificationid,
+            modification.shorttitle,
+            common.getfiscalyear(modification.startdate) AS fiscalyear
+           FROM modification) mod
+     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(invoice_1.amount) AS amount
+           FROM ((invoice invoice_1
+             JOIN funding funding_1 USING (fundingid))
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (funding_1.fundingtypeid = 1)
+          GROUP BY common.getfiscalyear(modification_1.startdate)) invoice USING (fiscalyear))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(funding_1.amount) AS leveraged
+           FROM (funding funding_1
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))
+          GROUP BY common.getfiscalyear(modification_1.startdate)) leveraged USING (fiscalyear))
+  ORDER BY mod.fiscalyear;
+
+CREATE OR REPLACE VIEW projectagreementnumbers AS
+    SELECT common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,
+    project.shorttitle,
+    modification.modificationcode AS agreementnumber,
+    modification.title AS agreementtitle,
+    modification.startdate,
+    modification.enddate
+   FROM ((project
+     JOIN contactgroup ON ((project.orgid = contactgroup.contactid)))
+     JOIN modification USING (projectid))
+  WHERE ((modification.modificationcode IS NOT NULL) AND (modification.modtypeid <> ALL (ARRAY[4, 9, 10])))
+  ORDER BY project.fiscalyear, project.number;
+
+SET search_path = dev, pg_catalog;
+
+CREATE VIEW fundingtotals AS
+    SELECT DISTINCT mod.fiscalyear,
+    COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) AS allocated,
+    COALESCE(invoice.amount, 0.00) AS invoiced,
+    (COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference,
+    COALESCE(leveraged.leveraged, 0.00) AS leveraged,
+    (COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00)) AS total
+   FROM (((( SELECT modification.modificationid,
+            modification.projectid,
+            modification.personid,
+            modification.modtypeid,
+            modification.title,
+            modification.description,
+            modification.modificationcode,
+            modification.effectivedate,
+            modification.startdate,
+            modification.enddate,
+            modification.datecreated,
+            modification.parentmodificationid,
+            modification.shorttitle,
+            common.getfiscalyear(modification.startdate) AS fiscalyear
+           FROM modification) mod
+     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(invoice_1.amount) AS amount
+           FROM ((invoice invoice_1
+             JOIN funding funding_1 USING (fundingid))
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (funding_1.fundingtypeid = 1)
+          GROUP BY common.getfiscalyear(modification_1.startdate)) invoice USING (fiscalyear))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(funding_1.amount) AS leveraged
+           FROM (funding funding_1
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))
+          GROUP BY common.getfiscalyear(modification_1.startdate)) leveraged USING (fiscalyear))
+  ORDER BY mod.fiscalyear;
+
+CREATE OR REPLACE VIEW projectagreementnumbers AS
+    SELECT common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,
+    project.shorttitle,
+    modification.modificationcode AS agreementnumber,
+    modification.title AS agreementtitle,
+    modification.startdate,
+    modification.enddate
+   FROM ((project
+     JOIN contactgroup ON ((project.orgid = contactgroup.contactid)))
+     JOIN modification USING (projectid))
+  WHERE ((modification.modificationcode IS NOT NULL) AND (modification.modtypeid <> ALL (ARRAY[4, 9, 10])))
+  ORDER BY project.fiscalyear, project.number;
+
+SET search_path = walcc, pg_catalog;
+
+CREATE VIEW fundingtotals AS
+    SELECT DISTINCT mod.fiscalyear,
+    COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) AS allocated,
+    COALESCE(invoice.amount, 0.00) AS invoiced,
+    (COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference,
+    COALESCE(leveraged.leveraged, 0.00) AS leveraged,
+    (COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00)) AS total
+   FROM (((( SELECT modification.modificationid,
+            modification.projectid,
+            modification.personid,
+            modification.modtypeid,
+            modification.title,
+            modification.description,
+            modification.modificationcode,
+            modification.effectivedate,
+            modification.startdate,
+            modification.enddate,
+            modification.datecreated,
+            modification.parentmodificationid,
+            modification.shorttitle,
+            common.getfiscalyear(modification.startdate) AS fiscalyear
+           FROM modification) mod
+     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(invoice_1.amount) AS amount
+           FROM ((invoice invoice_1
+             JOIN funding funding_1 USING (fundingid))
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (funding_1.fundingtypeid = 1)
+          GROUP BY common.getfiscalyear(modification_1.startdate)) invoice USING (fiscalyear))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(funding_1.amount) AS leveraged
+           FROM (funding funding_1
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))
+          GROUP BY common.getfiscalyear(modification_1.startdate)) leveraged USING (fiscalyear))
+  ORDER BY mod.fiscalyear;
+
+CREATE OR REPLACE VIEW projectagreementnumbers AS
+    SELECT common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,
+    project.shorttitle,
+    modification.modificationcode AS agreementnumber,
+    modification.title AS agreementtitle,
+    modification.startdate,
+    modification.enddate
+   FROM ((project
+     JOIN contactgroup ON ((project.orgid = contactgroup.contactid)))
+     JOIN modification USING (projectid))
+  WHERE ((modification.modificationcode IS NOT NULL) AND (modification.modtypeid <> ALL (ARRAY[4, 9, 10])))
+  ORDER BY project.fiscalyear, project.number;
+
+GRANT SELECT ON TABLE dev.fundingtotals TO GROUP pts_read;
+GRANT SELECT ON TABLE alcc.fundingtotals TO GROUP pts_read;
+GRANT SELECT ON TABLE walcc.fundingtotals TO GROUP pts_read;

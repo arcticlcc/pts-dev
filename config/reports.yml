@@ -100,7 +100,9 @@ reports:
           - {text: Short Title, dataIndex: shorttitle, flex: 1}
           - {text: Agreement Number, dataIndex: agreementnumber, width: 150}
           - {text: Agreement Title, dataIndex: agreementtitle, flex: 2}
-        fields: [projectcode, shorttitle, agreementnumber, agreementtitle]
+          - {text: Start Date, dataIndex: startdate}
+          - {text: End Date, dataIndex: enddate}
+        fields: [projectcode, shorttitle, agreementnumber, agreementtitle, startdate, enddate]
       - text: National Project Catalog
         url: ../projectcatalog
         qtip: Data for reporting to the Simple National Project Catalog
@@ -182,3 +184,14 @@ reports:
           - {text: Total, dataIndex: total, renderer: usMoney}
           - {text: Status, dataIndex: status, hidden:true}
         fields: [projectcode, fiscalyear, number, title, shorttitle, {name: allocated, type: number}, invoiced, difference, leveraged, total, status]
+      - text: Funding By Year
+        url: ../fundingtotals
+        qtip: Lists allocated, invoiced, leveraged, and total(allocated + leveraged) funding for each fiscal year.
+        cols:
+          - {text: Fiscal Year, dataIndex: fiscalyear}
+          - {text: Allocated, dataIndex: allocated, renderer: usMoney}
+          - {text: Invoiced, dataIndex: invoiced, renderer: usMoney}
+          - {text: Difference, dataIndex: difference, renderer: usMoney}
+          - {text: Leveraged, dataIndex: leveraged, renderer: usMoney}
+          - {text: Total, dataIndex: total, renderer: usMoney}
+        fields: [fiscalyear, {name: allocated, type: number}, invoiced, difference, leveraged, total]
