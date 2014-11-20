@@ -36,6 +36,35 @@ reports:
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
             cfg: {text: e-mail, dataindex: priemail, iconCls: pts-menu-email, tooltip: Get all visible e-mail addresses, delimiter: ", \n", windowTitle: E-mail addresses}
+      - text: Project Award Contacts
+        url: ../projectawardinfo
+        qtip: Contact information related to project award documents. Useful for performing mail merge operations.
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: Title, dataIndex: title}
+          - {text: Agreement Code, dataIndex: agreementcode}
+          - {text: Organization, dataIndex: organization, flex: 3}
+          - {text: PI Name, dataIndex: piname}
+          - {text: PI Title, dataIndex: pititle}
+          - {text: PI E-mail, dataIndex: email, flex: 1}
+          - {text: PI Phone, columns: [{text: Area Code, dataIndex: areacode},{text: Number, dataIndex: phone},{text: Ext, dataIndex: phoneext}]}
+          - {text: PI Street1, dataIndex: street1,  hidden: true}
+          - {text: PI Street2, dataIndex: street2,  hidden: true}
+          - {text: PI City, dataIndex: city,  hidden: true}
+          - {text: PI State, dataIndex: statename,  hidden: true}
+          - {text: PI Zip, dataIndex: postalcode,  hidden: true}
+          - {text: Admin Name, dataIndex: admincontact}
+          - {text: Admin Title, dataIndex: admintitle}
+          - {text: Admin E-mail, dataIndex: adminemail, flex: 1}
+          - {text: Admin Phone, columns: [{text: Area Code, dataIndex: adminareacode},{text: Number, dataIndex: adminphone},{text: Ext, dataIndex: adminphoneext}]}
+          - {text: Admin Street1, dataIndex: adminstreet1,  hidden: true}
+          - {text: Admin Street2, dataIndex: adminstreet2,  hidden: true}
+          - {text: Admin City, dataIndex: admincity,  hidden: true}
+          - {text: Admin State, dataIndex: adminstatename,  hidden: true}
+          - {text: Admin Zip, dataIndex: adminpostalcode,  hidden: true}
+        fields: [projectcode, title, agreementcode, piname, pititle, organization, areacode, phone, phoneext, phonecountry, email, street1, street2, city, statename, postalcode, countryiso, admincontact, admintitle, adminareacode, adminphone, adminphoneext, adminphonecountry, adminemail, adminstreet1, adminstreet2, admincity, adminstatename, adminpostalcode, admincountryiso]
+        filterBar: true
+        limit: 30
       - text: LCC Staff
         url: ../alccstaff
         qtip: Lists staff of the LCC
