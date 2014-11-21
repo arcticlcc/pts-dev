@@ -63,7 +63,7 @@ class ADIwg {
         }
 
         return $this->app['twig']->render('metadata/project.json.twig', array(
-            'metadataScope' => "project",
+            'resourceType' => "project",
             'organization' => $org,
             'resource' => $project,
             'keywords' => array_filter(explode('|', $project['keywords'])),
