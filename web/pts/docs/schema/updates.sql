@@ -1215,7 +1215,7 @@ CREATE VIEW fundingtotals AS
             modification.shorttitle,
             common.getfiscalyear(modification.startdate) AS fiscalyear
            FROM modification) mod
-     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
      LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
             sum(invoice_1.amount) AS amount
            FROM ((invoice invoice_1
@@ -1268,7 +1268,7 @@ CREATE VIEW fundingtotals AS
             modification.shorttitle,
             common.getfiscalyear(modification.startdate) AS fiscalyear
            FROM modification) mod
-     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
      LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
             sum(invoice_1.amount) AS amount
            FROM ((invoice invoice_1
@@ -1321,7 +1321,7 @@ CREATE VIEW fundingtotals AS
             modification.shorttitle,
             common.getfiscalyear(modification.startdate) AS fiscalyear
            FROM modification) mod
-     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
      LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
             sum(invoice_1.amount) AS amount
            FROM ((invoice invoice_1
