@@ -191,7 +191,7 @@ Ext.application({
             failure: function(user, op) {
                 Ext.MessageBox.show({
                    title: 'Error',
-                   msg: 'There was an error.',
+                   msg: 'There was an error. Failed to retrieve user info.',
                    buttons: Ext.MessageBox.OK,
                    //animateTarget: 'mb9',
                    //fn: showResult,

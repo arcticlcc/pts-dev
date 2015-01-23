@@ -7,13 +7,18 @@ use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
 
 // Create the application
 $app = new Application();
+//set directory for config files
+$app['config.dir'] = __DIR__.'/../config/';
 
 // Register Silex extensions
 //$app->register(new PTS\Service\JSONServiceProvider());
 $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new PTS\Controller\Feature());
-$app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/reports.yml"));
-$app->register(new Igorw\Silex\ConfigServiceProvider(__DIR__."/../config/db.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "reports.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "db.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "google.yml", array(
+    'config_path' => $app['config.dir'],
+)));
 $app->register(new Silex\Provider\SessionServiceProvider(), array(
     'session.storage.save_path' => __DIR__.'/../sessions'
 ));
@@ -34,10 +39,7 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 
 $app->register(new Idiorm\IdiormServiceProvider(), array());
 
-$app->register(new PTS\Service\GcalServiceProvider(), array(
-    'gcal.service_account'      => '446561781403-4k46rnbg48b6e0o963qqkcc83li40ffm@developer.gserviceaccount.com',
-    'gcal.key' => __DIR__.'/../config/client.p12',
-));
+$app->register(new PTS\Service\GoogleServiceProvider(), array());
 
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     'openid.uri'      => 'https://www.google.com/accounts/o8/id',

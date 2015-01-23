@@ -160,6 +160,10 @@ reports:
           - {text: Primary Category, dataIndex: category1, flex: 1, hidden: true}
           - {text: Project Category, dataIndex: category2, flex: 1, hidden: true}
           - {text: Project Category, dataIndex: category3, flex: 1, hidden: true}
+          - {text: User Type, dataIndex: usertype1, flex: 1, hidden: true}
+          - {text: User Type, dataIndex: usertype2, flex: 1, hidden: true}
+          - {text: User Type, dataIndex: usertype3, flex: 1, hidden: true}
+          - {text: End Users, dataIndex: endusers, flex: 1, hidden: true}
           - {text: Deliverable Type, dataIndex: deliver1, flex: 1, hidden: true}
           - {text: Deliverable Type, dataIndex: deliver2, flex: 1, hidden: true}
           - {text: Deliverable Type, dataIndex: deliver3, flex: 1, hidden: true}
@@ -167,7 +171,7 @@ reports:
           - {text: Geographic Keywords, dataIndex: geog, flex: 1, hidden: true}
           - {text: Congress District, dataIndex: congdist, flex: 1, hidden: true}
           - {text: Comments, dataIndex: comments, flex: 1, hidden: true}
-        fields: [lccname,id,ptitle,description,pstatus,pstart,pend,purl,leadcontact,leadorg,partnerorg,endusers,fiscalyears,cofundlcc1,cofundlcc2,scibaseq,lccfundall,lccfundby,matchfundall,matchfundby,matchfundnote,category1,category2,category3,deliver1,deliver2,deliver3,subject,geog,congdist,comments]
+        fields: [lccname,id,ptitle,description,pstatus,pstart,pend,purl,leadcontact,leadorg,partnerorg,endusers,fiscalyears,cofundlcc1,cofundlcc2,scibaseq,lccfundall,lccfundby,matchfundall,matchfundby,matchfundnote,category1,category2,category3, usertype1, usertype2, usertype3, endusers, deliver1,deliver2,deliver3,subject,geog,congdist,comments]
   - text: Deliverable Reports
     qtip: Reports associated with Deliverables
     iconCls: folder

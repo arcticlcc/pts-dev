@@ -42,6 +42,7 @@ class Login implements ControllerProviderInterface
         };
 
         $controllers->get('login', function (Application $app, Request $request) use ($table){
+
             $app['session']->start();
             //set token
             $token = time();
@@ -145,10 +146,9 @@ class Login implements ControllerProviderInterface
             $app['session']->start();
             $code = $request->get('code');
             $redirect = $request->get('r') ?: $app['session']->get('redirect');
-
             $provider = new \League\OAuth2\Client\Provider\Google(array(
-                'clientId'  =>  '446561781403-f95nkovq67ho8aelvoho006j7hmrqpve.apps.googleusercontent.com',
-                'clientSecret'  =>  'DH_udqhOBZK9R3W64ogncLTv',
+                'clientId'  =>  $app['google']['webid'],
+                'clientSecret'  =>  $app['google']['web_secret'],
                 'redirectUri'   =>  'http://' . $_SERVER['HTTP_HOST'] . '/oauth2'
             ));
 
