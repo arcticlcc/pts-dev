@@ -1,7 +1,7 @@
 {
     "require": {
-        "silex/silex": "1.1.*",
-        "symfony/monolog-bridge": "2.3.*",
+        "silex/silex": "1.2.*",
+        "symfony/monolog-bridge": "~2.6.0",
         "twig/twig": "1.*",
         "doctrine/dbal": "2.2.*",
         "igorw/config-service-provider": "1.2.*",
@@ -9,7 +9,11 @@
         "geokit/geokit": "dev-doctrine",
         "openid/php-openid": "dev-master",
         "league/oauth2-client": "0.3.*@dev",
-        "google/apiclient": "1.0.*@beta"
+        "google/apiclient": "1.1.*",
+        "swiftmailer/swiftmailer": "5.3.*",
+        "mheap/silex-markdown": "dev-master",
+        "knplabs/console-service-provider": "dev-master",
+        "sabre/vobject": "~3.3.0"
     },
 
     "autoload": {
