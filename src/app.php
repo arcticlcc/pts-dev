@@ -6,7 +6,6 @@ $app->before(function(Request $request) use ($app) {
     // redirect the user to the login screen if access to the Resource is protected
     $uri_root = parse_url($request->server->get("REQUEST_URI"), PHP_URL_PATH);
     $uri = $request->server->get("REQUEST_URI");
-
     //uncomment for building and comment the check below
     /*$app['session']->set('user', array(
      'username' => 'Dev',
@@ -26,6 +25,23 @@ $app->before(function(Request $request) use ($app) {
         }
     }
 });
+
+$app->mount('/', new PTS\Controller\PTS());
+$app->mount('/', new PTS\Controller\Login());
+$app->mount('/', new PTS\Controller\Person());
+$app->mount('/', new PTS\Controller\ContactGroup());
+$app->mount('/', new PTS\Controller\ProjectContact());
+$app->mount('/', new PTS\Controller\Project());
+$app->mount('/', new PTS\Controller\Deliverable());
+$app->mount('/', new PTS\Controller\Modification());
+$app->mount('/', new PTS\Controller\Country());
+$app->mount('/', new PTS\Controller\Invoice());
+$app->mount('/', new PTS\Controller\Funding());
+$app->mount('/', new PTS\Controller\Report());
+$app->mount('/', new PTS\Controller\Keyword());
+$app->mount('/', new PTS\Controller\Feature());
+$app->mount('/', new PTS\Controller\ModStatus());
+$app->mount('/', new PTS\Controller\ModDocStatus());
 
 $app->get('/', function() use ($app) {
 
@@ -237,20 +253,4 @@ $app->delete('/{class}/{id}', function($class, $id) use ($app) {
     return $app['json']->getResponse();
 });
 
-$app->mount('/', new PTS\Controller\PTS());
-$app->mount('/', new PTS\Controller\Login());
-$app->mount('/', new PTS\Controller\Person());
-$app->mount('/', new PTS\Controller\ContactGroup());
-$app->mount('/', new PTS\Controller\ProjectContact());
-$app->mount('/', new PTS\Controller\Project());
-$app->mount('/', new PTS\Controller\Deliverable());
-$app->mount('/', new PTS\Controller\Modification());
-$app->mount('/', new PTS\Controller\Country());
-$app->mount('/', new PTS\Controller\Invoice());
-$app->mount('/', new PTS\Controller\Funding());
-$app->mount('/', new PTS\Controller\Report());
-$app->mount('/', new PTS\Controller\Keyword());
-$app->mount('/', new PTS\Controller\Feature());
-$app->mount('/', new PTS\Controller\ModStatus());
-$app->mount('/', new PTS\Controller\ModDocStatus());
 ?>
