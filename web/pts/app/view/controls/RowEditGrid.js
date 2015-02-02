@@ -26,6 +26,11 @@ Ext.define('PTS.view.controls.RowEditGrid', {
      */
 
     /**
+     * @cfg {Object[]} extraButtons
+     * Extra buttons to add to the toolbar.
+     */
+
+    /**
      * Add row.
      */
     addRow: function(btn) {
@@ -126,6 +131,10 @@ Ext.define('PTS.view.controls.RowEditGrid', {
                 handler: this.removeRow,
                 disabled: true
             }]
+        });
+
+        Ext.each(me.extraButtons, function(b){
+            me.tbar.push(b);
         });
 
         me.callParent(arguments);

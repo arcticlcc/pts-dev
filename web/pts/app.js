@@ -105,7 +105,8 @@ Ext.application({
         me.getModel('PTS.model.User').load(PTS.UserId.id,{
 
             success: function(user) {
-                var store = this.getStore('GroupUsers');
+                var store = this.getStore('GroupUsers'),
+                    group = user.get('groupid');
 
                 PTS.user = user;//save user details
                 PTS.orgcode = PTS.user.get('acronym'); //set orgcode
@@ -113,7 +114,7 @@ Ext.application({
                 //set the GroupUsers proxy using the PTS.user groupid
                 store.setProxy({
                     type: 'ajax',
-                    url : '../contactgroup/' + PTS.user.get('groupid') + '/person',
+                    url : '../contactgroup/' + group + '/person',
                     reader: {
                         type: 'json',
                         root: 'data'
@@ -128,9 +129,22 @@ Ext.application({
                         ])
                     }
                 });
-                //TODO: Account for ability to change groups,
-                //this store will need to be reloaded.
-                store.load();
+
+                store.load({
+                    callback: function(rec, op, success) {
+                        if(success) {
+                            //add system account to store
+                            this.loadRawData([{
+                                "contactid": 0,
+                                "firstname": "System",
+                                "lastname": "PTS",
+                                "groupid": group,
+                                "inactive": true
+                            }], true);
+                        }
+                    },
+                    scope: store
+                });
 
                 Ext.create('PTS.view.Viewport');
 

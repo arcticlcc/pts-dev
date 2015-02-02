@@ -39,6 +39,9 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             },
             'deliverableform#itemCard-30 #mainCon combobox[name=deliverabletypeid]': {
                 change: this.onChangeDelType
+            },
+            'deliverableform button#sendNotice': {
+                click: this.sendNotice
             }
         });
 
@@ -48,6 +51,35 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             newitem: this.onNewItem,
             savedeliverable: this.onSave,
             scope: this
+        });
+    },
+
+    /**
+     * Send notice for the deliverable. Refreshes the notice store on success.
+     */
+    sendNotice: function(btn) {
+        var model = btn.up('deliverableform').down('#itemForm').getRecord(),
+            id = model.get('deliverableid'),
+            grid = btn.up('roweditgrid'),
+            mask = new Ext.LoadMask(grid, {msg:"Sending Notice. Please wait..."});
+
+        mask.show();
+        Ext.Ajax.request({
+            url: '../deliverable/' + id + '/reminder',
+            method: 'POST',
+            /*params: {
+                'template': ''
+            },*/
+            success: function(response, opts) {
+                grid.getStore().load();
+            },
+            failure: function(response, opts) {
+                var msg = 'Failed to send notice due to server error.';
+                PTS.app.showError(msg);
+            },
+            callback: function(opts, success,response ) {
+                mask.destroy();
+            }
         });
     },
 

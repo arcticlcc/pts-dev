@@ -36,6 +36,7 @@ Ext.define('PTS.model.Deliverable', {
         {name: 'startdate', type: 'mydate'},
         {name: 'enddate', type: 'mydate'},
         //{name: 'invalid', type: 'boolean', useNull: true}, //deprecated
+        {name: 'reminder', type: 'boolean', defaultValue: true, useNull: true},
         {name: 'publish', type: 'boolean', defaultValue: true, useNull: true},
         {name: 'restricted', type: 'boolean', useNull: true},
         {name: 'accessdescription', type: 'mystring', useNull: true},

@@ -136,6 +136,12 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         anchor: '100%'
                     },*/
                     {
+                        xtype: 'checkboxfield',
+                        name: 'reminder',
+                        fieldLabel: 'Auto-Reminder?',
+                        anchor: '100%'
+                    },
+                    {
                         xtype: 'checkboxgroup',
                         fieldLabel: 'Publication',
                         columns: [
@@ -263,6 +269,11 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                     uri: 'deliverablenotice',
                     title:'Notices',
                     disabled: false,
+                    extraButtons:[{
+                        text: 'Send Notice',
+                        itemId: 'sendNotice',
+                        iconCls: 'pts-menu-emailgo'
+                    }],
                     columns: [
                         {
                             xtype: 'gridcolumn',
@@ -345,11 +356,11 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             text: 'Comment'
                         }
                     ]
-                },{
+                },/*{
                     title:'Contacts'
                 },{
                     title:'Progress'
-                },{
+                },*/{
                     title: 'Comments',
                     disabled: false,
                     xtype: 'commenteditgrid',
