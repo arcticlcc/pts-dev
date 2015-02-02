@@ -1,3 +1,4 @@
+/log/console.log
 /config/db.yml
 /config/client.p12
 log/development.log

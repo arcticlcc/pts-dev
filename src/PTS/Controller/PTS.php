@@ -41,6 +41,7 @@ class PTS implements ControllerProviderInterface
                 $result = $app['idiorm']->getTable('groupschema')
                         ->where('groupschemaid',$schema)->find_one();
                 $app['session']->set('deliverablecalid',$result->deliverablecalendarid);
+                $app['session']->set('email',$result->email);
 
                 $twig = $app['debug'] ? 'pts.twig' : 'pts.prod.twig';
                 return $app['twig']->render($twig, array(

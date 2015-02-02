@@ -26,20 +26,23 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.path'       => __DIR__.'/../views',
     'twig.class_path' => __DIR__.'/../vendor/twig/twig/lib',
 ));
+$app->register(new SilexMarkdown\MarkdownExtension(), array());
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'dbs.options'            => $app['dbOptions'],
+    'dbs.options'           => $app['dbOptions'],
     'db.dbal.class_path'    => __DIR__.'/../vendor/doctrine/dbal/lib',
     'db.common.class_path'  => __DIR__.'/../vendor/doctrine/common/lib',
 ));
 
 $app->register(new Silex\Provider\MonologServiceProvider(), array(
-    'monolog.logfile'       => __DIR__.'/../log/development.log',
-    'monolog.class_path'    => __DIR__.'/../vendor/monolog/monolog/src',
+    'monolog.logfile'           => __DIR__.'/../log/development.log',
+    'monolog.console_logfile'   => __DIR__.'/../log/console.log',
+    'monolog.class_path'        => __DIR__.'/../vendor/monolog/monolog/src',
 ));
 
 $app->register(new Idiorm\IdiormServiceProvider(), array());
 
 $app->register(new PTS\Service\GoogleServiceProvider(), array());
+$app->register(new PTS\Service\NoticeServiceProvider(), array());
 
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     'openid.uri'      => 'https://www.google.com/accounts/o8/id',
@@ -51,12 +54,21 @@ $app->register(new PTS\Service\OpenIDServiceProvider(), array(
     )
 ));
 
+$app->register(new Knp\Provider\ConsoleServiceProvider(),
+    array(
+        'console.name' => 'PTSConsole',
+        'console.version' => '0.1.0',
+        'console.project_directory' => __DIR__ . "/.."
+    )
+);
+
 Idiorm\PTSORM::configure('id_column_overrides', array(
     'contactgroup' => 'contactid',
     'person' => 'contactid',
     'projectcontactlist' => 'projectcontactid',
     'deliverablelist' => 'deliverableid',
     'deliverabledue' => 'deliverableid',
+    'deliverablereminder' => 'deliverableid',
     'userinfo' => 'loginid',
     'membergrouplist' => 'contactcontactgroupid',
     'groupmemberlist' => 'contactcontactgroupid',

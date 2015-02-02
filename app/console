@@ -1,0 +1,22 @@
+#!/usr/bin/env php
+<?php
+
+set_time_limit(0);
+
+require_once __DIR__.'/../src/autoload.php';
+
+$app = require_once __DIR__.'/../src/bootstrap.php';
+// You should only register this service provider when running commands
+$app->register(new \PTS\Service\ConsoleLoggerServiceProvider());
+
+use PTS\Console\MyCommand;
+use PTS\Console\SendNotice;
+use PTS\Console\BatchNotice;
+
+$application = $app['console'];
+$application->add(new MyCommand);
+$application->add(new SendNotice);
+$application->add(new BatchNotice);
+$application->run($app['console.input'], $app['console.output']);
+
+?>

@@ -3,6 +3,7 @@
 namespace Idiorm;
 
 require_once __DIR__ . '/../../vendor/Idiorm/idiorm.php';
+//require_once __DIR__ . '/../../vendor/j4mie/idiorm/idiorm.php';
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;

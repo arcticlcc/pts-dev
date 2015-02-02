@@ -31,9 +31,9 @@ class Deliverable implements ControllerProviderInterface
             return $app->redirect("/$table?$query");
         });
 
-        $controllers->get('deliverable/calendar', function (Application $app, Request $request) use ($table){
+        $controllers->get('deliverable/calendar', function (Application $app, Request $request) {
             $result = array();
-            $table = 'deliverablecalendar'; //need to use Deliverablelist view
+            $table = 'deliverablecalendar'; //need to use deliverablecalendar view
             $startDate = $request->get('startDate');
             $endDate = $request->get('endDate');
 
@@ -84,9 +84,9 @@ class Deliverable implements ControllerProviderInterface
                         FROM deliverable
                         WHERE deliverableid = :parentdeliverableid
                     ), dmod as (INSERT INTO deliverablemod
-                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
+                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder)
                         SELECT del.deliverableid,:personid, :modificationid, :duedate,:receiveddate,:startdate,:enddate,:publish,
-                            :restricted,:accessdescription,:parentmodificationid,del.deliverableid
+                            :restricted,:accessdescription,:parentmodificationid,del.deliverableid,:reminder
                         FROM del
                     RETURNING *
                     )
@@ -101,9 +101,9 @@ class Deliverable implements ControllerProviderInterface
                         VALUES (:deliverabletypeid, :title, :description)
                         RETURNING *
                     ), dmod as (INSERT INTO deliverablemod
-                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid)
+                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder)
                         SELECT deliverableid,:personid, :modificationid, :duedate,:receiveddate,:startdate,:enddate,:publish,
-                            :restricted,:accessdescription,:parentmodificationid,:parentdeliverableid
+                            :restricted,:accessdescription,:parentmodificationid,:parentdeliverableid,:reminder
                         FROM del
                     RETURNING *
                     )
@@ -135,12 +135,8 @@ class Deliverable implements ControllerProviderInterface
             $values = json_decode($request->getContent());
             $calId = isset($values->calendar) ? $values->calendar : $app['session']->get('deliverablecalid');
 
-            $eventData = array(
-                'id' => bin2hex($app['session']->get('schema') . '-' . $values->deliverableid),
-                'date' => $values->duedate,
-                'summary' => $values->title,
-                'desc' => $values->description
-            );
+            $object = $app['idiorm']->getTable('deliverablecalendar')->where('deliverableid',$values->deliverableid)->find_one();
+            $eventData = $app['eventData']($object);
 
             try {
                 $event = $app['createEvent']($eventData, $calId);
@@ -214,6 +210,45 @@ class Deliverable implements ControllerProviderInterface
 
             return $app['json']->getResponse();
         });
+
+        $controllers->match('deliverable/{id}/reminder', function (Application $app, Request $request, $id) {
+
+            $template = ($request->query->get('template'));
+            try {
+                $object = $app['idiorm']->getTable('deliverablereminder')
+                    //->join('contact', array('person.contactid', '=', 'contact.contactid'))
+                    //->where('person.contactid', $id)
+                    ->find_one($id);
+
+                if($object) {
+                    $data = $object->as_array();
+                    //cc admin if a financial report
+                    $data['ccadmin']  = in_array($data['deliverabletypeid'], [6,25]) ? TRUE : FALSE;
+                    if(!$template) {
+                        $template = $data['ccadmin'] ? 'financial' : 'notice';
+                    }
+                    $notice = $app['renderNotice']($data, $template);
+                    $resp = $app['sendMail']($notice);
+                    $app['recordNotice']($data);
+                    $app['json']->setMessage($resp);
+                }else {
+                    $message = "No deliverable found with id of $id.";
+                    $success = false;
+                    $code = 404;
+                    $app['json']->setAll(null,$code,$success,$message);
+                }
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+                $message = $exc->getMessage();
+                $success = false;
+                $code = 400;
+                $app['json']->setAll(null,$code,$success,$message);
+            }
+
+            return $app['json']->getResponse();
+
+        })->method('PUT|POST');
 
         return $controllers;
     }

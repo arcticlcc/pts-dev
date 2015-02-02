@@ -95,7 +95,8 @@ class Login implements ControllerProviderInterface
                         ),
                         'schema' => $result->groupschemaid,
                         'schemas' => $getSchemas($result->loginid),
-                        'deliverablecalid' => $result->deliverablecalendarid
+                        'deliverablecalid' => $result->deliverablecalendarid,
+                        'email' => $result->email
                     ));
 
                     if($redirect) {

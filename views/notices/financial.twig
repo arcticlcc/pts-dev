@@ -1,0 +1,49 @@
+{% include 'notices/header.twig' %}
+
+{{ "
+
+##Reminder:
+
+The **#{ type }** for this financial assistance award
+#{ agreementnumber }: #{ project } #{ tense } due #{ days|abs } days #{ days < 0 ? 'from' : 'prior to' } this 
+notification (<b>#{ duedate }</b>). Forms and instructions can be found here: <http://www.whitehouse.gov/omb/grants_forms/>.  
+
+Please submit this report to your **Project Officer** and send a copy to <#{ staff }>. 
+Electronic submissions are preferred.
+If you are unable to meet this deadline, you must submit a written request for an extension **no later 
+than one day before the due date** in accordance with **516 FW 1, Section 1.12**.
+
+" | markdown }}
+
+{% if days > -3 %}
+{{ "
+
+**IMPORTANT**: If the report or a written request for an extension is not received by the Grants/Agreement Officer prior to the due date, the required notification of suspension will be sent to you via an 
+email notification by the Grants/Agreement Officer. 
+
+***516 FW 2***:
+
+**2.16** May the Service extend the due date of performance reports?
+
+**A.** We may extend the due date of a performance report if we receive a request through a letter, 
+fax, or email no later than 1 daybefore the original due date of the report. The request must 
+identify:
+
+ 1. The type of report for which the recipient requests an extension,        
+ 2. The requested revised due date, and        
+ 3. A justification for the extension.
+
+**B.** The maximum extension we may approve on either type of report is 90 days, unless a longer 
+period is justified by a catastrophe that significantly impairs the recipient's operations.
+    
+**C.** We must notify the recipient by letter, fax, or email if we approve a request for extension of 
+the due date of a report.
+
+**D.** We must also keep extension requests and the final decision on these requests on file.
+Please do not reply to this message. Contact staff (<#{ staff }>) if 
+you have any questions.
+
+" | markdown }}
+{% endif %}
+
+{% include 'notices/footer.twig' %}

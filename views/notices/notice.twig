@@ -1,0 +1,12 @@
+{% include 'notices/header.twig' %}
+
+{{ "
+This is a automated reminder that the deliverable (**#{ type }**): *#{ deliverable }* for the
+project: *#{ project }* (Award# #{ agreementnumber }) #{ tense } due **#{ duedate }**.
+
+If you’ve already completed the task detailed above, please disregard this message.
+
+*If you have concerns about on-time completion of this task, please contact us: <#{ staff }>.*
+" | markdown }}
+
+{% include 'notices/footer.twig' %}

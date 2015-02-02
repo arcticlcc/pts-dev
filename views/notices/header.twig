@@ -1,0 +1,12 @@
+{{ "
+**PI**: #{ pi }  
+**Project**: #{ project }  
+**LCC Project ID**: #{ projectcode }  
+**Award Number**: #{ agreementnumber }  
+**FWS Project Officer**: #{ projectofficer }  
+
+
+**Milestone**: #{ deliverable }  
+**Due Date**: #{ duedate }  
+#{ start ? "**Reporting Period**: #{ start|date('m/d/Y') } to #{ end|date('m/d/Y') }" }
+" | markdown }}
