@@ -49,7 +49,7 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
             /*$cc[] = $staff;
             if(isset($data['ccadmin']) && $data['ccadmin']) {
-                $cc[] = $data['adminemail'];
+                $cc[] = $data['ccemail'];
             }*/
 
             $subject = sprintf('Reminder: %s for %s (%s) due %s', $data['title'], $data['agreementnumber'], $data['projectcode'], $duedate);
@@ -58,8 +58,8 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
             $vcalendar->add('VEVENT', [
                 'SUMMARY' => 'Due: ' . $data['title'],
-                'DTSTART' => $due,
-                'DTEND' => $due,
+                'DTSTART' => $due->modify("+12 hours"),
+                //'DTEND' => $due,
                 'ORGANIZER' => $staff,
                 'DESCRIPTION' => $subject
             ]);
