@@ -68,7 +68,8 @@ Ext.define('PTS.model.ProjectContact', {
             name: 'shorttitle',
             type: 'mystring',
             persist: false
-        }
+        },
+        {name: 'reminder', type: 'boolean', defaultValue: false, useNull: true}
     ],
     idProperty: 'projectcontactid',
 

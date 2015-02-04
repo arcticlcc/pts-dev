@@ -27,7 +27,7 @@ Ext.define('Ext.ux.grid.HeaderToolTip', {
                     var c = headerCt.down('gridcolumn[id=' + tip.triggerElement.id + ']');
 
                     if (c) {
-                        tip.update(c.tooltip /*|| c.text*/);
+                        tip.update(c.tooltip || c.text);
                         return true;
                     }
 

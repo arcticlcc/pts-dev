@@ -68,7 +68,11 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                 afterrender: this.afterRenderProjectContactsList
             },
             'projectcontacts #projectContactsList': {
-                beforerender: this.beforeRenderProjectContactsList
+                beforerender: this.beforeRenderProjectContactsList,
+                edit: this.setNotice
+            },
+            'combo[itemId=roletypeCbx]': {
+                select: this.onSelectRoleType
             }
         });
 
@@ -113,6 +117,36 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
             this.setProxy(id, store);
             //load the projectcontacts store
             store.load();
+        }
+    },
+
+    /**
+     * Select roletype event.
+     */
+    onSelectRoleType: function(combo, rec) {
+        //force editor to complete following selection
+        this.getProjectContactsList().getPlugin('contactEditor').completeEdit();
+    },
+
+    /**
+     * Set the notice during roletype validation.
+     */
+    setNotice: function(editor, e) {
+        console.info(arguments);
+        var obj = {
+                5: null,
+                6: null,
+                7: null,
+                13: null
+            },
+            rec = e.record;
+
+        if(e.field === 'roletypeid') {
+            if(typeof obj[e.value] !== "undefined"){
+                rec.set('reminder', true);
+            } else {
+                rec.set('reminder', false);
+            }
         }
     },
 

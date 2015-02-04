@@ -27,6 +27,7 @@ Ext.define('PTS.view.project.window.ProjectContacts', {
 
         editor = Ext.create('Ext.grid.plugin.CellEditing', {
             itemId: 'contactEditor',
+            pluginId: 'contactEditor',
             clicksToEdit: 1,
             listeners: {//TODO: move to controller??
                 beforeedit : function(event) { //needed to prevent editing of selection checkbox
@@ -126,6 +127,7 @@ Ext.define('PTS.view.project.window.ProjectContacts', {
                             },
                             editor: {
                                 xtype: 'combobox',
+                                itemId: 'roletypeCbx',
                                 typeAhead: true,
                                 forceSelection: true,
                                 triggerAction: 'all',
@@ -147,14 +149,23 @@ Ext.define('PTS.view.project.window.ProjectContacts', {
                                     }
                                 }
                             },
-                            flex: 2,
+                            flex: 1,
                             text: 'Role'
+                        },
+                        {
+                            xtype: 'checkcolumn',
+                            itemId: 'reminderCbx',
+                            dataIndex: 'reminder',
+                            text: 'Notice?',
+                            width: 55,
+                            tooltip: 'Receive reminder notices?'
                         },
                         {
                             xtype: 'checkcolumn',
                             dataIndex: 'partner',
                             text: 'Partner?',
-                            width: 55
+                            width: 55,
+                            tooltip: 'Identify contact as partner for reporting.'
                         }
 
                     ]
