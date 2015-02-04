@@ -47,7 +47,8 @@ Ext.define('PTS.store.ProjectContacts', {
                         pstore = Ext.getStore('ProjectFunders'),
                         istore = Ext.getStore('ProjectInvoicers'),
                         rstore = Ext.getStore('ProjectRecipients'),
-                        nstore = Ext.getStore('NoticeRecipients');
+                        nstore = Ext.getStore('NoticeRecipients'),
+                        ustore = Ext.getStore('GroupUsers');
 
                     store.each(function(rec) {
                         var itm = rec.get('roletypeid'),
@@ -72,6 +73,18 @@ Ext.define('PTS.store.ProjectContacts', {
                             rdata.push(rec.copy());
                         }
                     });
+
+                    //add group users to notice recipients
+                    ustore.each(function(rec) {
+                        var rid = rec.get('contactid');
+
+                        if(rid !== 0 && Ext.Array.indexOf(noticeIds, rid) === -1) {
+                            rec.set('name', rec.get('lastname') + ', ' + rec.get('firstname'));
+                            ndata.push(rec.copy());
+                            noticeIds.push(rid);
+                        }
+                    });
+
                     pstore.loadRecords(data,{addRecords: false});
                     istore.loadRecords(idata,{addRecords: false});
                     rstore.loadRecords(rdata,{addRecords: false});
