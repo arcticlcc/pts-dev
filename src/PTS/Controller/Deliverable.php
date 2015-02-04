@@ -222,10 +222,13 @@ class Deliverable implements ControllerProviderInterface
 
                 if($object) {
                     $data = $object->as_array();
+                    $delid = $data['deliverabletypeid'];
+
                     //cc admin if a financial report
-                    $data['ccadmin']  = in_array($data['deliverabletypeid'], [6,25]) ? TRUE : FALSE;
+                    $data['ccadmin']  = in_array($delid, [6,25]) ? TRUE : FALSE;
+                    //set template
                     if(!$template) {
-                        $template = $data['ccadmin'] ? 'financial' : 'notice';
+                        $template = $app['notice.getTemplateId']($delid);
                     }
                     $notice = $app['renderNotice']($data, $template);
                     $resp = $app['sendMail']($notice);

@@ -39,7 +39,7 @@ class SendNotice extends \Knp\Command\Command {
                 'template',
                 't',
                 InputOption::VALUE_REQUIRED,
-                'Which template to use? notice(default), financial',
+                'Which template to use? notice(default), financial, performance',
                 'notice'
             );
 

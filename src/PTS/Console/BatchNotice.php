@@ -68,9 +68,13 @@ class BatchNotice extends \Knp\Command\Command {
 
             foreach ($objects as $object) {
                 $data = $object->as_array();
+                $delid = $data['deliverabletypeid'];
+
                 //cc admin if a financial report
-                $data['ccadmin']  = in_array($data['deliverabletypeid'], [6,25]) ? TRUE : FALSE;
-                $template = $data['ccadmin'] ? 'financial' : 'notice';
+                $data['ccadmin']  = in_array($delid, [6,25]) ? TRUE : FALSE;
+                //set template
+                $template = $app['notice.getTemplateId']($delid);
+
                 $data['staff'] = $sender;
                 $notices[$data['deliverableid']] = $app['renderNotice']($data, $template);
                 //index the data objects by id

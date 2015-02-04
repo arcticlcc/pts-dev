@@ -131,13 +131,21 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
         $app['notice.typeMap'] = [
             -30 => 1, // "Thirty(30) day notice"
-            30 =>2, // "First Overdue Notice"
-            60 =>3, // "Second Overdue Notice"
-            90 =>4, // "Final Overdue Notice"
+            1 =>2, // "First Overdue Notice"
+            10 =>3, // "Second Overdue Notice"
+            29 =>4, // "Final Overdue Notice"
             -14 =>5, // "Fourteen(14) day notice"
             -2 =>6, // "Two(2) day notice"
         ];
 
+        $app['notice.getTemplateId'] = $app->protect(function ($id) {
+            $map = [
+                6 => 'financial',
+                25 => 'performance'
+            ];
+
+            return isset($map[$id]) ? $map[$id] : 'notice';
+        });
     }
 
     public function boot(Application $app) {
