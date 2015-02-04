@@ -61,25 +61,41 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         var model = btn.up('deliverableform').down('#itemForm').getRecord(),
             id = model.get('deliverableid'),
             grid = btn.up('roweditgrid'),
-            mask = new Ext.LoadMask(grid, {msg:"Sending Notice. Please wait..."});
+            mask = new Ext.LoadMask(grid, {msg:"Sending Notice. Please wait..."}),
+            send = function(b) {
+                if ('yes' === b) {
+                    mask.show();
+                    Ext.Ajax.request({
+                        url: '../deliverable/' + id + '/reminder',
+                        method: 'POST',
+                        /*params: {
+                         'template': ''
+                         },*/
+                        success: function(response, opts) {
+                            grid.getStore().load();
+                        },
+                        failure: function(response, opts) {
+                            var txt = 'Failed to send notice due to server error.',
+                                msg = response.status === 404 ? "Could not find any notices to send. Have you selected any recipients (see Contacts tab)?" : txt;
 
-        mask.show();
-        Ext.Ajax.request({
-            url: '../deliverable/' + id + '/reminder',
-            method: 'POST',
-            /*params: {
-                'template': ''
-            },*/
-            success: function(response, opts) {
-                grid.getStore().load();
-            },
-            failure: function(response, opts) {
-                var msg = 'Failed to send notice due to server error.';
-                PTS.app.showError(msg);
-            },
-            callback: function(opts, success,response ) {
-                mask.destroy();
-            }
+                            PTS.app.showError(msg);
+                        },
+                        callback: function(opts, success, response) {
+                            mask.destroy();
+                        }
+                    });
+                }
+            };
+
+        Ext.MessageBox.show({
+            title: 'Confirm Notice',
+            msg: 'Are you sure you want to send a reminder notice?',
+            //width:300,
+            buttons: Ext.MessageBox.YESNO,
+            icon: Ext.Msg.WARNING,
+            fn: send,
+            scope: this,
+            animateTarget: btn.getEl()
         });
     },
 

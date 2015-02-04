@@ -132,7 +132,6 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * Set the notice during roletype validation.
      */
     setNotice: function(editor, e) {
-        console.info(arguments);
         var obj = {
                 5: null,
                 6: null,
