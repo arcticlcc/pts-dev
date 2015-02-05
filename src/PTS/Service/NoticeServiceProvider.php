@@ -46,11 +46,12 @@ class NoticeServiceProvider implements ServiceProviderInterface
             $cc = array(
                   //'jbradley@arcticlcc.org',
                 );
+            $cc[] = $staff;
+            $cc = array_merge($cc, explode(',', $data['ccemail']));
 
-            /*$cc[] = $staff;
             if(isset($data['ccadmin']) && $data['ccadmin']) {
-                $cc[] = $data['ccemail'];
-            }*/
+                $cc = array_merge($cc, explode(',', $data['adminemail']));
+            }
 
             $subject = sprintf('Reminder: %s for %s (%s) due %s', $data['title'], $data['agreementnumber'], $data['projectcode'], $duedate);
 
@@ -80,14 +81,19 @@ class NoticeServiceProvider implements ServiceProviderInterface
                 ->setSender(array($staff => 'LCC Staff'))
 
                 // Set the To addresses with an associative array
-                ->setTo(array(
-                  'joshua_bradley@fws.gov',
-                  //$data['email']
-                ))
-
+                /*->setTo(
+                    array_merge(
+                        array(
+                            'joshua_bradley@fws.gov'
+                        ),
+                        explode(',', $data['email'])
+                    )
+                )*/
+                ->setTo(
+                    array('joshua_bradley@fws.gov')
+                )
                 // Set the To addresses with an associative array
-
-                ->setCc($cc)
+                //->setCc($cc)
 
                 // Give it a body
                 ->setBody($body, 'text/html')
