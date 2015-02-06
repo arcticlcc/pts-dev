@@ -40,8 +40,11 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 ));
 
 $app->register(new Idiorm\IdiormServiceProvider(), array());
-
 $app->register(new PTS\Service\GoogleServiceProvider(), array());
+$app->register(new Aws\Silex\AwsServiceProvider(), array(
+    'aws.config' => $app['config.dir'] . 'aws.php'
+));
+$app->register(new PTS\Service\AwsEmailServiceProvider(), array());
 $app->register(new PTS\Service\NoticeServiceProvider(), array());
 
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(

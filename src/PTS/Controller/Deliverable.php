@@ -231,7 +231,7 @@ class Deliverable implements ControllerProviderInterface
                         $template = $app['notice.getTemplateId']($delid);
                     }
                     $notice = $app['renderNotice']($data, $template);
-                    $resp = $app['sendMail']($notice);
+                    $resp = $app['ses.sendmail']($notice);
                     $app['recordNotice']($data);
                     $app['json']->setMessage($resp);
                 }else {

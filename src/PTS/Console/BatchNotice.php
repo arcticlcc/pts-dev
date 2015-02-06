@@ -80,7 +80,7 @@ class BatchNotice extends \Knp\Command\Command {
                 //index the data objects by id
                 $dataset[$data['deliverableid']] = $data;
             }
-            $resp = $app['sendMail']($notices, $sender);
+            $resp = $app['ses.sendmail']($notices, $sender);
 
             foreach ($resp as $id => $m) {
                 $status = $m['success'] ? '<info>SUCCESS</info>' : '<error>FAILED</error>';

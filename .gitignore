@@ -1,3 +1,4 @@
+/config/aws.php
 /log/console.log
 /config/db.yml
 /config/client.p12
