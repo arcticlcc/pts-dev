@@ -20,6 +20,15 @@ reports:
         pbarPlugins:
           - type: Ext.ux.grid.GrabField
             cfg: {text: e-mail, dataindex: priemail, iconCls: pts-menu-email, tooltip: Get all visible e-mail addresses, delimiter: ", \n", windowTitle: E-mail addresses}
+      - text: Contact Projects
+        url: ../contactprojectslist
+        qtip: Lists every contact with associated projects, if any
+        cols:
+          - {text: Name, dataIndex: name, flex: 1}
+          - {text: Projects, dataIndex: projects, flex: 1}
+          - {text: Is Group?, dataIndex: isgroup}
+        fields: [name, projects, isgroup]
+        filterBar: true
       - text: Project Admins
         url: ../projectadmin
         qtip: Contacts serving in an admin role for projects (i.e. Financial Officer, Primary Contact, Principal Investigator, Grants Admin).
