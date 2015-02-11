@@ -77,10 +77,8 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
                 // Set the From address with an associative array
                 // Note: Google API ignores these settings
-                //->setFrom(array($staff => 'LCC Staff'))
+                ->setFrom(array($staff => 'LCC Staff'))
                 //->setSender(array($staff => 'LCC Staff'))
-                ->setFrom(array('jbradley@arcticlcc.org' => 'Bradley'))
-                ->setSender(array('jbradley@arcticlcc.org' => 'Josh'))
 
                 // Set the To addresses with an associative array
                 /*->setTo(

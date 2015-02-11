@@ -74,14 +74,20 @@ class SendNotice extends \Knp\Command\Command {
 
             $notice = $app['renderNotice']($data, $template);
 
-            $resp = $app['ses.sendmail']($notice, $sender);
-            $app['recordNotice']($data);
-            $message = "Sent message for $id with id = " . $resp['MessageId'];
+            $resp = $app['ses.sendmail']([$notice], $sender);
+
+            if(isset($resp['failed'])) {
+                $message = "<error>FAILED to send message for $id: " . $resp['failed'][0]['Error']['Message'] . '</error>';
+                $app['monolog']->addError($message);
+            } else {
+                $app['recordNotice']($data);
+                $message = "Sent message for $id with id = " . $resp['succeeded'][0]['MessageId'];
+                $app['monolog']->addInfo($message);
+            }
         }else {
             $message = "No deliverable found with id of $id.";
+            $app['monolog']->addWarning($message);
         }
-
-        $app['monolog']->addInfo($message);
     }
 
 }

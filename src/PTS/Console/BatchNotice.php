@@ -76,19 +76,27 @@ class BatchNotice extends \Knp\Command\Command {
                 $template = $app['notice.getTemplateId']($delid);
 
                 $data['staff'] = $sender;
+                //index rendered notices by id
                 $notices[$data['deliverableid']] = $app['renderNotice']($data, $template);
                 //index the data objects by id
                 $dataset[$data['deliverableid']] = $data;
             }
-            $resp = $app['ses.sendmail']($notices, $sender);
 
-            foreach ($resp as $id => $m) {
-                $status = $m['success'] ? '<info>SUCCESS</info>' : '<error>FAILED</error>';
-                $pid = (explode( '-', $id));
-                $message = "$status: Send message for deliverable with id = {$pid[1]} \n";
-                $app['monolog']->addInfo($message);
-                //record notices for successful responses
-                if($m['success']) $app['recordNotice']($dataset[$pid[1]]);
+            $resp = $app['ses.sendmail']($notices, $sender);
+            //handle failures
+            if(isset($resp['failed'])) {
+                foreach ($resp['failed'] as $id => $failure) {
+                    $message = "<error>FAILED to send message for $id: " . $failure['Error']['Message'] . '</error>';
+                    $app['monolog']->addError($message);
+                }
+            }
+            //handle successes, log notices
+            if(isset($resp['succeeded'])) {
+                foreach ($resp['succeeded'] as $id=>$success) {
+                    $app['recordNotice']($dataset[$id]);
+                    $message = "Sent message for $id with id = " . $success['MessageId'];
+                    $app['monolog']->addInfo($message);
+                }
             }
         }else {
             $message = "No deliverables found due in $days day(s).";

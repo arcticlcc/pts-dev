@@ -231,9 +231,16 @@ class Deliverable implements ControllerProviderInterface
                         $template = $app['notice.getTemplateId']($delid);
                     }
                     $notice = $app['renderNotice']($data, $template);
-                    $resp = $app['ses.sendmail']($notice);
-                    $app['recordNotice']($data);
-                    $app['json']->setMessage($resp);
+                    $resp = $app['ses.sendmail']([$notice]);
+                    if(isset($resp['failed'])) {
+                        $message = "FAILED to send message for $id: " . $resp['failed'][0]['Error']['Message'];
+                        Throw new \Exception($message);
+                    } else {
+                        $app['recordNotice']($data);
+                        $message = "Sent message for $id with id = " . $resp['succeeded'][0]['MessageId'];
+                        $app['monolog']->addInfo($message);
+                    }
+                    $app['json']->setMessage($message);
                 }else {
                     $message = "No deliverable found with id of $id.";
                     $success = false;

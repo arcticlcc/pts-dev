@@ -42,9 +42,11 @@ $app->register(new Silex\Provider\MonologServiceProvider(), array(
 $app->register(new Idiorm\IdiormServiceProvider(), array());
 $app->register(new PTS\Service\GoogleServiceProvider(), array());
 $app->register(new Aws\Silex\AwsServiceProvider(), array(
-    'aws.config' => $app['config.dir'] . 'aws.php'
+    'aws.config' => $app['config.dir'] . 'aws.json'
 ));
-$app->register(new PTS\Service\AwsEmailServiceProvider(), array());
+$app->register(new PTS\Service\AwsEmailServiceProvider(), array(
+    'ses.limit' => 1,
+));
 $app->register(new PTS\Service\NoticeServiceProvider(), array());
 
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(
