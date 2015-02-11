@@ -75,6 +75,7 @@ class IdiormWrapper
 //TODO: create PTS provider containing methods with responses
 {
     protected $app;
+    protected $schema;
 
     public function __construct(Application $app) {
         $this->app = $app;
@@ -85,6 +86,11 @@ class IdiormWrapper
 //echo $sql;
         $stmt = $this->getDb()->prepare($sql);
         $stmt->execute();
+        $this->schema = $schema;
+    }
+
+    public function getSchema() {
+        return $this->schema;
     }
 
     public function getTable($tableName) {

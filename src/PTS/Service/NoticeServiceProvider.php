@@ -20,6 +20,8 @@ class NoticeServiceProvider implements ServiceProviderInterface
     public function register(Application $app)
     {
         $app['renderNotice'] = $app->protect(function (array $data, $template = 'notice') use ($app) {
+            $schema = $app['session']->get('schema') ? $app['session']->get('schema') : $app['idiorm']->getSchema();
+            $group = $app['idiorm']->getTable('groupschema')->WHERE('groupschemaid',$schema)->find_one()->as_array();
 
             $due = (new \DateTime($data['duedate']));
             $duedate = $due->format('M jS, Y');
@@ -41,6 +43,7 @@ class NoticeServiceProvider implements ServiceProviderInterface
                 'days' => $data['dayspastdue'],
                 'start' => $data['startdate'],
                 'end' => $data['enddate'],
+                'resourceurl' => $group['resourceurl'],
             ));
 
             $cc = array(
