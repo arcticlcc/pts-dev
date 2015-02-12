@@ -109,8 +109,12 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                         iconCls: 'pts-world-link',
                         tooltip: 'Open Website',
                         handler: function(grid, rowIndex, colIndex) {
-                            var val = grid.getStore().getAt(rowIndex).get('projectcode');
-                            window.open('http://arcticlcc.org/projects/'+val);
+                            var rec = grid.getStore().getAt(rowIndex),
+                                fy =rec.get('fiscalyear'),
+                                num =rec.get('number'),
+                                url = PTS.user.get('projecturiformat').replace(/(%s)/, fy).replace(/(%s)/, num < 10 ? '0' + num : num);
+
+                            window.open(url);
                         }
                     }]
                 },

@@ -44,6 +44,12 @@ Ext.define('PTS.model.User', {
         },
         {
             name: 'acronym', type: 'mystring', useNull: true
+        },
+        {
+            name: 'groupemail', type: 'mystring', useNull: true
+        },
+        {
+            name: 'projecturiformat', type: 'mystring', useNull: true
         }
     ],
     idProperty: 'loginid',
