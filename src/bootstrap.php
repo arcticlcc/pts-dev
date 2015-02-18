@@ -85,7 +85,12 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'modstatuslist' => 'modstatusid',
     'moddocstatuslist' => 'moddocstatusid',
     'modificationlist' => 'modificationid',
-    'metadataproject' => 'projectid'
+    'metadataproject' => 'projectid',
+    'projectmetadata' => 'projectid',
+    //fix these to use compound keys after Idiorm upgrade
+    'projectprojectcategory' => 'projectid',
+    'projectusertype' => 'projectid',
+    'projecttopiccategory' => 'projectid',
 ));
 
 // Add services to the DI container

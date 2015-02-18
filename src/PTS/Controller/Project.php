@@ -24,6 +24,60 @@ class Project implements ControllerProviderInterface
         $controllers = $app['controllers_factory'];
         $table = 'project';
 
+        $controllers->match('projectmetadata/{id}', function (Application $app, Request $request, $id) {
+            try{
+                $app['db']->transactional(function($conn) use ($app, $request, $id) {
+                    $values = json_decode($request->getContent());
+                    $projcat = $app['idiorm']->getTable('projectprojectcategory');
+                    $usertype = $app['idiorm']->getTable('projectusertype');
+                    $topic = $app['idiorm']->getTable('projecttopiccategory');
+
+                    if($request->getMethod() === 'PUT') {
+                        //delete any existing records
+                        $projcat->where_equal('projectid', $id)->delete_many();
+                        $usertype->where_equal('projectid', $id)->delete_many();
+                        $topic->where_equal('projectid', $id)->delete_many();
+                    }
+
+                    //create new records based on submitted data
+                    foreach ($values->projectcategory as $key => $value) {
+                        $projcat->create();
+                        $projcat->set('projectid', $id);
+                        $projcat->set('projectcategoryid', $value);
+                        $projcat->set('priority', $key);
+                        $projcat->save();
+                    }
+
+                    foreach ($values->usertype as $key => $value) {
+                        $usertype->create();
+                        $usertype->set('projectid', $id);
+                        $usertype->set('usertypeid', $value);
+                        $usertype->set('priority', $key);
+                        $usertype->save();
+                    }
+
+                    foreach ($values->topiccategory as $value) {
+                        $topic->create();
+                        $topic->set('projectid', $id);
+                        $topic->set('topiccategoryid',$value);
+                        $topic->save();
+                    }
+
+                });
+
+                $object = $app['idiorm']->getTable('projectmetadata')->find_one($id);
+                $result = $object->as_array();
+                $app['json']->setData($result);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+                $app['json']->setAll(null, 500, false, $exc->getMessage());
+            }
+
+            return $app['json']->getResponse();
+
+        })->method('PUT');
+
         $controllers->get('project/{id}/metadata.{format}', function (Application $app, Request $request, $id, $format) {
             try{
                 $json = $app['adiwg']->getProject($id);

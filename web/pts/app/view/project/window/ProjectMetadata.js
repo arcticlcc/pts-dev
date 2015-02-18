@@ -5,7 +5,7 @@
 Ext.define('PTS.view.project.window.ProjectMetadata', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.projectmetadata',
-    requires: ['Ext.button.Button', 'Ext.button.Cycle', 'Ext.toolbar.Toolbar'],
+    requires: ['Ext.button.Button', 'Ext.button.Cycle', 'Ext.toolbar.Toolbar','PTS.view.project.form.MetadataForm'],
 
     layout: 'card',
     title: 'Metadata',
@@ -26,17 +26,19 @@ Ext.define('PTS.view.project.window.ProjectMetadata', {
                 dockedItems: [{
                     xtype: 'toolbar',
                     dock: 'top',
-                    items: [/*{
-                     xtype: 'button',
-                     iconCls: 'pts-menu-savebasic',
-                     text: 'Save',
-                     action: 'save'
-                     }, {
-                     xtype: 'button',
-                     iconCls: 'pts-menu-reset',
-                     text: 'Reset',
-                     action: 'reset'
-                     }, '->',*/
+                    items: [{
+                        xtype: 'button',
+                        iconCls: 'pts-menu-savebasic',
+                        text: 'Save',
+                        action: 'save',
+                        disabled: true
+                    }, {
+                        xtype: 'button',
+                        iconCls: 'pts-menu-reset',
+                        text: 'Reset',
+                        action: 'reset'
+                    },
+                    '->',
                     {
                         xtype: 'button',
                         iconCls: 'pts-menu-json',
@@ -64,7 +66,9 @@ Ext.define('PTS.view.project.window.ProjectMetadata', {
                         }
                     }]
                 }],
-                items: []
+                items: [{
+                    xtype: 'metadataform'
+                }]
             }, {
                 xtype: 'panel',
                 layout: 'fit',
