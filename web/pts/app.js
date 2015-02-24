@@ -231,25 +231,28 @@ Ext.application({
         Ext.Ajax.on('requestexception',function(conn, response, op){
             var txt = Ext.JSON.decode(response.responseText);
 
-            //set the global app error
-            PTS.app.setError(txt.message);
+            //don't do anything for canceled requests
+            if(!response.aborted && txt) {
+                //set the global app error
+                PTS.app.setError(txt.message);
 
-            //only fire the global handler if no failure handler is passed
-            //we have to check for regular ajax and data operation callbacks
-            if(undefined === op.failure && (undefined === op.operation || undefined === op.operation.failure)) {
-                /*Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: txt.message,
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   //fn: showResult,
-                   icon: Ext.Msg.ERROR
-               });*/
-                Ext.create('widget.uxNotification', {
-                    title: 'Error',
-                    iconCls: 'ux-notification-icon-error',
-                    html: txt.message
-                }).show();
+                //only fire the global handler if no failure handler is passed
+                //we have to check for regular ajax and data operation callbacks
+                if(undefined === op.failure && (undefined === op.operation || undefined === op.operation.failure)) {
+                    /*Ext.MessageBox.show({
+                       title: 'Error',
+                       msg: txt.message,
+                       buttons: Ext.MessageBox.OK,
+                       //animateTarget: 'mb9',
+                       //fn: showResult,
+                       icon: Ext.Msg.ERROR
+                   });*/
+                    Ext.create('widget.uxNotification', {
+                        title: 'Error',
+                        iconCls: 'ux-notification-icon-error',
+                        html: txt.message
+                    }).show();
+               }
            }
         });
 
