@@ -1,4 +1,4 @@
--- Version 0.14.1
+-- Version 0.15.0
 
 SET search_path = alcc, pg_catalog;
 
@@ -5269,3 +5269,1634 @@ CREATE VIEW projectcatalog AS
 GRANT SELECT ON TABLE alcc.projectcatalog TO pts_read;
 GRANT SELECT ON TABLE walcc.projectcatalog TO pts_read;
 GRANT SELECT ON TABLE dev.projectcatalog TO pts_read;
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.6
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2015-02-19 15:21:55 AKST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = cvl, pg_catalog;
+
+--
+-- TOC entry 4584 (class 0 OID 106740)
+-- Dependencies: 297
+-- Data for Name: notice; Type: TABLE DATA; Schema: cvl; Owner: bradley
+--
+
+INSERT INTO notice (noticeid, title, code, description) VALUES (0, 'ad hoc Notice', 'ad hoc Notice', 'Non-scheduled notice.');
+INSERT INTO notice (noticeid, title, code, description) VALUES (5, 'Fourteen(14) day notice', '14 day Notice', 'Deliverable is due within 14 days.');
+INSERT INTO notice (noticeid, title, code, description) VALUES (6, 'Two(2) day notice', '2 day Notice', 'Deliverable is due within 2 days.');
+
+
+-- Completed on 2015-02-19 15:21:55 AKST
+
+--
+-- PostgreSQL database dump complete
+--
+
+INSERT INTO dev.contact (contactid, comment, dunsnumber, contacttypeid, inactive) VALUES (0, 'System Account', NULL, 5, true);
+INSERT INTO alcc.contact (contactid, comment, dunsnumber, contacttypeid, inactive) VALUES (0, 'System Account', NULL, 5, true);
+INSERT INTO walcc.contact (contactid, comment, dunsnumber, contacttypeid, inactive) VALUES (0, 'System Account', NULL, 5, true);
+
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.3.6
+-- Dumped by pg_dump version 9.4.1
+-- Started on 2015-02-19 15:28:39 AKST
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+SET search_path = cvl, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 368 (class 1259 OID 107054)
+-- Name: projectcategory; Type: TABLE; Schema: cvl; Owner: bradley; Tablespace:
+--
+
+CREATE TABLE projectcategory (
+    projectcategoryid integer NOT NULL,
+    category character varying NOT NULL,
+    code character varying NOT NULL,
+    description character varying
+);
+
+
+ALTER TABLE projectcategory OWNER TO bradley;
+
+--
+-- TOC entry 4597 (class 0 OID 0)
+-- Dependencies: 368
+-- Name: COLUMN projectcategory.code; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON COLUMN projectcategory.code IS 'Project Categories defined by LCC National Catalog effort';
+
+
+--
+-- TOC entry 371 (class 1259 OID 107064)
+-- Name: topiccategory; Type: TABLE; Schema: cvl; Owner: bradley; Tablespace:
+--
+
+CREATE TABLE topiccategory (
+    topiccategoryid integer NOT NULL,
+    code character varying NOT NULL,
+    codename character varying NOT NULL,
+    description character varying NOT NULL
+);
+
+
+ALTER TABLE topiccategory OWNER TO bradley;
+
+--
+-- TOC entry 4599 (class 0 OID 0)
+-- Dependencies: 371
+-- Name: TABLE topiccategory; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON TABLE topiccategory IS 'High-level geographic data thematic classification to assist in the grouping and search of available geographic data sets. Can be used to group keywords as well. Listed examples are not exhaustive. NOTE It is understood there are overlaps between general categories and the user is encouraged to select the one most appropriate. (enumeration - cannot be extended)';
+
+
+--
+-- TOC entry 4600 (class 0 OID 0)
+-- Dependencies: 371
+-- Name: COLUMN topiccategory.topiccategoryid; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON COLUMN topiccategory.topiccategoryid IS 'Unique identifier corresponding to ISO code';
+
+
+--
+-- TOC entry 4601 (class 0 OID 0)
+-- Dependencies: 371
+-- Name: COLUMN topiccategory.code; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON COLUMN topiccategory.code IS 'PK';
+
+
+--
+-- TOC entry 4602 (class 0 OID 0)
+-- Dependencies: 371
+-- Name: COLUMN topiccategory.codename; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON COLUMN topiccategory.codename IS 'Name of code';
+
+
+--
+-- TOC entry 4603 (class 0 OID 0)
+-- Dependencies: 371
+-- Name: COLUMN topiccategory.description; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON COLUMN topiccategory.description IS 'Definition of code';
+
+
+--
+-- TOC entry 372 (class 1259 OID 107070)
+-- Name: topiccategory_topiccategoryid_seq; Type: SEQUENCE; Schema: cvl; Owner: bradley
+--
+
+CREATE SEQUENCE topiccategory_topiccategoryid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE topiccategory_topiccategoryid_seq OWNER TO bradley;
+
+--
+-- TOC entry 4605 (class 0 OID 0)
+-- Dependencies: 372
+-- Name: topiccategory_topiccategoryid_seq; Type: SEQUENCE OWNED BY; Schema: cvl; Owner: bradley
+--
+
+ALTER SEQUENCE topiccategory_topiccategoryid_seq OWNED BY topiccategory.topiccategoryid;
+
+
+--
+-- TOC entry 373 (class 1259 OID 107072)
+-- Name: usertype; Type: TABLE; Schema: cvl; Owner: bradley; Tablespace:
+--
+
+CREATE TABLE usertype (
+    usertypeid integer NOT NULL,
+    usertype character varying NOT NULL,
+    code character varying NOT NULL,
+    description character varying
+);
+
+
+ALTER TABLE usertype OWNER TO bradley;
+
+--
+-- TOC entry 4606 (class 0 OID 0)
+-- Dependencies: 373
+-- Name: TABLE usertype; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON TABLE usertype IS 'Types of users defined by LCC National Catalog effort';
+
+
+--
+-- TOC entry 4607 (class 0 OID 0)
+-- Dependencies: 373
+-- Name: COLUMN usertype.code; Type: COMMENT; Schema: cvl; Owner: bradley
+--
+
+COMMENT ON COLUMN usertype.code IS 'code for usertype';
+
+
+--
+-- TOC entry 4324 (class 2604 OID 108199)
+-- Name: topiccategoryid; Type: DEFAULT; Schema: cvl; Owner: bradley
+--
+
+ALTER TABLE ONLY topiccategory ALTER COLUMN topiccategoryid SET DEFAULT nextval('topiccategory_topiccategoryid_seq'::regclass);
+
+
+--
+-- TOC entry 4589 (class 0 OID 107054)
+-- Dependencies: 368
+-- Data for Name: projectcategory; Type: TABLE DATA; Schema: cvl; Owner: bradley
+--
+
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (1, 'Decision Support', 'Decision Support', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (2, 'Monitoring', 'Monitoring', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (3, 'Population & Habitat Evaluation/Projection', 'Population & Habitat Evaluation/Projection', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (4, 'Vulnerability Assessment', 'Vulnerability Assessment', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (5, 'Conservation Planning', 'Conservation Planning', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (6, 'Conservation Design', 'Conservation Design', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (7, 'Informing Conservation Delivery', 'Informing Conservation Delivery', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (8, 'Data Management and Integration', 'Data Management and Integration', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (9, 'Data Acquisition and Development', 'Data Acquisition and Development', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (10, 'Socio-economics/Ecosystem Services', 'Socio-economics/Ecosystem Services', NULL);
+INSERT INTO projectcategory (projectcategoryid, category, code, description) VALUES (11, 'Traditional Ecological Knowledge', 'Traditional Ecological Knowledge', NULL);
+
+
+--
+-- TOC entry 4590 (class 0 OID 107064)
+-- Dependencies: 371
+-- Data for Name: topiccategory; Type: TABLE DATA; Schema: cvl; Owner: bradley
+--
+
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (1, '001', 'farming', 'rearing of animals and/or cultivation of plants. Examples: agriculture, irrigation, aquaculture, plantations, herding, pests and diseases affecting crops and livestock');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (2, '002', 'biota', 'flora and/or fauna in natural environment. Examples: wildlife, vegetation, biological sciences, ecology, wilderness, sealife, wetlands, habitat.');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (3, '003', 'boundaries', 'legal land descriptions. Examples: political and administrative boundaries.');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (4, '004', 'climatolotyMeteorologyAtmoshphere', 'processes and phenomena of the atmosphere. Examples: cloud cover, weather, climate, atmospheric conditions, climate change, precipitation');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (5, '005', 'economy', 'economic activities, conditions and employment. Examples: production, labour, revenue, commerce, industry, tourism and ecotourism, forestry, fisheries, commercial or subsistence hunting, exploration and exploitation of resources such as minerals, oil and gas');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (6, '006', 'elevation', 'height above or below sea level. Examples: altitude, bathymetry, digital elevation models, slope, derived products');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (7, '007', 'environment', 'environmental resources, protection and conservation. Examples: environmental pollution, waste storage and treatment, environmental impact assessment, monitoring environmental risk, nature reserves, landscape');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (8, '008', 'geoscientificInformation', 'information pertaining to earth sciences. Examples: geophysical features and processes, geology, minerals, sciences dealing with the composition, structure and origin of the earth’s rocks, risks of earthquakes, volcanic activity, landslides, gravity information, soils, permafrost, ydrogeology, erosion');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (9, '009', 'health', 'health, health services, human ecology, and safety. Examples: disease and illness, factors affecting health, hygiene, substance abuse, mental and physical health, health services');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (10, '010', 'imageryBaseMapsEarthCover', 'base maps. Examples: land cover, topographic maps, imagery, unclassified images, annotations');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (11, '011', 'intelligenceMilitary', 'military bases, structures, activities. Examples: barracks, training grounds, military transportation, information collection');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (12, '012', 'inlandWater', 'inland water features, drainage systems and their characteristics. Examples: rivers and glaciers, salt lakes, water utilization plans, dams, currents, floods, water quality, hydrographic charts');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (13, '013', 'location', 'positional information and services. Examples: addresses, geodetic networks, control points, postal zones and services, place names');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (14, '014', 'oceans', 'features and characteristics of salt water bodies (excluding inland waters). Examples: tides, tidal waves, coastal information, reefs');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (15, '015', 'planningCadastre', 'information used for appropriate actions for future use of the land. Examples: land use maps, zoning maps, cadastral surveys, land ownership');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (16, '016', 'society', 'characteristics of society and cultures. Examples: settlements, anthropology, archaeology, education, traditional beliefs, manners and customs, demographic data, recreational areas and activities, social impact assessments, crime and justice, census information');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (17, '017', 'structure', 'man-made construction. Examples: buildings, museums, churches, factories, housing, monuments, shops, towers');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (18, '018', 'transportation', 'means and aids for conveying persons and/or goods. Examples: roads, airports/airstrips, shipping routes, tunnels, nautical charts, vehicle or vessel location, aeronautical charts, railways');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (19, '019', 'utilitiesCommunication', 'energy, water and waste systems and communications infrastructure and services. Examples: hydroelectricity, geothermal, solar and nuclear sources of energy, water purification and distribution, sewage collection and disposal, electricity and gas distribution, data communication, telecommunication, radio, communication networks');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (20, '020', 'extraTerrestrial', 'region more than 100 km above the surface of the Earth');
+INSERT INTO topiccategory (topiccategoryid, code, codename, description) VALUES (21, '021', 'disaster', 'information related to disasters. Examples: Site of the disaster, evacuation zone, disaster-prevention facility, disaster relief activities.');
+
+
+--
+-- TOC entry 4609 (class 0 OID 0)
+-- Dependencies: 372
+-- Name: topiccategory_topiccategoryid_seq; Type: SEQUENCE SET; Schema: cvl; Owner: bradley
+--
+
+SELECT pg_catalog.setval('topiccategory_topiccategoryid_seq', 21, true);
+
+
+--
+-- TOC entry 4592 (class 0 OID 107072)
+-- Dependencies: 373
+-- Data for Name: usertype; Type: TABLE DATA; Schema: cvl; Owner: bradley
+--
+
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (1, 'Regional & county planners', 'Regional & county planners', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (2, 'Hunters & anglers', 'Hunters & anglers', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (3, 'State agencies', 'State agencies', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (4, 'Tribes', 'Tribes', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (5, 'Policy makers & regulators', 'Policy makers & regulators', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (6, 'Private land owners', 'Private land owners', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (7, 'Conservation NGOs', 'Conservation NGOs', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (8, 'Federal resource managers', 'Federal resource managers', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (9, 'K-12 students & teachers', 'K-12 students & teachers', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (10, 'Academics & scientific researchers', 'Academics & scientific researchers', NULL);
+INSERT INTO usertype (usertypeid, usertype, code, description) VALUES (11, 'Interested public', 'Interested public', NULL);
+
+
+--
+-- TOC entry 4326 (class 2606 OID 109012)
+-- Name: projectcategory_pk; Type: CONSTRAINT; Schema: cvl; Owner: bradley; Tablespace:
+--
+
+ALTER TABLE ONLY projectcategory
+    ADD CONSTRAINT projectcategory_pk PRIMARY KEY (projectcategoryid);
+
+
+--
+-- TOC entry 4328 (class 2606 OID 109018)
+-- Name: topiccategory_pk; Type: CONSTRAINT; Schema: cvl; Owner: bradley; Tablespace:
+--
+
+ALTER TABLE ONLY topiccategory
+    ADD CONSTRAINT topiccategory_pk PRIMARY KEY (topiccategoryid);
+
+
+--
+-- TOC entry 4330 (class 2606 OID 109020)
+-- Name: usertype_pk; Type: CONSTRAINT; Schema: cvl; Owner: bradley; Tablespace:
+--
+
+ALTER TABLE ONLY usertype
+    ADD CONSTRAINT usertype_pk PRIMARY KEY (usertypeid);
+
+
+--
+-- TOC entry 4598 (class 0 OID 0)
+-- Dependencies: 368
+-- Name: projectcategory; Type: ACL; Schema: cvl; Owner: bradley
+--
+
+REVOKE ALL ON TABLE projectcategory FROM PUBLIC;
+REVOKE ALL ON TABLE projectcategory FROM bradley;
+GRANT ALL ON TABLE projectcategory TO bradley;
+GRANT SELECT ON TABLE projectcategory TO pts_read;
+
+
+--
+-- TOC entry 4604 (class 0 OID 0)
+-- Dependencies: 371
+-- Name: topiccategory; Type: ACL; Schema: cvl; Owner: bradley
+--
+
+REVOKE ALL ON TABLE topiccategory FROM PUBLIC;
+REVOKE ALL ON TABLE topiccategory FROM bradley;
+GRANT ALL ON TABLE topiccategory TO bradley;
+GRANT SELECT ON TABLE topiccategory TO pts_read;
+
+
+--
+-- TOC entry 4608 (class 0 OID 0)
+-- Dependencies: 373
+-- Name: usertype; Type: ACL; Schema: cvl; Owner: bradley
+--
+
+REVOKE ALL ON TABLE usertype FROM PUBLIC;
+REVOKE ALL ON TABLE usertype FROM bradley;
+GRANT ALL ON TABLE usertype TO bradley;
+GRANT SELECT ON TABLE usertype TO pts_read;
+
+
+-- Completed on 2015-02-19 15:28:39 AKST
+
+--
+-- PostgreSQL database dump complete
+--
+
+SET search_path = common, pg_catalog;
+
+ALTER TABLE groupschema
+    ADD COLUMN email character varying,
+    ADD COLUMN resourceurl character varying;
+
+COMMENT ON COLUMN groupschema.email IS 'Primary email address for the groupschema to be used with web services.';
+
+COMMENT ON COLUMN groupschema.resourceurl IS 'URL for web page displaying resources for project investigators and administrators.';
+
+ALTER TABLE groupschema
+   ADD COLUMN emailalias character varying;
+COMMENT ON COLUMN groupschema.emailalias
+  IS 'Alias for group email';
+
+
+SET search_path = dev, pg_catalog;
+
+DROP VIEW deliverableall;
+
+DROP VIEW fundingtotals;
+
+DROP VIEW userinfo;
+
+ALTER TABLE deliverablenotice
+    DROP CONSTRAINT person_deliverablenotice_fk;
+
+CREATE TABLE projectprojectcategory (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    projectcategoryid integer NOT NULL,
+    priority integer NOT NULL
+);
+
+CREATE TABLE projecttopiccategory (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    topiccategoryid integer DEFAULT nextval('cvl.topiccategory_topiccategoryid_seq'::regclass) NOT NULL
+);
+
+CREATE TABLE projectusertype (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    usertypeid integer NOT NULL,
+    priority integer NOT NULL
+);
+
+ALTER TABLE deliverablemod
+    ADD COLUMN reminder boolean DEFAULT true;
+
+COMMENT ON COLUMN deliverablemod.reminder IS 'Whether to enable automated reminders.';
+
+ALTER TABLE projectcontact
+    ADD COLUMN reminder boolean;
+
+COMMENT ON COLUMN projectcontact.reminder IS 'Indicates whether the contact is included on reminders notices.';
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT projectprojectcategory_pk PRIMARY KEY (projectid, projectcategoryid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT projecttopiccategory_pk PRIMARY KEY (projectid, topiccategoryid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT projectusertype_pk PRIMARY KEY (projectid, usertypeid);
+
+ALTER TABLE deliverablenotice
+    ADD CONSTRAINT contact_deliverablenotice_fk FOREIGN KEY (contactid) REFERENCES contact(contactid);
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT project_projectprojectcategory_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT projectcategory_projectprojectcategory_fk FOREIGN KEY (projectcategoryid) REFERENCES cvl.projectcategory(projectcategoryid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT project_projecttopiccategory_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT topiccategory_projecttopiccategory_fk FOREIGN KEY (topiccategoryid) REFERENCES cvl.topiccategory(topiccategoryid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT project_projectusertype_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT usertype_projectusertype_fk FOREIGN KEY (usertypeid) REFERENCES cvl.usertype(usertypeid);
+
+CREATE VIEW contactprimaryinfo AS
+    SELECT person.contactid,
+    (((person.firstname)::text || ' '::text) || (person.lastname)::text) AS name,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail
+   FROM ((person
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE (phone.phonetypeid = 3)) p ON (((person.contactid = p.contactid) AND (p.rank = 1))))
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM eaddress
+          WHERE (eaddress.eaddresstypeid = 1)) e ON (((person.contactid = e.contactid) AND (e.rank = 1))))
+UNION
+ SELECT cg.contactid,
+    cg.name,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail
+   FROM ((contactgroup cg
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE (phone.phonetypeid = 3)) p ON (((cg.contactid = p.contactid) AND (p.rank = 1))))
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM eaddress
+          WHERE (eaddress.eaddresstypeid = 1)) e ON (((cg.contactid = e.contactid) AND (e.rank = 1))));
+
+CREATE VIEW deliverableall AS
+    SELECT deliverablemod.personid,
+    deliverablemod.deliverableid,
+    deliverablemod.modificationid,
+    deliverablemod.duedate,
+    efd.effectivedate AS receiveddate,
+    deliverablemod.devinterval,
+    deliverablemod.publish,
+    deliverablemod.restricted,
+    deliverablemod.accessdescription,
+    deliverablemod.parentmodificationid,
+    deliverablemod.parentdeliverableid,
+    deliverable.deliverabletypeid,
+    deliverable.title,
+    deliverable.description,
+    (EXISTS ( SELECT 1
+           FROM deliverablemod dm
+          WHERE ((dm.parentdeliverableid = deliverablemod.deliverableid) AND (dm.parentmodificationid = deliverablemod.modificationid)))) AS modified,
+    status.status,
+    status.effectivedate,
+    status.deliverablestatusid,
+    deliverablemod.startdate,
+    deliverablemod.enddate,
+    deliverablemod.reminder
+   FROM (((deliverablemod
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid,
+            deliverablemodstatus.deliverablemodstatusid,
+            deliverablemodstatus.deliverableid,
+            deliverablemodstatus.effectivedate,
+            deliverablemodstatus.comment,
+            deliverablemodstatus.contactid,
+            deliverablestatus.code,
+            deliverablestatus.status,
+            deliverablestatus.description,
+            deliverablestatus.comment
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
+            deliverablemodstatus.modificationid,
+            deliverablemodstatus.deliverableid
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          WHERE (deliverablemodstatus.deliverablestatusid = 10)
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid))
+     JOIN deliverable USING (deliverableid));
+
+CREATE VIEW deliverablereminder AS
+    SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate,
+    modification.projectid,
+    dm.modificationid,
+    d.deliverableid,
+    d.deliverabletypeid,
+    status.deliverablestatusid,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN man.contactid
+            ELSE projectcontact.contactid
+        END AS contactid,
+    efd.effectivedate AS receiveddate,
+    d.title,
+    dt.type,
+    d.description,
+    common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,
+    project.shorttitle AS project,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN man.name
+            ELSE contactprimaryinfo.name
+        END AS contact,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN (man.priemail)::text
+            ELSE piemail.email
+        END AS email,
+        CASE
+            WHEN (NOT (d.deliverabletypeid = 7)) THEN ccemail.email
+            ELSE NULL::text
+        END AS ccemail,
+        CASE
+            WHEN (NOT (d.deliverabletypeid = 7)) THEN adminemail.email
+            ELSE NULL::text
+        END AS adminemail,
+    (((po.firstname)::text || ' '::text) || (po.lastname)::text) AS projectofficer,
+        CASE
+            WHEN (status.deliverablestatusid >= 10) THEN 0
+            WHEN ((status.deliverablestatusid = 0) AND ((('now'::text)::date - dm.duedate) > 0)) THEN ((('now'::text)::date - status.effectivedate) + 1)
+            ELSE (('now'::text)::date - dm.duedate)
+        END AS dayspastdue,
+        CASE
+            WHEN ((status.status IS NOT NULL) AND (NOT ((status.deliverablestatusid = 0) AND ((('now'::text)::date - dm.duedate) < 0)))) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status,
+    status.effectivedate,
+    COALESCE((status.deliverablestatusid >= 40), false) AS completed,
+    modification.modificationcode AS agreementnumber,
+    dm.startdate,
+    dm.enddate,
+    dm.reminder
+   FROM (((((((((((((((deliverable d
+     JOIN deliverablemod dm USING (deliverableid))
+     JOIN cvl.deliverabletype dt USING (deliverabletypeid))
+     JOIN modification USING (modificationid))
+     JOIN project USING (projectid))
+     JOIN ( SELECT projectcontact_1.projectid,
+            projectcontact_1.contactid,
+            projectcontact_1.roletypeid,
+            projectcontact_1.priority,
+            projectcontact_1.contactprojectcode,
+            projectcontact_1.partner,
+            projectcontact_1.projectcontactid
+           FROM projectcontact projectcontact_1
+          WHERE (projectcontact_1.roletypeid = ANY (ARRAY[6, 7]))) projectcontact USING (projectid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) OVER (PARTITION BY projectcontact_1.projectid ORDER BY projectcontact_1.roletypeid DESC, projectcontact_1.priority ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (projectcontact_1.roletypeid = ANY (ARRAY[6, 7])))) piemail USING (projectid))
+     LEFT JOIN contactprimaryinfo USING (contactid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (NOT (projectcontact_1.roletypeid = ANY (ARRAY[6, 7, 5, 13]))))
+          GROUP BY projectcontact_1.projectid) ccemail USING (projectid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (projectcontact_1.roletypeid = ANY (ARRAY[5, 13])))
+          GROUP BY projectcontact_1.projectid) adminemail USING (projectid))
+     LEFT JOIN projectcontact poc ON (((poc.projectid = project.projectid) AND (poc.roletypeid = 12))))
+     LEFT JOIN person po ON ((poc.contactid = po.contactid)))
+     LEFT JOIN contactprimaryinfo man ON ((man.contactid = dm.personid)))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid,
+            deliverablemodstatus.deliverablemodstatusid,
+            deliverablemodstatus.deliverableid,
+            deliverablemodstatus.effectivedate,
+            deliverablemodstatus.comment,
+            deliverablemodstatus.contactid,
+            deliverablestatus.code,
+            deliverablestatus.status,
+            deliverablestatus.description,
+            deliverablestatus.comment
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
+            deliverablemodstatus.deliverableid
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          WHERE (deliverablemodstatus.deliverablestatusid = ANY (ARRAY[10, 40]))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.deliverablestatusid, deliverablemodstatus.effectivedate DESC) efd USING (deliverableid))
+     JOIN contactgroup ON ((project.orgid = contactgroup.contactid)))
+  WHERE ((NOT (EXISTS ( SELECT 1
+           FROM deliverablemod dp
+          WHERE ((dm.modificationid = dp.parentmodificationid) AND (dm.deliverableid = dp.parentdeliverableid))))) AND (
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN (man.priemail)::text
+            ELSE piemail.email
+        END IS NOT NULL))
+  ORDER BY dm.duedate, d.deliverableid, projectcontact.roletypeid DESC, projectcontact.priority, poc.priority;
+
+CREATE VIEW fundingtotals AS
+    SELECT DISTINCT mod.fiscalyear,
+    COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) AS allocated,
+    COALESCE(invoice.amount, 0.00) AS invoiced,
+    (COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference,
+    COALESCE(leveraged.leveraged, 0.00) AS leveraged,
+    (COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00)) AS total
+   FROM (((( SELECT modification.modificationid,
+            modification.projectid,
+            modification.personid,
+            modification.modtypeid,
+            modification.title,
+            modification.description,
+            modification.modificationcode,
+            modification.effectivedate,
+            modification.startdate,
+            modification.enddate,
+            modification.datecreated,
+            modification.parentmodificationid,
+            modification.shorttitle,
+            common.getfiscalyear(modification.startdate) AS fiscalyear
+           FROM modification) mod
+     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(invoice_1.amount) AS amount
+           FROM ((invoice invoice_1
+             JOIN funding funding_1 USING (fundingid))
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (funding_1.fundingtypeid = 1)
+          GROUP BY common.getfiscalyear(modification_1.startdate)) invoice USING (fiscalyear))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(funding_1.amount) AS leveraged
+           FROM (funding funding_1
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))
+          GROUP BY common.getfiscalyear(modification_1.startdate)) leveraged USING (fiscalyear))
+  ORDER BY mod.fiscalyear;
+
+CREATE OR REPLACE VIEW projectcontactlist AS
+    SELECT pc.projectcontactid,
+    pc.projectid,
+    pc.contactid,
+    pc.roletypeid,
+    pc.priority,
+    pc.contactprojectcode,
+    pc.partner,
+    pc.name,
+    roletype.code AS role,
+    pc.reminder
+   FROM (( SELECT projectcontact.projectcontactid,
+            projectcontact.projectid,
+            projectcontact.contactid,
+            projectcontact.roletypeid,
+            projectcontact.priority,
+            projectcontact.contactprojectcode,
+            projectcontact.partner,
+            concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name,
+            projectcontact.reminder
+           FROM (projectcontact
+             JOIN person USING (contactid))
+        UNION
+         SELECT projectcontact.projectcontactid,
+            projectcontact.projectid,
+            projectcontact.contactid,
+            projectcontact.roletypeid,
+            projectcontact.priority,
+            projectcontact.contactprojectcode,
+            projectcontact.partner,
+            contactgroup.name,
+            projectcontact.reminder
+           FROM (projectcontact
+             JOIN contactgroup USING (contactid))) pc
+     JOIN cvl.roletype USING (roletypeid))
+  ORDER BY pc.priority;
+
+CREATE VIEW projectmetadata AS
+    SELECT project.projectid,
+    ut.usertype,
+    tc.topiccategory,
+    pc.projectcategory
+   FROM (((project
+     LEFT JOIN ( SELECT projectusertype.projectid,
+            string_agg((projectusertype.usertypeid)::text, ','::text) AS usertype
+           FROM projectusertype
+          GROUP BY projectusertype.projectid) ut USING (projectid))
+     LEFT JOIN ( SELECT projecttopiccategory.projectid,
+            string_agg((projecttopiccategory.topiccategoryid)::text, ','::text) AS topiccategory
+           FROM projecttopiccategory
+          GROUP BY projecttopiccategory.projectid) tc USING (projectid))
+     LEFT JOIN ( SELECT projectprojectcategory.projectid,
+            string_agg((projectprojectcategory.projectcategoryid)::text, ','::text) AS projectcategory
+           FROM projectprojectcategory
+          GROUP BY projectprojectcategory.projectid) pc USING (projectid));
+
+CREATE VIEW userinfo AS
+    SELECT login.loginid,
+    logingroupschema.contactid,
+    groupschema.groupid,
+    login.username,
+    person.firstname,
+    person.lastname,
+    person.middlename,
+    person.suffix,
+    contactgroup.name AS groupname,
+    contactgroup.acronym,
+    groupschema.projecturiformat,
+    groupschema.email AS groupemail
+   FROM ((((common.login
+     JOIN common.logingroupschema USING (loginid))
+     JOIN common.groupschema USING (groupschemaid))
+     JOIN contactgroup ON ((groupschema.groupid = contactgroup.contactid)))
+     JOIN person ON ((logingroupschema.contactid = person.contactid)))
+  WHERE ((logingroupschema.groupschemaid)::name = ANY (current_schemas(false)));
+
+GRANT SELECT ON TABLE projectprojectcategory TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectprojectcategory TO GROUP pts_write;
+GRANT SELECT ON TABLE projecttopiccategory TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projecttopiccategory TO GROUP pts_write;
+GRANT SELECT ON TABLE projectusertype TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectusertype TO GROUP pts_write;
+GRANT SELECT ON TABLE contactprimaryinfo TO GROUP pts_read;
+
+GRANT SELECT ON TABLE deliverableall TO GROUP pts_read;
+
+GRANT SELECT ON TABLE deliverablereminder TO GROUP pts_read;
+
+GRANT SELECT ON TABLE fundingtotals TO GROUP pts_read;
+
+GRANT SELECT ON TABLE projectmetadata TO GROUP pts_read;
+
+GRANT SELECT ON TABLE userinfo TO GROUP pts_read;
+
+SET search_path = alcc, pg_catalog;
+
+DROP VIEW deliverableall;
+
+DROP VIEW fundingtotals;
+
+DROP VIEW userinfo;
+
+ALTER TABLE deliverablenotice
+    DROP CONSTRAINT person_deliverablenotice_fk;
+
+CREATE TABLE projectprojectcategory (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    projectcategoryid integer NOT NULL,
+    priority integer NOT NULL
+);
+
+CREATE TABLE projecttopiccategory (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    topiccategoryid integer DEFAULT nextval('cvl.topiccategory_topiccategoryid_seq'::regclass) NOT NULL
+);
+
+CREATE TABLE projectusertype (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    usertypeid integer NOT NULL,
+    priority integer NOT NULL
+);
+
+ALTER TABLE deliverablemod
+    ADD COLUMN reminder boolean DEFAULT true;
+
+COMMENT ON COLUMN deliverablemod.reminder IS 'Whether to enable automated reminders.';
+
+ALTER TABLE projectcontact
+    ADD COLUMN reminder boolean;
+
+COMMENT ON COLUMN projectcontact.reminder IS 'Indicates whether the contact is included on reminders notices.';
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT projectprojectcategory_pk PRIMARY KEY (projectid, projectcategoryid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT projecttopiccategory_pk PRIMARY KEY (projectid, topiccategoryid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT projectusertype_pk PRIMARY KEY (projectid, usertypeid);
+
+ALTER TABLE deliverablenotice
+    ADD CONSTRAINT contact_deliverablenotice_fk FOREIGN KEY (contactid) REFERENCES contact(contactid);
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT project_projectprojectcategory_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT projectcategory_projectprojectcategory_fk FOREIGN KEY (projectcategoryid) REFERENCES cvl.projectcategory(projectcategoryid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT project_projecttopiccategory_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT topiccategory_projecttopiccategory_fk FOREIGN KEY (topiccategoryid) REFERENCES cvl.topiccategory(topiccategoryid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT project_projectusertype_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT usertype_projectusertype_fk FOREIGN KEY (usertypeid) REFERENCES cvl.usertype(usertypeid);
+
+CREATE VIEW contactprimaryinfo AS
+    SELECT person.contactid,
+    (((person.firstname)::text || ' '::text) || (person.lastname)::text) AS name,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail
+   FROM ((person
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE (phone.phonetypeid = 3)) p ON (((person.contactid = p.contactid) AND (p.rank = 1))))
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM eaddress
+          WHERE (eaddress.eaddresstypeid = 1)) e ON (((person.contactid = e.contactid) AND (e.rank = 1))))
+UNION
+ SELECT cg.contactid,
+    cg.name,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail
+   FROM ((contactgroup cg
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE (phone.phonetypeid = 3)) p ON (((cg.contactid = p.contactid) AND (p.rank = 1))))
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM eaddress
+          WHERE (eaddress.eaddresstypeid = 1)) e ON (((cg.contactid = e.contactid) AND (e.rank = 1))));
+
+CREATE VIEW deliverableall AS
+    SELECT deliverablemod.personid,
+    deliverablemod.deliverableid,
+    deliverablemod.modificationid,
+    deliverablemod.duedate,
+    efd.effectivedate AS receiveddate,
+    deliverablemod.devinterval,
+    deliverablemod.publish,
+    deliverablemod.restricted,
+    deliverablemod.accessdescription,
+    deliverablemod.parentmodificationid,
+    deliverablemod.parentdeliverableid,
+    deliverable.deliverabletypeid,
+    deliverable.title,
+    deliverable.description,
+    (EXISTS ( SELECT 1
+           FROM deliverablemod dm
+          WHERE ((dm.parentdeliverableid = deliverablemod.deliverableid) AND (dm.parentmodificationid = deliverablemod.modificationid)))) AS modified,
+    status.status,
+    status.effectivedate,
+    status.deliverablestatusid,
+    deliverablemod.startdate,
+    deliverablemod.enddate,
+    deliverablemod.reminder
+   FROM (((deliverablemod
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid,
+            deliverablemodstatus.deliverablemodstatusid,
+            deliverablemodstatus.deliverableid,
+            deliverablemodstatus.effectivedate,
+            deliverablemodstatus.comment,
+            deliverablemodstatus.contactid,
+            deliverablestatus.code,
+            deliverablestatus.status,
+            deliverablestatus.description,
+            deliverablestatus.comment
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
+            deliverablemodstatus.modificationid,
+            deliverablemodstatus.deliverableid
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          WHERE (deliverablemodstatus.deliverablestatusid = 10)
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid))
+     JOIN deliverable USING (deliverableid));
+
+CREATE VIEW deliverablereminder AS
+    SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate,
+    modification.projectid,
+    dm.modificationid,
+    d.deliverableid,
+    d.deliverabletypeid,
+    status.deliverablestatusid,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN man.contactid
+            ELSE projectcontact.contactid
+        END AS contactid,
+    efd.effectivedate AS receiveddate,
+    d.title,
+    dt.type,
+    d.description,
+    common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,
+    project.shorttitle AS project,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN man.name
+            ELSE contactprimaryinfo.name
+        END AS contact,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN (man.priemail)::text
+            ELSE piemail.email
+        END AS email,
+        CASE
+            WHEN (NOT (d.deliverabletypeid = 7)) THEN ccemail.email
+            ELSE NULL::text
+        END AS ccemail,
+        CASE
+            WHEN (NOT (d.deliverabletypeid = 7)) THEN adminemail.email
+            ELSE NULL::text
+        END AS adminemail,
+    (((po.firstname)::text || ' '::text) || (po.lastname)::text) AS projectofficer,
+        CASE
+            WHEN (status.deliverablestatusid >= 10) THEN 0
+            WHEN ((status.deliverablestatusid = 0) AND ((('now'::text)::date - dm.duedate) > 0)) THEN ((('now'::text)::date - status.effectivedate) + 1)
+            ELSE (('now'::text)::date - dm.duedate)
+        END AS dayspastdue,
+        CASE
+            WHEN ((status.status IS NOT NULL) AND (NOT ((status.deliverablestatusid = 0) AND ((('now'::text)::date - dm.duedate) < 0)))) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status,
+    status.effectivedate,
+    COALESCE((status.deliverablestatusid >= 40), false) AS completed,
+    modification.modificationcode AS agreementnumber,
+    dm.startdate,
+    dm.enddate,
+    dm.reminder
+   FROM (((((((((((((((deliverable d
+     JOIN deliverablemod dm USING (deliverableid))
+     JOIN cvl.deliverabletype dt USING (deliverabletypeid))
+     JOIN modification USING (modificationid))
+     JOIN project USING (projectid))
+     JOIN ( SELECT projectcontact_1.projectid,
+            projectcontact_1.contactid,
+            projectcontact_1.roletypeid,
+            projectcontact_1.priority,
+            projectcontact_1.contactprojectcode,
+            projectcontact_1.partner,
+            projectcontact_1.projectcontactid
+           FROM projectcontact projectcontact_1
+          WHERE (projectcontact_1.roletypeid = ANY (ARRAY[6, 7]))) projectcontact USING (projectid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) OVER (PARTITION BY projectcontact_1.projectid ORDER BY projectcontact_1.roletypeid DESC, projectcontact_1.priority ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (projectcontact_1.roletypeid = ANY (ARRAY[6, 7])))) piemail USING (projectid))
+     LEFT JOIN contactprimaryinfo USING (contactid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (NOT (projectcontact_1.roletypeid = ANY (ARRAY[6, 7, 5, 13]))))
+          GROUP BY projectcontact_1.projectid) ccemail USING (projectid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (projectcontact_1.roletypeid = ANY (ARRAY[5, 13])))
+          GROUP BY projectcontact_1.projectid) adminemail USING (projectid))
+     LEFT JOIN projectcontact poc ON (((poc.projectid = project.projectid) AND (poc.roletypeid = 12))))
+     LEFT JOIN person po ON ((poc.contactid = po.contactid)))
+     LEFT JOIN contactprimaryinfo man ON ((man.contactid = dm.personid)))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid,
+            deliverablemodstatus.deliverablemodstatusid,
+            deliverablemodstatus.deliverableid,
+            deliverablemodstatus.effectivedate,
+            deliverablemodstatus.comment,
+            deliverablemodstatus.contactid,
+            deliverablestatus.code,
+            deliverablestatus.status,
+            deliverablestatus.description,
+            deliverablestatus.comment
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
+            deliverablemodstatus.deliverableid
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          WHERE (deliverablemodstatus.deliverablestatusid = ANY (ARRAY[10, 40]))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.deliverablestatusid, deliverablemodstatus.effectivedate DESC) efd USING (deliverableid))
+     JOIN contactgroup ON ((project.orgid = contactgroup.contactid)))
+  WHERE ((NOT (EXISTS ( SELECT 1
+           FROM deliverablemod dp
+          WHERE ((dm.modificationid = dp.parentmodificationid) AND (dm.deliverableid = dp.parentdeliverableid))))) AND (
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN (man.priemail)::text
+            ELSE piemail.email
+        END IS NOT NULL))
+  ORDER BY dm.duedate, d.deliverableid, projectcontact.roletypeid DESC, projectcontact.priority, poc.priority;
+
+CREATE VIEW fundingtotals AS
+    SELECT DISTINCT mod.fiscalyear,
+    COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) AS allocated,
+    COALESCE(invoice.amount, 0.00) AS invoiced,
+    (COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference,
+    COALESCE(leveraged.leveraged, 0.00) AS leveraged,
+    (COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00)) AS total
+   FROM (((( SELECT modification.modificationid,
+            modification.projectid,
+            modification.personid,
+            modification.modtypeid,
+            modification.title,
+            modification.description,
+            modification.modificationcode,
+            modification.effectivedate,
+            modification.startdate,
+            modification.enddate,
+            modification.datecreated,
+            modification.parentmodificationid,
+            modification.shorttitle,
+            common.getfiscalyear(modification.startdate) AS fiscalyear
+           FROM modification) mod
+     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(invoice_1.amount) AS amount
+           FROM ((invoice invoice_1
+             JOIN funding funding_1 USING (fundingid))
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (funding_1.fundingtypeid = 1)
+          GROUP BY common.getfiscalyear(modification_1.startdate)) invoice USING (fiscalyear))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(funding_1.amount) AS leveraged
+           FROM (funding funding_1
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))
+          GROUP BY common.getfiscalyear(modification_1.startdate)) leveraged USING (fiscalyear))
+  ORDER BY mod.fiscalyear;
+
+CREATE OR REPLACE VIEW projectcontactlist AS
+    SELECT pc.projectcontactid,
+    pc.projectid,
+    pc.contactid,
+    pc.roletypeid,
+    pc.priority,
+    pc.contactprojectcode,
+    pc.partner,
+    pc.name,
+    roletype.code AS role,
+    pc.reminder
+   FROM (( SELECT projectcontact.projectcontactid,
+            projectcontact.projectid,
+            projectcontact.contactid,
+            projectcontact.roletypeid,
+            projectcontact.priority,
+            projectcontact.contactprojectcode,
+            projectcontact.partner,
+            concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name,
+            projectcontact.reminder
+           FROM (projectcontact
+             JOIN person USING (contactid))
+        UNION
+         SELECT projectcontact.projectcontactid,
+            projectcontact.projectid,
+            projectcontact.contactid,
+            projectcontact.roletypeid,
+            projectcontact.priority,
+            projectcontact.contactprojectcode,
+            projectcontact.partner,
+            contactgroup.name,
+            projectcontact.reminder
+           FROM (projectcontact
+             JOIN contactgroup USING (contactid))) pc
+     JOIN cvl.roletype USING (roletypeid))
+  ORDER BY pc.priority;
+
+CREATE VIEW projectmetadata AS
+    SELECT project.projectid,
+    ut.usertype,
+    tc.topiccategory,
+    pc.projectcategory
+   FROM (((project
+     LEFT JOIN ( SELECT projectusertype.projectid,
+            string_agg((projectusertype.usertypeid)::text, ','::text) AS usertype
+           FROM projectusertype
+          GROUP BY projectusertype.projectid) ut USING (projectid))
+     LEFT JOIN ( SELECT projecttopiccategory.projectid,
+            string_agg((projecttopiccategory.topiccategoryid)::text, ','::text) AS topiccategory
+           FROM projecttopiccategory
+          GROUP BY projecttopiccategory.projectid) tc USING (projectid))
+     LEFT JOIN ( SELECT projectprojectcategory.projectid,
+            string_agg((projectprojectcategory.projectcategoryid)::text, ','::text) AS projectcategory
+           FROM projectprojectcategory
+          GROUP BY projectprojectcategory.projectid) pc USING (projectid));
+
+CREATE VIEW userinfo AS
+    SELECT login.loginid,
+    logingroupschema.contactid,
+    groupschema.groupid,
+    login.username,
+    person.firstname,
+    person.lastname,
+    person.middlename,
+    person.suffix,
+    contactgroup.name AS groupname,
+    contactgroup.acronym,
+    groupschema.projecturiformat,
+    groupschema.email AS groupemail
+   FROM ((((common.login
+     JOIN common.logingroupschema USING (loginid))
+     JOIN common.groupschema USING (groupschemaid))
+     JOIN contactgroup ON ((groupschema.groupid = contactgroup.contactid)))
+     JOIN person ON ((logingroupschema.contactid = person.contactid)))
+  WHERE ((logingroupschema.groupschemaid)::name = ANY (current_schemas(false)));
+
+GRANT SELECT ON TABLE projectprojectcategory TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectprojectcategory TO GROUP pts_write;
+GRANT SELECT ON TABLE projecttopiccategory TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projecttopiccategory TO GROUP pts_write;
+GRANT SELECT ON TABLE projectusertype TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectusertype TO GROUP pts_write;
+GRANT SELECT ON TABLE contactprimaryinfo TO GROUP pts_read;
+
+GRANT SELECT ON TABLE deliverableall TO GROUP pts_read;
+
+GRANT SELECT ON TABLE deliverablereminder TO GROUP pts_read;
+
+GRANT SELECT ON TABLE fundingtotals TO GROUP pts_read;
+
+GRANT SELECT ON TABLE projectmetadata TO GROUP pts_read;
+
+GRANT SELECT ON TABLE userinfo TO GROUP pts_read;
+
+SET search_path = walcc, pg_catalog;
+
+DROP VIEW deliverableall;
+
+DROP VIEW fundingtotals;
+
+DROP VIEW userinfo;
+
+ALTER TABLE deliverablenotice
+    DROP CONSTRAINT person_deliverablenotice_fk;
+
+CREATE TABLE projectprojectcategory (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    projectcategoryid integer NOT NULL,
+    priority integer NOT NULL
+);
+
+CREATE TABLE projecttopiccategory (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    topiccategoryid integer DEFAULT nextval('cvl.topiccategory_topiccategoryid_seq'::regclass) NOT NULL
+);
+
+CREATE TABLE projectusertype (
+    projectid integer DEFAULT nextval('common.project_projectid_seq'::regclass) NOT NULL,
+    usertypeid integer NOT NULL,
+    priority integer NOT NULL
+);
+
+ALTER TABLE deliverablemod
+    ADD COLUMN reminder boolean DEFAULT true;
+
+COMMENT ON COLUMN deliverablemod.reminder IS 'Whether to enable automated reminders.';
+
+ALTER TABLE projectcontact
+    ADD COLUMN reminder boolean;
+
+COMMENT ON COLUMN projectcontact.reminder IS 'Indicates whether the contact is included on reminders notices.';
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT projectprojectcategory_pk PRIMARY KEY (projectid, projectcategoryid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT projecttopiccategory_pk PRIMARY KEY (projectid, topiccategoryid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT projectusertype_pk PRIMARY KEY (projectid, usertypeid);
+
+ALTER TABLE deliverablenotice
+    ADD CONSTRAINT contact_deliverablenotice_fk FOREIGN KEY (contactid) REFERENCES contact(contactid);
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT project_projectprojectcategory_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projectprojectcategory
+    ADD CONSTRAINT projectcategory_projectprojectcategory_fk FOREIGN KEY (projectcategoryid) REFERENCES cvl.projectcategory(projectcategoryid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT project_projecttopiccategory_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projecttopiccategory
+    ADD CONSTRAINT topiccategory_projecttopiccategory_fk FOREIGN KEY (topiccategoryid) REFERENCES cvl.topiccategory(topiccategoryid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT project_projectusertype_fk FOREIGN KEY (projectid) REFERENCES project(projectid);
+
+ALTER TABLE projectusertype
+    ADD CONSTRAINT usertype_projectusertype_fk FOREIGN KEY (usertypeid) REFERENCES cvl.usertype(usertypeid);
+
+CREATE VIEW contactprimaryinfo AS
+    SELECT person.contactid,
+    (((person.firstname)::text || ' '::text) || (person.lastname)::text) AS name,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail
+   FROM ((person
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE (phone.phonetypeid = 3)) p ON (((person.contactid = p.contactid) AND (p.rank = 1))))
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM eaddress
+          WHERE (eaddress.eaddresstypeid = 1)) e ON (((person.contactid = e.contactid) AND (e.rank = 1))))
+UNION
+ SELECT cg.contactid,
+    cg.name,
+    p.areacode AS priareacode,
+    p.phnumber AS priphnumber,
+    p.extension AS priextension,
+    p.countryiso AS pricountryiso,
+    e.uri AS priemail
+   FROM ((contactgroup cg
+     LEFT JOIN ( SELECT phone.phoneid,
+            phone.contactid,
+            phone.addressid,
+            phone.phonetypeid,
+            phone.countryiso,
+            phone.areacode,
+            phone.phnumber,
+            phone.extension,
+            phone.priority,
+            row_number() OVER (PARTITION BY phone.contactid ORDER BY phone.priority) AS rank
+           FROM phone
+          WHERE (phone.phonetypeid = 3)) p ON (((cg.contactid = p.contactid) AND (p.rank = 1))))
+     LEFT JOIN ( SELECT eaddress.eaddressid,
+            eaddress.contactid,
+            eaddress.eaddresstypeid,
+            eaddress.uri,
+            eaddress.priority,
+            eaddress.comment,
+            row_number() OVER (PARTITION BY eaddress.contactid ORDER BY eaddress.priority) AS rank
+           FROM eaddress
+          WHERE (eaddress.eaddresstypeid = 1)) e ON (((cg.contactid = e.contactid) AND (e.rank = 1))));
+
+CREATE VIEW deliverableall AS
+    SELECT deliverablemod.personid,
+    deliverablemod.deliverableid,
+    deliverablemod.modificationid,
+    deliverablemod.duedate,
+    efd.effectivedate AS receiveddate,
+    deliverablemod.devinterval,
+    deliverablemod.publish,
+    deliverablemod.restricted,
+    deliverablemod.accessdescription,
+    deliverablemod.parentmodificationid,
+    deliverablemod.parentdeliverableid,
+    deliverable.deliverabletypeid,
+    deliverable.title,
+    deliverable.description,
+    (EXISTS ( SELECT 1
+           FROM deliverablemod dm
+          WHERE ((dm.parentdeliverableid = deliverablemod.deliverableid) AND (dm.parentmodificationid = deliverablemod.modificationid)))) AS modified,
+    status.status,
+    status.effectivedate,
+    status.deliverablestatusid,
+    deliverablemod.startdate,
+    deliverablemod.enddate,
+    deliverablemod.reminder
+   FROM (((deliverablemod
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid,
+            deliverablemodstatus.deliverablemodstatusid,
+            deliverablemodstatus.deliverableid,
+            deliverablemodstatus.effectivedate,
+            deliverablemodstatus.comment,
+            deliverablemodstatus.contactid,
+            deliverablestatus.code,
+            deliverablestatus.status,
+            deliverablestatus.description,
+            deliverablestatus.comment
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
+            deliverablemodstatus.modificationid,
+            deliverablemodstatus.deliverableid
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          WHERE (deliverablemodstatus.deliverablestatusid = 10)
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid))
+     JOIN deliverable USING (deliverableid));
+
+CREATE VIEW deliverablereminder AS
+    SELECT DISTINCT ON (dm.duedate, d.deliverableid) dm.duedate,
+    modification.projectid,
+    dm.modificationid,
+    d.deliverableid,
+    d.deliverabletypeid,
+    status.deliverablestatusid,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN man.contactid
+            ELSE projectcontact.contactid
+        END AS contactid,
+    efd.effectivedate AS receiveddate,
+    d.title,
+    dt.type,
+    d.description,
+    common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,
+    project.shorttitle AS project,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN man.name
+            ELSE contactprimaryinfo.name
+        END AS contact,
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN (man.priemail)::text
+            ELSE piemail.email
+        END AS email,
+        CASE
+            WHEN (NOT (d.deliverabletypeid = 7)) THEN ccemail.email
+            ELSE NULL::text
+        END AS ccemail,
+        CASE
+            WHEN (NOT (d.deliverabletypeid = 7)) THEN adminemail.email
+            ELSE NULL::text
+        END AS adminemail,
+    (((po.firstname)::text || ' '::text) || (po.lastname)::text) AS projectofficer,
+        CASE
+            WHEN (status.deliverablestatusid >= 10) THEN 0
+            WHEN ((status.deliverablestatusid = 0) AND ((('now'::text)::date - dm.duedate) > 0)) THEN ((('now'::text)::date - status.effectivedate) + 1)
+            ELSE (('now'::text)::date - dm.duedate)
+        END AS dayspastdue,
+        CASE
+            WHEN ((status.status IS NOT NULL) AND (NOT ((status.deliverablestatusid = 0) AND ((('now'::text)::date - dm.duedate) < 0)))) THEN status.status
+            ELSE 'Not Received'::character varying
+        END AS status,
+    status.effectivedate,
+    COALESCE((status.deliverablestatusid >= 40), false) AS completed,
+    modification.modificationcode AS agreementnumber,
+    dm.startdate,
+    dm.enddate,
+    dm.reminder
+   FROM (((((((((((((((deliverable d
+     JOIN deliverablemod dm USING (deliverableid))
+     JOIN cvl.deliverabletype dt USING (deliverabletypeid))
+     JOIN modification USING (modificationid))
+     JOIN project USING (projectid))
+     JOIN ( SELECT projectcontact_1.projectid,
+            projectcontact_1.contactid,
+            projectcontact_1.roletypeid,
+            projectcontact_1.priority,
+            projectcontact_1.contactprojectcode,
+            projectcontact_1.partner,
+            projectcontact_1.projectcontactid
+           FROM projectcontact projectcontact_1
+          WHERE (projectcontact_1.roletypeid = ANY (ARRAY[6, 7]))) projectcontact USING (projectid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) OVER (PARTITION BY projectcontact_1.projectid ORDER BY projectcontact_1.roletypeid DESC, projectcontact_1.priority ROWS BETWEEN UNBOUNDED PRECEDING AND UNBOUNDED FOLLOWING) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (projectcontact_1.roletypeid = ANY (ARRAY[6, 7])))) piemail USING (projectid))
+     LEFT JOIN contactprimaryinfo USING (contactid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (NOT (projectcontact_1.roletypeid = ANY (ARRAY[6, 7, 5, 13]))))
+          GROUP BY projectcontact_1.projectid) ccemail USING (projectid))
+     LEFT JOIN ( SELECT projectcontact_1.projectid,
+            string_agg((contactprimaryinfo_1.priemail)::text, ','::text) AS email
+           FROM (projectcontact projectcontact_1
+             JOIN contactprimaryinfo contactprimaryinfo_1 USING (contactid))
+          WHERE (projectcontact_1.reminder AND (projectcontact_1.roletypeid = ANY (ARRAY[5, 13])))
+          GROUP BY projectcontact_1.projectid) adminemail USING (projectid))
+     LEFT JOIN projectcontact poc ON (((poc.projectid = project.projectid) AND (poc.roletypeid = 12))))
+     LEFT JOIN person po ON ((poc.contactid = po.contactid)))
+     LEFT JOIN contactprimaryinfo man ON ((man.contactid = dm.personid)))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.deliverablestatusid,
+            deliverablemodstatus.deliverablemodstatusid,
+            deliverablemodstatus.deliverableid,
+            deliverablemodstatus.effectivedate,
+            deliverablemodstatus.comment,
+            deliverablemodstatus.contactid,
+            deliverablestatus.code,
+            deliverablestatus.status,
+            deliverablestatus.description,
+            deliverablestatus.comment
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid))
+     LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
+            deliverablemodstatus.deliverableid
+           FROM (deliverablemodstatus
+             JOIN cvl.deliverablestatus USING (deliverablestatusid))
+          WHERE (deliverablemodstatus.deliverablestatusid = ANY (ARRAY[10, 40]))
+          ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.deliverablestatusid, deliverablemodstatus.effectivedate DESC) efd USING (deliverableid))
+     JOIN contactgroup ON ((project.orgid = contactgroup.contactid)))
+  WHERE ((NOT (EXISTS ( SELECT 1
+           FROM deliverablemod dp
+          WHERE ((dm.modificationid = dp.parentmodificationid) AND (dm.deliverableid = dp.parentdeliverableid))))) AND (
+        CASE
+            WHEN (d.deliverabletypeid = 7) THEN (man.priemail)::text
+            ELSE piemail.email
+        END IS NOT NULL))
+  ORDER BY dm.duedate, d.deliverableid, projectcontact.roletypeid DESC, projectcontact.priority, poc.priority;
+
+CREATE VIEW fundingtotals AS
+    SELECT DISTINCT mod.fiscalyear,
+    COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) AS allocated,
+    COALESCE(invoice.amount, 0.00) AS invoiced,
+    (COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00) - COALESCE(invoice.amount, 0.00)) AS difference,
+    COALESCE(leveraged.leveraged, 0.00) AS leveraged,
+    (COALESCE(leveraged.leveraged, 0.00) + COALESCE(sum(funding.amount) OVER (PARTITION BY mod.fiscalyear), 0.00)) AS total
+   FROM (((( SELECT modification.modificationid,
+            modification.projectid,
+            modification.personid,
+            modification.modtypeid,
+            modification.title,
+            modification.description,
+            modification.modificationcode,
+            modification.effectivedate,
+            modification.startdate,
+            modification.enddate,
+            modification.datecreated,
+            modification.parentmodificationid,
+            modification.shorttitle,
+            common.getfiscalyear(modification.startdate) AS fiscalyear
+           FROM modification) mod
+     LEFT JOIN funding ON (((funding.modificationid = mod.modificationid) AND (funding.fundingtypeid = 1))))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(invoice_1.amount) AS amount
+           FROM ((invoice invoice_1
+             JOIN funding funding_1 USING (fundingid))
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (funding_1.fundingtypeid = 1)
+          GROUP BY common.getfiscalyear(modification_1.startdate)) invoice USING (fiscalyear))
+     LEFT JOIN ( SELECT common.getfiscalyear(modification_1.startdate) AS fiscalyear,
+            sum(funding_1.amount) AS leveraged
+           FROM (funding funding_1
+             JOIN modification modification_1 USING (modificationid))
+          WHERE (NOT (funding_1.fundingtypeid = ANY (ARRAY[1, 4])))
+          GROUP BY common.getfiscalyear(modification_1.startdate)) leveraged USING (fiscalyear))
+  ORDER BY mod.fiscalyear;
+
+CREATE OR REPLACE VIEW projectcontactlist AS
+    SELECT pc.projectcontactid,
+    pc.projectid,
+    pc.contactid,
+    pc.roletypeid,
+    pc.priority,
+    pc.contactprojectcode,
+    pc.partner,
+    pc.name,
+    roletype.code AS role,
+    pc.reminder
+   FROM (( SELECT projectcontact.projectcontactid,
+            projectcontact.projectid,
+            projectcontact.contactid,
+            projectcontact.roletypeid,
+            projectcontact.priority,
+            projectcontact.contactprojectcode,
+            projectcontact.partner,
+            concat(person.lastname, ', ', person.firstname, ' ', person.middlename) AS name,
+            projectcontact.reminder
+           FROM (projectcontact
+             JOIN person USING (contactid))
+        UNION
+         SELECT projectcontact.projectcontactid,
+            projectcontact.projectid,
+            projectcontact.contactid,
+            projectcontact.roletypeid,
+            projectcontact.priority,
+            projectcontact.contactprojectcode,
+            projectcontact.partner,
+            contactgroup.name,
+            projectcontact.reminder
+           FROM (projectcontact
+             JOIN contactgroup USING (contactid))) pc
+     JOIN cvl.roletype USING (roletypeid))
+  ORDER BY pc.priority;
+
+CREATE VIEW projectmetadata AS
+    SELECT project.projectid,
+    ut.usertype,
+    tc.topiccategory,
+    pc.projectcategory
+   FROM (((project
+     LEFT JOIN ( SELECT projectusertype.projectid,
+            string_agg((projectusertype.usertypeid)::text, ','::text) AS usertype
+           FROM projectusertype
+          GROUP BY projectusertype.projectid) ut USING (projectid))
+     LEFT JOIN ( SELECT projecttopiccategory.projectid,
+            string_agg((projecttopiccategory.topiccategoryid)::text, ','::text) AS topiccategory
+           FROM projecttopiccategory
+          GROUP BY projecttopiccategory.projectid) tc USING (projectid))
+     LEFT JOIN ( SELECT projectprojectcategory.projectid,
+            string_agg((projectprojectcategory.projectcategoryid)::text, ','::text) AS projectcategory
+           FROM projectprojectcategory
+          GROUP BY projectprojectcategory.projectid) pc USING (projectid));
+
+CREATE VIEW userinfo AS
+    SELECT login.loginid,
+    logingroupschema.contactid,
+    groupschema.groupid,
+    login.username,
+    person.firstname,
+    person.lastname,
+    person.middlename,
+    person.suffix,
+    contactgroup.name AS groupname,
+    contactgroup.acronym,
+    groupschema.projecturiformat,
+    groupschema.email AS groupemail
+   FROM ((((common.login
+     JOIN common.logingroupschema USING (loginid))
+     JOIN common.groupschema USING (groupschemaid))
+     JOIN contactgroup ON ((groupschema.groupid = contactgroup.contactid)))
+     JOIN person ON ((logingroupschema.contactid = person.contactid)))
+  WHERE ((logingroupschema.groupschemaid)::name = ANY (current_schemas(false)));
+
+GRANT SELECT ON TABLE projectprojectcategory TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectprojectcategory TO GROUP pts_write;
+GRANT SELECT ON TABLE projecttopiccategory TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projecttopiccategory TO GROUP pts_write;
+GRANT SELECT ON TABLE projectusertype TO GROUP pts_read;
+GRANT SELECT, UPDATE, INSERT, DELETE ON TABLE projectusertype TO GROUP pts_write;
+GRANT SELECT ON TABLE contactprimaryinfo TO GROUP pts_read;
+
+GRANT SELECT ON TABLE deliverableall TO GROUP pts_read;
+
+GRANT SELECT ON TABLE deliverablereminder TO GROUP pts_read;
+
+GRANT SELECT ON TABLE fundingtotals TO GROUP pts_read;
+
+GRANT SELECT ON TABLE projectmetadata TO GROUP pts_read;
+
+GRANT SELECT ON TABLE userinfo TO GROUP pts_read;
