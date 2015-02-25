@@ -23,6 +23,12 @@ class SendNotice extends \Knp\Command\Command {
                 'The email account to send from.'
             )
             ->addOption(
+                'alias',
+                'a',
+                InputOption::VALUE_REQUIRED,
+                'The alias for the email account.'
+            )
+            ->addOption(
                 'schema',
                 's',
                 InputOption::VALUE_REQUIRED,
@@ -49,6 +55,7 @@ class SendNotice extends \Knp\Command\Command {
 
         $template = $input->getOption('template');
         $sender = $input->getArgument('sender');
+        $alias = $input->getOption('alias');
 
         $app = $this->getSilexApplication();
 
@@ -71,6 +78,7 @@ class SendNotice extends \Knp\Command\Command {
             //cc admin if a financial report
             $data['ccadmin']  = in_array($data['deliverabletypeid'], [6,25]) ? TRUE : FALSE;
             $data['staff'] = $sender;
+            $data['emailalias'] = $alias;
 
             $notice = $app['renderNotice']($data, $template);
 

@@ -28,6 +28,7 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
             //staff e-mail defaults to session
             $staff = isset($data['staff']) ? $data['staff'] : $app['session']->get('email');
+            $alias = isset($data['emailalias']) ? $data['emailalias'] : $app['session']->get('emailalias');
 
             $body = $app['twig']->render("notices/{$template}.twig", array(
                 'projectcode' => $data['projectcode'],
@@ -46,11 +47,12 @@ class NoticeServiceProvider implements ServiceProviderInterface
                 'resourceurl' => $group['resourceurl'],
             ));
 
-            $cc = array(
-                  //'jbradley@arcticlcc.org',
-                );
+            $cc = array();
             $cc[] = $staff;
-            $cc = array_merge($cc, explode(',', $data['ccemail']));
+
+            if(isset($data['ccemail']) && $data['ccemail']) {
+                $cc = array_merge($cc, explode(',', $data['ccemail']));
+            }
 
             if(isset($data['ccadmin']) && $data['ccadmin']) {
                 $cc = array_merge($cc, explode(',', $data['adminemail']));
@@ -80,23 +82,16 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
                 // Set the From address with an associative array
                 // Note: Google API ignores these settings
-                ->setFrom(array($staff => 'LCC Staff'))
-                //->setSender(array($staff => 'LCC Staff'))
+                ->setFrom(array($staff => $alias ? $alias : 'LCC Staff'))
+                //->setSender(array($staff => $alias ? $alias : 'LCC Staff'))
 
                 // Set the To addresses with an associative array
-                /*->setTo(
-                    array_merge(
-                        array(
-                            'joshua_bradley@fws.gov'
-                        ),
-                        explode(',', $data['email'])
-                    )
-                )*/
                 ->setTo(
-                    array('jbradley@arcticlcc.org'=>'Josh')
+                    explode(',', $data['email'])
                 )
+
                 // Set the To addresses with an associative array
-                //->setCc($cc)
+                ->setCc($cc)
 
                 // Give it a body
                 ->setBody($body, 'text/html')

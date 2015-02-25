@@ -23,6 +23,12 @@ class BatchNotice extends \Knp\Command\Command {
                 'The email account to send from.'
             )
             ->addOption(
+                'alias',
+                'a',
+                InputOption::VALUE_REQUIRED,
+                'The alias for the email account.'
+            )
+            ->addOption(
                 'override',
                 null,
                 InputOption::VALUE_NONE,
@@ -41,6 +47,7 @@ class BatchNotice extends \Knp\Command\Command {
     protected function execute(InputInterface $input, OutputInterface $output) {
 
         $sender = $input->getArgument('sender');
+        $alias = $input->getOption('alias');
 
         $app = $this->getSilexApplication();
 
@@ -76,6 +83,7 @@ class BatchNotice extends \Knp\Command\Command {
                 $template = $app['notice.getTemplateId']($delid);
 
                 $data['staff'] = $sender;
+                $data['emailalias'] = $alias;
                 //index rendered notices by id
                 $notices[$data['deliverableid']] = $app['renderNotice']($data, $template);
                 //index the data objects by id
