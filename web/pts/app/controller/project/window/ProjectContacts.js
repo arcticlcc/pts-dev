@@ -136,6 +136,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                 5: null,
                 6: null,
                 7: null,
+                12: null,
                 13: null
             },
             rec = e.record;

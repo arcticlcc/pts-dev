@@ -9,4 +9,8 @@ If you’ve already completed the task detailed above, please disregard this mes
 *If you have concerns about on-time completion of this task, please contact us: <#{ staff }>.*
 " | markdown }}
 
+{% if resourceurl %}
+{{ "For additional guidance see <#{ resourceurl }>." | markdown }} 
+{% endif %}
+
 {% include 'notices/footer.twig' %}

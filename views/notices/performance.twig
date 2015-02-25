@@ -6,7 +6,15 @@
 
 The **#{ type }** for this financial assistance award
 #{ agreementnumber }: #{ project } #{ tense } due #{ days|abs } days #{ days < 0 ? 'from' : 'prior to' } this 
-notification (<b>#{ duedate }</b>). Forms and instructions can be found here: <http://www.whitehouse.gov/omb/grants_forms/>.  
+notification (<b>#{ duedate }</b>). 
+
+" | markdown }}
+
+{% if resourceurl %}
+{{ "Forms and instructions can be found here: <#{ resourceurl }>." | markdown }} 
+{% endif %}
+
+{{ "
 
 Please submit this report to your **Project Officer** and send a copy to <#{ staff }>. 
 Electronic submissions are preferred.
