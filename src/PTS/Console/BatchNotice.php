@@ -64,6 +64,7 @@ class BatchNotice extends \Knp\Command\Command {
             $table->where('reminder', TRUE);
         }
         $table->where('dayspastdue', $days)
+            //don't allow batching received deliverables
             ->where_raw('(deliverablestatusid < ? OR deliverablestatusid IS NULL)', array(10));
 
         $objects = $table->find_many();
