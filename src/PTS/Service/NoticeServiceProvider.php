@@ -54,7 +54,7 @@ class NoticeServiceProvider implements ServiceProviderInterface
                 $cc = array_merge($cc, explode(',', $data['ccemail']));
             }
 
-            if(isset($data['ccadmin']) && $data['ccadmin']) {
+            if($data['ccadmin'] && isset($data['adminemail']) && $data['adminemail']) {
                 $cc = array_merge($cc, explode(',', $data['adminemail']));
             }
 
