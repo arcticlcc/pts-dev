@@ -304,6 +304,8 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                     rec = combo.getStore().getAt(idx);
                                 if (rec) {
                                     return rec.get(combo.displayField);
+                                } else if (value === PTS.user.get('groupid')) {
+                                    return 'Staff';
                                 }
                                 return value;
                             },
