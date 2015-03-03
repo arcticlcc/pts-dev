@@ -77,14 +77,15 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
             //hack to prevent rendering error when switching projects
             //before initial request returns
             if (store.loading && store.lastOperation) {
-              var requests = Ext.Ajax.requests;
+                var requests = Ext.Ajax.requests, rid;
 
-              for (id in requests) {
-                if (requests.hasOwnProperty(id) && requests[id].options === store.lastOperation.request) {
-                  Ext.Ajax.abort(requests[id]);
+                for (rid in requests) {
+                    if (requests.hasOwnProperty(rid) && requests[rid].options === store.lastOperation.request) {
+                        Ext.Ajax.abort(requests[rid]);
+                    }
                 }
-              }
             }
+
 
             store.on('beforeload', function(store, operation) {
               store.lastOperation = operation;
