@@ -136,18 +136,16 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         anchor: '100%'
                     },*/
                     {
-                        xtype: 'checkboxgroup',
+                        xtype: 'fieldcontainer',
                         fieldLabel: 'Reminder',
-                        columns: [
-                            100,
-                            100
-                        ],
+                        layout:'column',
                         anchor: '100%',
                         items: [
                             {
                                 xtype: 'checkboxfield',
                                 name: 'reminder',
-                                boxLabel: 'Auto?'
+                                boxLabel: 'Auto?',
+                                width: 100
                             },
                             {
                                 xtype: 'checkboxfield',
@@ -157,18 +155,16 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         ]
                     },
                     {
-                        xtype: 'checkboxgroup',
+                        xtype: 'fieldcontainer',
                         fieldLabel: 'Publication',
-                        columns: [
-                            100,
-                            100
-                        ],
+                        layout:'column',
                         anchor: '100%',
                         items: [
                             {
                                 xtype: 'checkboxfield',
                                 name: 'publish',
-                                boxLabel: 'Publishable'
+                                boxLabel: 'Publishable',
+                                width: 100
                             },
                             {
                                 xtype: 'checkboxfield',
