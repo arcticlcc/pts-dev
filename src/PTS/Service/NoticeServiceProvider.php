@@ -48,14 +48,20 @@ class NoticeServiceProvider implements ServiceProviderInterface
             ));
 
             $cc = array();
-            $cc[] = $staff;
 
-            if(isset($data['ccemail']) && $data['ccemail']) {
-                $cc = array_merge($cc, explode(',', $data['ccemail']));
-            }
+            if($data['staffonly']) {
+                $to = [$staff];
+            } else {
+                $to = explode(',', $data['email']);
+                $cc[] = $staff;
 
-            if($data['ccadmin'] && isset($data['adminemail']) && $data['adminemail']) {
-                $cc = array_merge($cc, explode(',', $data['adminemail']));
+                if(isset($data['ccemail']) && $data['ccemail']) {
+                    $cc = array_merge($cc, explode(',', $data['ccemail']));
+                }
+
+                if($data['ccadmin'] && isset($data['adminemail']) && $data['adminemail']) {
+                    $cc = array_merge($cc, explode(',', $data['adminemail']));
+                }
             }
 
             $subject = sprintf('Reminder: %s for %s (%s) due %s', $data['title'], $data['agreementnumber'], $data['projectcode'], $duedate);
@@ -86,9 +92,7 @@ class NoticeServiceProvider implements ServiceProviderInterface
                 //->setSender(array($staff => $alias ? $alias : 'LCC Staff'))
 
                 // Set the To addresses with an associative array
-                ->setTo(
-                    explode(',', $data['email'])
-                )
+                ->setTo($to)
 
                 // Set the To addresses with an associative array
                 ->setCc($cc)
@@ -106,7 +110,7 @@ class NoticeServiceProvider implements ServiceProviderInterface
 
             $msgId->setId(time() . '.' . uniqid('pts') . '@arcticlcc.org');
             $email = $email->toString();
-//var_dump($email);exit;
+
             return $email;
         });
 

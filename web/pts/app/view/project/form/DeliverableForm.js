@@ -136,10 +136,25 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         anchor: '100%'
                     },*/
                     {
-                        xtype: 'checkboxfield',
-                        name: 'reminder',
-                        fieldLabel: 'Auto-Reminder?',
-                        anchor: '100%'
+                        xtype: 'checkboxgroup',
+                        fieldLabel: 'Reminder',
+                        columns: [
+                            100,
+                            100
+                        ],
+                        anchor: '100%',
+                        items: [
+                            {
+                                xtype: 'checkboxfield',
+                                name: 'reminder',
+                                boxLabel: 'Auto?'
+                            },
+                            {
+                                xtype: 'checkboxfield',
+                                name: 'staffonly',
+                                boxLabel: 'Staff Only?'
+                            }
+                        ]
                     },
                     {
                         xtype: 'checkboxgroup',

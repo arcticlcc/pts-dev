@@ -84,9 +84,9 @@ class Deliverable implements ControllerProviderInterface
                         FROM deliverable
                         WHERE deliverableid = :parentdeliverableid
                     ), dmod as (INSERT INTO deliverablemod
-                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder)
+                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder,staffonly)
                         SELECT del.deliverableid,:personid, :modificationid, :duedate,:receiveddate,:startdate,:enddate,:publish,
-                            :restricted,:accessdescription,:parentmodificationid,del.deliverableid,:reminder
+                            :restricted,:accessdescription,:parentmodificationid,del.deliverableid,:reminder,:staffonly
                         FROM del
                     RETURNING *
                     )
@@ -101,9 +101,9 @@ class Deliverable implements ControllerProviderInterface
                         VALUES (:deliverabletypeid, :title, :description)
                         RETURNING *
                     ), dmod as (INSERT INTO deliverablemod
-                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder)
+                        (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder,staffonly)
                         SELECT deliverableid,:personid, :modificationid, :duedate,:receiveddate,:startdate,:enddate,:publish,
-                            :restricted,:accessdescription,:parentmodificationid,:parentdeliverableid,:reminder
+                            :restricted,:accessdescription,:parentmodificationid,:parentdeliverableid,:reminder,:staffonly
                         FROM del
                     RETURNING *
                     )

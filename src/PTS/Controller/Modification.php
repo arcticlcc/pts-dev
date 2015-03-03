@@ -103,7 +103,8 @@ class Modification implements ControllerProviderInterface
                           accessdescription = :accessdescription,
                           parentmodificationid = :parentmodificationid,
                           parentdeliverableid = :parentdeliverableid,
-                          reminder = :reminder
+                          reminder = :reminder,
+                          staffonly = :staffonly
                         WHERE modificationid = :modificationid
                             AND deliverableid = :deliverableid
 	                RETURNING *
