@@ -204,6 +204,22 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                             sortable : true
                         }
                     ]
+                },
+                {
+                    xtype: 'booleancolumn',
+                    dataIndex: 'reminder',
+                    hidden: true,
+                    sortable: false,
+                    text: 'Reminder?',
+                    width: 65
+                },
+                {
+                    xtype: 'booleancolumn',
+                    dataIndex: 'staffonly',
+                    hidden: true,
+                    sortable: false,
+                    text: 'Staff Only?',
+                    width: 65
                 }
             ]
         });

@@ -112,6 +112,13 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                             sortable: false,
                             text: 'Partner?',
                             width: 55
+                        },
+                        {
+                            xtype: 'booleancolumn',
+                            dataIndex: 'reminder',
+                            sortable: false,
+                            text: 'Notice?',
+                            width: 55
                         }
 
                     ]
