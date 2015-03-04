@@ -62,6 +62,8 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             id = model.get('deliverableid'),
             grid = btn.up('roweditgrid'),
             mask = new Ext.LoadMask(grid, {msg:"Sending Notice. Please wait..."}),
+            active = PTS.app.getStore('ProjectContacts').findExact('reminder', true),
+            txt = active > -1 ? '' : ' No recipients are selected  (see Contacts tab), so this notice will only be sent to staff.',
             send = function(b) {
                 if ('yes' === b) {
                     mask.show();
@@ -89,7 +91,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
 
         Ext.MessageBox.show({
             title: 'Confirm Notice',
-            msg: 'Are you sure you want to send a reminder notice?',
+            msg: 'Are you sure you want to send a reminder notice?' + txt,
             //width:300,
             buttons: Ext.MessageBox.YESNO,
             icon: Ext.Msg.WARNING,
