@@ -8,7 +8,7 @@ Ext.define('PTS.store.Notices', {
     autoLoad: true,
     sorters: [
         {
-            property : 'noticeid',
+            property : 'priority',
             direction: 'ASC'
         }
     ]

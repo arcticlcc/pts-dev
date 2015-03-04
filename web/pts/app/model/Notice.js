@@ -17,6 +17,10 @@ Ext.define('PTS.model.Notice', {
         },
         {
             name: 'description', type: 'mystring', useNull: true
+        },
+        {
+            name: 'priority',
+            type: 'int'
         }
     ],
     idProperty: 'noticeid',
