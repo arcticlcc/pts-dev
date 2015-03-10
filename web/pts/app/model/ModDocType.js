@@ -20,6 +20,9 @@ Ext.define('PTS.model.ModDocType', {
         name: 'description',
         type: 'mystring',
         useNull: true
+    }, {
+        name: 'inactive',
+        type: 'myboolean'
     }],
     idProperty: 'moddoctypeid',
     proxy: {
