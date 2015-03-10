@@ -37,10 +37,10 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
                 itemdblclick: this.onContactDblClick
             },
             'projectdetail > deliverablelist #printBtn': {
-                render: this.onDelPrintBtnRender
+                click: this.onDelPrintBtnClick
             },
             'projectdetail > #projectContacts #printBtn': {
-                render: this.onContactPrintBtnRender
+                click: this.onContactPrintBtnClick
             },
             'projecttab projectdetail tab': {
                 activate: this.onProjectDetailTabActivate
@@ -109,7 +109,7 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
      * Updates ProjectDeliverables grid print title.
      * @param {Ext.Component} btn
      */
-    onDelPrintBtnRender: function(btn) {
+    onDelPrintBtnClick: function(btn) {
         var code = this.projectRecord.get('projectcode');
 
         btn.mainTitle = function(){
@@ -121,7 +121,7 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
      * Updates ProjectContacts grid print title.
      * @param {Ext.Component} btn
      */
-    onContactPrintBtnRender: function(btn) {
+    onContactPrintBtnClick: function(btn) {
         var code = this.projectRecord.get('projectcode');
 
         btn.mainTitle = function(){
