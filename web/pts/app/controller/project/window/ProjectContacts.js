@@ -69,7 +69,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
             },
             'projectcontacts #projectContactsList': {
                 beforerender: this.beforeRenderProjectContactsList,
-                edit: this.setNotice
+                edit: this.onEditRole
             },
             'combo[itemId=roletypeCbx]': {
                 select: this.onSelectRoleType
@@ -129,23 +129,35 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     },
 
     /**
-     * Set the notice during roletype validation.
+     * Set the notice and partner fields during roletype validation.
      */
-    setNotice: function(editor, e) {
-        var obj = {
+    onEditRole: function(editor, e) {
+        var rObj = {
                 5: null,
                 6: null,
                 7: null,
                 12: null,
                 13: null
             },
+            pObj = {
+                4: null,
+                10: null
+            },
             rec = e.record;
 
         if(e.field === 'roletypeid') {
-            if(typeof obj[e.value] !== "undefined"){
+            if(typeof rObj[e.value] !== "undefined"){
                 rec.set('reminder', true);
             } else {
                 rec.set('reminder', false);
+            }
+        }
+
+        if(e.field === 'roletypeid') {
+            if(typeof pObj[e.value] !== "undefined" && rec.get('contactid') !== PTS.user.get('groupid')) {
+                rec.set('partner', true);
+            } else {
+                rec.set('partner', false);
             }
         }
     },
