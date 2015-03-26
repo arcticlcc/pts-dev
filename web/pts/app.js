@@ -97,7 +97,19 @@ Ext.application({
     launch: function() {
         var me = this,
             task,
-            myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"});
+            myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),
+            removeMask = function() {
+                console.info(Ext.Ajax.isLoading());
+                if(!Ext.Ajax.isLoading()) {
+                    myMask.destroy();
+                    Ext.Ajax.un('requestcomplete', removeMask, me);
+                }
+            };
+
+        //remove the mask after initial requests are complete
+        Ext.Ajax.on('requestcomplete', removeMask, me, {
+            buffer: 200
+        });
 
         myMask.show(); //mask the window body
 
@@ -147,8 +159,6 @@ Ext.application({
                 });
 
                 Ext.create('PTS.view.Viewport');
-
-                myMask.destroy();
 
                 //setup activity monitor
                 PTS.util.ActivityMonitor.init({
