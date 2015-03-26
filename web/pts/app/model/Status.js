@@ -20,6 +20,10 @@ Ext.define('PTS.model.Status', {
         },
         {
             name: 'description', type: 'mystring', useNull: true
+        },
+        {
+            name: 'weight',
+            type: 'int'
         }
     ],
     //idProperty: 'statusid',

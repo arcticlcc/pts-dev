@@ -1,8 +1,30 @@
--- Version 0.15.2
+-- Version 0.15.3
 
-SET search_path = cvl, pg_catalog;
-
-ALTER TABLE moddoctype
-    ADD COLUMN inactive boolean DEFAULT false;
-
-COMMENT ON COLUMN moddoctype.inactive IS 'Whether the doctype is currently in use.';
+--add weight to statuslist
+CREATE OR REPLACE VIEW dev.statuslist AS
+ SELECT s.statusid,
+    m.modtypeid,
+    s.code,
+    s.status,
+    s.description,
+    weight
+   FROM status s
+     JOIN modtypestatus m USING (statusid);
+CREATE OR REPLACE VIEW alcc.statuslist AS
+ SELECT s.statusid,
+    m.modtypeid,
+    s.code,
+    s.status,
+    s.description,
+    weight
+   FROM status s
+     JOIN modtypestatus m USING (statusid);
+CREATE OR REPLACE VIEW walcc.statuslist AS
+ SELECT s.statusid,
+    m.modtypeid,
+    s.code,
+    s.status,
+    s.description,
+    weight
+   FROM status s
+     JOIN modtypestatus m USING (statusid);

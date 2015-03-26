@@ -98,6 +98,7 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
             //filter the Statuses store
             statusStore.clearFilter();
             statusStore.filter(bFilter);
+            statusStore.sort('weight');
         }
     },
 
