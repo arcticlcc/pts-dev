@@ -28,3 +28,20 @@ CREATE OR REPLACE VIEW walcc.statuslist AS
     weight
    FROM status s
      JOIN modtypestatus m USING (statusid);
+
+--set modification.datecreated default to now()
+
+ALTER TABLE dev.modification
+   ALTER COLUMN datecreated SET DEFAULT now();
+COMMENT ON COLUMN dev.modification.datecreated
+  IS 'Date the modification is created in the database.';
+
+ALTER TABLE alcc.modification
+   ALTER COLUMN datecreated SET DEFAULT now();
+COMMENT ON COLUMN alcc.modification.datecreated
+  IS 'Date the modification is created in the database.';
+
+ALTER TABLE walcc.modification
+   ALTER COLUMN datecreated SET DEFAULT now();
+COMMENT ON COLUMN walcc.modification.datecreated
+  IS 'Date the modification is created in the database.';
