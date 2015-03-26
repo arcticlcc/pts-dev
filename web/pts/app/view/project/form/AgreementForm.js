@@ -36,89 +36,40 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                 layout:'anchor',
                 region: 'center',
                 bodyPadding: 10,
-                items: [
-                    {
-                        xtype: 'fieldset',
-                        title: 'Dates',
-                        items: [
-                            {
-                                xtype: 'fieldcontainer',
-                                layout: {
-                                    type: 'hbox'
-                                },
-                                defaults: {
-                                   // width: 170,
-                                    flex: 1
-                                },
-                                items: [
-                                    {
-                                        xtype: 'datefield',
-                                        itemId: 'dateCreated',
-                                        margin: '0 10 0 0',
-                                        name: 'datecreated',
-                                        fieldLabel: 'Created',
-                                        endDateField: 'endDate',
-                                        vtype: 'moddaterange',
-                                        labelWidth: 60,
-                                        allowBlank: false,
-                                        listeners : {
-                                            change: function(field, newValue, oldValue) {
-                                                if (newValue === null) {
-                                                    Ext.form.field.VTypes.moddaterange(newValue, field);
-                                                }
-                                            }
-                                        }
-                                    },
-                                   /* {
-                                        xtype: 'daterangefield',
-                                        itemId: 'effectiveDate',
-                                        name: 'effectivedate',
-                                        fieldLabel: 'Effective',
-                                        vfield: 'endDate',
-                                        startDateField: 'startDate',
-                                        vtype: 'daterange',
-                                        labelWidth: 50
-                                    }
-                                ]
+                items: [{
+                        xtype: 'fieldcontainer',
+                        layout: {
+                            align: 'stretchmax',
+                            type: 'hbox'
+                        },
+                        margin: '0 0 10 0',
+                        combineErrors: false,
+                        fieldLabel: 'Period',
+                        items: [{
+                                xtype: 'daterangefield',
+                                itemId: 'startDate',
+                                margin: '0 20 0 0',
+                                name: 'startdate',
+                                fieldLabel: 'Start',
+                                vfield: 'beginDate',
+                                endDateField: 'endDate',
+                                vtype: 'daterange',
+                                labelWidth: 45,
+                                width: 150
                             },
                             {
-                                xtype: 'fieldcontainer',
-                                layout: {
-                                    type: 'hbox'
-                                },
-                                anchor: '100%',
-                                items: [*/
-                                    {
-                                        xtype: 'daterangefield',
-                                        itemId: 'startDate',
-                                        margin: '0 10 0 0',
-                                        name: 'startdate',
-                                        fieldLabel: 'Start',
-                                        vfield: 'beginDate',
-                                        //endDateField: 'effectiveDate',
-                                        vtype: 'daterange',
-                                        labelWidth: 45
-                                    },
-                                    {
-                                        xtype: 'datefield',
-                                        itemId: 'endDate',
-                                        name: 'enddate',
-                                        fieldLabel: 'End',
-                                        startDateField: 'dateCreated',
-                                        vtype: 'moddaterange',
-                                        labelWidth: 40,
-                                        listeners : {
-                                            change: function(field, newValue, oldValue) {
-                                                if (newValue === null) {
-                                                    Ext.form.field.VTypes.moddaterange(newValue, field);
-                                                }
-                                            }
-                                        }
-                                    }
-                                ]
+                                xtype: 'datefield',
+                                itemId: 'endDate',
+                                name: 'enddate',
+                                fieldLabel: 'End',
+                                startDateField: 'startDate',
+                                vfield: 'endDate',
+                                vtype: 'daterange',
+                                labelWidth: 40,
+                                width: 150
                             }
                         ]
-                    },
+                        },
                     {
                         xtype: 'fieldcontainer',
                         itemId: 'modcodeCon',

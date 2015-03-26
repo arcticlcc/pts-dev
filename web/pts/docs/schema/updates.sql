@@ -45,3 +45,20 @@ ALTER TABLE walcc.modification
    ALTER COLUMN datecreated SET DEFAULT now();
 COMMENT ON COLUMN walcc.modification.datecreated
   IS 'Date the modification is created in the database.';
+
+--create a modstatus for exisiting modifications
+
+INSERT INTO dev.modstatus(
+            modificationid, statusid, effectivedate, comment)
+    SELECT modificationid,10, datecreated, 'This status was generated during a system upgrade'
+  FROM dev.modification;
+
+INSERT INTO walcc.modstatus(
+            modificationid, statusid, effectivedate, comment)
+    SELECT modificationid,10, datecreated, 'This status was generated during a system upgrade.'
+  FROM walcc.modification;
+
+INSERT INTO alcc.modstatus(
+            modificationid, statusid, effectivedate, comment)
+    SELECT modificationid,10, datecreated, 'This status was generated during a system upgrade.'
+  FROM alcc.modification;

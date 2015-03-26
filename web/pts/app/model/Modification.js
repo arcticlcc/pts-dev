@@ -24,7 +24,7 @@ Ext.define('PTS.model.Modification', {
         {name: 'startdate', type: 'mydate'},
         {name: 'enddate', type: 'mydate'},
         {name: 'effectivedate', type: 'mydate'},
-        {name: 'datecreated', type: 'mydate'},
+        {name: 'datecreated', type: 'mydate', persist: false},
         {name: 'modificationcode', type: 'mystring', useNull: true},
         {name: 'title', type: 'mystring', useNull: true},
         {name: 'shorttitle', type: 'mystring', useNull: true},

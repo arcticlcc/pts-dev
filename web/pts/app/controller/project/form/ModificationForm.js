@@ -44,9 +44,29 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
         this.application.on({
             itemload: this.onItemLoad,
             newitem: this.onNewItem,
+            savemodification: this.onSaveModification,
             scope: this
         });
 
+    },
+
+    /**
+     * Set the create and save a status(Created).
+     */
+    onSaveModification: function(model, op, phantom) {
+        //only needed for modifications
+        if(phantom) {
+            var store = this.getModStatusesStore(),
+                rec = this.getModStatusModel().create({
+                statusid: 10,
+                comment: 'This status was automatically created.',
+                effectivedate: new Date(),
+                modificationid: model.get('modificationid')
+            });
+
+            store.add(rec);
+            store.sync();
+        }
     },
 
     /**
