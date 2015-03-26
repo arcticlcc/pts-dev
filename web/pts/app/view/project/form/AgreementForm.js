@@ -268,7 +268,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                     xtype: 'roweditgrid',
                     store: 'PurchaseRequests',
                     uri: 'purchaserequest',
-                    title:'Reference Number',
+                    title:'PPR Reference #',
                     columns: [
                         {
                             header: 'Reference #',
