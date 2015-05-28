@@ -67,6 +67,9 @@ class ADIwg {
             'organization' => $org,
             'resource' => $project,
             'keywords' => array_filter(explode('|', $project['keywords'])),
+            "topics" => array_filter(explode('|', $project['topiccategory'])),
+            "usertypes" => array_filter(explode('|', $project['usertype'])),
+            "projectcats" => array_filter(explode('|', $project['projectcategory'])),
             'contacts' => $contacts,
             'roles' => $roles
         ));

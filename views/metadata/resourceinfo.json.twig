@@ -1,6 +1,12 @@
+{% import "metadata/macros.twig" as macros %}
 {% autoescape 'json' %}
     {
       "resourceType": "{{ resourceType }}",
+      "resourceTimePeriod": {
+        "description": "Span of project activity",
+        "beginPosition": "{{resource.startdate}}",
+        "endPosition": "{{resource.enddate}}"
+      },
       "citation": {
         "title": "{{ resource.title }}",
         "date": [
@@ -78,43 +84,95 @@
       "hasDataAvailable": true,
       "language": ["eng; USA"],
       {#"purpose": "",
-      "credit": [""],
-      "topicCategory": [""],
-      "environmentDescription": "",
+      "credit": [""],#}
+      "topicCategory": [{{ macros.arraytostring(topics) }}],
+      {#"environmentDescription": "",
       "resourceNativeFormat": [
         {
           "formatName": "",
           "version": ""
         }
       ],#}
-      {% if keywords %}
+      {% if keywords or usertypes or projectcats %}
       "keyword": [
-        {
-          "keyword": [
-            {% for kw in keywords %}
-                "{{ kw }}"{% if loop.last == false %},{% endif %}
-            {% endfor %}
-          ],
-          "keywordType": "theme",
-          "thesaurus":{
-            "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
-            "date":[
-              {
-                "date":"2013-04-01",
-                "dateType":"revision"
-              }
+        {% if keywords %}
+          {
+            "keyword": [
+              {{ macros.arraytostring(keywords) }}
             ],
-            "edition":"Version 8.0.0",
-            "presentationForm":[
-              "documentDigital"
+            "keywordType": "theme",
+            "thesaurus":{
+              "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+              "date":[
+                {
+                  "date":"2013-04-01",
+                  "dateType":"revision"
+                }
+              ],
+              "edition":"Version 8.0.0",
+              "presentationForm":[
+                "documentDigital"
+              ],
+              "onlineResource":[
+                {
+                  "uri":"http://gcmd.nasa.gov/learn/keywords.html"
+                }
+              ]
+            }
+          }{% if usertypes or projectcats %},{% endif %}
+        {% endif %}
+        {% if usertypes %}
+          {
+            "keyword": [
+              {{ macros.arraytostring(usertypes) }}
             ],
-            "onlineResource":[
-              {
-                "uri":"http://gcmd.nasa.gov/learn/keywords.html"
-              }
-            ]
+            "keywordType": "theme",
+            "thesaurus":{
+              "title":"LCC End User Type Keywords",
+              "date":[
+                {
+                  "date":"2015-05-11",
+                  "dateType":"revision"
+                }
+              ],
+              "edition":"Version 1.9.2",
+              "presentationForm":[
+                "documentDigital"
+              ],
+              "onlineResource":[
+                {
+                  "uri":"https://www.sciencebase.gov/vocab/vocabulary/54760ef9e4b0f62cb5dc41a0"
+                }
+              ]
+            }
+          }{% if projectcats %},{% endif %}
+        {% endif %}
+        {% if projectcats %}
+          {
+            "keyword": [
+              {{ macros.arraytostring(projectcats) }}
+            ],
+            "keywordType": "theme",
+            "thesaurus":{
+              "title":"LCC Project Category Keywords",
+              "date":[
+                {
+                  "date":"2015-05-11",
+                  "dateType":"revision"
+                }
+              ],
+              "edition":"Version 1.9.2",
+              "presentationForm":[
+                "documentDigital"
+              ],
+              "onlineResource":[
+                {
+                  "uri":"https://www.sciencebase.gov/vocab/vocabulary/52dee7c5e4b0dee2a6cd6b18"
+                }
+              ]
+            }
           }
-        }
+        {% endif %}
       ],
       {% endif %}
       {#"resourceMaintenance": [
