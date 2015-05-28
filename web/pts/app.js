@@ -99,7 +99,6 @@ Ext.application({
             task,
             myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),
             removeMask = function() {
-                console.info(Ext.Ajax.isLoading());
                 if(!Ext.Ajax.isLoading()) {
                     myMask.destroy();
                     Ext.Ajax.un('requestcomplete', removeMask, me);
