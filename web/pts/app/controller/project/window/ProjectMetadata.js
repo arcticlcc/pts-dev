@@ -42,6 +42,9 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
             'projectmetadata button[action=xml]': {
                 click: this.clickPreview
             },
+            'projectmetadata button[action=html]': {
+                click: this.clickPreview
+            },
             'projectmetadata button[action=reset]': {
                 click: this.clickReset
             },
@@ -230,9 +233,11 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
             el = prev.getEl(),
             id = prev.up('projectwindow').projectId,
             tab = this.getProjectMetadata(),
+            layout = tab.getLayout(),
             openBtn = tab.down('button[action=openpreview]');
 
-        tab.getLayout().setActiveItem(1);
+        layout.setActiveItem(1);
+        layout.getActiveItem().body.scrollTo('top',0);
         el.mask('Generating Preview...');
         //set the preview type
         openBtn.previewType = btn.action;

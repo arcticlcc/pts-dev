@@ -50,6 +50,11 @@ Ext.define('PTS.view.project.window.ProjectMetadata', {
                         text: 'Preview XML',
                         action: 'xml'
                     }, {
+                        xtype: 'button',
+                        iconCls: 'pts-menu-code',
+                        text: 'Preview HTML',
+                        action: 'html'
+                    }, {
                         xtype: 'cycle',
                         itemId: 'publishBtn',
                         showText: true,

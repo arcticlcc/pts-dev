@@ -81,10 +81,15 @@ class Project implements ControllerProviderInterface
         $controllers->get('project/{id}/metadata.{format}', function (Application $app, Request $request, $id, $format) {
             try{
                 $json = $app['adiwg']->getProject($id);
+                $ct = "application/$format";
 
                 switch ($format) {
                     case 'xml':
                         $out = $app['adiwg']->translate($json);
+                        break;
+                    case 'html':
+                        $out = $app['adiwg']->translate($json, 'html');
+                        $ct = "text/html";
                         break;
                     case 'json':
                     default:
@@ -92,7 +97,7 @@ class Project implements ControllerProviderInterface
                 }
 
                 $response = new Response($out, 200, array(
-                    'Content-type' => "application/$format; charset=utf-8"
+                    'Content-type' => "$ct; charset=utf-8"
                 ));
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
