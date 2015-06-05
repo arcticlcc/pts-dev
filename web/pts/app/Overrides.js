@@ -19,6 +19,29 @@ Ext.define('PTS.Overrides', {
 
     ]
 }, function() {
+    //Fixes Chrome 43 menu bug
+    //https://www.sencha.com/forum/announcement.php?f=80&a=58
+    Ext.override(Ext.menu.Menu, {
+
+        compatibility : '4',
+
+        onMouseLeave: function(e) {
+            var me = this;
+
+            // If the mouseleave was into the active submenu, do not dismiss
+            if (me.activeChild) {
+                if (e.within(me.activeChild.el, true)) {
+                    return;
+                }
+            }
+            me.deactivateActiveItem();
+            if (me.disabled) {
+                return;
+            }
+            me.fireEvent('mouseleave', me, e);
+        }
+    });
+
     //Fixes bug when filtering store with pagingtoolbar enabled
     //TODO: Fixed in 4.1
     //http://www.sencha.com/forum/showthread.php?182179-Store-filter-and-paging-doesn-t-load-first-page
