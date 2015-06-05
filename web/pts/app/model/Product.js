@@ -43,7 +43,12 @@ Ext.define('PTS.model.Product', {
         {
             name: 'exportmetadata',
             type: 'myboolean'
-        }
+        },
+        {
+            name: 'projectcode',
+            type: 'string',
+            persist: false
+        },
     ],
 
     idProperty: 'productid',
@@ -51,6 +56,11 @@ Ext.define('PTS.model.Product', {
     proxy: {
         type: 'rest',
         url : '../product',
+        api: {
+            read: '../productlist',//uri,
+            //create: uri,
+            //update: uri
+        },
         reader: {
             type: 'json',
             root: 'data'

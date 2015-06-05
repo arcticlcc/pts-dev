@@ -8,6 +8,7 @@ Ext.define('PTS.view.Viewport', {
         'PTS.view.MainToolbar',
         'PTS.view.dashboard.Dashboard',
         'PTS.view.project.tab.ProjectTab',
+        'PTS.view.product.tab.ProductTab',
         'PTS.view.contact.tab.ContactTab',
         'PTS.view.report.tab.ReportTab',
         'PTS.view.tps.tab.TpsTab'
@@ -40,6 +41,9 @@ Ext.define('PTS.view.Viewport', {
                         },
                         {
                             xtype: 'projecttab'
+                        },
+                        {
+                            xtype: 'producttab'
                         },
                         {
                             xtype: 'contacttab',

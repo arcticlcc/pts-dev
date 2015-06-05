@@ -38,11 +38,12 @@ Ext.application({
     enableQuickTips: true,
 
     models: ['User'],
-    stores: ['States', 'Countries', 'Positions'],
+    stores: ['States', 'Countries', 'Positions', 'ProjectIDs'],
     controllers: [
         'MainToolbar',
         'dashboard.Dashboard',
         'project.Project',
+        'product.Product',
         'contact.Contact',
         'report.Report',
         'tps.Tps'

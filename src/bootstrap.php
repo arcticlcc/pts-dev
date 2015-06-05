@@ -87,6 +87,7 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'modificationlist' => 'modificationid',
     'metadataproject' => 'projectid',
     'projectmetadata' => 'projectid',
+    'productlist' => 'productid',
     //fix these to use compound keys after Idiorm upgrade
     'projectprojectcategory' => 'projectid',
     'projectusertype' => 'projectid',
