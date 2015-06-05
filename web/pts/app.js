@@ -97,10 +97,12 @@ Ext.application({
     launch: function() {
         var me = this,
             task,
-            myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),
+            //myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),
+            body = Ext.getBody();
             removeMask = function() {
                 if(!Ext.Ajax.isLoading()) {
-                    myMask.destroy();
+                    //myMask.destroy();
+                    body.unmask();
                     Ext.Ajax.un('requestcomplete', removeMask, me);
                 }
             };
@@ -110,7 +112,8 @@ Ext.application({
             buffer: 200
         });
 
-        myMask.show(); //mask the window body
+        //myMask.show();
+        body.mask('Please wait...Fetching User Info'); //mask the window body
 
         //get user details
         me.getModel('PTS.model.User').load(PTS.UserId.id,{
@@ -156,6 +159,10 @@ Ext.application({
                     },
                     scope: store
                 });
+
+                body.mask('Please wait...Fetching Data'); //update mask
+                //load ProjectID store
+                me.getStore('ProjectIDs').load();
 
                 Ext.create('PTS.view.Viewport');
 
