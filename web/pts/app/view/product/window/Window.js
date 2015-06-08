@@ -7,7 +7,8 @@ Ext.define('PTS.view.product.window.Window', {
     alias: 'widget.productwindow',
     requires: [
         'PTS.view.product.form.ProductForm',
-        'PTS.view.product.window.ProductLinks'//,
+        'PTS.view.product.window.ProductLinks',
+        'PTS.view.product.window.ProductStatus'//,
         //'PTS.view.product.window.ProductContacts',
         //'PTS.view.product.window.ProductMetadata',
         //'PTS.view.controls.CommentEditGrid',
@@ -66,12 +67,12 @@ Ext.define('PTS.view.product.window.Window', {
                         },
                         {
                             xtype: 'productlinks'
+                        },
+                        {
+                            xtype: 'productstatus'
                         }/*,
                         {
                             xtype: 'productcontacts'
-                        },
-                        {
-                            xtype: 'productagreements'
                         },
                         {
                             title: 'Comments',

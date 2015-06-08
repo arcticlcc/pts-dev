@@ -64,6 +64,21 @@ Ext.define('PTS.controller.product.Product', {
                 }
             });
             cstore.load();
+            //load the product statuses
+            cstore = win.down('#producttabpanel>productstatus').getStore();
+            cstore.setProxy({
+                type: 'rest',
+                url : '../productstatus',
+                appendId: true,
+                api: {
+                    read:'../product/' + id + '/productstatus'
+                },
+                reader: {
+                    type: 'json',
+                    root: 'data'
+                }
+            });
+            cstore.load();
             //load the product comments
             /*cstore = win.down('#producttabpanel>commenteditgrid').getStore();
             cstore.setProxy({

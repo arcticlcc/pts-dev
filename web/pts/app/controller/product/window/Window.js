@@ -10,7 +10,9 @@ Ext.define('PTS.controller.product.window.Window', {
     ],
     stores: [
         'OnlineResources',
-        'OnlineFunctions'//,
+        'OnlineFunctions',
+        'DateTypes',
+        'ProductStatuses'//,
         /*'ProductComments',
         'ProductVectors',
         'CommonVectors'*/
@@ -52,6 +54,9 @@ Ext.define('PTS.controller.product.window.Window', {
             },
             'productwindow gridform': {
                 loadrecord: this.onGridFormLoadRecord
+            },
+            'productwindow>tabpanel>roweditgrid': {
+                edit: this.onRowEdit
             }/*,
             'productwindow>tabpanel>commenteditgrid': {
                 edit: this.onCommentRowEdit
@@ -104,6 +109,19 @@ Ext.define('PTS.controller.product.window.Window', {
         if(!rec.get('productid')){
             rec.set('productid', id);
         }
+    },
+
+    /**
+     * Update the record in the roweditgrid store with the productid and userid.
+     */
+    onRowEdit: function(editor, e) {
+        var id = this.getProductWindow().productId,
+            rec = editor.record;
+
+        rec.set('productid',id);
+        rec.set('contactid', PTS.user.get('contactid'));
+
+        editor.store.sync();
     },
 
     /**
