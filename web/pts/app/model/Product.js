@@ -48,7 +48,7 @@ Ext.define('PTS.model.Product', {
             name: 'projectcode',
             type: 'string',
             persist: false
-        },
+        }
     ],
 
     idProperty: 'productid',
@@ -57,7 +57,7 @@ Ext.define('PTS.model.Product', {
         type: 'rest',
         url : '../product',
         api: {
-            read: '../productlist',//uri,
+            read: '../productlist'//,uri,
             //create: uri,
             //update: uri
         },
