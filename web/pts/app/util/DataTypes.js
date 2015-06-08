@@ -30,21 +30,29 @@ Ext.define('PTS.util.DataTypes', {
                 if (Ext.isDate(v)) {
                     return v;
                 }
-                if (df) {
-                    if (df === 'timestamp') {
-                        return new Date(v*1000);
-                    }
-                    if (df === 'time') {
-                        return new Date(parseInt(v, 10));
-                    }
-                    return Ext.Date.parse(v, df);
-                }
 
-                parsed = Date.parse(v);
-                return parsed ? new Date(parsed) : null;
+                return Ext.Date.parse(v, df);
             },
             sortType: st.asDate,
             type: 'mydate'
+        };
+
+        // Add a new Date Field data type which converts timestamps to 'Y-m-d' dateFormat.
+        Ext.data.Types.MYDATESTAMP = {
+            convert: function(v) {
+                var df = 'Y-m-d h:i:s';
+
+                if (!v) {
+                    return null;
+                }
+                if (Ext.isDate(v)) {
+                    return v;
+                }
+
+                return Ext.Date.parse(v, df);
+            },
+            sortType: st.asDate,
+            type: 'mydatestamp'
         };
 
         // Add a new Boolean data type which returns 1 or 0 for Php/Postgresql compat.
