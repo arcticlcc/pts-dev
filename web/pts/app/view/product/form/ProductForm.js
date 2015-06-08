@@ -46,7 +46,6 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             xtype: 'button',
                             text: 'Save',
                             iconCls: 'pts-menu-savebasic',
-                            formBind: true,
                             action: 'saveproduct',
                             formBind: true
                         },
