@@ -92,29 +92,21 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
 
             return $geoJSON;
         });
-    }
 
-    public function boot(Application $app)
-    {
-    }
+        /**
+         * Get a feature.
+         */
+        $app['getFeature'] = $app->protect(function (Request $request, $class) use ($app) {
+            $idCol = $class . 'id';
+            $table = $class . 'feature';
 
-    public function connect(Application $app)
-    {
-        $controllers = $app['controllers_factory'];
-        $types = array(
-            'Polygon' => 'projectpolygon',
-            'LineString' => 'projectline',
-            'Point' => 'projectpoint'
-        );
-
-        $controllers->get('projectfeature', function (Application $app, Request $request) {
             try{
                 $result = array();
-                $projectid = $request->get('projectid');
-                $query = $app['idiorm']->getTable('projectfeature');
+                $id = $request->get($idCol);
+                $query = $app['idiorm']->getTable($table);
 
-                if($projectid) {
-                    $query->where('projectid', $projectid);
+                if($id) {
+                    $query->where($idCol, $id);
                 }
 
                 foreach ($query->find_many() as $object) {
@@ -135,13 +127,18 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
             }
         });
 
-        $controllers->post('projectfeature', function (Application $app, Request $request) use ($types) {
+        /**
+         * Create a feature.
+         */
+        $app['createFeature'] = $app->protect(function (Request $request, $class, array $types) use ($app) {
+            $idCol = $class . 'id';
+
             try {
                 $json = json_decode($request->getContent());
                 $result = array();
 
                 //need to wrap everything in a transaction
-                $app['db']->transactional(function($conn) use ($app, $json, $types, &$result) {
+                $app['db']->transactional(function($conn) use ($app, $json, $types, &$result, $idCol) {
                         foreach($json->features as $feature) {
                             $geom = $feature->geometry;
                             $values = $feature->properties;
@@ -150,9 +147,9 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                             $table = $types[$geom->type];
 
                             $sql = "INSERT INTO " . $table . "
-                                (projectid, name, comment,the_geom)
-                                VALUES (:projectid, :name, :comment, ST_GeomFromText(:wkt,3857))
-                            RETURNING '" . $geom->type . "-'|| " . $table . "id AS id, projectid,
+                                ($idCol, name, comment,the_geom)
+                                VALUES (:$idCol, :name, :comment, ST_GeomFromText(:wkt,3857))
+                            RETURNING '" . $geom->type . "-'|| " . $table . "id AS id, $idCol,
                             name, comment,ST_AsGeoJSON(the_geom) AS geom";
 
                             $stmt = $conn->prepare($sql);
@@ -182,7 +179,12 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
             }
         });
 
-        $controllers->put('projectfeature/{id}', function (Application $app, Request $request, $id) use ($types) {
+        /**
+         * Update a feature.
+         */
+        $app['updateFeature'] = $app->protect(function (Request $request, $id, $class, array $types) use ($app) {
+            $idCol = $class . 'id';
+
             try {
                 $feature = json_decode($request->getContent());
                 $geom = $feature->geometry;
@@ -195,10 +197,10 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                 $result = array();
 
                 $sql = "UPDATE " . $table . "
-                    SET projectid=:projectid, name=:name, comment=:comment,
+                    SET $idCol=:$idCol, name=:name, comment=:comment,
                         the_geom = ST_GeomFromText(:wkt,3857)
                     WHERE " . $table . "id = :id
-                RETURNING '" . $geom->type . "-'|| " . $table . "id AS id, projectid,
+                RETURNING '" . $geom->type . "-'|| " . $table . "id AS id, $idCol,
                 name, comment,ST_AsGeoJSON(the_geom) AS geom";
 
                 $stmt = $app['db']->prepare($sql);
@@ -227,10 +229,12 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
             }
         });
 
-        //this is the delete method, openlayers only passes the feature data
-        // when using post to delete and we wnat to check the geometry for the
-        //type instead of relying on the id passed in the url
-        $controllers->post('projectfeature/{id}', function (Application $app, Request $request, $id) use ($types) {
+        /**
+         * Delete a feature.
+         */
+        $app['deleteFeature'] = $app->protect(function (Request $request, $id, $class, array $types) use ($app) {
+            $tab = $class . 'feature';
+
             try {
                 $feature = json_decode($request->getContent());
                 $geom = $feature->geometry;
@@ -241,8 +245,8 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                 $object = $app['idiorm']->getTable($table)->find_one($id[1]);
 
                 if($object) {
-                    //we'll actually return from the projectfeature view
-                    $return = $app['idiorm']->getTable('projectfeature')->find_one($geom->type .'-' . $id[1]);
+                    //we'll actually return from the {$class}feature view
+                    $return = $app['idiorm']->getTable($tab)->find_one($geom->type .'-' . $id[1]);
                     $result[] = $return->as_array();
                     //delete the object
                     $object->delete();
@@ -267,6 +271,64 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
             }
 
             return $app['json']->getResponse();
+        });
+    }
+
+    public function boot(Application $app)
+    {
+    }
+
+    public function connect(Application $app)
+    {
+        $controllers = $app['controllers_factory'];
+        $types = array(
+            'Polygon' => 'projectpolygon',
+            'LineString' => 'projectline',
+            'Point' => 'projectpoint'
+        );
+
+        $controllers->get('projectfeature', function (Application $app, Request $request) {
+            return $app['getFeature']($request, 'project');
+        });
+
+        $controllers->post('projectfeature', function (Application $app, Request $request) use ($types) {
+            return $app['createFeature']($request, 'project', $types);
+        });
+
+        $controllers->put('projectfeature/{id}', function (Application $app, Request $request, $id) use ($types) {
+            return $app['updateFeature']($request, $id, 'project', $types);
+        });
+
+        //this is the delete method, openlayers only passes the feature data
+        // when using post to delete and we want to check the geometry for the
+        //type instead of relying on the id passed in the url
+        $controllers->post('projectfeature/{id}', function (Application $app, Request $request, $id) use ($types) {
+            return $app['deleteFeature']($request, $id, 'project', $types);
+        });
+
+        $ptypes = array(
+            'Polygon' => 'productpolygon',
+            'LineString' => 'productline',
+            'Point' => 'productpoint'
+        );
+
+        $controllers->get('productfeature', function (Application $app, Request $request) {
+            return $app['getFeature']($request, 'product');
+        });
+
+        $controllers->post('productfeature', function (Application $app, Request $request) use ($ptypes) {
+            return $app['createFeature']($request, 'product', $types);
+        });
+
+        $controllers->put('productfeature/{id}', function (Application $app, Request $request, $id) use ($ptypes) {
+            return $app['updateFeature']($request, $id, 'product', $types);
+        });
+
+        //this is the delete method, openlayers only passes the feature data
+        // when using post to delete and we want to check the geometry for the
+        //type instead of relying on the id passed in the url
+        $controllers->post('productfeature/{id}', function (Application $app, Request $request, $id) use ($ptypes) {
+            return $app['deleteFeature']($request, $id, 'product', $types);
         });
         return $controllers;
     }
