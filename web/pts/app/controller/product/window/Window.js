@@ -33,17 +33,17 @@ Ext.define('PTS.controller.product.window.Window', {
 
     init: function() {
 
-        var pf = this.getController('product.form.ProductForm')//,
+        var pf = this.getController('product.form.ProductForm'),
             /*pc = this.getController('product.window.ProductContacts'),
             pm = this.getController('product.window.ProductMetadata'),
-            pa = this.getController('product.window.ProductAgreements'),
-            pk = this.getController('product.window.ProductKeywords')*/;
+            pa = this.getController('product.window.ProductAgreements'),*/
+            pk = this.getController('product.window.ProductKeywords');
         // Remember to call the init method manually
         pf.init();
         /*pc.init();
-        pa.init();
+        pa.init();*/
         pk.init();
-        pm.init();*/
+        //pm.init();
 
         this.control({
             'productwindow [action=closewindow]': {

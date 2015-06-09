@@ -8,11 +8,11 @@ Ext.define('PTS.view.product.window.Window', {
     requires: [
         'PTS.view.product.form.ProductForm',
         'PTS.view.product.window.ProductLinks',
-        'PTS.view.product.window.ProductStatus'//,
+        'PTS.view.product.window.ProductStatus',
         //'PTS.view.product.window.ProductContacts',
         //'PTS.view.product.window.ProductMetadata',
         //'PTS.view.controls.CommentEditGrid',
-        //'PTS.view.product.window.ProductKeywords',
+        'PTS.view.product.window.ProductKeywords'//,
         //'PTS.view.product.ProductMap',
         //'GeoExt.selection.FeatureModel',
         //'Ext.grid.plugin.CellEditing'
@@ -70,18 +70,18 @@ Ext.define('PTS.view.product.window.Window', {
                         },
                         {
                             xtype: 'productstatus'
-                        }/*,
-                        {
+                        },
+                        /*{
                             xtype: 'productcontacts'
                         },
                         {
                             title: 'Comments',
                             xtype: 'commenteditgrid',
                             store: 'ProductComments'
-                        },
+                        },*/
                         {
                             xtype: 'productkeywords'
-                        },
+                        }/*,
                         {
                             xtype: 'panel',
                             defaults: {

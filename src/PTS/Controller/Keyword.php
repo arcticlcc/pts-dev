@@ -98,6 +98,25 @@ class Keyword implements ControllerProviderInterface
             return $app['json']->getResponse();
         });
 
+        //need to return list
+        $controllers->put('productkeyword/{id}', function (Application $app, Request $request, $id) {
+            $result = array();
+
+            $result = $app['saveTable']($request, 'productkeyword', $id, true);
+            $app['json']->setData($result);
+
+            return $app['json']->getResponse();
+        });
+
+        //need to return list
+        $controllers->post('productkeyword', function (Application $app, Request $request) {
+            $result = array();
+            $result = $app['saveTable']($request, 'productkeyword', null, true);
+            $app['json']->setData($result);
+
+            return $app['json']->getResponse();
+        });
+
         return $controllers;
     }
 }
