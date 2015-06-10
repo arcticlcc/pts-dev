@@ -1,104 +1,97 @@
 /**
- * The ProjectContacts controller
+ * The ProductContacts controller
  */
-Ext.define('PTS.controller.project.window.ProjectContacts', {
+Ext.define('PTS.controller.product.window.ProductContacts', {
     extend: 'Ext.app.Controller',
     requires: [
         'PTS.view.controls.ReorderColumn'
     ],
 
     views: [
-        'project.window.ProjectContacts'
+        'product.window.ProductContacts'
     ],
     models: [
-        'ProjectContact'
+        'ProductContact'
     ],
     stores: [
-        'ProjectContacts',
+        'ProductContacts',
         'ContactGroups',
         'DDContactGroups',
         'Persons',
-        'RoleTypes',
+        'IsoRoleTypes',
         'DDPersons'
     ],
     refs: [{
-        ref: 'projectContacts',
-        selector: 'projectcontacts'
+        ref: 'productContacts',
+        selector: 'productcontacts'
     },{
         ref: 'contactLists',
-        selector: 'projectcontacts #contactLists'
+        selector: 'productcontacts #contactLists'
     },{
-        ref: 'projectContactsList',
-        selector: 'projectcontacts #projectContactsList'
+        ref: 'productContactsList',
+        selector: 'productcontacts #productContactsList'
     }],
 
     init: function() {
 
-        /*var list = this.getController('project.tab.ProjectList')
-
-        // Remember to call the init method manually
-        list.init();*/
-
-
-
         this.control({
-            'projectcontacts': {
+            'productcontacts': {
                 activate: this.activate
             },
-            'projectcontacts button[action=addcontacts]': {
+            'productcontacts button[action=addcontacts]': {
                 click: this.addContacts
             },
-            'projectcontacts button[action=removecontacts]': {
+            'productcontacts button[action=removecontacts]': {
                 click: this.removeContacts
             },
-            'projectcontacts button[action=savecontacts]': {
+            'productcontacts button[action=savecontacts]': {
                 click: this.saveContacts
             },
-            'projectcontacts button[action=refreshcontacts]': {
+            'productcontacts button[action=refreshcontacts]': {
                 click: this.refreshContacts
             },
-            'projectcontacts #contactLists > gridpanel': {
+            'productcontacts #contactLists > gridpanel': {
                 activate: this.activateList,
                 beforerender: this.beforeRenderContactLists
             },
-            'projectcontacts #contactLists > gridpanel > gridview': {
+            'productcontacts #contactLists > gridpanel > gridview': {
                 beforedrop: this.removeContactsByDrag
             },
-            'projectcontacts #projectContactsList > gridview': {
-                afterrender: this.afterRenderProjectContactsList
+            'productcontacts #productContactsList > gridview': {
+                afterrender: this.afterRenderProductContactsList
             },
-            'projectcontacts #projectContactsList': {
-                beforerender: this.beforeRenderProjectContactsList,
-                edit: this.onEditRole
+            'productcontacts #productContactsList': {
+                beforerender: this.beforeRenderProductContactsList//,
+                //edit: this.onEditRole
             },
-            'projectcontacts combo[itemId=roletypeCbx]': {
+            'combo[itemId=roletypeCbx]': {
                 select: this.onSelectRoleType
             }
         });
 
         // We listen for the application-wide events
         this.application.on({
-            openproject: this.onOpenProject,
-            saveproject: this.onSaveProject,
+            openproduct: this.onOpenProduct,
+            saveproduct: this.onSaveProduct,
             scope: this
         });
     },
 
     /**
-     * Set proxy based on current projectid.
-     * @param {Number} projectid
-     * @param {PTS.store.ProjectContacts}
+     * Set proxy based on current productid.
+     * @param {Number} productid
+     * @param {PTS.store.ProductContacts}
      */
     setProxy: function(id,store) {
 
-        //override store proxy based on projectid
+        //override store proxy based on productid
         store.setProxy({
             type: 'rest',
-            url : '../projectcontact',
+            url : '../productcontact',
             appendId: true,
             //batchActions: true,
             api: {
-                read:'../project/' + id + '/contacts'
+                read:'../product/' + id + '/productcontactlist'
             },
             reader: {
                 type: 'json',
@@ -108,14 +101,14 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     },
 
     /**
-     * Open project event.
+     * Open product event.
      */
-    onOpenProject: function(id) {
-        var store = this.getProjectContactsStore();
+    onOpenProduct: function(id) {
+        var store = this.getProductContactsStore();
 
         if(id) {
             this.setProxy(id, store);
-            //load the projectcontacts store
+            //load the productcontacts store
             store.load();
         }
     },
@@ -125,13 +118,13 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      */
     onSelectRoleType: function(combo, rec) {
         //force editor to complete following selection
-        this.getProjectContactsList().getPlugin('contactEditor').completeEdit();
+        this.getProductContactsList().getPlugin('contactEditor').completeEdit();
     },
 
     /**
      * Set the notice and partner fields during roletype validation.
      */
-    onEditRole: function(editor, e) {
+    /*onEditRole: function(editor, e) {
         var rObj = {
                 5: null,
                 6: null,
@@ -160,25 +153,25 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                 rec.set('partner', false);
             }
         }
-    },
+    },*/
 
     /**
-     * Save project event.
+     * Save product event.
      * TODO: Should we check to see if record is phantom first?
      */
-    onSaveProject: function(record) {
-        var store = this.getProjectContactsStore(),
+    onSaveProduct: function(record) {
+        var store = this.getProductContactsStore(),
             id = record.getId();
 
         if(id) {
             this.setProxy(id, store);
-            //load the projectcontacts store
+            //load the productcontacts store
             store.load();
         }
     },
 
     /**
-     * Stuff to do when Project Contacts tab is activated.
+     * Stuff to do when Product Contacts tab is activated.
      */
      activate: function(tab) {
 
@@ -197,7 +190,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      },
 
     /**
-     * Configure extra columns, checkboxSelection and reorder.
+     * Configure extra columns, checkboxSelection.
      */
     beforeRenderContactLists: function(grid) {
         var column = Ext.create('Ext.grid.column.Column', grid.getSelectionModel().getHeaderConfig());
@@ -208,8 +201,8 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * Save contacts.
      */
      saveContacts: function() {
-        var store = this.getProjectContactsStore(),
-            el = this.getProjectContactsList().getEl(),
+        var store = this.getProductContactsStore(),
+            el = this.getProductContactsList().getEl(),
             isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
                 store.getNewRecords().length);
 
@@ -284,7 +277,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * Remove contacts action.
      */
      removeContacts: function(){
-        var grid = this.getProjectContactsList(),
+        var grid = this.getProductContactsList(),
         sel = grid.getSelectionModel().getSelection();
 
         grid.getStore().remove(sel);
@@ -294,7 +287,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * Refresh contacts action.
      */
      refreshContacts: function(){
-        var grid = this.getProjectContactsList();
+        var grid = this.getProductContactsList();
 
         grid.getStore().load({
             callback: function(records, operation, success) {
@@ -315,7 +308,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
             view: grid.getView(),
             records: sel
         },
-        dz = this.getProjectContactsList().getView().getPlugin('contactsddplugin').dropZone;
+        dz = this.getProductContactsList().getView().getPlugin('contactsddplugin').dropZone;
 
         //use dropzone to add records
         dz.handleNodeDrop(data);
@@ -325,7 +318,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * Remove contacts via drag/drop.
      */
      removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
-        this.getProjectContactsStore().remove(data.records);
+        this.getProductContactsStore().remove(data.records);
         return false;
     },
 
@@ -333,23 +326,23 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * Configure extra columns, checkboxSelection and reorder.
      * Configure the store
      */
-    beforeRenderProjectContactsList: function(grid) {
+    beforeRenderProductContactsList: function(grid) {
         var column = Ext.create('Ext.grid.column.Column', grid.getSelectionModel().getHeaderConfig());
 
         grid.headerCt.insert(0, column);
-        grid.headerCt.insert(grid.headerCt.getColumnCount()+1, {xtype: 'reordercolumn'});
+        //grid.headerCt.insert(grid.headerCt.getColumnCount()+1, {xtype: 'reordercolumn'});
     },
 
     /**
-     * Configure projectcontacts ddplugin.
+     * Configure productcontacts ddplugin.
      */
-    afterRenderProjectContactsList: function(view) {
+    afterRenderProductContactsList: function(view) {
         var plugin = view.getPlugin('contactsddplugin'),
         dropZone = plugin.dropZone;
         dropZone.handleNodeDrop = function(data, record, position) {
             var view = this.view,
                 store = view.getStore(),
-                projectid = view.up('projectwindow').projectId,
+                productid = view.up('productwindow').productId,
                 index, records, i, len;
 
             // If the copy flag is set, create a copy of the Models with unique IDs
@@ -364,12 +357,11 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                         copy.name = copy.lastname + ', ' + copy.firstname;
                     }
                     //create the new record, copying values from dropped record
-                    var rec = Ext.create('PTS.model.ProjectContact',{
+                    var rec = Ext.create('PTS.model.ProductContact',{
                         'name': copy.name,
-                        'roletypeid': '',
+                        'isoroletypeid': '',
                         'contactid': copy.contactid,
-                        'projectid': projectid,
-                        'partner': false
+                        'productid': productid
                     });
                     // mark it as phantom since it doesn't exist in the serverside database
                     rec.phantom = true;

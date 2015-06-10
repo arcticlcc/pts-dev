@@ -9,7 +9,7 @@ Ext.define('PTS.view.product.window.Window', {
         'PTS.view.product.form.ProductForm',
         'PTS.view.product.window.ProductLinks',
         'PTS.view.product.window.ProductStatus',
-        //'PTS.view.product.window.ProductContacts',
+        'PTS.view.product.window.ProductContacts',
         //'PTS.view.product.window.ProductMetadata',
         //'PTS.view.controls.CommentEditGrid',
         'PTS.view.product.window.ProductKeywords',
@@ -71,10 +71,10 @@ Ext.define('PTS.view.product.window.Window', {
                         {
                             xtype: 'productstatus'
                         },
-                        /*{
+                        {
                             xtype: 'productcontacts'
                         },
-                        {
+                        /*{
                             title: 'Comments',
                             xtype: 'commenteditgrid',
                             store: 'ProductComments'

@@ -34,14 +34,12 @@ Ext.define('PTS.controller.product.window.Window', {
     init: function() {
 
         var pf = this.getController('product.form.ProductForm'),
-            /*pc = this.getController('product.window.ProductContacts'),
-            pm = this.getController('product.window.ProductMetadata'),
-            pa = this.getController('product.window.ProductAgreements'),*/
+            pc = this.getController('product.window.ProductContacts'),
+            //pm = this.getController('product.window.ProductMetadata'),
             pk = this.getController('product.window.ProductKeywords');
         // Remember to call the init method manually
         pf.init();
-        /*pc.init();
-        pa.init();*/
+        pc.init();
         pk.init();
         //pm.init();
 
