@@ -82,6 +82,7 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'personlist' => 'contactid',
     'projectkeywordlist' => 'projectkeywordid',
     'projectfeature' => 'id',
+    'productfeature' => 'id',
     'modstatuslist' => 'modstatusid',
     'moddocstatuslist' => 'moddocstatusid',
     'modificationlist' => 'modificationid',

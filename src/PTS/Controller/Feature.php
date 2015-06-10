@@ -317,18 +317,18 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
         });
 
         $controllers->post('productfeature', function (Application $app, Request $request) use ($ptypes) {
-            return $app['createFeature']($request, 'product', $types);
+            return $app['createFeature']($request, 'product', $ptypes);
         });
 
         $controllers->put('productfeature/{id}', function (Application $app, Request $request, $id) use ($ptypes) {
-            return $app['updateFeature']($request, $id, 'product', $types);
+            return $app['updateFeature']($request, $id, 'product', $ptypes);
         });
 
         //this is the delete method, openlayers only passes the feature data
         // when using post to delete and we want to check the geometry for the
         //type instead of relying on the id passed in the url
         $controllers->post('productfeature/{id}', function (Application $app, Request $request, $id) use ($ptypes) {
-            return $app['deleteFeature']($request, $id, 'product', $types);
+            return $app['deleteFeature']($request, $id, 'product', $ptypes);
         });
         return $controllers;
     }

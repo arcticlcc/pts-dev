@@ -12,10 +12,10 @@ Ext.define('PTS.controller.product.window.Window', {
         'OnlineResources',
         'OnlineFunctions',
         'DateTypes',
-        'ProductStatuses'//,
-        /*'ProductComments',
+        'ProductStatuses',
+        //'ProductComments',
         'ProductVectors',
-        'CommonVectors'*/
+        'CommonVectors'
     ],
     refs: [{
         ref: 'productWindow',
@@ -23,13 +23,13 @@ Ext.define('PTS.controller.product.window.Window', {
     },{
         ref: 'productForm',
         selector: 'productwindow productform'
-    }/*,{
+    },{
         ref: 'productMap',
-        selector: 'productwindow productmap'
+        selector: 'productwindow projectmap'
     },{
         ref: 'featureGrid',
         selector: 'productwindow #featureGrid'
-    }*/],
+    }],
 
     init: function() {
 
@@ -57,21 +57,21 @@ Ext.define('PTS.controller.product.window.Window', {
             },
             'productwindow>tabpanel>roweditgrid': {
                 edit: this.onRowEdit
-            }/*,
-            'productwindow>tabpanel>commenteditgrid': {
-                edit: this.onCommentRowEdit
             },
-            'productwindow productmap': {
+            /*'productwindow>tabpanel>commenteditgrid': {
+                edit: this.onCommentRowEdit
+            },*/
+            'productwindow projectmap': {
                 beforerender: this.onProductMapBeforeRender,
                 afterlayout: this.onProductMapAfterLayout
             },
-            'productwindow productmap maptoolbar': {
+            'productwindow projectmap maptoolbar': {
                 beforerender: this.onMapToolbarBeforeRender
             },
-            'productwindow productmap maptoolbar #addFeature menuitem': {
+            'productwindow projectmap maptoolbar #addFeature menuitem': {
                 click: this.onAddFeatureMenuClick
             },
-            'productwindow productmap maptoolbar button#modify': {
+            'productwindow projectmap maptoolbar button#modify': {
                 toggle: this.onModifyBtnToggle
             },
             'productwindow #featureGrid gridview': {
@@ -79,7 +79,7 @@ Ext.define('PTS.controller.product.window.Window', {
             },
             'productwindow #featureGrid': {
                 deselect: this.onFeatureGridDeselect
-            }*/
+            }
         });
     },
 
@@ -95,7 +95,7 @@ Ext.define('PTS.controller.product.window.Window', {
      */
     onBeforeClose: function() {
         //unbind the ProductVectors store
-        //this.getProductVectorsStore().unbind();
+        this.getProductVectorsStore().unbind();
 
         this.application.fireEvent('closeproduct');
     },
@@ -159,13 +159,13 @@ Ext.define('PTS.controller.product.window.Window', {
      */
     onProductMapAfterLayout: function(mapPanel) {
 
-        //add productid param to productVectors protocol
-        mapPanel.productVectors.protocol.options.params = {
+        //add productid param to projectVectors protocol
+        mapPanel.projectVectors.protocol.options.params = {
             productid: this.getProductWindow().productId
         };
 
         //listeners for product vector layer
-        mapPanel.productVectors.events.on({
+        mapPanel.projectVectors.events.on({
             "beforedeletetoggle": function(evt) {
                 if(evt.feature.state !== OpenLayers.State.DELETE) {
                     this.getSelectionModel().deselect(this.getStore().getByFeature(evt.feature),true);
@@ -242,7 +242,7 @@ Ext.define('PTS.controller.product.window.Window', {
         });
 
         //load productvectors
-        mapPanel.productVectors.setVisibility(true);
+        mapPanel.projectVectors.setVisibility(true);
     },
 
     /**
@@ -254,7 +254,7 @@ Ext.define('PTS.controller.product.window.Window', {
 
         //select on hover, proper way to do this would be to extend
         //the SelectFeature control
-        ctl = new OpenLayers.Control.SelectFeature(mapPanel.productVectors,{
+        ctl = new OpenLayers.Control.SelectFeature(mapPanel.projectVectors,{
             id: 'PTS-Select-Hover',
             hover: true,
             highlightOnly: true,
@@ -379,7 +379,7 @@ Ext.define('PTS.controller.product.window.Window', {
 
         ctl.activate();
 
-        this.getProductVectorsStore().bind(mapPanel.productVectors);
+        this.getProductVectorsStore().bind(mapPanel.projectVectors);
     },
 
     /**
@@ -393,7 +393,7 @@ Ext.define('PTS.controller.product.window.Window', {
             sel = this.getFeatureGrid().getSelectionModel().selected;
 
         if(pressed && sel.length === 1) {
-            map = btn.up('productmap').map;
+            map = btn.up('projectmap').map;
             map.getControlsBy('id','PTS-Modify-Feature')[0].selectControl.select(sel.first().raw);
         }
     },

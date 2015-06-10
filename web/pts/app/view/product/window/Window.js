@@ -12,10 +12,10 @@ Ext.define('PTS.view.product.window.Window', {
         //'PTS.view.product.window.ProductContacts',
         //'PTS.view.product.window.ProductMetadata',
         //'PTS.view.controls.CommentEditGrid',
-        'PTS.view.product.window.ProductKeywords'//,
-        //'PTS.view.product.ProductMap',
-        //'GeoExt.selection.FeatureModel',
-        //'Ext.grid.plugin.CellEditing'
+        'PTS.view.product.window.ProductKeywords',
+        'PTS.view.project.ProjectMap',
+        'GeoExt.selection.FeatureModel',
+        'Ext.grid.plugin.CellEditing'
     ],
 
     height: Ext.Element.getViewportHeight() - 40,
@@ -81,7 +81,7 @@ Ext.define('PTS.view.product.window.Window', {
                         },*/
                         {
                             xtype: 'productkeywords'
-                        }/*,
+                        },
                         {
                             xtype: 'panel',
                             defaults: {
@@ -93,12 +93,14 @@ Ext.define('PTS.view.product.window.Window', {
                             title: 'Map',
                             items: [
                                 {
-                                    xtype: 'productmap',
+                                    xtype: 'projectmap',
                                     commonStore: 'CommonVectors',
                                     //center: '-130.95977783203,10.914916992189',
                                     center: '-16760019.526289, 9118642.6397498',
                                     zoom: 4,
-                                    region: 'center'
+                                    region: 'center',
+                                    layerName: 'Product Features',
+                                    layerUrl: '../productfeature'
                                 },
                                 {
                                     xtype: 'gridpanel',
@@ -146,7 +148,7 @@ Ext.define('PTS.view.product.window.Window', {
                                     ]
                                 }
                             ]
-                        },
+                        }/*,
                         {
                             xtype: 'productmetadata'
                         }*/
