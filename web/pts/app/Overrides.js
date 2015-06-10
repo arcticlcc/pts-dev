@@ -15,10 +15,43 @@ Ext.define('PTS.Overrides', {
         'Ext.util.Sorter',
         'Ext.data.TreeStore',
         'Ext.grid.Scroller',
-        'Ext.button.Cycle'
+        'Ext.button.Cycle',
+        'Ext.data.Model'
 
     ]
 }, function() {
+    //This method is included in 4.1, required by GeoExt
+    Ext.override(Ext.data.Model, {
+        compatibility : '4',
+
+        /**
+         * Gets all values for each field in this model and returns an object
+         * containing the current data.
+         * @param {Boolean} includeAssociated True to also include associated
+         * data. Defaults to false.
+         * @return {Object} An object hash containing all the values in this
+         * model
+         */
+         getData: function(includeAssociated) {
+            var me = this,
+                fields = me.fields.items,
+                fLen = fields.length,
+                data = {},
+                name,
+                f;
+
+            for ( f = 0; f < fLen; f++) {
+                name = fields[f].name;
+                data[name] = me.get(name);
+            }
+
+            if (includeAssociated === true) {
+                Ext.apply(data, me.getAssociatedData());
+            }
+            return data;
+        }
+    });
+
     //Fixes Chrome 43 menu bug
     //https://www.sencha.com/forum/announcement.php?f=80&a=58
     Ext.override(Ext.menu.Menu, {
