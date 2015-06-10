@@ -37,6 +37,20 @@ Ext.define('PTS.view.project.ProjectMap', {
     commonStore: false,
 
     /**
+     * @cfg {string} commonStore
+     * The store to use for the add feature menu,
+     * passed to the toolbar. Only applicable if displayTools is true.
+     */
+    layerUrl: '../projectfeature',
+
+    /**
+     * @cfg {string} commonStore
+     * The store to use for the add feature menu,
+     * passed to the toolbar. Only applicable if displayTools is true.
+     */
+    layerName: 'Project Features',
+
+    /**
      * @cfg {OpenLayers.Layer.Vector} projectVectors
      * The vector layer containing project features.
      */
@@ -94,7 +108,7 @@ Ext.define('PTS.view.project.ProjectMap', {
             saveStrategy = new OpenLayers.Strategy.Save(),
             fixedStrategy = new OpenLayers.Strategy.Fixed(),
             refreshStrategy = new OpenLayers.Strategy.Refresh(),
-            vector = new OpenLayers.Layer.Vector("Project Features",{
+            vector = new OpenLayers.Layer.Vector(me.layerName,{
                 visibility: false,
                 strategies: [
                     refreshStrategy,
@@ -102,7 +116,7 @@ Ext.define('PTS.view.project.ProjectMap', {
                     saveStrategy
                 ],
                 protocol: new OpenLayers.Protocol.HTTP({
-                    url: '../projectfeature',
+                    url: me.layerUrl,
                     format: new OpenLayers.Format.GeoJSON({
                         ignoreExtraDims: true
                     }),
