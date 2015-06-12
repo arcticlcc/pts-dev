@@ -19,6 +19,12 @@ Ext.define('PTS.model.DeliverableType', {
         },
         {
             name: 'description', type: 'mystring', useNull: true
+        },
+        {
+            name: 'isocodename', type: 'mystring', useNull: true
+        },
+        {
+            name: 'product', type: 'myboolean', useNull: true
         }
 
     ],

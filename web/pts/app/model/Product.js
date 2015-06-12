@@ -17,6 +17,11 @@ Ext.define('PTS.model.Product', {
             useNull: true
         },
         {
+            name: 'deliverabletypeid',
+            type: 'int',
+            useNull: true
+        },
+        {
             name: 'title', type: 'mystring', useNull: true
         },
         {
@@ -46,6 +51,11 @@ Ext.define('PTS.model.Product', {
         },
         {
             name: 'projectcode',
+            type: 'string',
+            persist: false
+        },
+        {
+            name: 'type',
             type: 'string',
             persist: false
         }

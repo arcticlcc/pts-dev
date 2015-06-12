@@ -73,6 +73,12 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     width: 80
                 },*/
                 {
+                    xtype: 'gridcolumn',
+                    text: 'Type',
+                    dataIndex: 'type'
+                    //width: 55
+                },
+                {
                     xtype: 'booleancolumn',
                     text: 'Export',
                     trueText: 'Yes',
@@ -83,13 +89,13 @@ Ext.define('PTS.view.product.tab.ProductList', {
                 },
                 {
                     text: 'Time Period',
-                    //hidden: true,
+                    hidden: true,
                     columns: [
                         {
                             xtype: 'datecolumn',
                             dataIndex: 'startdate',
                             text: 'Begin',
-                            //hidden: true,
+                            hidden: true,
                             width : 75,
                             sortable : true
                         },
@@ -97,7 +103,7 @@ Ext.define('PTS.view.product.tab.ProductList', {
                             xtype: 'datecolumn',
                             dataIndex: 'enddate',
                             text: 'End',
-                            //hidden: true,
+                            hidden: true,
                             width : 75,
                             sortable : true
                         }

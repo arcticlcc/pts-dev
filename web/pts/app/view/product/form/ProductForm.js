@@ -103,11 +103,27 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             anchor: '100%'
                         },
                         {
+                            xtype: 'combobox',
+                            name: 'deliverabletypeid',
+                            fieldLabel: 'Type',
+                            anchor: '50%',
+                            store: 'ProductTypes',
+                            displayField: 'type',
+                            valueField: 'deliverabletypeid',
+                            forceSelection: true,
+                            queryMode: 'local',
+                            listConfig: {
+                                getInnerTpl: function() {
+                                    return '<div data-qtip="{description}">{type}</div>';
+                                }
+                            }
+                        },
+                        {
                             xtype: 'fieldcontainer',
                             layout: {
                                 type: 'anchor'
                             },
-                            fieldLabel: 'Dates',
+                            fieldLabel: 'Time Period',
                             items: [
                                 {
                                     xtype: 'daterangefield',

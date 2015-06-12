@@ -15,20 +15,37 @@ Ext.define('PTS.store.DeliverableTypes', {
         }
     ],
     listeners: {
-        load: { //create store for task types
+        load: { //create store for task and product types
             fn: function(store, recs, success, op){
-                    var tdata = [],
-                        tstore = Ext.getStore('TaskTypes');
+                var tdata = [], pdata = [],
+                    tstore = Ext.getStore('TaskTypes'),
+                    pstore = Ext.getStore('ProductTypes');
 
-                    store.each(function(rec) {
-                        var txt = 'task'.toLowerCase(),
-                            itm = rec.get('type');
+                store.each(function(itm){
+                   if(itm.get('product')) {
+                       pdata.push(itm);
+                   }
+                });
 
-                        if(itm.indexOf(txt) > -1) {
-                            tdata.push(rec);
-                            store.remove(rec);
-                        }
+                if(undefined === pstore) {
+                    Ext.create('Ext.data.Store', {
+                        storeId: 'ProductTypes',
+                        model: 'PTS.model.DeliverableType',
+                        data : pdata
                     });
+                }else {
+                    pstore.loadRecords(pdata.items,{addRecords: false});
+                }
+
+                store.each(function(rec) {
+                    var txt = 'task'.toLowerCase(),
+                        itm = rec.get('type');
+
+                    if(itm.indexOf(txt) > -1) {
+                        tdata.push(rec);
+                        store.remove(rec);
+                    }
+                });
 
                 if(undefined === tstore) {
                     Ext.create('Ext.data.Store', {
