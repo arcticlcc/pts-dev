@@ -80,7 +80,7 @@ class Project implements ControllerProviderInterface
 
         $controllers->get('project/{id}/metadata.{format}', function (Application $app, Request $request, $id, $format) {
             try{
-                $json = $app['adiwg']->getProject($id);
+                $json = $app['adiwg']->renderProject($app['adiwg']->getProject($id));
                 $ct = "application/$format";
 
                 switch ($format) {

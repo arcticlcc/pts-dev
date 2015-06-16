@@ -1,0 +1,74 @@
+{% macro citation(c) %}
+  {% set project, resource, organization = c.resourceType == 'project', c.resource, c.organization %}
+	{% autoescape 'json' %}
+	  {
+        "title": "{{ resource.title }}",
+        "date": [
+          {% if project %}
+          {
+            "date": "{{ resource.datecreated|default(resource.startdate) }}",
+            "dateType": "creation"
+          }
+          {% endif %}
+        ],
+        {# "edition": "", #}
+        "responsibleParty": [
+          {
+            "contactId": "{{ organization.contactId }}",
+            "role": "owner"
+          }
+          {% if project %}{{ c.contactref.ref(c.roles,[7,10,1,4,9],true) }}{% endif %}
+        ],
+        {# "presentationForm": [""], #}
+        "identifier": [
+          {
+            "identifier": "{{ resource.projectIdentifier is empty ? resource.productIdentifier : resource.projectIdentifier}}",
+            "type": "uuid",
+            "authority": {
+              "title": "{{ organization.organizationName }}",
+              {% if project %}
+              "date": [{
+                "date": "{{ resource.datecreated|default(resource.startdate) }}",
+                "dateType": "creation"
+              }],
+              {% endif %}
+              "responsibleParty": [
+                {
+                  "contactId": "{{ organization.contactId }}",
+                  "role": "originator"
+                }
+              ]
+            }
+          }{% if project %},
+          {
+            "identifier": "{{ resource.projectcode }}",
+            "type": "projectCode",
+            "authority": {
+              "title": "{{ organization.organizationName }}",
+              "date": [{
+                "date": "{{ resource.datecreated|default(resource.startdate) }}",
+                "dateType": "creation"
+              }],
+              "responsibleParty": [
+                {
+                  "contactId": "{{ organization.contactId }}",
+                  "role": "originator"
+                }
+              ]
+            }
+          }{% endif %}
+        ],
+        "onlineResource": [
+          {% if project %}
+          {
+            "uri": "{{ resource.uri }}",
+            "protocol": "http",
+            "name": "Project website",
+            "description": "Web page with detailed information about the resource.",
+            "function": "information"
+          }
+          {% endif %}
+        ]
+      }
+	{% endautoescape %}
+{% endmacro %}

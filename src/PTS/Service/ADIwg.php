@@ -62,7 +62,7 @@ class ADIwg {
             $roles[] = $object->as_array();
         }
 
-        return $this->app['twig']->render('metadata/project.json.twig', array(
+        return array(
             'resourceType' => "project",
             'organization' => $org,
             'resource' => $project,
@@ -72,8 +72,11 @@ class ADIwg {
             "projectcats" => array_filter(explode('|', $project['projectcategory'])),
             'contacts' => $contacts,
             'roles' => $roles
-        ));
+        );
 
+    }
+    function renderProject($project) {
+        return $this->app['twig']->render('metadata/project.json.twig', $project);
     }
 
     function saveProject($id) {

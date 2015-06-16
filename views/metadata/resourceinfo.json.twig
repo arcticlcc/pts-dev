@@ -1,4 +1,5 @@
 {% import "metadata/macros.twig" as macros %}
+{% import "metadata/citation.twig" as citation %}
 {% autoescape 'json' %}
     {
       "resourceType": "{{ resourceType }}",
@@ -7,69 +8,7 @@
         "beginPosition": "{{resource.startdate}}",
         "endPosition": "{{resource.enddate}}"
       },
-      "citation": {
-        "title": "{{ resource.title }}",
-        "date": [
-          {
-            "date": "{{ resource.datecreated|default(resource.startdate) }}",
-            "dateType": "creation"
-          }
-        ],
-        {# "edition": "", #}
-        "responsibleParty": [
-          {
-            "contactId": "{{ organization.contactId }}",
-            "role": "owner"
-          }
-          {{ contactref.ref(roles,[7,10,1,4,9],true) }}
-        ],
-        {# "presentationForm": [""], #}
-        "identifier": [
-          {
-            "identifier": "{{ resource.projectIdentifier }}",
-            "type": "uuid",
-            "authority": {
-              "title": "{{ organization.organizationName }}",
-              "date": [{
-                "date": "{{ resource.datecreated|default(resource.startdate) }}",
-                "dateType": "creation"
-              }],
-              "responsibleParty": [
-                {
-                  "contactId": "{{ organization.contactId }}",
-                  "role": "originator"
-                }
-              ]
-            }
-          },
-          {
-            "identifier": "{{ resource.projectcode }}",
-            "type": "projectCode",
-            "authority": {
-              "title": "{{ organization.organizationName }}",
-              "date": [{
-                "date": "{{ resource.datecreated|default(resource.startdate) }}",
-                "dateType": "creation"
-              }],
-              "responsibleParty": [
-                {
-                  "contactId": "{{ organization.contactId }}",
-                  "role": "originator"
-                }
-              ]
-            }
-          }
-        ],
-        "onlineResource": [
-          {
-            "uri": "{{ resource.uri }}",
-            "protocol": "http",
-            "name": "Project website",
-            "description": "Web page with detailed information about the resource.",
-            "function": "information"
-          }
-        ]
-      },
+      "citation": {{ citation.citation(_context) }},
       "pointOfContact": [
         {
           "contactId": "{{ organization.contactId }}",
@@ -79,7 +18,7 @@
       ],
       "abstract": "{{ resource.abstract }}",
       "shortAbstract": "{{ resource.shortAbstract }}",
-      "status": "{{ resource.adiwg }}",
+      "status": "{{ resource.status }}",
       "hasMapLocation": {{ resource.features is empty ? 'false' : 'true'}},
       "hasDataAvailable": true,
       "language": ["eng; USA"],
