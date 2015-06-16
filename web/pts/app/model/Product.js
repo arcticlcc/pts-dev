@@ -22,6 +22,11 @@ Ext.define('PTS.model.Product', {
             useNull: true
         },
         {
+            name: 'isoprogresstypeid',
+            type: 'int',
+            useNull: true
+        },
+        {
             name: 'title', type: 'mystring', useNull: true
         },
         {

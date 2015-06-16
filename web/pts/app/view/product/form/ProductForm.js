@@ -106,6 +106,7 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             xtype: 'combobox',
                             name: 'deliverabletypeid',
                             fieldLabel: 'Type',
+                            allowBlank: false,
                             anchor: '50%',
                             store: 'ProductTypes',
                             displayField: 'type',
@@ -115,6 +116,23 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             listConfig: {
                                 getInnerTpl: function() {
                                     return '<div data-qtip="{description}">{type}</div>';
+                                }
+                            }
+                        },
+                        {
+                            xtype: 'combobox',
+                            name: 'isoprogresstypeid',
+                            fieldLabel: 'Progress',
+                            allowBlank: false,
+                            anchor: '50%',
+                            store: 'IsoProgressTypes',
+                            displayField: 'codename',
+                            valueField: 'isoprogresstypeid',
+                            forceSelection: true,
+                            queryMode: 'local',
+                            listConfig: {
+                                getInnerTpl: function() {
+                                    return '<div data-qtip="{description}">{codename}</div>';
                                 }
                             }
                         },

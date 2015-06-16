@@ -11,7 +11,8 @@ Ext.define('PTS.controller.product.form.ProductForm', {
         'Product'
     ],
     stores: [
-        'ProjectIDs'
+        'ProjectIDs',
+        'IsoProgressTypes'
     ],
     refs: [{
         ref: 'productForm',
