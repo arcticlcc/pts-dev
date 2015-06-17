@@ -16,11 +16,15 @@ Ext.define('PTS.store.IsoProgressTypes', {
         },
         {
             name: 'description'
+        },
+        {
+            name: 'product',
+            type: 'myboolean'
         }
     ],
     proxy: {
         type: 'rest',
-        url : '../isoprogresstype',
+        url : '../productprogresstype',
         reader: {
             type: 'json',
             root: 'data'
@@ -30,5 +34,11 @@ Ext.define('PTS.store.IsoProgressTypes', {
     autoLoad: true,
     sorters: [
         { property: 'codename', direction : 'ASC' }
-    ]
+    ]/*,
+    filters: [
+        {
+            property: 'product',
+            value   : true
+        }
+    ]*/
 });

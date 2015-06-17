@@ -1,4 +1,5 @@
 {% macro citation(c) %}
+  {% import "metadata/contactref.twig" as contactref %}
   {% set project, resource, organization = c.resourceType == 'project', c.resource, c.organization %}
 	{% autoescape 'json' %}
 	  {
@@ -9,6 +10,14 @@
             "date": "{{ resource.datecreated|default(resource.startdate) }}",
             "dateType": "creation"
           }
+          {% else %}
+            {% for date in c.dates %}
+                {% if not loop.first %},{% endif %}
+                {
+                  "date": "{{ date.date }}",
+                  "dateType": "{{ date.dateType }}"
+                }
+            {% endfor %}
           {% endif %}
         ],
         {# "edition": "", #}
@@ -17,12 +26,16 @@
             "contactId": "{{ organization.contactId }}",
             "role": "owner"
           }
-          {% if project %}{{ c.contactref.ref(c.roles,[7,10,1,4,9],true) }}{% endif %}
+          {% if project %}
+          {{ contactref.ref(c.roles,[7,10,1,4,9],true) }}
+          {% else %}
+          {{ contactref.ref(c.roles,false,true) }}
+          {% endif %}
         ],
         {# "presentationForm": [""], #}
         "identifier": [
           {
-            "identifier": "{{ resource.projectIdentifier is empty ? resource.productIdentifier : resource.projectIdentifier}}",
+            "identifier": "{{ resource.resourceIdentifier }}",
             "type": "uuid",
             "authority": {
               "title": "{{ organization.organizationName }}",
@@ -59,15 +72,13 @@
           }{% endif %}
         ],
         "onlineResource": [
-          {% if project %}
           {
             "uri": "{{ resource.uri }}",
             "protocol": "http",
-            "name": "Project website",
+            "name": "Resource website",
             "description": "Web page with detailed information about the resource.",
             "function": "information"
           }
-          {% endif %}
         ]
       }
 	{% endautoescape %}

@@ -1,0 +1,34 @@
+{% autoescape 'json' %}
+{
+  "distributorContact": {
+      "contactId": "{{ organization.contactId }}",
+      "role": "owner"
+  },
+  "distributionOrderProcess": [
+    {
+      "fees": "none"
+    }
+  ],
+  {# "distributorFormat": [
+    {
+      "formatName": "",
+      "version": ""
+    }
+  ], #}
+  "distributorTransferOptions": [
+  {% for link in links %}
+  {% if not loop.first %},{% endif %}
+    {
+      "online": [
+        {
+          "uri": "{{ link.uri }}",
+          "name": "{{ link.title }}",
+          "description": "{{ link.description }}",
+          "function": "{{ link.function }}"
+        }
+      ]
+    }
+  {% endfor %}
+  ]
+}
+{% endautoescape %}

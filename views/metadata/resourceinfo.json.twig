@@ -4,7 +4,7 @@
     {
       "resourceType": "{{ resourceType }}",
       "resourceTimePeriod": {
-        "description": "Span of project activity",
+        "description": "{{ resourceType == 'project' ? 'Span of project activity' : 'Time span for which resource(' ~ resourceType ~ ') is relevant' }}",
         "beginPosition": "{{resource.startdate}}",
         "endPosition": "{{resource.enddate}}"
       },
@@ -14,7 +14,11 @@
           "contactId": "{{ organization.contactId }}",
           "role": "pointOfContact"
         }
+        {% if resourceType == 'project' %}
         {{ contactref.ref(roles,[6,2,8],true) }}
+        {% else %}
+        {{ contactref.ref(roles,[2, 7, 10],true) }}
+        {% endif %}
       ],
       "abstract": "{{ resource.abstract }}",
       "shortAbstract": "{{ resource.shortAbstract }}",
@@ -32,7 +36,7 @@
           "version": ""
         }
       ],#}
-      {% if keywords or usertypes or projectcats %}
+      {% if keywords or usertypes or cats %}
       "keyword": [
         {% if keywords %}
           {
@@ -58,7 +62,7 @@
                 }
               ]
             }
-          }{% if usertypes or projectcats %},{% endif %}
+          }{% if usertypes or cats %},{% endif %}
         {% endif %}
         {% if usertypes %}
           {
@@ -84,12 +88,12 @@
                 }
               ]
             }
-          }{% if projectcats %},{% endif %}
+          }{% if cats %},{% endif %}
         {% endif %}
-        {% if projectcats %}
+        {% if cats %}
           {
             "keyword": [
-              {{ macros.arraytostring(projectcats) }}
+              {{ macros.arraytostring(cats) }}
             ],
             "keywordType": "theme",
             "thesaurus":{
@@ -261,7 +265,7 @@
       {% if resource.features %}
       "extent": [
         {
-          "description":"Project bounding box",
+          "description":"{{ resourceType }} bounding box",
           "geographicElement":[
             {
               "type":"Feature",
@@ -269,7 +273,7 @@
               "id": "boundingExtent",
               "geometry":null,
               "properties":{
-                "description":"Project bounding box"
+                "description":"{{ resourceType }} bounding box"
               },
               "crs":{
                 "type":"name",
@@ -280,7 +284,7 @@
             }
           ]
         },{
-          "description":"Project locations",
+          "description":"{{ resourceType }} locations",
           "geographicElement":[
             {
               "type": "FeatureCollection",
@@ -384,6 +388,10 @@
           }
         }
       ],#}
+      {% if resourceType == 'project' %}
       "supplementalInfo": "{{ resource.supplemental }}"
+      {% else %}
+      "purpose": "{{ resource.purpose }}"
+      {% endif %}
     }
 {% endautoescape %}

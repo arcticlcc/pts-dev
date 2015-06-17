@@ -1,0 +1,41 @@
+{% import "metadata/citation.twig" as citation %}
+{% autoescape 'json' %}
+{
+  "associationType": "{{ assoc.resourceType == 'project' ? 'largerWorkCitation' : 'projectProduct' }}",
+  "initiativeType": "project",
+  "resourceType": "{{ assoc.resourceType }}",
+  "resourceCitation": {{ citation.citation(assoc) }},
+  "metadataCitation": {
+    "title": "Metadata for {{ assoc.resourceType }}: {{ assoc.resource.title }}",
+    "responsibleParty": [
+      {
+        "contactId": "{{ assoc.organization.contactId }}",
+        "role": "custodian"
+      }
+    ],
+    "identifier": [
+      {
+        "identifier": "{{ assoc.resource.resourceIdentifier }}",
+        "type": "uuid",
+        "authority": {
+          "title": "{{ assoc.organization.organizationName }}",
+          "responsibleParty": [
+            {
+              "contactId": "{{ assoc.organization.contactId }}",
+              "role": "originator"
+            }
+          ]
+        }
+      }
+    ],
+    "onlineResource": [
+      {
+        "uri": "http://metadata.arcticlcc.org/api/{{ assoc.resource.resourceIdentifier }}",
+        "name": "Metadata Link",
+        "description": "Link to metatdata",
+        "function": "completeMetadata"
+      }
+    ]
+  }
+}
+{% endautoescape %}

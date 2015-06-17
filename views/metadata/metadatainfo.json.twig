@@ -1,7 +1,7 @@
 {% autoescape 'json' %}
     {
       "metadataIdentifier": {
-        "identifier": "{{ resource.projectIdentifier }}",
+        "identifier": "{{ resource.resourceIdentifier }}",
         "type": "uuid"
       },
       {% if parentMetadata is defined %}
@@ -44,12 +44,14 @@
             "contactId": "{{ organization.contactId }}",
             "role": "author"
           }
+          {% if resourceType == 'project' %}
           {{ contactref.ref(roles,[8,3],true) }}
+          {% endif %}
       ],
       "metadataCreationDate": "{{ "now"|date('c') }}",
       "metadataLastUpdate": "{{ "now"|date('c') }}",
       "metadataCharacterSet": "utf8",
-      {# TODO "metadataUri": "http://thisisanexample.com",#}
+      "metadataUri": "http://metadata.adiwg.org/api/{{ resource.resourceIdentifier }}",
       "metadataStatus": "completed",
       "metadataMaintenance": {
         "maintenanceFrequency": "asNeeded",
@@ -59,7 +61,9 @@
             "contactId": "{{ organization.contactId }}",
             "role": "author"
           }
+          {% if resourceType == 'project' %}
           {{ contactref.ref(roles,[8],true) }}
+          {% endif %}
         ]
       }
     }

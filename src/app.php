@@ -33,6 +33,7 @@ $app->mount('/', new PTS\Controller\ContactGroup());
 $app->mount('/', new PTS\Controller\ProjectContact());
 $app->mount('/', new PTS\Controller\ProductContact());
 $app->mount('/', new PTS\Controller\Project());
+$app->mount('/', new PTS\Controller\Product());
 $app->mount('/', new PTS\Controller\Deliverable());
 $app->mount('/', new PTS\Controller\Modification());
 $app->mount('/', new PTS\Controller\Country());

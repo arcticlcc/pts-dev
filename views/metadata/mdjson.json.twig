@@ -13,8 +13,17 @@
   "metadata": {
     "metadataInfo": {% include "metadata/metadatainfo.json.twig" %},
     "resourceInfo": {% include "metadata/resourceinfo.json.twig" %},
-    "distributionInfo": [],
-    "associatedResource": [],
+    "distributionInfo": [
+	  {% if links %}
+	    {% include "metadata/distributioninfo.json.twig" %}
+	  {% endif %}    
+    ],
+    "associatedResource": [
+	  {% for assoc in associated %}
+	    {% if not loop.first %},{% endif %}
+	    {% include "metadata/associated.json.twig" %}
+	  {% endfor %}        
+    ],
     "additionalDocumentation": []
   }
 }

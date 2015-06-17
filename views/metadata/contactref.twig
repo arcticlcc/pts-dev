@@ -1,11 +1,11 @@
 {% macro ref(contacts, values, comma) %}
 	{% autoescape 'json' %}
 	  {% for contact in contacts %}
-	    {% if contact.roletypeid in values %}
+	    {% if not values or contact.roletypeid in values %}
 	      {% if (comma == true and loop.first) or not loop.first %},{% endif %}
 	      {
 	        "contactId": "{{ contact.contactid }}",
-	        "role": "{{ contact.adiwg }}"
+	        "role": "{{ contact.role }}"
 	      }
 	    {% endif %}
 	  {% endfor %}

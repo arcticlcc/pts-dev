@@ -12,13 +12,12 @@ namespace PTS\Service;
 class ADIwg {
 
     private $app;
-    protected $project;
 
     public function __construct($app) {
         $this->app = $app;
     }
 
-    function getProject($id) {
+    function getProject($id, $withAssoc = false) {
         $contacts = array();
         $roles = array();
 
@@ -32,7 +31,6 @@ class ADIwg {
 
         if ($probject) {
             $project = $probject->as_array();
-            $this->project = $project;
         } else {
             throw new \Exception("Couldn't find a project with id = $id.");
         };
@@ -53,30 +51,131 @@ class ADIwg {
 
         //get other project contact roles for project
         foreach ($this->app['idiorm']->getTable('projectcontact')
-        ->select('projectcontact.*','roletype','adiwg')
+        ->select('projectcontact.*')
         ->select('roletype')
-        ->select('adiwg')
+        ->select('adiwg', 'role')
         ->join('roletype', array('projectcontact.roletypeid', '=', 'roletype.roletypeid'))
         -> where('projectid', $project['projectid'])
         ->find_many() as $object) {
             $roles[] = $object->as_array();
         }
 
+        //get products
+        $assoc = [];
+        if($withAssoc) {
+            foreach ($this->app['idiorm']->getTable('product')
+            ->select('productid')
+            -> where('projectid', $project['projectid'])
+            ->find_many() as $object) {
+                //$roles[] = $object->as_array();
+                $assoc[] = $this->getProduct($object->get('productid'));
+            }
+        }
+//var_dump($assoc);exit;
+
         return array(
-            'resourceType' => "project",
+            'resourceType' => 'project',
             'organization' => $org,
             'resource' => $project,
             'keywords' => array_filter(explode('|', $project['keywords'])),
             "topics" => array_filter(explode('|', $project['topiccategory'])),
             "usertypes" => array_filter(explode('|', $project['usertype'])),
-            "projectcats" => array_filter(explode('|', $project['projectcategory'])),
+            "cats" => array_filter(explode('|', $project['projectcategory'])),
             'contacts' => $contacts,
-            'roles' => $roles
+            'roles' => $roles,
+            'links' => FALSE,
+            'associated' => $assoc
         );
 
     }
+
+    function getProduct($id, $withAssoc = false) {
+        $contacts = array();
+        $roles = array();
+
+        $pquery = $this->app['idiorm']->getTable('metadataproduct')->select('metadataproduct.*');
+
+        $probject = $pquery->find_one($id);
+
+        if ($probject) {
+            $product = $probject->as_array();
+        } else {
+            throw new \Exception("Couldn't find a product with id = $id.");
+        };
+
+        //get LCC contact
+        $org = $this->app['idiorm']->getTable('metadatacontact')->where('contactId', $product['orgid'])->find_one()->as_array();
+
+        $contacts[] = $org;
+
+        //get other contacts for product
+        foreach ($this->app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
+        ->join('productcontact', array('metadatacontact.contactId', '=', 'productcontact.contactid'))
+        ->where('productid', $product['productid'])
+        ->where_not_equal('contactId', $org['contactId'])
+        ->find_many() as $object) {
+            $contacts[] = $object->as_array();
+        }
+
+        //get other product contact roles for product
+        foreach ($this->app['idiorm']->getTable('productcontact')
+        ->select('productcontact.*')
+        ->select('codename', 'role')
+        ->select_expr('isoroletype.isoroletypeid', 'roletypeid')
+        ->join('isoroletype', array('productcontact.isoroletypeid', '=', 'isoroletype.isoroletypeid'))
+        ->where('productid', $product['productid'])
+        ->find_many() as $object) {
+            $roles[] = $object->as_array();
+        }
+
+        //get product dates
+        foreach ($this->app['idiorm']->getTable('productstatus')
+        ->select_expr("MAX(effectivedate)", 'date')
+        ->select('codename', 'dateType')
+        ->join('datetype', array('datetype.datetypeid', '=', 'productstatus.datetypeid'))
+        ->where('productid', $product['productid'])
+        ->group_by('codename')
+        ->find_many() as $object) {
+            $dates[] = $object->as_array();
+        }
+
+        //get product links
+        foreach ($this->app['idiorm']->getTable('onlineresource')
+        ->select('onlineresource.*')
+        ->select('codename', 'function')
+        ->join('onlinefunction', array('onlinefunction.onlinefunctionid', '=', 'onlineresource.onlinefunctionid'))
+        ->where('productid', $product['productid'])
+        ->find_many() as $object) {
+            $links[] = $object->as_array();
+        }
+
+        //get project
+        $assoc = $withAssoc ? [$this->getProject($product['projectid'])] : [];
+//var_dump($assoc);exit;
+
+        return array(
+            'resourceType' => $product['resourcetype'],
+            'organization' => $org,
+            'resource' => $product,
+            'keywords' => array_filter(explode('|', $product['keywords'])),
+            "topics" => array_filter(explode('|', $product['topiccategory'])),
+            "usertypes" => FALSE, //array_filter(explode('|', $product['usertype'])),
+            "cats" => FALSE, //array_filter(explode('|', $product['productcategory'])),
+            'contacts' => $contacts,
+            'roles' => $roles,
+            'dates' => $dates,
+            'links' => $links,
+            'associated' => $assoc
+        );
+
+    }
+
     function renderProject($project) {
-        return $this->app['twig']->render('metadata/project.json.twig', $project);
+        return $this->app['twig']->render('metadata/mdjson.json.twig', $project);
+    }
+
+    function renderProduct($product) {
+        return $this->app['twig']->render('metadata/mdjson.json.twig', $product);
     }
 
     function saveProject($id) {
@@ -85,11 +184,12 @@ class ADIwg {
 
         $project = $conn->fetchAssoc($sql, array((int) $id));
 
-        $json = $this->getProject($id);
+        $probject = $this->getProject($id);
+        $json = $this->renderProject($probject);
         $xml = $this->translate($json);
         $data = array(
-                'uuid' => $this->project['projectIdentifier'],
-                'projectcode' => $this->project['projectcode'],
+                'uuid' => $probject['resource']['projectIdentifier'],
+                'projectcode' => $probject['resource']['projectcode'],
                 'json' => $json,
                 'xml' => $xml
             );
