@@ -34,7 +34,7 @@ Ext.define('PTS.store.DeliverableTypes', {
                         data : pdata
                     });
                 }else {
-                    pstore.loadRecords(pdata.items,{addRecords: false});
+                    pstore.loadRecords(pdata,{addRecords: false});
                 }
 
                 store.each(function(rec) {
