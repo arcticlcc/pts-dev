@@ -89,6 +89,7 @@ class ADIwg {
             "topics" => array_filter(explode('|', $project['topiccategory'])),
             "usertypes" => array_filter(explode('|', $project['usertype'])),
             "cats" => array_filter(explode('|', $project['projectcategory'])),
+            "projectkeywords" => FALSE,
             'contacts' => $contacts,
             'roles' => $roles,
             'links' => FALSE,
@@ -179,14 +180,15 @@ class ADIwg {
             $product['featuresInherited'] = true;
         }
 
-        return array(
+        $return = array(
             'resourceType' => $product['resourcetype'],
             'organization' => $org,
             'resource' => $product,
             'keywords' => array_filter(explode('|', $product['keywords'])),
-            "topics" => array_filter(explode('|', $product['topiccategory'])),
-            "usertypes" => FALSE, //array_filter(explode('|', $product['usertype'])),
-            "cats" => FALSE, //array_filter(explode('|', $product['productcategory'])),
+            'projectkeywords' => FALSE,
+            'topics' => array_filter(explode('|', $product['topiccategory'])),
+            'usertypes' => FALSE, //array_filter(explode('|', $product['usertype'])),
+            'cats' => FALSE, //array_filter(explode('|', $product['productcategory'])),
             'contacts' => $contacts,
             'roles' => $roles,
             'dates' => $dates,
@@ -194,6 +196,12 @@ class ADIwg {
             'associated' => $assoc
         );
 
+        //add product keywords if present
+        if(!empty($assoc)) {
+            $return['projectkeywords'] = $assoc[0]['keywords'];
+        }
+
+        return $return;
     }
 
     function renderProject($project) {
@@ -282,7 +290,7 @@ class ADIwg {
         fwrite($temp, $json);
         fseek($temp, 0);
         $meta = stream_get_meta_data($temp);
-        exec("mdtranslator translate -o -w $format " . $meta['uri'], $out, $code);
+        exec("mdtranslator translate -o -r mdJson -w $format " . $meta['uri'], $out, $code);
         fclose($temp);
 
         $xml = empty($out) ? FALSE : json_decode($out[0]);
