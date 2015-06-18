@@ -19,7 +19,7 @@
 	  {% endif %}    
     ],
     "associatedResource": [
-	  {% for assoc in associated %}
+	  {% for assoc in associated if assoc.resource.exportmetadata %}
 	    {% if not loop.first %},{% endif %}
 	    {% include "metadata/associated.json.twig" %}
 	  {% endfor %}        

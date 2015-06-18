@@ -10,7 +10,8 @@ Ext.define('PTS.view.product.window.Window', {
         'PTS.view.product.window.ProductLinks',
         'PTS.view.product.window.ProductStatus',
         'PTS.view.product.window.ProductContacts',
-        //'PTS.view.product.window.ProductMetadata',
+        'PTS.view.product.window.ProductMetadata',
+        'PTS.view.product.form.ProductMetadataForm',
         //'PTS.view.controls.CommentEditGrid',
         'PTS.view.product.window.ProductKeywords',
         'PTS.view.project.ProjectMap',
@@ -148,10 +149,13 @@ Ext.define('PTS.view.product.window.Window', {
                                     ]
                                 }
                             ]
-                        }/*,
+                        },
                         {
-                            xtype: 'productmetadata'
-                        }*/
+                            xtype: 'productmetadata',
+                            formItems: [{
+                                xtype: 'productmetadataform'
+                            }]
+                        }
                     ]
                 }
             ],

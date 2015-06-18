@@ -28,34 +28,14 @@ class Product implements ControllerProviderInterface
             try{
                 $app['db']->transactional(function($conn) use ($app, $request, $id) {
                     $values = json_decode($request->getContent());
-                    $projcat = $app['idiorm']->getTable('productproductcategory');
-                    $usertype = $app['idiorm']->getTable('productusertype');
                     $topic = $app['idiorm']->getTable('producttopiccategory');
 
                     if($request->getMethod() === 'PUT') {
                         //delete any existing records
-                        $projcat->where_equal('productid', $id)->delete_many();
-                        $usertype->where_equal('productid', $id)->delete_many();
                         $topic->where_equal('productid', $id)->delete_many();
                     }
 
                     //create new records based on submitted data
-                    foreach ($values->productcategory as $key => $value) {
-                        $projcat->create();
-                        $projcat->set('productid', $id);
-                        $projcat->set('productcategoryid', $value);
-                        $projcat->set('priority', $key);
-                        $projcat->save();
-                    }
-
-                    foreach ($values->usertype as $key => $value) {
-                        $usertype->create();
-                        $usertype->set('productid', $id);
-                        $usertype->set('usertypeid', $value);
-                        $usertype->set('priority', $key);
-                        $usertype->save();
-                    }
-
                     foreach ($values->topiccategory as $value) {
                         $topic->create();
                         $topic->set('productid', $id);

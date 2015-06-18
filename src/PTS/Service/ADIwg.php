@@ -70,7 +70,17 @@ class ADIwg {
                 //$roles[] = $object->as_array();
                 $assoc[] = $this->getProduct($object->get('productid'));
             }
+
+            //merge contacts
+            foreach ($assoc as $arr) {
+                foreach ($arr['contacts'] as $arr1) {
+                    if(array_search ($arr1, $contacts) === FALSE){
+                        $contacts[] = $arr1;
+                   };
+                };
+            };
         }
+
 //var_dump($assoc);exit;
 
         return array(
@@ -150,8 +160,19 @@ class ADIwg {
         }
 
         //get project
-        $assoc = $withAssoc ? [$this->getProject($product['projectid'])] : [];
-//var_dump($assoc);exit;
+        if($withAssoc) {
+            $assoc = [$this->getProject($product['projectid'])];
+            //merge contacts
+            foreach ($assoc as $arr) {
+                foreach ($arr['contacts'] as $arr1) {
+                    if(array_search ($arr1, $contacts) === FALSE){
+                	    $contacts[] = $arr1;
+            	   };
+                };
+            };
+        }else {
+            $assoc = [];
+        }
 
         return array(
             'resourceType' => $product['resourcetype'],
@@ -188,7 +209,7 @@ class ADIwg {
         $json = $this->renderProject($probject);
         $xml = $this->translate($json);
         $data = array(
-                'uuid' => $probject['resource']['projectIdentifier'],
+                'uuid' => $probject['resource']['resourceIdentifier'],
                 'projectcode' => $probject['resource']['projectcode'],
                 'json' => $json,
                 'xml' => $xml
@@ -200,11 +221,54 @@ class ADIwg {
             $data['projectid'] = $id;
             $conn->insert('project', $data);
         }
+
+        $conn->close();
+
+        //update the metadata info
+        $object = $this->app['idiorm']->getTable('project')->find_one($id);
+        $object->set('metadataupdate', (new \DateTime())->format(\DateTime::ISO8601));
+        $object->save();
     }
 
     function deleteProject($id) {
         $conn = $this->app['dbs'][$this->app['session']->get('schema')];
         $conn->delete('project', array('projectid' => $id));
+    }
+
+    function saveProduct($id) {
+        $conn = $this->app['dbs'][$this->app['session']->get('schema')];
+        $sql = "SELECT * FROM product WHERE productid = ?";
+
+        $product = $conn->fetchAssoc($sql, array((int) $id));
+
+        $probject = $this->getProduct($id);
+        $json = $this->renderProduct($probject);
+        $xml = $this->translate($json);
+        $data = array(
+                'uuid' => $probject['resource']['resourceIdentifier'],
+                'projectcode' => $probject['resource']['projectcode'],
+                'json' => $json,
+                'xml' => $xml
+            );
+
+        if($product) {
+            $conn->update('product', $data, array('productid' => $id));
+        } else {
+            $data['productid'] = $id;
+            $conn->insert('product', $data);
+        }
+
+        $conn->close();
+
+        //update the metadata info
+        $object = $this->app['idiorm']->getTable('product')->find_one($id);
+        $object->set('metadataupdate', (new \DateTime())->format(\DateTime::ISO8601));
+        $object->save();
+    }
+
+    function deleteProduct($id) {
+        $conn = $this->app['dbs'][$this->app['session']->get('schema')];
+        $conn->delete('product', array('productid' => $id));
     }
 
     function translate($json, $format='iso19115_2') {

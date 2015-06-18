@@ -7,6 +7,10 @@
   "resourceCitation": {{ citation.citation(assoc) }},
   "metadataCitation": {
     "title": "Metadata for {{ assoc.resourceType }}: {{ assoc.resource.title }}",
+    "date": [{
+      "date": "{{ assoc.resource.metadataupdate|date('c') }}",
+      "dateType": "lastUpdate"
+    }],
     "responsibleParty": [
       {
         "contactId": "{{ assoc.organization.contactId }}",

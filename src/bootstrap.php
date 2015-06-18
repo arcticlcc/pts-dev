@@ -94,6 +94,7 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
     'productlist' => 'productid',
     'productkeywordlist' => 'productkeywordid',
     //fix these to use compound keys after Idiorm upgrade
+    'producttopiccategory' => 'productid',
     'projectprojectcategory' => 'projectid',
     'projectusertype' => 'projectid',
     'projecttopiccategory' => 'projectid',
