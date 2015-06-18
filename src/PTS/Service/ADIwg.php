@@ -81,8 +81,6 @@ class ADIwg {
             };
         }
 
-//var_dump($assoc);exit;
-
         return array(
             'resourceType' => 'project',
             'organization' => $org,
@@ -172,6 +170,13 @@ class ADIwg {
             };
         }else {
             $assoc = [];
+        }
+
+        //if no project features, use product features if present
+        if($product['features'] === NULL && !empty($assoc)) {
+            $product['features'] = $assoc[0]['resource']['features'];
+            $product['bbox'] = $assoc[0]['resource']['bbox'];
+            $product['featuresInherited'] = true;
         }
 
         return array(
