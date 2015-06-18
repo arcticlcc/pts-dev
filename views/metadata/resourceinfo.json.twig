@@ -3,11 +3,13 @@
 {% autoescape 'json' %}
     {
       "resourceType": "{{ resourceType }}",
+      {% if resource.startdate or resource.enddate %}
       "resourceTimePeriod": {
         "description": "{{ resourceType == 'project' ? 'Span of project activity' : 'Time span for which resource(' ~ resourceType ~ ') is relevant' }}",
-        "beginPosition": "{{resource.startdate}}",
-        "endPosition": "{{resource.enddate}}"
+        {% if resource.startdate %}"beginPosition": "{{resource.startdate}}"{% endif %}{% if resource.startdate and resource.enddate %},{% endif %}
+        {% if resource.enddate %}"endPosition": "{{resource.enddate}}"{% endif %}
       },
+      {% endif %}
       "citation": {{ citation.citation(_context) }},
       "pointOfContact": [
         {
@@ -26,6 +28,7 @@
       "hasMapLocation": {{ resource.features is empty ? 'false' : 'true'}},
       "hasDataAvailable": true,
       "language": ["eng; USA"],
+      "characterSet": ["utf8"],
       {#"purpose": "",
       "credit": [""],#}
       "topicCategory": [{{ macros.arraytostring(topics) }}],
@@ -36,7 +39,7 @@
           "version": ""
         }
       ],#}
-      {% if keywords or usertypes or cats %}
+      {% if keywords or projectkeywords or usertypes or cats %}
       "keyword": [
         {% if keywords %}
           {
@@ -44,6 +47,32 @@
               {{ macros.arraytostring(keywords) }}
             ],
             "keywordType": "theme",
+            "thesaurus":{
+              "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+              "date":[
+                {
+                  "date":"2013-04-01",
+                  "dateType":"revision"
+                }
+              ],
+              "edition":"Version 8.0.0",
+              "presentationForm":[
+                "documentDigital"
+              ],
+              "onlineResource":[
+                {
+                  "uri":"http://gcmd.nasa.gov/learn/keywords.html"
+                }
+              ]
+            }
+          }{% if projectkeywords or usertypes or cats %},{% endif %}
+        {% endif %}
+        {% if projectkeywords %}
+          {
+            "keyword": [
+              {{ macros.arraytostring(projectkeywords) }}
+            ],
+            "keywordType": "project",
             "thesaurus":{
               "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
               "date":[
