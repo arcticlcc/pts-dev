@@ -15,6 +15,12 @@ Ext.define('PTS.view.contact.ContactLists', {
     plain: true,
     flex: 1,
 
+    /**
+     * @cfg {string} addBtnText
+     * The text to apply to the addContacts button.
+     */
+    addBtnText: 'Add to Project',
+
     initComponent: function() {
         var me = this;
 
@@ -40,7 +46,7 @@ Ext.define('PTS.view.contact.ContactLists', {
                             xtype: 'button',
                             //itemId: 'addtoproject',
                             iconCls: 'pts-menu-addbasic',
-                            text: 'Add to Project',
+                            text: me.addBtnText,
                             action: 'addcontacts'
                         }
                     ]

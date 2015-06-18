@@ -44,6 +44,7 @@ Ext.define('PTS.view.product.window.ProductContacts', {
             items: [
                 {
                     xtype: 'contactlists',
+                    addBtnText: 'Add to Product',
                     flex: 1
                 },
                 {
