@@ -150,13 +150,15 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
 
         btn.setActiveItem(items.get(idx), true);
 
-        form.setLoading(true, true);
+        if(id) {
+            form.setLoading(true, true);
 
-        model.load(id, {// load with id from project record
-            success: function(model) {
-                form.loadRecord(model);
-            }
-        });
+            model.load(id, {// load with id from project record
+                success: function(model) {
+                    form.loadRecord(model);
+                }
+            });
+        }
 
     },
 
