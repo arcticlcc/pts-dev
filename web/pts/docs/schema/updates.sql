@@ -1,4 +1,4 @@
--- Version 0.16.0
+﻿-- Version 0.16.0
 
 
 SET search_path = common, pg_catalog;
@@ -63,6 +63,15 @@ ALTER TABLE groupschema
 	ADD COLUMN producturiformat character varying;
 
 COMMENT ON COLUMN groupschema.producturiformat IS 'A string to be used with the format function to generate the product web URL.';
+
+GRANT SELECT, UPDATE ON SEQUENCE onlineresource_onlineresourceid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE product_productid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE productcontact_productcontactid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE productkeyword_productkeywordid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE productline_productlineid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE productpoint_productpointid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE productpolygon_productpolygonid_seq TO GROUP pts_write;
+GRANT SELECT, UPDATE ON SEQUENCE productstatus_productstatusid_seq TO GROUP pts_write;
 
 SET search_path = cvl, pg_catalog;
 
@@ -2046,12 +2055,5 @@ GRANT SELECT ON TABLE cvl.isoroletype TO GROUP pts_read;
 GRANT SELECT ON TABLE cvl.onlinefunction TO GROUP pts_read;
 GRANT SELECT ON TABLE cvl.productprogresstype TO GROUP pts_read;
 
-GRANT SELECT, UPDATE ON SEQUENCE onlineresource_onlineresourceid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE product_productid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE productcontact_productcontactid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE productkeyword_productkeywordid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE productline_productlineid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE productpoint_productpointid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE productpolygon_productpolygonid_seq TO GROUP pts_write;
-GRANT SELECT, UPDATE ON SEQUENCE productstatus_productstatusid_seq TO GROUP pts_write;
+
 
