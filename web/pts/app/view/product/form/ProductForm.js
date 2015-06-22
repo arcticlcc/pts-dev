@@ -90,7 +90,7 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             name: 'projectid',
                             forceSelection: true,
                             allowBlank: false,
-                            queryMode: 'local',
+                            //queryMode: 'local',
                             fieldLabel: 'Project',
                             displayField: 'projectcode',
                             listConfig: {

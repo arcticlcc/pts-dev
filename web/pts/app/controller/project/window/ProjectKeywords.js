@@ -64,7 +64,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
         // We listen for the application-wide events
         this.application.on({
             openproject: this.onOpenProject,
-            //saveproject: this.onSaveProject,
+            saveproject: this.onSaveProject,
             scope: this
         });
     },
@@ -75,22 +75,25 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
      * @param {PTS.store.ProjectKeywords}
      */
     setProxy: function(id,store) {
+        var read = '../project/' + id + '/projectkeywordlist';
 
-        //override store proxy based on projectid
-        store.setProxy({
-            type: 'rest',
-            url : '../projectkeyword',
-            appendId: true,
-            //batchActions: true,
-            api: {
-                read:'../project/' + id + '/projectkeywordlist'
-            },
-            reader: {
-                type: 'json',
-                root: 'data'
-            },
-            limitParam: undefined
-        });
+        if(store.getProxy().api.read !== read) {
+            //override store proxy based on projectid
+            store.setProxy({
+                type: 'rest',
+                url : '../projectkeyword',
+                appendId: true,
+                //batchActions: true,
+                api: {
+                    read: read
+                },
+                reader: {
+                    type: 'json',
+                    root: 'data'
+                },
+                limitParam: undefined
+            });
+        }
     },
 
     /**
@@ -102,6 +105,19 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
         if(id) {
             this.setProxy(id, store);
             //load the projectcontacts store
+            store.load();
+        }
+    },
+
+    /**
+     * Save project event.
+     */
+    onSaveProject: function(record) {
+        var store = this.getProjectKeywordsStore();
+
+        if(id) {
+            this.setProxy(record.getId(), store);
+            //load the projectkeywords store
             store.load();
         }
     },

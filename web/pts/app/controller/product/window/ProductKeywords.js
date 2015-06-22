@@ -64,7 +64,7 @@ Ext.define('PTS.controller.product.window.ProductKeywords', {
         // We listen for the application-wide events
         this.application.on({
             openproduct: this.onOpenProduct,
-            //saveproduct: this.onSaveProduct,
+            saveproduct: this.onSaveProduct,
             scope: this
         });
     },
@@ -101,6 +101,19 @@ Ext.define('PTS.controller.product.window.ProductKeywords', {
 
         if(id) {
             this.setProxy(id, store);
+            //load the productcontacts store
+            store.load();
+        }
+    },
+
+    /**
+     * Save product event.
+     */
+    onSaveProduct: function(record) {
+        var store = this.getProductKeywordsStore();
+
+        if(id) {
+            this.setProxy(record.getId(), store);
             //load the productcontacts store
             store.load();
         }

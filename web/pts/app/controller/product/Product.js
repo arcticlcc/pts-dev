@@ -34,6 +34,59 @@ Ext.define('PTS.controller.product.Product', {
     },
 
     /**
+     * Updates child proxies.
+     * @param {String|Number} The id to use.
+     */
+    setProxies: function(id) {
+        var win = this.getProductWindow();
+
+        //load the product links
+        cstore = win.down('productlinks>gridpanel').getStore();
+        cstore.setProxy({
+            type: 'rest',
+            url : '../onlineresource',
+            appendId: true,
+            api: {
+                read:'../product/' + id + '/onlineresource'
+            },
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        });
+        cstore.load();
+        //load the product statuses
+        cstore = win.down('#producttabpanel>productstatus').getStore();
+        cstore.setProxy({
+            type: 'rest',
+            url : '../productstatus',
+            appendId: true,
+            api: {
+                read:'../product/' + id + '/productstatus'
+            },
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        });
+        cstore.load();
+        //load the product comments
+        /*cstore = win.down('#producttabpanel>commenteditgrid').getStore();
+        cstore.setProxy({
+            type: 'rest',
+            url : '../productcomment',
+            appendId: true,
+            api: {
+                read:'../product/' + id + '/productcomment'
+            },
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        });
+        cstore.load();*/
+    },
+    /**
      * Creates and opens the product window.
      * @param {Object} [record] An optional product record.
      */
@@ -49,51 +102,8 @@ Ext.define('PTS.controller.product.Product', {
                 productId: id
             });
 
-            //load the product links
-            cstore = win.down('productlinks>gridpanel').getStore();
-            cstore.setProxy({
-                type: 'rest',
-                url : '../onlineresource',
-                appendId: true,
-                api: {
-                    read:'../product/' + id + '/onlineresource'
-                },
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            });
-            cstore.load();
-            //load the product statuses
-            cstore = win.down('#producttabpanel>productstatus').getStore();
-            cstore.setProxy({
-                type: 'rest',
-                url : '../productstatus',
-                appendId: true,
-                api: {
-                    read:'../product/' + id + '/productstatus'
-                },
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            });
-            cstore.load();
-            //load the product comments
-            /*cstore = win.down('#producttabpanel>commenteditgrid').getStore();
-            cstore.setProxy({
-                type: 'rest',
-                url : '../productcomment',
-                appendId: true,
-                api: {
-                    read:'../product/' + id + '/productcomment'
-                },
-                reader: {
-                    type: 'json',
-                    root: 'data'
-                }
-            });
-            cstore.load();*/
+            this.setProxies(id);
+
         } else{
             win = Ext.create(this.getProductWindowWindowView(),{
                 title: 'New Product'
@@ -123,5 +133,7 @@ Ext.define('PTS.controller.product.Product', {
                 this.enable();
             }
         });
+
+        this.setProxies(record.getId());
     }
 });

@@ -93,5 +93,22 @@ Ext.define('PTS.controller.project.Project', {
                 this.enable();
             }
         });
+
+        //TODO: put this in a separate controller
+        //set the project comments proxy
+        var cstore = win.down('#projecttabpanel>commenteditgrid').getStore();
+        cstore.setProxy({
+            type: 'rest',
+            url : '../projectcomment',
+            appendId: true,
+            api: {
+                read:'../project/' + record.getId() + '/projectcomment'
+            },
+            reader: {
+                type: 'json',
+                root: 'data'
+            }
+        });
+        cstore.load();
     }
 });
