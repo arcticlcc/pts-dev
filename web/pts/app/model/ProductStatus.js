@@ -3,7 +3,7 @@
  */
 
 Ext.define('PTS.model.ProductStatus', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'productstatusid',

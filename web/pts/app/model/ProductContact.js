@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.model.ProductContact', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'productcontactid',

@@ -2,7 +2,7 @@
  * OnlineResource model.
  */
 Ext.define('PTS.model.OnlineResource', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'onlineresourceid',

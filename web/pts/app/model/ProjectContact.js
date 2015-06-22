@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.model.ProjectContact', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'projectcontactid',

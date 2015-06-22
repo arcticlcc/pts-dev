@@ -3,7 +3,7 @@
  */
 
 Ext.define('PTS.model.ProjectMetadata', {
-    extend : 'Ext.data.Model',
+    extend : 'PTS.model.Base',
     fields : [{
         name : 'projectid',
         type : 'int',

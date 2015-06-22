@@ -2,7 +2,7 @@
  * Model for common Project vector features(point/line/polygon).
  */
 Ext.define('PTS.model.CommonVector', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {name: 'id', type: 'int', useNull: true},
         {name: 'text', type: 'mystring', useNull: true},

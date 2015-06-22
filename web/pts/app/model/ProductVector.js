@@ -2,7 +2,7 @@
  * Model for a Product vector feature(point/line/polygon).
  */
 Ext.define('PTS.model.ProductVector', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'fid',

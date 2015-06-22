@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.model.RoleType', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'roletypeid',

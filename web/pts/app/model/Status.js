@@ -2,7 +2,7 @@
  * Status model.
  */
 Ext.define('PTS.model.Status', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'statusid',

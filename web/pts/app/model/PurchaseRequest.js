@@ -2,7 +2,7 @@
  * Purchase Request model.
  */
 Ext.define('PTS.model.PurchaseRequest', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'purchaserequestid',

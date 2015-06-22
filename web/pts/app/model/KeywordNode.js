@@ -3,7 +3,7 @@
  */
 
 Ext.define('PTS.model.KeywordNode', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'keywordid',

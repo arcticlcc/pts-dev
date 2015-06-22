@@ -2,7 +2,7 @@
  * Notice model.
  */
 Ext.define('PTS.model.Notice', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'noticeid',

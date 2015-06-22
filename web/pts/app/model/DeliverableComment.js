@@ -2,7 +2,7 @@
  * Deliverable Comment model.
  */
 Ext.define('PTS.model.DeliverableComment', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'deliverablecommentid',

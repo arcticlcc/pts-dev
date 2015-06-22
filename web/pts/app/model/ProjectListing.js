@@ -3,7 +3,7 @@
  */
 
 Ext.define('PTS.model.ProjectListing', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     requires: [
         'PTS.util.Format'
     ],

@@ -3,7 +3,7 @@
  */
 
 Ext.define('PTS.model.ModDocType', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [{
         name: 'moddoctypeid',
         type: 'int',

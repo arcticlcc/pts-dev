@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.model.User', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'loginid',

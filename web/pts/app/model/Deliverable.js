@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.model.Deliverable', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'deliverableid',

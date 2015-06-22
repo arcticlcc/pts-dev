@@ -2,7 +2,7 @@
  * Model for a Project vector feature(point/line/polygon).
  */
 Ext.define('PTS.model.ProjectVector', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'fid',

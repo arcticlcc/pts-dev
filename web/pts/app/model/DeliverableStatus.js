@@ -2,7 +2,7 @@
  * DeliverableStatus model.
  */
 Ext.define('PTS.model.DeliverableStatus', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'deliverablestatusid',

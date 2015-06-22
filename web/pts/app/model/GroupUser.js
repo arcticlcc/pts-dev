@@ -5,7 +5,7 @@
  */
 
 Ext.define('PTS.model.GroupUser', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'contactid',

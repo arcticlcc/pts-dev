@@ -2,7 +2,7 @@
  * Modification document status type model.
  */
 Ext.define('PTS.model.ModDocStatusType', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'moddocstatustypeid',

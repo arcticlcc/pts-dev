@@ -2,7 +2,7 @@
  * Position model.
  */
 Ext.define('PTS.model.Position', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'positionid',

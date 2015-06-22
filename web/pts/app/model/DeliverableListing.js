@@ -3,7 +3,7 @@
  */
 
 Ext.define('PTS.model.DeliverableListing', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'deliverableid',

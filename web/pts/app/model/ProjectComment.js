@@ -2,7 +2,7 @@
  * Project Comment model.
  */
 Ext.define('PTS.model.ProjectComment', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'projectcommentid',

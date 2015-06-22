@@ -2,7 +2,7 @@
  * Modification Comment model.
  */
 Ext.define('PTS.model.ModificationComment', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'modcommentid',

@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.model.AgreementsTree', {
-    extend: 'Ext.data.Model',
+    extend: 'PTS.model.Base',
     fields: [
         {
             name: 'dataid',
