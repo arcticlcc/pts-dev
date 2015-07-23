@@ -29,10 +29,16 @@ class Product implements ControllerProviderInterface
                 $app['db']->transactional(function($conn) use ($app, $request, $id) {
                     $values = json_decode($request->getContent());
                     $topic = $app['idiorm']->getTable('producttopiccategory');
+                    $sf = $app['idiorm']->getTable('productspatialformat');
+                    $epsg = $app['idiorm']->getTable('productepsg');
+                    $wkt = $app['idiorm']->getTable('productwkt');
 
                     if($request->getMethod() === 'PUT') {
                         //delete any existing records
                         $topic->where_equal('productid', $id)->delete_many();
+                        $sf->where_equal('productid', $id)->delete_many();
+                        $epsg->where_equal('productid', $id)->delete_many();
+                        $wkt->where_equal('productid', $id)->delete_many();
                     }
 
                     //create new records based on submitted data
@@ -41,6 +47,30 @@ class Product implements ControllerProviderInterface
                         $topic->set('productid', $id);
                         $topic->set('topiccategoryid',$value);
                         $topic->save();
+                    }
+
+                    //create new records based on submitted data
+                    foreach ($values->spatialformat as $value) {
+                        $sf->create();
+                        $sf->set('productid', $id);
+                        $sf->set('spatialformatid',$value);
+                        $sf->save();
+                    }
+
+                    //create new records based on submitted data
+                    foreach ($values->epsgcode as $value) {
+                        $epsg->create();
+                        $epsg->set('productid', $id);
+                        $epsg->set('srid',$value);
+                        $epsg->save();
+                    }
+
+                    //create new records based on submitted data
+                    foreach (explode('|', $values->wkt) as $value) {
+                        $wkt->create();
+                        $wkt->set('productid', $id);
+                        $wkt->set('wkt',trim($value));
+                        $wkt->save();
                     }
 
                 });

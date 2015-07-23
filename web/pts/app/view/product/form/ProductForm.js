@@ -14,6 +14,7 @@ Ext.define('PTS.view.product.form.ProductForm', {
     autoScroll: true,
     bodyPadding: 5,
     title: 'Product',
+    submitEmptyText: false,
 
     initComponent: function() {
         var me = this;

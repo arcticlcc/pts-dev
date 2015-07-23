@@ -10,6 +10,7 @@ Ext.define('PTS.view.product.form.ProductMetadataForm', {
     autoScroll: true,
     bodyPadding: 5,
     border: 0,
+    submitEmptyText: false,
     //title: 'Product Metadata',
 
     initComponent: function() {
@@ -59,7 +60,7 @@ Ext.define('PTS.view.product.form.ProductMetadataForm', {
                 allowBlank: true,
                 queryMode: 'local',
                 anchor: '50%',
-                emptyText: 'Pick one or more spatial formats',
+                emptyText: 'Pick one or more spatial formats, if applicable',
                 style: {
                     marginBottom: '25px'
                 }
@@ -76,7 +77,7 @@ Ext.define('PTS.view.product.form.ProductMetadataForm', {
                     anchor: '100%',
                     store: 'EpsgCodes',
                     displayField: 'srid_text',
-                    valueField: 'srid',
+                    valueField: 'srid_text',
                     allowBlank: true,
                     triggerOnClick: false,
                     hideTrigger: true,
@@ -86,7 +87,7 @@ Ext.define('PTS.view.product.form.ProductMetadataForm', {
                         }
                     },
                     //labelWidth : 130,
-                    emptyText: 'Pick one or more EPSG codes',
+                    emptyText: 'Pick one or more EPSG codes, if applicable',
                     queryMode: 'remote',
                     queryParam: 'filter',
                     style: {
@@ -95,6 +96,7 @@ Ext.define('PTS.view.product.form.ProductMetadataForm', {
                 }, {
                     xtype: 'textareafield',
                     fieldLabel: 'WKT Format(pipe-delimited)',
+                    emptyText: 'Enter valid WKT projection strings separated by a pipe(|) , if applicable',
                     name: 'wkt',
                     allowBlank: true,
                     grow: true,

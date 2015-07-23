@@ -280,10 +280,11 @@
         ]
       },#}
       "spatialReferenceSystem": {
-        "epsgNumber": [4326]
+        "epsgNumber": [{{ macros.arraytoints(epsgcodes) }}],
+        "wkt": [{{ macros.arraytostring(wkt) }}]
       },
-      {#"spatialRepresentation": [""],
-      "spatialResolution": [
+      "spatialRepresentation": [{{ macros.arraytostring(spatialformats) }}],
+      {#"spatialResolution": [
         {
           "equivalentScale": 0
         }, {

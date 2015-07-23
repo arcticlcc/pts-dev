@@ -5,3 +5,11 @@
 		{% endfor %}
 	{% endautoescape %}	
 {% endmacro %}
+
+{% macro arraytoints(arr) %}
+	{% autoescape 'json' %}
+		{% for item in arr %}
+		    {{ item }}{% if loop.last == false %},{% endif %}
+		{% endfor %}
+	{% endautoescape %}	
+{% endmacro %}

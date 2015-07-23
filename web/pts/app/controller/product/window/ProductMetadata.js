@@ -126,6 +126,7 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
             model.load(id, {// load with id from product record
                 success: function(model) {
                     form.loadRecord(model);
+                    form.setLoading(false);
                 }
             });
         }
