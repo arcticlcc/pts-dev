@@ -1,7 +1,7 @@
 {% import "metadata/citation.twig" as citation %}
 {% autoescape 'json' %}
 {
-  "associationType": "{{ assoc.resourceType == 'project' ? 'largerWorkCitation' : 'projectProduct' }}",
+  "associationType": "{{ assoc.assocType }}",
   "initiativeType": "project",
   "resourceType": "{{ assoc.resourceType }}",
   "resourceCitation": {{ citation.citation(assoc) }},
