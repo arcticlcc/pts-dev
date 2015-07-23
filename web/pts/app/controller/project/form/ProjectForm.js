@@ -3,6 +3,9 @@
  */
 Ext.define('PTS.controller.project.form.ProjectForm', {
     extend: 'Ext.app.Controller',
+    mixins: {
+        fixQuery: 'PTS.util.mixin.FixRemoteQuery'
+    },
 
     views: [
         'project.form.ProjectForm'
@@ -34,6 +37,9 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
             },
             'projectform button[action=deleteproject]': {
                 click: this.confirmDelete
+            },
+            'projectform combobox[queryMode=remote]': {
+                beforequery: this.fixRemoteQuery
             }
         });
 

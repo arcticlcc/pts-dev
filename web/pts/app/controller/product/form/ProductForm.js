@@ -3,6 +3,9 @@
  */
 Ext.define('PTS.controller.product.form.ProductForm', {
     extend: 'Ext.app.Controller',
+    mixins: {
+        fixQuery: 'PTS.util.mixin.FixRemoteQuery'
+    },
 
     views: [
         'product.form.ProductForm'
@@ -35,6 +38,9 @@ Ext.define('PTS.controller.product.form.ProductForm', {
             },
             'productform button[action=deleteproduct]': {
                 click: this.confirmDelete
+            },
+            'productform combobox[queryMode=remote]': {
+                beforequery: this.fixRemoteQuery
             }
         });
 

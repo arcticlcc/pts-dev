@@ -158,7 +158,8 @@ Ext.define('PTS.view.project.form.ProjectForm', {
                             },
                             store: 'ProjectIDs',
                             valueField: 'projectid',
-                            anchor: '100%'
+                            anchor: '100%',
+                            queryParam: 'filter'
                         },
                         {
                             xtype: 'fieldcontainer',

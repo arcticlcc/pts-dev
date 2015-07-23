@@ -100,7 +100,8 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             },
                             store: 'ProjectIDs',
                             valueField: 'projectid',
-                            anchor: '100%'
+                            anchor: '100%',
+                            queryParam: 'filter'
                         },
                         {
                             xtype: 'combobox',

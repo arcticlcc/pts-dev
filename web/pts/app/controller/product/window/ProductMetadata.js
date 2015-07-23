@@ -4,6 +4,9 @@
 Ext.define('PTS.controller.product.window.ProductMetadata', {
     extend: 'Ext.app.Controller',
     requires: [],
+    mixins: {
+        fixQuery: 'PTS.util.mixin.FixRemoteQuery'
+    },
 
     views: ['product.window.ProductMetadata'],
     models: ['Product', 'ProductMetadata'],
@@ -58,6 +61,9 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
                 //broken in 4.0.7
                 //dirtychange: this.onDirtyChange,
                 validitychange: this.onValidityChange
+            },
+            'productmetadata productmetadataform combobox[queryMode=remote]': {
+                beforequery: this.fixRemoteQuery
             }
         });
 
