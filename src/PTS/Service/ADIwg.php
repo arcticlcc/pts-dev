@@ -67,8 +67,9 @@ class ADIwg {
             ->select('productid')
             -> where('projectid', $project['projectid'])
             ->find_many() as $object) {
-                //$roles[] = $object->as_array();
-                $assoc[] = $this->getProduct($object->get('productid'));
+                $prd = $this->getProduct($object->get('productid'));
+                $prd['assocType'] = 'projectProduct';
+                $assoc[] = $prd;
             }
 
             //merge contacts
@@ -158,17 +159,31 @@ class ADIwg {
             $links[] = $object->as_array();
         }
 
-        //get project
+        //get project and related products
         if($withAssoc) {
-            $assoc = [$this->getProject($product['projectid'])];
+            $prj = $this->getProject($product['projectid']);
+            $prj['assocType'] = 'largerWorkCitation';
+            $assoc = [$prj];
+
+            //get products
+            foreach ($this->app['idiorm']->getTable('product')
+            ->where('projectid', $product['projectid'])
+            ->where_not_equal('productid', $id)
+            ->find_many() as $object) {
+                $prd = $this->getProduct($object->productid);
+                $prd['assocType'] = 'projectProduct';
+                $assoc[] = $prd;
+            }
             //merge contacts
             foreach ($assoc as $arr) {
-                foreach ($arr['contacts'] as $arr1) {
-                    if(array_search ($arr1, $contacts) === FALSE){
-                	    $contacts[] = $arr1;
-            	   };
-                };
-            };
+                if(isset($arr['contacts'])) {
+                    foreach ($arr['contacts'] as $arr1) {
+                        if(array_search ($arr1, $contacts) === FALSE){
+                    	    $contacts[] = $arr1;
+                	   }
+                    }
+                }
+            }
         }else {
             $assoc = [];
         }
