@@ -10,7 +10,7 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
 
     views: ['product.window.ProductMetadata'],
     models: ['Product', 'ProductMetadata'],
-    stores: ['TopicCategories'],
+    stores: ['TopicCategories', 'EpsgCodes','SpatialFormats'],
     refs: [{
         ref: 'productMetadata',
         selector: 'productmetadata'
