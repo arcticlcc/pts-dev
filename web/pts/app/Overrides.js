@@ -6,6 +6,7 @@ Ext.define('PTS.Overrides', {
     requires: [
         'Ext.form.field.Radio',
         'Ext.data.AbstractStore',
+        'Ext.data.Store',
         'Ext.data.proxy.Proxy',
         'Ext.view.AbstractView',
         'Ext.form.field.ComboBox',
@@ -78,6 +79,8 @@ Ext.define('PTS.Overrides', {
     //Fixes bug when filtering store with pagingtoolbar enabled
     //TODO: Fixed in 4.1
     //http://www.sencha.com/forum/showthread.php?182179-Store-filter-and-paging-doesn-t-load-first-page
+    //Fixes bug causing store to autoload when attached to combobox
+    //https://www.sencha.com/forum/showthread.php?257321-Combo-with-store-triggers-store-load-without-autoLoad&p=946177&viewfull=1#post946177
     Ext.override(Ext.data.Store, {
         filter: function(filters, value) {
             if (Ext.isString(filters)) {
@@ -91,47 +94,58 @@ Ext.define('PTS.Overrides', {
                 decoded = me.decodeFilters(filters),
                 i = 0,
                 doLocalSort = me.sortOnFilter && !me.remoteSort,
-                length = decoded.length;
+                length = decoded.length,
+                allDisabled = true;
 
             for (; i < length; i++) {
                 me.filters.replace(decoded[i]);
             }
 
-            if (me.remoteFilter) {
-                //****Copied from 4.1****
-                // So that prefetchPage does not consider the store to be fully loaded if the local count is equal to the total count
-                delete me.totalCount;
-
-                // For a buffered Store, we have to clear the prefetch cache because the dataset will change upon filtering.
-                // Then we must prefetch the new page 1, and when that arrives, reload the visible part of the Store
-                // via the guaranteedrange event
-                if (me.buffered) {
-                    me.pageMap.clear();
-                    me.loadPage(1);
-                } else {
-                    // Reset to the first page, the filter is likely to produce a smaller data set
-                    me.currentPage = 1;
-                    //the load function will pick up the new filters and request the filtered data from the proxy
-                    me.load();
+            // Check that we have some enabled filters before attempting to filter
+            for (i = 0, length = me.filters.items.length; i < length; i++) {
+                if (!me.filters.items[i].disabled) {
+                    allDisabled = false;
+                    break;
                 }
-                //******
-            } else {
-                /**
-                 * A pristine (unfiltered) collection of the records in this store. This is used to reinstate
-                 * records when a filter is removed or changed
-                 * @property snapshot
-                 * @type Ext.util.MixedCollection
-                 */
-                if (me.filters.getCount()) {
-                    me.snapshot = me.snapshot || me.data.clone();
-                    me.data = me.data.filter(me.filters.items);
+            }
 
-                    if (doLocalSort) {
-                        me.sort();
+            if (!allDisabled) {
+                if (me.remoteFilter) {
+                    //****Copied from 4.1****
+                    // So that prefetchPage does not consider the store to be fully loaded if the local count is equal to the total count
+                    delete me.totalCount;
+
+                    // For a buffered Store, we have to clear the prefetch cache because the dataset will change upon filtering.
+                    // Then we must prefetch the new page 1, and when that arrives, reload the visible part of the Store
+                    // via the guaranteedrange event
+                    if (me.buffered) {
+                        me.pageMap.clear();
+                        me.loadPage(1);
+                    } else {
+                        // Reset to the first page, the filter is likely to produce a smaller data set
+                        me.currentPage = 1;
+                        //the load function will pick up the new filters and request the filtered data from the proxy
+                        me.load();
                     }
-                    // fire datachanged event if it hasn't already been fired by doSort
-                    if (!doLocalSort || me.sorters.length < 1) {
-                        me.fireEvent('datachanged', me);
+                    //******
+                } else {
+                    /**
+                     * A pristine (unfiltered) collection of the records in this store. This is used to reinstate
+                     * records when a filter is removed or changed
+                     * @property snapshot
+                     * @type Ext.util.MixedCollection
+                     */
+                    if (me.filters.getCount()) {
+                        me.snapshot = me.snapshot || me.data.clone();
+                        me.data = me.data.filter(me.filters.items);
+
+                        if (doLocalSort) {
+                            me.sort();
+                        }
+                        // fire datachanged event if it hasn't already been fired by doSort
+                        if (!doLocalSort || me.sorters.length < 1) {
+                            me.fireEvent('datachanged', me);
+                        }
                     }
                 }
             }

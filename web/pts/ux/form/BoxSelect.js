@@ -469,26 +469,28 @@ Ext.define('Ext.ux.form.BoxSelect', {
      * Overridden to align to itemList size instead of inputEl
      */
     alignPicker:function () {
-        var me = this,
-            picker, isAbove,
-            aboveSfx = '-above',
-            itemBox = me.itemList.getBox(false, true);
+        if(this.rendered) {
+            var me = this,
+                picker, isAbove,
+                aboveSfx = '-above',
+                itemBox = me.itemList.getBox(false, true);
 
-        if (this.isExpanded) {
-            picker = me.getPicker();
-            var pickerScrollPos = picker.getTargetEl().dom.scrollTop;
-            if (me.matchFieldWidth) {
-                // Auto the height (it will be constrained by min and max width) unless there are no records to display.
-                picker.setSize(itemBox.width, picker.store && picker.store.getCount() ? null : 0);
-            }
-            if (picker.isFloating()) {
-                picker.alignTo(me.itemList, me.pickerAlign, me.pickerOffset);
+            if (me.isExpanded) {
+                picker = me.getPicker();
+                var pickerScrollPos = picker.getTargetEl().dom.scrollTop;
+                if (me.matchFieldWidth) {
+                    // Auto the height (it will be constrained by min and max width) unless there are no records to display.
+                    picker.setSize(itemBox.width, picker.store && picker.store.getCount() ? null : 0);
+                }
+                if (picker.isFloating()) {
+                    picker.alignTo(me.itemList, me.pickerAlign, me.pickerOffset);
 
-                // add the {openCls}-above class if the picker was aligned above
-                // the field due to hitting the bottom of the viewport
-                isAbove = picker.el.getY() < me.inputEl.getY();
-                me.bodyEl[isAbove ? 'addCls' : 'removeCls'](me.openCls + aboveSfx);
-                picker.el[isAbove ? 'addCls' : 'removeCls'](picker.baseCls + aboveSfx);
+                    // add the {openCls}-above class if the picker was aligned above
+                    // the field due to hitting the bottom of the viewport
+                    isAbove = picker.el.getY() < me.inputEl.getY();
+                    me.bodyEl[isAbove ? 'addCls' : 'removeCls'](me.openCls + aboveSfx);
+                    picker.el[isAbove ? 'addCls' : 'removeCls'](picker.baseCls + aboveSfx);
+                }
             }
         }
     },
@@ -927,11 +929,13 @@ Ext.define('Ext.ux.form.BoxSelect', {
 
         if ((skipLoad !== true) && (unknownValues.length > 0) && (me.queryMode === 'remote')) {
             var params = {};
-            params[me.valueField] = unknownValues.join(me.delimiter);
+//use filter instead
+//            params[me.valueField] = unknownValues.join(me.delimiter);
+            params.filter = JSON.stringify([{"property":me.valueField,"value":["where in",unknownValues]}]);
             me.store.load({
                 params:params,
                 callback:function () {
-                    me.itemList.unmask();
+                    if(me.rendered) {me.itemList.unmask();}
                     me.setValue(value, doSelect, true);
                     me.autoSize();
                 }
