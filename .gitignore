@@ -19,6 +19,7 @@ web/pts/dl/*
 
 vendor
 patches
-sessions
 .project
 .settings
+node_modules
+bower_components
