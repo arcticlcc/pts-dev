@@ -274,7 +274,7 @@ Ext.define('PTS.controller.product.window.Window', {
                     // 3. another control highlighted the feature before we did it, in
                     //    that case _prev references this other control, and we need to
                     //    set _last to _prev and undef _prev
-                    if(feature._prevHighlighter == undefined) {
+                    if(feature._prevHighlighter === undefined) {
                         delete feature._lastHighlighter;
                     } else if(feature._prevHighlighter == this.id) {
                         delete feature._prevHighlighter;

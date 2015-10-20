@@ -41,7 +41,7 @@ Ext.define('PTS.controller.product.Product', {
         var win = this.getProductWindow();
 
         //load the product links
-        cstore = win.down('productlinks>gridpanel').getStore();
+        var cstore = win.down('productlinks>gridpanel').getStore();
         cstore.setProxy({
             type: 'rest',
             url : '../onlineresource',

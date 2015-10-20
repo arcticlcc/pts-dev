@@ -101,7 +101,7 @@ Ext.define('PTS.controller.product.window.ProductKeywords', {
 
         if(id) {
             this.setProxy(id, store);
-            //load the productcontacts store
+            //load the store
             store.load();
         }
     },
@@ -112,7 +112,7 @@ Ext.define('PTS.controller.product.window.ProductKeywords', {
     onSaveProduct: function(record) {
         var store = this.getProductKeywordsStore();
 
-        if(id) {
+        if(record) {
             this.setProxy(record.getId(), store);
             //load the productcontacts store
             store.load();

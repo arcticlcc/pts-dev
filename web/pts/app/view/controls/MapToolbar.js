@@ -113,7 +113,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
                     // 3. another control highlighted the feature before we did it, in
                     //    that case _prev references this other control, and we need to
                     //    set _last to _prev and undef _prev
-                    if(feature._prevHighlighter == undefined) {
+                    if(feature._prevHighlighter === undefined) {
                         delete feature._lastHighlighter;
                     } else if(feature._prevHighlighter == this.id) {
                         delete feature._prevHighlighter;
@@ -362,7 +362,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
                     Ext.each(vector.features, function(feature) {
                         if(!!feature.state) {
                             //destroy "deleted" features that have not been persisted
-                            if(feature.fid == undefined && feature.state === OpenLayers.State.DELETE) {
+                            if(feature.fid === undefined && feature.state === OpenLayers.State.DELETE) {
                                 remove.push(feature);
                             }else {
                                 persisted = true;
@@ -417,7 +417,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
 
                 if(feature.state === OpenLayers.State.DELETE) {
                     // if feature doesn't have a fid, need to insert
-                    if(feature.fid == undefined) {
+                    if(feature.fid === undefined) {
                         feature.state = OpenLayers.State.INSERT;
                     } else {
                         feature.state = OpenLayers.State.UPDATE;

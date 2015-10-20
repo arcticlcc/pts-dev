@@ -1,3 +1,4 @@
+/*jshint bitwise: false */
 /**
  * Project map with optional toolbar.
  */

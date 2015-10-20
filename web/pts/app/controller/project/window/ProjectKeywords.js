@@ -115,7 +115,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     onSaveProject: function(record) {
         var store = this.getProjectKeywordsStore();
 
-        if(id) {
+        if(record) {
             this.setProxy(record.getId(), store);
             //load the projectkeywords store
             store.load();
