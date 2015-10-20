@@ -11,8 +11,8 @@
 Ext.Loader.setConfig({
     enabled: true,
     paths: {
-        'Extensible': 'extensible-1.5.1/src',
-        'Extensible.example': 'extensible-1.5.1/examples',
+        'Extensible': './lib/extensible/src',
+        'Extensible.example': './lib/extensible/examples',
         'Ext.ux': './ux',
         'GeoExt': './lib/geoext/src/GeoExt'
     },
@@ -99,7 +99,7 @@ Ext.application({
         var me = this,
             task,
             //myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),
-            body = Ext.getBody();
+            body = Ext.getBody(),
             removeMask = function() {
                 if(!Ext.Ajax.isLoading()) {
                     //myMask.destroy();

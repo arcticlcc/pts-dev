@@ -22,3 +22,6 @@
 [submodule "web/pts/lib/highlight"]
 	path = web/pts/lib/highlight
 	url = https://github.com/jlblcc/highlight.js.git
+[submodule "web/pts/lib/extensible"]
+	path = web/pts/lib/extensible
+	url = git@github.com:bmoeskau/Extensible.git

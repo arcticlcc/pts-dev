@@ -1,0 +1,32 @@
+{
+  "name": "pts",
+  "version": "0.18.0",
+  "description": "Project Tracking System",
+  "main": "app.js",
+  "directories": {
+    "test": "tests"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/arcticlcc/pts-dev.git"
+  },
+  "author": "jbradley@arcticlcc.org",
+  "license": "Unlicense",
+  "bugs": {
+    "url": "https://github.com/arcticlcc/pts-dev/issues"
+  },
+  "homepage": "https://github.com/arcticlcc/pts-dev#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-copy": "^0.8.1",
+    "grunt-contrib-cssmin": "^0.14.0",
+    "grunt-contrib-jshint": "^0.11.3",
+    "grunt-contrib-uglify": "^0",
+    "grunt-sencha-dependencies": "^0.8.1"
+  }
+}
