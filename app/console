@@ -12,11 +12,13 @@ $app->register(new \PTS\Service\ConsoleLoggerServiceProvider());
 use PTS\Console\MyCommand;
 use PTS\Console\SendNotice;
 use PTS\Console\BatchNotice;
+use PTS\Console\MetadataProduct;
 
 $application = $app['console'];
 $application->add(new MyCommand);
 $application->add(new SendNotice);
 $application->add(new BatchNotice);
+$application->add(new MetadataProduct);
 $application->run($app['console.input'], $app['console.output']);
 
 ?>
