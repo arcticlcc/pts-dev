@@ -48,6 +48,21 @@ class PTSORM extends \ORM {
         return $fragment;
     }
 
+    /**
+     * Return the name of the column in the database table which contains
+     * the primary key ID of the row.
+     */
+    protected function _get_id_column_name() {
+        if (!is_null($this->_instance_id_column)) {
+            return $this->_instance_id_column;
+        }
+        if (isset(self::$_config['id_column_overrides'][$this->_table_name])) {
+            return self::$_config['id_column_overrides'][$this->_table_name];
+        } else {
+            return $this->_table_name . self::$_config['id_column'];
+        }
+    }
+
 }
 
 class IdiormServiceProvider implements ServiceProviderInterface {

@@ -27,8 +27,15 @@ $app->register(new Silex\Provider\TwigServiceProvider(), array(
     'twig.class_path' => __DIR__.'/../vendor/twig/twig/lib',
 ));
 $app->register(new SilexMarkdown\MarkdownExtension(), array());
+
+//use the wrapper class to support Idiorm + DBAL
+$dbsOptions = $app['dbOptions'];
+foreach ($dbsOptions as $opt => $vals) {
+    $dbsOptions[$opt]['wrapperClass'] = 'Idiorm\ExtendedConnection';
+}
+
 $app->register(new Silex\Provider\DoctrineServiceProvider(), array(
-    'dbs.options'           => $app['dbOptions'],
+    'dbs.options'           => $dbsOptions,
     'db.dbal.class_path'    => __DIR__.'/../vendor/doctrine/dbal/lib',
     'db.common.class_path'  => __DIR__.'/../vendor/doctrine/common/lib',
 ));
