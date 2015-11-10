@@ -279,12 +279,16 @@
           }
         ]
       },#}
+      {% if epsgcodes is defined or wkt is defined %}
       "spatialReferenceSystem": {
-        "epsgNumber": [{{ macros.arraytoints(epsgcodes) }}],
-        "wkt": [{{ macros.arraytostring(wkt) }}]
+        {% if epsgcodes is defined %}"epsgNumber": [{{ macros.arraytoints(epsgcodes) }}]{% endif %},
+        {% if wkt is defined %}"wkt": [{{ macros.arraytostring(wkt) }}]{% endif %}
       },
-      "spatialRepresentation": [{{ macros.arraytostring(spatialformats) }}],
-      {#"spatialResolution": [
+      {% endif %}
+      {% if spatialformats is defined %}
+     "spatialRepresentation": [{{ macros.arraytostring(spatialformats) }}],
+      {% endif %}
+     {#"spatialResolution": [
         {
           "equivalentScale": 0
         }, {

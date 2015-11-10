@@ -43,7 +43,7 @@ class ADIwg {
         //get other contacts for project
         foreach ($this->app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
         ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
-        -> where('projectid', $project['projectid'])
+        -> where('projectcontact.projectid', $project['projectid'])
         -> where_not_equal('contactId', $org['contactId'])
         ->find_many() as $object) {
             $contacts[] = $object->as_array();
@@ -121,7 +121,7 @@ class ADIwg {
         //get other contacts for product
         foreach ($this->app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
         ->join('productcontact', array('metadatacontact.contactId', '=', 'productcontact.contactid'))
-        ->where('productid', $product['productid'])
+        ->where('productcontact.productid', $product['productid'])
         ->where_not_equal('contactId', $org['contactId'])
         ->find_many() as $object) {
             $contacts[] = $object->as_array();
