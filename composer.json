@@ -14,7 +14,8 @@
         "mheap/silex-markdown": "dev-master",
         "knplabs/console-service-provider": "dev-master",
         "sabre/vobject": "~3.3.0",
-        "aws/aws-sdk-php-silex": "1.*"
+        "aws/aws-sdk-php-silex": "1.*",
+        "j4mie/idiorm": "1.*"
     },
 
     "autoload": {

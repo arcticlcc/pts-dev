@@ -2,16 +2,17 @@
 
 namespace Idiorm;
 
-require_once __DIR__ . '/../../vendor/Idiorm/idiorm.php';
+//require_once __DIR__ . '/../../vendor/Idiorm/idiorm.php';
 //require_once __DIR__ . '/../../vendor/j4mie/idiorm/idiorm.php';
 
 use Silex\Application;
 use Silex\ServiceProviderInterface;
+use ORM;
 
-class PTSORM extends \ORM {
+class PTSORM extends ORM {
     /*function __construct($table_name, $data = array()) {
-     parent::__construct($table_name, $data = array());
-     }*/
+        parent::__construct($table_name, $data = array());
+    }*/
 
     // The
     protected $_subquery;
@@ -24,9 +25,9 @@ class PTSORM extends \ORM {
         return $this;
     }
 
-    public static function for_table($table_name) {
+    public static function for_table($table_name, $connection_name = self::DEFAULT_CONNECTION) {
         self::_setup_db();
-        return new self($table_name);
+        return new self($table_name, array(), $connection_name);
     }
 
     /**
@@ -56,13 +57,27 @@ class PTSORM extends \ORM {
         if (!is_null($this->_instance_id_column)) {
             return $this->_instance_id_column;
         }
-        if (isset(self::$_config['id_column_overrides'][$this->_table_name])) {
-            return self::$_config['id_column_overrides'][$this->_table_name];
-        } else {
-            return $this->_table_name . self::$_config['id_column'];
+        if (isset(self::$_config[$this->_connection_name]['id_column_overrides'][$this->_table_name])) {
+            return self::$_config[$this->_connection_name]['id_column_overrides'][$this->_table_name];
         }
+        return $this->_table_name . self::$_config[$this->_connection_name]['id_column'];
     }
 
+    public function get_id_column_name() {
+        return $this->_get_id_column_name();
+    }
+
+    /**
+     * Create an ORM instance from the given row (an associative
+     * array of data fetched from the database)
+     * This is overridden due to use of 'self'
+     */
+    protected function _create_instance_from_row($row) {
+        $instance = self::for_table($this->_table_name, $this->_connection_name);
+        $instance->use_id_column($this->_instance_id_column);
+        $instance->hydrate($row);
+        return $instance;
+    }
 }
 
 class IdiormServiceProvider implements ServiceProviderInterface {
