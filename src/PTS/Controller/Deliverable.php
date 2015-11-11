@@ -97,8 +97,8 @@ class Deliverable implements ControllerProviderInterface
                     unset($values->description);
                 }else {
                     $sql = "WITH del as (INSERT INTO deliverable
-                        (deliverabletypeid, title, description)
-                        VALUES (:deliverabletypeid, :title, :description)
+                        (deliverabletypeid, title, description, code)
+                        VALUES (:deliverabletypeid, :title, :description, :code)
                         RETURNING *
                     ), dmod as (INSERT INTO deliverablemod
                         (deliverableid, personid, modificationid,duedate,receiveddate,startdate,enddate,publish,restricted,accessdescription,parentmodificationid,parentdeliverableid,reminder,staffonly)

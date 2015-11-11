@@ -45,13 +45,34 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         defaults: {
                             allowBlank: false
                         },
-                        items: [
-                            {
-                                xtype: 'textfield',
-                                name: 'title',
-                                fieldLabel: 'Title',
-                                anchor: '100%'
+                        items: [{
+                            xtype : 'fieldcontainer',
+                            fieldLabel : 'Title',
+                            layout : {
+                                align : 'stretchmax',
+                                type : 'hbox'
                             },
+                            combineErrors : true,
+                            items : [{
+                                xtype : 'textfield',
+                                name : 'code',
+                                emptyText: 'Code',
+                                hideLabel : true,
+                                width : 40
+                            }, {
+                                xtype : 'displayfield',
+                                name : 'codedelimiter',
+                                margin : '0 2',
+                                width : 5,
+                                value : '/',
+                                hideLabel : true
+                            }, {
+                                xtype : 'textfield',
+                                name : 'title',
+                                fieldLabel : 'Title',
+                                hideLabel : true,
+                                flex : 1
+                            }]},
                             {
                                 xtype: 'textareafield',
                                 name: 'description',

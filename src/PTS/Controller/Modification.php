@@ -89,7 +89,7 @@ class Modification implements ControllerProviderInterface
                 $values = json_decode($request->getContent());
                 $sql = "
                     WITH del as (UPDATE deliverable
-                        SET deliverabletypeid=:deliverabletypeid, title=:title, description=:description
+                        SET deliverabletypeid=:deliverabletypeid, title=:title, description=:description, code=:code
                         WHERE deliverableid = :deliverableid
                         RETURNING *
                     ), dmod as (UPDATE deliverablemod

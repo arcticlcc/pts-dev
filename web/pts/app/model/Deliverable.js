@@ -30,6 +30,7 @@ Ext.define('PTS.model.Deliverable', {
         {name: 'deliverabletypeid', type: 'int', useNull: true},
         {name: 'personid', type: 'int', useNull: true},
         {name: 'title', type: 'mystring', useNull: true},
+        {name: 'code', type: 'mystring', useNull: true},
         {name: 'description', type: 'mystring', useNull: true},
         {name: 'duedate', type: 'mydate'},
         {name: 'receiveddate', type: 'mydate'},
