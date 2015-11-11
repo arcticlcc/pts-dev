@@ -15,6 +15,7 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
     store: 'AgreementsTree',
     rootVisible: false,
     useArrows: true,
+    bodyCls: 'pts-agreementstree',
     viewConfig: {
         copy: true,
         plugins: {
@@ -57,7 +58,12 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
                 xtype: 'treecolumn',
                 dataIndex: 'text',
                 flex: 3,
-                text: 'Title'
+                text: 'Title',
+                renderer: function(value, meta, rec) {
+                    var code = rec.get('code');
+
+                    return code ? (value + ': <em>' + code + '</em>') : value;
+                }
             }, {
                 xtype: 'gridcolumn',
                 width: 75,

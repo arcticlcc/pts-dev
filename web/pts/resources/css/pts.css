@@ -37,6 +37,9 @@
 #pts-agree-tree .leaf .x-grid-cell {
     background-color: #FAFAFA;
     }
+.pts-agreementstree em {
+    font-style: italic;
+}
 .pts-col-info {
     background: url("../images/icons/information.png") no-repeat;
     width: 16px !important;
