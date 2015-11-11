@@ -3,29 +3,24 @@
  */
 Ext.define('PTS.model.PurchaseRequest', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'purchaserequestid',
-            type: 'integer',
-            useNull: true,
-            persist: false
-        },
-        {
-            name: 'purchaserequest',
-            type: 'mystring',
-            useNull: true
-        },
-        {
-            name: 'modificationid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'comment',
-            type: 'mystring',
-            useNull: true
-        }
-    ],
+    fields: [{
+        name: 'purchaserequestid',
+        type: 'integer',
+        useNull: true,
+        persist: false
+    }, {
+        name: 'purchaserequest',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'modificationid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'comment',
+        type: 'mystring',
+        useNull: true
+    }],
     idProperty: 'purchaserequestid',
     validations: [{
         type: 'length',
@@ -39,7 +34,7 @@ Ext.define('PTS.model.PurchaseRequest', {
 
     proxy: {
         type: 'rest',
-        url : '../purchaserequest',
+        url: '../purchaserequest',
         reader: {
             type: 'json',
             root: 'data'

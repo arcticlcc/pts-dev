@@ -19,13 +19,13 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     refs: [{
         ref: 'projectWindow',
         selector: 'projectwindow'
-    },{
+    }, {
         ref: 'keywordTree',
         selector: 'projectwindow projectkeywords #keywordTree'
-    },{
+    }, {
         ref: 'keywordSearch',
         selector: 'projectwindow projectkeywords #keywordSearch'
-    },{
+    }, {
         ref: 'projectKeywords',
         selector: 'projectwindow #projectKeywords'
     }],
@@ -74,14 +74,14 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
      * @param {Number} projectid
      * @param {PTS.store.ProjectKeywords}
      */
-    setProxy: function(id,store) {
+    setProxy: function(id, store) {
         var read = '../project/' + id + '/projectkeywordlist';
 
-        if(store.getProxy().api.read !== read) {
+        if (store.getProxy().api.read !== read) {
             //override store proxy based on projectid
             store.setProxy({
                 type: 'rest',
-                url : '../projectkeyword',
+                url: '../projectkeyword',
                 appendId: true,
                 //batchActions: true,
                 api: {
@@ -102,7 +102,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     onOpenProject: function(id) {
         var store = this.getProjectKeywordsStore();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store);
             //load the projectcontacts store
             store.load();
@@ -115,7 +115,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     onSaveProject: function(record) {
         var store = this.getProjectKeywordsStore();
 
-        if(record) {
+        if (record) {
             this.setProxy(record.getId(), store);
             //load the projectkeywords store
             store.load();
@@ -141,22 +141,22 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
         for (i = 0; i < ln; i++) {
             record = draggedRecords[i];
             //reject duplicates
-            if(store.findExact('keywordid',record.getId()) !== -1) {
+            if (store.findExact('keywordid', record.getId()) !== -1) {
                 errors += '<br /> ' + record.get('text');
-            } else{
+            } else {
                 //check to see if the record was "removed"
-                if(removed.length > 0 && Ext.Array.some(removed, function(r) {
-                    if(r.get('keywordid') === record.get('keywordid')) {
-                        record = r;
-                        return true;
-                    }
-                })) {
+                if (removed.length > 0 && Ext.Array.some(removed, function(r) {
+                        if (r.get('keywordid') === record.get('keywordid')) {
+                            record = r;
+                            return true;
+                        }
+                    })) {
                     record.reject();
                     record.restored = true;
                     newrec.push(record);
                     //we have to manually remove the record
                     Ext.Array.remove(store.removed, record);
-                }else {
+                } else {
                     newrec.push(this.getProjectKeywordModel().create({
                         projectid: record.get('projectid'),
                         keywordid: record.get('keywordid'),
@@ -166,12 +166,12 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
             }
         }
         //insert new records
-        if(newrec.length) {
+        if (newrec.length) {
             store.insert(pos, newrec);
         }
 
         //process errors
-        if(errors !== '') {
+        if (errors !== '') {
             Ext.create('widget.uxNotification', {
                 title: 'Notice',
                 iconCls: 'ux-notification-icon-information',
@@ -191,7 +191,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
 
         //Mark added records as dirty
         Ext.each(records, function(r) {
-            if(!r.restored) {
+            if (!r.restored) {
                 r.set('projectid', pid);
                 r.setDirty();
                 r.phantom = true;
@@ -202,7 +202,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     /**
      * Remove contacts via drag/drop.
      */
-     removeKeywordsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
+    removeKeywordsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
         this.getProjectKeywordsStore().remove(data.records);
         return false;
     },
@@ -210,7 +210,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     /**
      * Render listener for the delete keywords DropTargets.
      */
-     onRemoveTargetRender: function(cmp) {
+    onRemoveTargetRender: function(cmp) {
         var store = this.getProjectKeywordsStore();
 
         Ext.create('Ext.dd.DropTarget', cmp.getEl(), {
@@ -225,14 +225,14 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     /**
      * Save Keywords.
      */
-     saveKeywords: function() {
+    saveKeywords: function() {
         var store = this.getProjectKeywordsStore(),
             el = this.getProjectKeywords().getEl(),
             isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
                 store.getNewRecords().length);
 
         //mask panel
-        if(isDirty) {
+        if (isDirty) {
             el.mask('Saving...');
         }
         //loop thru records and set the priority
@@ -293,14 +293,14 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
 
             }
         });
-     },
+    },
 
     /**
      * Remove keywords action.
      */
-     removeKeywords: function(){
+    removeKeywords: function() {
         var grid = this.getProjectKeywords(),
-        sel = grid.getSelectionModel().getSelection();
+            sel = grid.getSelectionModel().getSelection();
 
         grid.getStore().remove(sel);
     },
@@ -308,13 +308,13 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     /**
      * Refresh keywords action.
      */
-     refreshKeywords: function(){
+    refreshKeywords: function() {
         var grid = this.getProjectKeywords();
 
         grid.getStore().load({
             callback: function(records, operation, success) {
                 //hack to clear the removed records array
-                grid.getStore().removed =[];
+                grid.getStore().removed = [];
             }
         });
     },
@@ -322,7 +322,7 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
     /**
      * Add keywords action.
      */
-     onActionAddClick: function(view, el, rowIndex, colIndex){
+    onActionAddClick: function(view, el, rowIndex, colIndex) {
         var rec = view.getStore().getAt(rowIndex),
             data = {
                 records: [rec]

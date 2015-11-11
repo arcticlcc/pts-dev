@@ -7,42 +7,44 @@
  * GitHub Project: https://github.com/arthurakay/ExtJS-Activity-Monitor
  */
 Ext.define('PTS.util.ActivityMonitor', {
-    singleton   : true,
+    singleton: true,
 
-    ui          : null,
-    runner      : null,
-    task        : null,
-    lastActive  : null,
+    ui: null,
+    runner: null,
+    task: null,
+    lastActive: null,
 
-    ready       : false,
-    verbose     : false,
-    interval    : (1000 * 60 * 1), //1 minute
-    maxInactive : (1000 * 60 * 5), //5 minutes
+    ready: false,
+    verbose: false,
+    interval: (1000 * 60 * 1), //1 minute
+    maxInactive: (1000 * 60 * 5), //5 minutes
 
-    init : function(config) {
-        if (!config) { config = {}; }
+    init: function(config) {
+        if (!config) {
+            config = {};
+        }
 
         Ext.apply(this, config, {
-            runner     : new Ext.util.TaskRunner(),
-            ui         : Ext.getBody(),
-            task       : {
-                run      : this.monitorUI,
-                interval : config.interval || this.interval,
-                scope    : this
+            runner: new Ext.util.TaskRunner(),
+            ui: Ext.getBody(),
+            task: {
+                run: this.monitorUI,
+                interval: config.interval || this.interval,
+                scope: this
             }
         });
 
         this.ready = true;
     },
 
-    isReady : function() {
+    isReady: function() {
         return this.ready;
     },
 
-    isActive   : Ext.emptyFn,
-    isInactive : Ext.emptyFn,
+    isActive: Ext.emptyFn,
+    isInactive: Ext.emptyFn,
 
-    start : function() {
+    start: function() {
         if (!this.isReady()) {
             this.log('Please run ActivityMonitor.init()');
             return false;
@@ -57,7 +59,7 @@ Ext.define('PTS.util.ActivityMonitor', {
         this.runner.start(this.task);
     },
 
-    stop : function() {
+    stop: function() {
         if (!this.isReady()) {
             this.log('Please run ActivityMonitor.init()');
             return false;
@@ -72,12 +74,12 @@ Ext.define('PTS.util.ActivityMonitor', {
         this.log('ActivityMonitor has been stopped.');
     },
 
-    captureActivity : function(eventObj, el, eventOptions) {
+    captureActivity: function(eventObj, el, eventOptions) {
         this.lastActive = new Date();
     },
 
-    monitorUI : function() {
-        var now      = new Date(),
+    monitorUI: function() {
+        var now = new Date(),
             inactive = (now - this.lastActive);
 
         if (inactive >= this.maxInactive) {
@@ -85,14 +87,13 @@ Ext.define('PTS.util.ActivityMonitor', {
             this.stop(); //remove event listeners
 
             this.isInactive();
-        }
-        else {
+        } else {
             this.log('CURRENTLY INACTIVE FOR ' + inactive + ' (ms)');
             this.isActive();
         }
     },
 
-    log : function(msg) {
+    log: function(msg) {
         if (this.verbose) {
             window.console.log(msg);
         }

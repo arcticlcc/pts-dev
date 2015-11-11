@@ -5,22 +5,18 @@
 Ext.define('PTS.store.OnlineFunctions', {
     extend: 'Ext.data.Store',
 
-    fields: [
-        {
-            name: 'onlinefunctionid',
-            type: 'int'
-        },
-        {
-            name: 'codename',
-            type: 'string'
-        },
-        {
-            name: 'description'
-        }
-    ],
+    fields: [{
+        name: 'onlinefunctionid',
+        type: 'int'
+    }, {
+        name: 'codename',
+        type: 'string'
+    }, {
+        name: 'description'
+    }],
     proxy: {
         type: 'rest',
-        url : '../onlinefunction',
+        url: '../onlinefunction',
         reader: {
             type: 'json',
             root: 'data'
@@ -28,7 +24,8 @@ Ext.define('PTS.store.OnlineFunctions', {
         limitParam: undefined
     },
     autoLoad: true,
-    sorters: [
-        { property: 'codename', direction : 'ASC' }
-    ]
+    sorters: [{
+        property: 'codename',
+        direction: 'ASC'
+    }]
 });

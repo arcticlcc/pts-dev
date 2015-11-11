@@ -5,42 +5,35 @@
 
 Ext.define('PTS.model.ProductContact', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'productcontactid',
-            type: 'int',
-            persist: false,
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'productid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'isoroletypeid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'name',
-            persist: false
-        },
-        {
-            name: 'role',
-            persist: false
-        }
-    ],
+    fields: [{
+        name: 'productcontactid',
+        type: 'int',
+        persist: false,
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'productid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'isoroletypeid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'name',
+        persist: false
+    }, {
+        name: 'role',
+        persist: false
+    }],
     idProperty: 'productcontactid',
 
     proxy: {
         type: 'rest',
-        url : '../productcontact',
+        url: '../productcontact',
         appendId: true,
         //batchActions: true,
         reader: {

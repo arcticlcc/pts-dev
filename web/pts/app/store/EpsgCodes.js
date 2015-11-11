@@ -10,10 +10,8 @@ Ext.define('PTS.store.EpsgCodes', {
 
     remoteSort: true,
     remoteFilter: true,
-    sorters: [
-        {
-            property : 'srid',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'srid',
+        direction: 'ASC'
+    }]
 });

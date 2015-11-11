@@ -13,14 +13,14 @@ Ext.define('PTS.controller.contact.tab.ContactTabDetail', {
     refs: [{
         ref: 'contactDetail',
         selector: 'contacttab contacttabdetail'
-    },{
+    }, {
         ref: 'contactLists',
         selector: 'contacttab contacttabdetail #contactLists'
     }],
 
     init: function() {
 
-       this.control({
+        this.control({
             /*'contacttabdetail > #contactProjects': {
                 itemdblclick: this.onDeliverableDblClick
             },
@@ -66,54 +66,54 @@ Ext.define('PTS.controller.contact.tab.ContactTabDetail', {
             printTitle = 'Projects for ',
             contactFilter;
 
-            //set the contact filter, person and groups use the same store
-            //set the title for the lists tab and project printer
-            if(type === 0) {
-                contactFilter = {
-                    property: 'groupids',
-                    value: [
-                        'where in array',
-                        id
-                    ]
-                };
+        //set the contact filter, person and groups use the same store
+        //set the title for the lists tab and project printer
+        if (type === 0) {
+            contactFilter = {
+                property: 'groupids',
+                value: [
+                    'where in array',
+                    id
+                ]
+            };
 
-                lists.setTitle('Persons');
-                printTitle += record.get('fullname');
-            }else {
-                contactFilter = {
-                    property: 'contactid',
-                    value: id
-                };
+            lists.setTitle('Persons');
+            printTitle += record.get('fullname');
+        } else {
+            contactFilter = {
+                property: 'contactid',
+                value: id
+            };
 
-                lists.setTitle('Groups');
-                printTitle += record.getContactName();
-            }
+            lists.setTitle('Groups');
+            printTitle += record.getContactName();
+        }
 
-            //activate the correct card
-            if(lists.rendered) {
-                lists.getLayout().setActiveItem(type);
-            }
+        //activate the correct card
+        if (lists.rendered) {
+            lists.getLayout().setActiveItem(type);
+        }
 
-            //apply filters
-            grids = [
-                [this.getContactProjectsStore(), projectFilter],
-                [this.getPersonGroupsStore(), contactFilter]
-            ];
-            Ext.each(grids, function(i){
-                var g = i[0];
-                //TODO: Fixed in 4.1?
-                //http://www.sencha.com/forum/showthread.php?139210-3461-ExtJS4-store-suspendEvents-clearFilter-problem
-                g.remoteFilter = false;
-                g.clearFilter(true);
-                g.filter(i[1]);
-                g.remoteFilter = true;
-            });
+        //apply filters
+        grids = [
+            [this.getContactProjectsStore(), projectFilter],
+            [this.getPersonGroupsStore(), contactFilter]
+        ];
+        Ext.each(grids, function(i) {
+            var g = i[0];
+            //TODO: Fixed in 4.1?
+            //http://www.sencha.com/forum/showthread.php?139210-3461-ExtJS4-store-suspendEvents-clearFilter-problem
+            g.remoteFilter = false;
+            g.clearFilter(true);
+            g.filter(i[1]);
+            g.remoteFilter = true;
+        });
 
-            //load the active store
-            store.load();
+        //load the active store
+        store.load();
 
-            this.contactRecord = record;
-            this.updateProjectsPrintBtnTitle(printTitle);
+        this.contactRecord = record;
+        this.updateProjectsPrintBtnTitle(printTitle);
 
     },
 
@@ -124,7 +124,9 @@ Ext.define('PTS.controller.contact.tab.ContactTabDetail', {
     onContactListActivate: function(grid) {
         var record = grid.getSelectionModel().getSelection()[0];
 
-        if(record) {this.onSelectContact(record);}
+        if (record) {
+            this.onSelectContact(record);
+        }
     },
 
     /**
@@ -150,12 +152,12 @@ Ext.define('PTS.controller.contact.tab.ContactTabDetail', {
      * @param {Ext.Component} btn
      */
     updateProjectsPrintBtnTitle: function(title) {
-        var btn = this.getContactDetail().down('#contactProjects #printBtn');
+            var btn = this.getContactDetail().down('#contactProjects #printBtn');
 
-        btn.mainTitle = function(){
-            return title;
-        };
-    }//,
+            btn.mainTitle = function() {
+                return title;
+            };
+        } //,
 
     /**
      * Updates ProjectContacts grid print title.

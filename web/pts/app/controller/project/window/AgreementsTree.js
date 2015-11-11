@@ -17,7 +17,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
     refs: [{
         ref: 'itemDetail',
         selector: 'agreementitemdetail'
-    },{
+    }, {
         ref: 'treeView',
         selector: 'agreementstree treeview'
     }],
@@ -60,7 +60,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
      */
     beforeRender: function(tree) {
         var id = tree.up('window').projectId,
-        store= tree.getStore();
+            store = tree.getStore();
 
         //override store proxy based on projectid
         store.setProxy({
@@ -73,7 +73,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
 
         //load the store
         store.load({
-            scope   : this,
+            scope: this,
             callback: function(records, operation, success) {
                 this.expandAll(tree.down('tool[type=expand]'));
             }
@@ -86,38 +86,38 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
      */
     afterRenderView: function(view) {
         var plugin = view.getPlugin('agreementsddplugin'),
-        dragZone = plugin.dragZone;
+            dragZone = plugin.dragZone;
         dragZone.isPreventDrag = function(e, record) {
             return (record.get('allowDrag') === false) || record.parentNode.get('typeid') !== 30 || !!e.getTarget(this.view.expanderSelector);
         };
 
-        plugin.dropZone.onNodeDrop = function (node, dragZone, e, data) { //TODO: this is fixed in 4.1
+        plugin.dropZone.onNodeDrop = function(node, dragZone, e, data) { //TODO: this is fixed in 4.1
             var me = this,
-            dropHandled = false,
+                dropHandled = false,
 
-            // Create a closure to perform the operation which the event handler may use.
-            // Users may now set the wait parameter in the beforedrop handler, and perform any kind
-            // of asynchronous processing such as an Ext.Msg.confirm, or an Ajax request,
-            // and complete the drop gesture at some point in the future by calling either the
-            // processDrop or cancelDrop methods.
-            dropHandlers = {
-                wait : false,
-                processDrop : function (d) {
-                    data.records = d ? d : data.records; //allow modified data object to be passed
-                    me.invalidateDrop();
-                    me.handleNodeDrop(data, me.overRecord, me.currentPosition);
+                // Create a closure to perform the operation which the event handler may use.
+                // Users may now set the wait parameter in the beforedrop handler, and perform any kind
+                // of asynchronous processing such as an Ext.Msg.confirm, or an Ajax request,
+                // and complete the drop gesture at some point in the future by calling either the
+                // processDrop or cancelDrop methods.
+                dropHandlers = {
+                    wait: false,
+                    processDrop: function(d) {
+                        data.records = d ? d : data.records; //allow modified data object to be passed
+                        me.invalidateDrop();
+                        me.handleNodeDrop(data, me.overRecord, me.currentPosition);
 
-                    dropHandled = true;
-                    me.fireViewEvent('drop', node, data, me.overRecord, me.currentPosition);
-                    return data;
+                        dropHandled = true;
+                        me.fireViewEvent('drop', node, data, me.overRecord, me.currentPosition);
+                        return data;
+                    },
+
+                    cancelDrop: function() {
+                        me.invalidateDrop();
+                        dropHandled = true;
+                    }
                 },
-
-                cancelDrop : function () {
-                    me.invalidateDrop();
-                    dropHandled = true;
-                }
-            },
-            performOperation = false;
+                performOperation = false;
 
             if (me.valid) {
                 performOperation = me.fireViewEvent('beforedrop', node, data, me.overRecord, me.currentPosition, dropHandlers);
@@ -154,7 +154,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
             /*edit*/
 
             //Must be appended to a deliverable folder
-            if(!(targetNode.get('typeid') == 30 && position === 'append')) {
+            if (!(targetNode.get('typeid') == 30 && position === 'append')) {
                 return false;
             }
             //Logic to prevent multiple copies in the same folder
@@ -165,7 +165,9 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                     return false;
                 }
                 //make sure the deliverable is not in the mod already
-                if (targetNode.findChildBy(findChild)) {return false;}
+                if (targetNode.findChildBy(findChild)) {
+                    return false;
+                }
             }
 
             /*end edit*/
@@ -186,14 +188,13 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
             // Respect the allowDrop field on Tree nodes
             if (position === 'append' && targetNode.get('allowDrop') === false) {
                 return false;
-            }
-            else if (position !== 'append' && targetNode.parentNode.get('allowDrop') === false) {
+            } else if (position !== 'append' && targetNode.parentNode.get('allowDrop') === false) {
                 return false;
             }
 
             // If the target record is in the dragged dataset, then invalid drop
             if (Ext.Array.contains(draggedRecords, targetNode)) {
-                 return false;
+                return false;
             }
 
             // @TODO: fire some event to notify that there is a valid drop possible for the node you're dragging
@@ -207,8 +208,8 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
      */
     beforeDrop: function(node, data, overModel, dropPosition, dropHandlers) {
         var agreeCopyId, agreeDropId, msg, same,
-        view = this.getTreeView(),
-        orig = data.records[0];
+            view = this.getTreeView(),
+            orig = data.records[0];
         dropHandlers.wait = true;
 
         //get agreement id of copied record
@@ -216,10 +217,10 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
         //get agreement id of drop target
         agreeDropId = view.getAgreementId(overModel);
 
-        if((same = (agreeCopyId === agreeDropId))) {
-            msg = 'Are you sure you want to copy this Deliverable? <br/>'+
+        if ((same = (agreeCopyId === agreeDropId))) {
+            msg = 'Are you sure you want to copy this Deliverable? <br/>' +
                 'The original will be cancelled.';
-        } else{
+        } else {
             msg = 'Create a copy of the deliverable?';
         }
 
@@ -230,7 +231,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                 var tab, origRec, dropRec, newRec;
 
                 if (btn === 'yes') {
-                    if(same) {
+                    if (same) {
                         tab = view.up('tabpanel');
                         origRec = tab.down('deliverableform #itemForm').getRecord();
                         tab.getEl().mask('Processing...');
@@ -238,10 +239,10 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                         Ext.data.Model.id(newRec); //generate a unique sequential id
 
                         //TODO: need to validate record is the same as ref in tree?
-                        orig.set('invalid', true);//invalidate the original tree record
+                        orig.set('invalid', true); //invalidate the original tree record
                         orig.set('readonly', true); //lock the original tree record
 
-                        view.addRowCls(orig,'pts-deliverable-invalid'); //visually invalidate node
+                        view.addRowCls(orig, 'pts-deliverable-invalid'); //visually invalidate node
                         //edit new record
                         newRec.beginEdit();
                         newRec.phantom = true;
@@ -256,38 +257,38 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                         //save the new rec, process the drop on success
                         newRec.save({
                             success: function(model, op) {
-                                var processed,newnode,
+                                var processed, newnode,
                                     newRec = op.records[0],
                                     delid = newRec.get('deliverableid'),
                                     modid = newRec.get('modificationid');
                                 //update the dropped node
                                 dropRec = orig.copy();
-                                dropRec.setId('d-'+ delid + '-' + modid);
-                                dropRec.set('dataid',modid + '/deliverable/' + delid);
-                                dropRec.set('invalid',false);
-                                dropRec.set('readonly',false);
-                                dropRec.set('cls','');
-                                dropRec.set('parentItm','d-'+ origRec.get('deliverableid') + '-' + origRec.get('modificationid'));
-                                dropRec.set('iconCls','pts-page-bluecopy');
+                                dropRec.setId('d-' + delid + '-' + modid);
+                                dropRec.set('dataid', modid + '/deliverable/' + delid);
+                                dropRec.set('invalid', false);
+                                dropRec.set('readonly', false);
+                                dropRec.set('cls', '');
+                                dropRec.set('parentItm', 'd-' + origRec.get('deliverableid') + '-' + origRec.get('modificationid'));
+                                dropRec.set('iconCls', 'pts-page-bluecopy');
 
                                 processed = dropHandlers.processDrop([dropRec]); //process updated record
-                                newnode = view.getNode(processed.records[0]);//assumes 1 record
-                                view.getSelectionModel().select(view.getTreeStore().getNodeById(newnode.id));//select first dropped record
+                                newnode = view.getNode(processed.records[0]); //assumes 1 record
+                                view.getSelectionModel().select(view.getTreeStore().getNodeById(newnode.id)); //select first dropped record
                                 tab.getEl().unmask();
                             },
                             failure: function(model, op) {
                                 Ext.MessageBox.show({
-                                   title: 'Error',
-                                   msg: 'Could not update the new deliverable.</br>Error:' + PTS.app.getError(),
-                                   buttons: Ext.MessageBox.OK,
-                                   //animateTarget: 'mb9',
-                                   icon: Ext.Msg.ERROR
+                                    title: 'Error',
+                                    msg: 'Could not update the new deliverable.</br>Error:' + PTS.app.getError(),
+                                    buttons: Ext.MessageBox.OK,
+                                    //animateTarget: 'mb9',
+                                    icon: Ext.Msg.ERROR
                                 });
                                 tab.getEl().unmask();
                             },
                             scope: this
                         });
-                    }else {//else just create a copy
+                    } else { //else just create a copy
                         //we can drop into an "agreement" or a "modification"
                         var dataid = view.getDataId(overModel, 60) || view.getDataId(overModel, 20);
                         tab = view.up('tabpanel');
@@ -308,31 +309,31 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                         //save the new rec, process the drop on success
                         newRec.save({
                             success: function(model, op) {
-                                var processed,newnode,
+                                var processed, newnode,
                                     newRec = op.records[0],
                                     delid = newRec.get('deliverableid'),
                                     modid = newRec.get('modificationid');
                                 //update the dropped node
                                 dropRec = orig.copy();
-                                dropRec.setId('d-'+ delid + '-' + modid);
-                                dropRec.set('dataid',modid + '/deliverable/' + delid);
-                                dropRec.set('invalid',false);
-                                dropRec.set('readonly',false);
-                                dropRec.set('cls','');
+                                dropRec.setId('d-' + delid + '-' + modid);
+                                dropRec.set('dataid', modid + '/deliverable/' + delid);
+                                dropRec.set('invalid', false);
+                                dropRec.set('readonly', false);
+                                dropRec.set('cls', '');
 
                                 processed = dropHandlers.processDrop([dropRec]); //process updated record
-                                newnode = view.getNode(processed.records[0]);//assumes 1 record
-                                view.getSelectionModel().select(view.getTreeStore().getNodeById(newnode.id));//select first dropped record
+                                newnode = view.getNode(processed.records[0]); //assumes 1 record
+                                view.getSelectionModel().select(view.getTreeStore().getNodeById(newnode.id)); //select first dropped record
                                 tab.getEl().unmask();
                             },
                             failure: function(model, op) {
                                 Ext.MessageBox.show({
-                                   title: 'Error',
-                                   msg: 'Could not update the new deliverable.</br>Error:' + PTS.app.getError(),
-                                   buttons: Ext.MessageBox.OK,
-                                   //animateTarget: 'mb9',
-                                   //fn: showResult,
-                                   icon: Ext.Msg.ERROR
+                                    title: 'Error',
+                                    msg: 'Could not update the new deliverable.</br>Error:' + PTS.app.getError(),
+                                    buttons: Ext.MessageBox.OK,
+                                    //animateTarget: 'mb9',
+                                    //fn: showResult,
+                                    icon: Ext.Msg.ERROR
                                 });
                                 tab.getEl().unmask();
                             },
@@ -342,8 +343,8 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
                 } else {
                     dropHandlers.cancelDrop();
                 }
-             },
-             this
+            },
+            this
         );
     },
 
@@ -355,7 +356,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
 
         owner.child('tool[type=collapse]').show();
         b.hide();
-        owner.up('treepanel').collapseAll();//hack to make all nodes expand
+        owner.up('treepanel').collapseAll(); //hack to make all nodes expand
         owner.up('treepanel').expandAll();
     },
 
@@ -376,8 +377,8 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
      */
     refresh: function(b, ev) {
         var owner = b.ownerCt,
-        detail = this.getItemDetail(),
-        store=owner.up('treepanel').getStore();
+            detail = this.getItemDetail(),
+            store = owner.up('treepanel').getStore();
 
         //set the itemdetail panel to first card
         //TODO: this should trigger the check status function

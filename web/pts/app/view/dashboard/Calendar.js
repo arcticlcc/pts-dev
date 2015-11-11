@@ -39,18 +39,19 @@ Ext.define('PTS.view.dashboard.Calendar', {
                         },
 
                         listeners: {
-                            exception: function(proxy, response, operation, options){
+                            exception: function(proxy, response, operation, options) {
                                 var msg = response.message ? response.message : Ext.decode(response.responseText).message;
                                 // ideally an app would provide a less intrusive message display
                                 Ext.Msg.alert('Server Error', msg);
                             }
                         }
                     }
-            })/*,
-            calendarStore: Ext.create('Extensible.calendar.data.MemoryCalendarStore', {
-                    // defined in ../data/CalendarsCustom.js
-                    data: Ext.create('PTS.data.Calendar')
-                })*/
+                })
+                /*,
+                            calendarStore: Ext.create('Extensible.calendar.data.MemoryCalendarStore', {
+                                    // defined in ../data/CalendarsCustom.js
+                                    data: Ext.create('PTS.data.Calendar')
+                                })*/
         });
 
         me.callParent(arguments);

@@ -4,7 +4,7 @@
 Ext.define('PTS.view.controls.StatusCombo', {
     extend: 'PTS.view.controls.FilterCombo',
     alias: 'widget.statuscombo',
-    requires: ['PTS.store.Statuses','Ext.form.field.ComboBox'],
+    requires: ['PTS.store.Statuses', 'Ext.form.field.ComboBox'],
 
     displayField: 'code',
     store: 'Statuses',

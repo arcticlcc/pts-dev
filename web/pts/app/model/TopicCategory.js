@@ -4,20 +4,22 @@
 
 Ext.define('PTS.model.TopicCategory', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'topiccategoryid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'codename', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'codename',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -25,7 +27,7 @@ Ext.define('PTS.model.TopicCategory', {
 
     proxy: {
         type: 'rest',
-        url : '../topiccategory',
+        url: '../topiccategory',
         reader: {
             type: 'json',
             root: 'data'

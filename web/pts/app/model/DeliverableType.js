@@ -5,26 +5,30 @@
 
 Ext.define('PTS.model.DeliverableType', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'deliverabletypeid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'type', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
-        },
-        {
-            name: 'isocodename', type: 'mystring', useNull: true
-        },
-        {
-            name: 'product', type: 'myboolean', useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'type',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'isocodename',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'product',
+            type: 'myboolean',
+            useNull: true
         }
 
     ],
@@ -32,7 +36,7 @@ Ext.define('PTS.model.DeliverableType', {
 
     proxy: {
         type: 'rest',
-        url : '../deliverabletype',
+        url: '../deliverabletype',
         reader: {
             type: 'json',
             root: 'data'

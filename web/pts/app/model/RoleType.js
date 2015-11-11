@@ -5,20 +5,22 @@
 
 Ext.define('PTS.model.RoleType', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'roletypeid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'roletype', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'roletype',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -26,7 +28,7 @@ Ext.define('PTS.model.RoleType', {
 
     proxy: {
         type: 'rest',
-        url : '../roletype',
+        url: '../roletype',
         reader: {
             type: 'json',
             root: 'data'

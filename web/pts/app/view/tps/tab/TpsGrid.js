@@ -18,119 +18,105 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
     selType: 'cellmodel',
 
     initComponent: function() {
-        var me = this, sm,
-            cols = [
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'modtype',
-                    text: 'Agreement Type',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'shorttitle',
-                    text: 'Project',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'projectcode',
-                    text: 'Project Code',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'title',
-                    hidden: true,
-                    text: 'Title',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'modificationcode',
-                    hidden: true,
-                    text: 'Agreement #',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'principalinv',
-                    hidden: true,
-                    text: 'PI Name',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'invemail',
-                    hidden: true,
-                    text: 'PI e-mail',
-                    locked: true
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'recipient',
-                    hidden: true,
-                    text: 'Funding Recipient',
-                    locked: true
-                }
-            ];
+        var me = this,
+            sm,
+            cols = [{
+                xtype: 'gridcolumn',
+                dataIndex: 'modtype',
+                text: 'Agreement Type',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'shorttitle',
+                text: 'Project',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'projectcode',
+                text: 'Project Code',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'title',
+                hidden: true,
+                text: 'Title',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'modificationcode',
+                hidden: true,
+                text: 'Agreement #',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'principalinv',
+                hidden: true,
+                text: 'PI Name',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'invemail',
+                hidden: true,
+                text: 'PI e-mail',
+                locked: true
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'recipient',
+                hidden: true,
+                text: 'Funding Recipient',
+                locked: true
+            }];
 
         Ext.applyIf(me, {
             viewConfig: {
 
             },
-            dockedItems: [
-                {
-                    xtype: 'pagingtoolbar',
-                    store: 'TpsRecords',   // same store GridPanel is using
-                    dock: 'top',
-                    displayInfo: true,
-                    plugins: [
-                        Ext.create('Ext.ux.grid.PrintGrid', {
-                            title: function(){
-                                return this.child('cycle#filter').getActiveItem().text + ' (TPS Report)';
-                            }
-                        })/*,
-                        Ext.create('Ext.ux.grid.SaveGrid', {
-                            hidden: true
-                        })*/
-                    ],
-                    items: [
-                        '-',
-                        {
-                            xtype: 'cycle',
-                            itemId: 'filter',
-                            showText: true,
-                            action: 'filterrecords',
-                            tooltip: 'Click to filter the Records',
-                            menu: {
-                                xtype: 'menu',
-                                width: 120,
-                                items: [
-                                    {
-                                        //xtype: 'menucheckitem',
-                                        iconCls: 'pts-flag-red',
-                                        text: 'Active',
-                                        filter: 'active'
-                                    },
-                                    {
-                                        //xtype: 'menucheckitem',
-                                        iconCls: 'pts-flag-green',
-                                        text: 'Funded',
-                                        filter: 'funded'
-                                    },
-                                    {
-                                        //xtype: 'menucheckitem',
-                                        iconCls: 'pts-flag-white',
-                                        text: 'All',
-                                        filter: 'all'
-                                    }
-                                ]
-                            }
+            dockedItems: [{
+                xtype: 'pagingtoolbar',
+                store: 'TpsRecords', // same store GridPanel is using
+                dock: 'top',
+                displayInfo: true,
+                plugins: [
+                    Ext.create('Ext.ux.grid.PrintGrid', {
+                        title: function() {
+                            return this.child('cycle#filter').getActiveItem().text + ' (TPS Report)';
                         }
-                    ]
-                }
-            ],
+                    })
+                    /*,
+                                            Ext.create('Ext.ux.grid.SaveGrid', {
+                                                hidden: true
+                                            })*/
+                ],
+                items: [
+                    '-', {
+                        xtype: 'cycle',
+                        itemId: 'filter',
+                        showText: true,
+                        action: 'filterrecords',
+                        tooltip: 'Click to filter the Records',
+                        menu: {
+                            xtype: 'menu',
+                            width: 120,
+                            items: [{
+                                //xtype: 'menucheckitem',
+                                iconCls: 'pts-flag-red',
+                                text: 'Active',
+                                filter: 'active'
+                            }, {
+                                //xtype: 'menucheckitem',
+                                iconCls: 'pts-flag-green',
+                                text: 'Funded',
+                                filter: 'funded'
+                            }, {
+                                //xtype: 'menucheckitem',
+                                iconCls: 'pts-flag-white',
+                                text: 'All',
+                                filter: 'all'
+                            }]
+                        }
+                    }
+                ]
+            }],
             columns: cols
         });
 
@@ -151,7 +137,9 @@ Ext.define('PTS.view.tps.tab.TpsGrid', {
         sm = me.getSelectionModel();
         //Override onMouseDown to prevent clicks on the locked view
         sm.onMouseDown = function(view, cell, cellIndex, record, row, rowIndex, e) {
-            if(sm.primaryView !== view) {return false;}
+            if (sm.primaryView !== view) {
+                return false;
+            }
             sm.setCurrentPosition({
                 row: rowIndex,
                 column: cellIndex

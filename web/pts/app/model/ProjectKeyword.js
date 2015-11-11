@@ -4,27 +4,29 @@
 
 Ext.define('PTS.model.ProjectKeyword', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'projectkeywordid',
             type: 'integer',
             useNull: true,
             persist: false
-        },
-        {
+        }, {
             name: 'keywordid',
             type: 'mystring',
             useNull: true
-        },        {
+        }, {
             name: 'projectid',
             type: 'integer',
             useNull: true
-        },
-        {
-            name: 'text', type: 'mystring', useNull: true, persist: false
-        },
-        {
-            name: 'definition', type: 'mystring', useNull: true, persist: false
+        }, {
+            name: 'text',
+            type: 'mystring',
+            useNull: true,
+            persist: false
+        }, {
+            name: 'definition',
+            type: 'mystring',
+            useNull: true,
+            persist: false
         }
 
     ],
@@ -32,7 +34,7 @@ Ext.define('PTS.model.ProjectKeyword', {
 
     proxy: {
         type: 'rest',
-        url : '../project/keyword',
+        url: '../project/keyword',
         reader: {
             type: 'json'
         },

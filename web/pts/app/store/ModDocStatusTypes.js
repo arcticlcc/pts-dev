@@ -5,6 +5,6 @@
 Ext.define('PTS.store.ModDocStatusTypes', {
     extend: 'Ext.data.Store',
     model: 'PTS.model.ModDocStatusType',
-    
+
     autoLoad: true
 });

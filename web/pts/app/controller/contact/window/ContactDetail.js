@@ -54,22 +54,22 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
         var phys = cbx.up('fieldset'),
             mail = cbx.up('contactdetail').down('#mailAddress');
 
-        if(cbx.getValue()) {
+        if (cbx.getValue()) {
             //copy vals from mailing fieldset
-            Ext.each(mail.query('field'),function(itm){
+            Ext.each(mail.query('field'), function(itm) {
                 var val = itm.getValue(),
                     name = itm.getName(),
-                    copy = phys.down('field[name='+name+']');
+                    copy = phys.down('field[name=' + name + ']');
 
-                if('addressid' !== name && copy) {
+                if ('addressid' !== name && copy) {
                     //data[name] = val;
                     copy.setValue(val);
                     copy.disable();
                 }
             });
-        }else {
+        } else {
             //enable fields
-            Ext.each(phys.query('field'),function(itm){
+            Ext.each(phys.query('field'), function(itm) {
                 itm.enable();
             });
         }
@@ -98,10 +98,10 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
             country = fldset.down('#country').getValue();
 
         //look up the state and city
-        if(fld.isDirty() && !Ext.isEmpty(fld.getValue())) {
+        if (fld.isDirty() && !Ext.isEmpty(fld.getValue())) {
             Ext.Ajax.request({
                 url: '../country/' + country + '/postalcode/' + val,
-                success: function(response){
+                success: function(response) {
                     var state = fldset.down('#state'),
                         city = fldset.down('#city'),
                         data = Ext.decode(response.responseText).data;
@@ -111,7 +111,7 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
                     city.setValue(data.placename);
                     city.enable();
                 },
-                failure: function(response){
+                failure: function(response) {
                     var msg = Ext.decode(response.responseText).message;
 
                     fld.markInvalid(msg);
@@ -123,11 +123,11 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
     /**
      * Actions to take when the postalcode field is validated.
      */
-    onPostalValidate: function(fld,isValid) {
+    onPostalValidate: function(fld, isValid) {
         var fldset = fld.up('addressfieldset');
 
-            fldset.down('#state').setDisabled(!isValid);
-            fldset.down('#city').setDisabled(!isValid);
+        fldset.down('#state').setDisabled(!isValid);
+        fldset.down('#city').setDisabled(!isValid);
     },
 
     /**
@@ -141,7 +141,7 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
             var cs = fld.up('addressfieldset').query('#city, #state'),
                 empty = Ext.isEmpty(fld.getValue());
 
-            Ext.each(cs, function(){
+            Ext.each(cs, function() {
                 this.setDisabled(empty);
             });
 
@@ -156,8 +156,8 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
             filter = this.getStatesStore().filters.get('country');
 
         //don't refilter with same value
-        if(val && !(filter && (val === filter.value))) {
-                this.filterState(val);
+        if (val && !(filter && (val === filter.value))) {
+            this.filterState(val);
         }
 
     },
@@ -166,6 +166,10 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
      * Filter the statecombo store by country
      */
     filterState: function(val) {
-        this.getStatesStore().filter({id: 'country', property: 'countryalpha', value: val});
+        this.getStatesStore().filter({
+            id: 'country',
+            property: 'countryalpha',
+            value: val
+        });
     }
 });

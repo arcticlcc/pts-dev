@@ -5,7 +5,7 @@
 
 Ext.define('PTS.store.Projects', {
     extend: 'Ext.data.Store',
-    model: 'PTS.model.Project'//,
+    model: 'PTS.model.Project' //,
 
     //autoLoad: true,
     //storeId: 'ProjectListings'

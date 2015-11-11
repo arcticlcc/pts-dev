@@ -11,7 +11,8 @@ Ext.define('PTS.view.project.form.ModificationForm', {
     title: 'Modification',
 
     initComponent: function() {
-        var me = this, form;
+        var me = this,
+            form;
         me.callParent(arguments);
 
         //TODO: probably move this to controller??

@@ -57,7 +57,7 @@ Ext.define('PTS.view.controls.GridForm', {
             el = form.down('#formpanel').getEl(),
             grid = form.down('gridpanel'),
             store = grid.getStore();
-            //mask = new Ext.LoadMask(pnl,'Saving...');
+        //mask = new Ext.LoadMask(pnl,'Saving...');
 
         el.mask('Saving...');
         form.getForm().updateRecord(rec);
@@ -113,27 +113,28 @@ Ext.define('PTS.view.controls.GridForm', {
             // default
             //http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
             store.getBatchListeners = function() {
-                var me = store, sel = selection, //the selected record
-                listeners = {
-                    scope: me,
-                    exception: function(batch, op) {
-                        var rec;
+                var me = store,
+                    sel = selection, //the selected record
+                    listeners = {
+                        scope: me,
+                        exception: function(batch, op) {
+                            var rec;
 
-                        el.unmask();
-                        //if a destroy operation fails we need to add the record
-                        // back to the store
-                        if (op.action === "destroy") {
-                            rec = op.records[0];
-                            rec.reject();
-                            //reject changes
-                            Ext.Array.remove(store.removed, rec);
-                            //remove the record from the store's removed array
-                            store.insert(sel.index, rec);
-                            //insert back into the store at the same position
+                            el.unmask();
+                            //if a destroy operation fails we need to add the record
+                            // back to the store
+                            if (op.action === "destroy") {
+                                rec = op.records[0];
+                                rec.reject();
+                                //reject changes
+                                Ext.Array.remove(store.removed, rec);
+                                //remove the record from the store's removed array
+                                store.insert(sel.index, rec);
+                                //insert back into the store at the same position
 
+                            }
                         }
-                    }
-                };
+                    };
 
                 if (me.batchUpdateMode === 'operation') {
                     listeners.operationcomplete = me.onBatchOperationComplete;
@@ -178,9 +179,9 @@ Ext.define('PTS.view.controls.GridForm', {
 
                 columns: me.columns,
 
-                dockedItems:[{
+                dockedItems: [{
                     xtype: 'pagingtoolbar',
-                    store: me.store,   // same store GridPanel is using
+                    store: me.store, // same store GridPanel is using
                     dock: 'top',
                     displayInfo: true,
                     plugins: [
@@ -206,7 +207,7 @@ Ext.define('PTS.view.controls.GridForm', {
                         this.up('gridform').down('#removeRow').setDisabled(records.length === 0);
                     },
                     viewready: function(grid) {
-                        if(grid.getStore().count() > 0) {
+                        if (grid.getStore().count() > 0) {
                             grid.getSelectionModel().select(0);
                         }
                     }
@@ -258,27 +259,27 @@ Ext.define('PTS.view.controls.GridForm', {
         me.callParent(arguments);
 
         me.addEvents(
-        /**
-         * @event loadform
-         * Fires after a record is loaded into the form.
-         * @param {Ext.data.Model} record
-         */
-        'loadform',
-        /**
-         * @event beforeremoverow
-         * Fires before a row is removed.
-         * Return false to cancel removal.
-         * @param {Ext.data.Model} record
-         * @param {Ext.data.Store} store
-         */
-        'beforeremoverow',
-        /**
-         * @event removerow
-         * Fires after a row is removed.
-         * If {@link #syncOnRemoveRow} is true, the event fires on sync success
-         * @param {Ext.data.Model} record
-         * @param {Ext.data.Store} store
-         */
-        'removerow');
+            /**
+             * @event loadform
+             * Fires after a record is loaded into the form.
+             * @param {Ext.data.Model} record
+             */
+            'loadform',
+            /**
+             * @event beforeremoverow
+             * Fires before a row is removed.
+             * Return false to cancel removal.
+             * @param {Ext.data.Model} record
+             * @param {Ext.data.Store} store
+             */
+            'beforeremoverow',
+            /**
+             * @event removerow
+             * Fires after a row is removed.
+             * If {@link #syncOnRemoveRow} is true, the event fires on sync success
+             * @param {Ext.data.Model} record
+             * @param {Ext.data.Store} store
+             */
+            'removerow');
     }
 });

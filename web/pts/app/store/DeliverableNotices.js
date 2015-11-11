@@ -8,16 +8,19 @@ Ext.define('PTS.store.DeliverableNotices', {
 
     autoLoad: false,
     autoSync: false,
-    sorters: [
-        { property: 'datesent', direction : 'DESC' },
-        { property: 'deliverablenoticeid', direction : 'DESC' }
-    ],
+    sorters: [{
+        property: 'datesent',
+        direction: 'DESC'
+    }, {
+        property: 'deliverablenoticeid',
+        direction: 'DESC'
+    }],
     listeners: {
-        'add': function(store, records){
+        'add': function(store, records) {
             Ext.each(records, function() {
                 var rec = this;
 
-                if(null === rec.get('contactid')) {
+                if (null === rec.get('contactid')) {
                     rec.set('contactid', PTS.user.get('contactid'));
                 }
             });

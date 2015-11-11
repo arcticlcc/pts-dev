@@ -10,7 +10,7 @@ Ext.define('PTS.store.ModDocStatuses', {
     sorters: [{
         property: 'effectivedate',
         direction: 'DESC'
-    },{
+    }, {
         property: 'weight',
         direction: 'DESC'
     }]

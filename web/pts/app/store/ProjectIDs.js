@@ -6,25 +6,20 @@ Ext.define('PTS.store.ProjectIDs', {
     extend: 'Ext.data.Store',
     model: 'PTS.model.Project',
 
-    fields: [
-        {
-            name: 'projectid',
-            type: 'int'
-        },
-        {
-            name: 'projectcode',
-            type: 'string'
-        },
-        {
-            name: 'title'
-        },
-        {
-            name: 'shorttitle'
-        }
-    ],
+    fields: [{
+        name: 'projectid',
+        type: 'int'
+    }, {
+        name: 'projectcode',
+        type: 'string'
+    }, {
+        name: 'title'
+    }, {
+        name: 'shorttitle'
+    }],
     proxy: {
         type: 'rest',
-        url : '../projectlist',
+        url: '../projectlist',
         reader: {
             type: 'json',
             root: 'data'
@@ -32,8 +27,11 @@ Ext.define('PTS.store.ProjectIDs', {
         limitParam: undefined
     },
     autoLoad: false,
-    sorters: [
-        { property: 'fiscalyear', direction : 'DESC' },
-        { property: 'number', direction : 'DESC' }
-    ]
+    sorters: [{
+        property: 'fiscalyear',
+        direction: 'DESC'
+    }, {
+        property: 'number',
+        direction: 'DESC'
+    }]
 });

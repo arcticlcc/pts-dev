@@ -20,7 +20,7 @@ Ext.define('PTS.view.button.Reset', {
         var me = this;
 
         Ext.applyIf(me, {
-            handler: function(){
+            handler: function() {
                 Ext.Msg.alert('Click', 'You clicked on "Reset".');
             }
         });

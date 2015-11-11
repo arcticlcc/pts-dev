@@ -7,10 +7,8 @@ Ext.define('PTS.store.UserTypes', {
     model: 'PTS.model.UserType',
 
     autoLoad: true,
-    sorters: [
-        {
-            property : 'usertype',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'usertype',
+        direction: 'ASC'
+    }]
 });

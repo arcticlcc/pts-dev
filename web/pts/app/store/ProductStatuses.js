@@ -8,8 +8,11 @@ Ext.define('PTS.store.ProductStatuses', {
 
     autoLoad: false,
     autoSync: false,
-    sorters: [
-        { property: 'effectivedate', direction : 'DESC' },
-        { property: 'productstatusid', direction : 'DESC' }
-    ]
+    sorters: [{
+        property: 'effectivedate',
+        direction: 'DESC'
+    }, {
+        property: 'productstatusid',
+        direction: 'DESC'
+    }]
 });

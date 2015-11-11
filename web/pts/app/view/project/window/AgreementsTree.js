@@ -7,7 +7,7 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.agreementstree',
     requires: [
-       'Ext.tree.plugin.TreeViewDragDrop'
+        'Ext.tree.plugin.TreeViewDragDrop'
     ],
 
     border: '0 0 0 1',
@@ -22,27 +22,27 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
             pluginId: 'agreementsddplugin'
         },
         //Get agreement id node belongs to
-        getAgreementId: function (record) {
+        getAgreementId: function(record) {
             var i,
-            ln = record.getDepth();
+                ln = record.getDepth();
 
             for (i = 0; i < ln; i++) {
                 if (record.parentNode.get('typeid') === 20) {
                     return record.getId();
-                }else {
+                } else {
                     record = record.parentNode;
                 }
             }
         },
         //Get agreement id node belongs to
-        getDataId: function (record,type) {
+        getDataId: function(record, type) {
             var i,
-            ln = record.getDepth();
+                ln = record.getDepth();
 
             for (i = 0; i < ln; i++) {
                 if (record.parentNode.get('typeid') === type) {
                     return record.get('dataid');
-                }else {
+                } else {
                     record = record.parentNode;
                 }
             }
@@ -53,39 +53,33 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
         var me = this;
 
         Ext.applyIf(me, {
-            columns: [
-                {
-                    xtype: 'treecolumn',
-                    dataIndex: 'text',
-                    flex: 3,
-                    text: 'Title'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    width: 75,
-                    align: 'center',
-                    dataIndex: 'type',
-                    text: 'Type'
-                }
-            ],
-            tools: [
-                {
-                    xtype: 'tool',
-                    tooltip: 'Refresh',
-                    type: 'refresh',
-                    hidden: false
-                },{
-                    xtype: 'tool',
-                    tooltip: 'Expand All',
-                    type: 'expand'
-                },
-                {
-                    xtype: 'tool',
-                    tooltip: 'Collapse All',
-                    type: 'collapse',
-                    hidden: true
-                }
-            ]
+            columns: [{
+                xtype: 'treecolumn',
+                dataIndex: 'text',
+                flex: 3,
+                text: 'Title'
+            }, {
+                xtype: 'gridcolumn',
+                width: 75,
+                align: 'center',
+                dataIndex: 'type',
+                text: 'Type'
+            }],
+            tools: [{
+                xtype: 'tool',
+                tooltip: 'Refresh',
+                type: 'refresh',
+                hidden: false
+            }, {
+                xtype: 'tool',
+                tooltip: 'Expand All',
+                type: 'expand'
+            }, {
+                xtype: 'tool',
+                tooltip: 'Collapse All',
+                type: 'collapse',
+                hidden: true
+            }]
         });
 
         me.callParent(arguments);

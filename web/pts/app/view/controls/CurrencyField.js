@@ -8,7 +8,7 @@ Ext.define('PTS.view.controls.CurrencyField', {
 
     hideTrigger: true,
 
-    setValue: function (v) {
+    setValue: function(v) {
         this.callParent(arguments);
 
         if (!Ext.isEmpty(this.getValue())) {
@@ -16,11 +16,11 @@ Ext.define('PTS.view.controls.CurrencyField', {
         }
     },
 
-    removeFormat: function (v) {
+    removeFormat: function(v) {
         if (Ext.isEmpty(v)) {
             return '';
         } else {
-            var thou = new RegExp(Ext.util.Format.thousandSeparator,'gi');
+            var thou = new RegExp(Ext.util.Format.thousandSeparator, 'gi');
             v = v.toString().replace(Ext.util.Format.currencySign, '').replace(thou, '');
             if (v % 1 === 0) {
                 // Return value formatted with no precision since there are no digits after the decimal
@@ -33,18 +33,18 @@ Ext.define('PTS.view.controls.CurrencyField', {
     },
 
     // Override parseValue to remove the currency format
-    parseValue: function (v) {
+    parseValue: function(v) {
         return this.callParent([this.removeFormat(v)]);
     },
 
     // Remove the format before validating the value
-    getErrors: function (v) {
+    getErrors: function(v) {
         return this.callParent([this.removeFormat(v)]);
     },
 
     /* Override getSubmitData to remove the currency format on the value
     that will be passed out from the getValues method of the form */
-    getSubmitData: function () {
+    getSubmitData: function() {
         var returnObject = {};
         returnObject[this.name] = this.removeFormat(this.callParent(arguments)[this.name]);
 
@@ -52,7 +52,7 @@ Ext.define('PTS.view.controls.CurrencyField', {
     },
 
     // Override preFocus to remove the format during edit
-    preFocus: function () {
+    preFocus: function() {
         this.setRawValue(this.removeFormat(this.getRawValue()));
 
         this.callParent(arguments);

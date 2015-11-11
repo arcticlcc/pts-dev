@@ -54,13 +54,15 @@ Ext.define('PTS.view.product.window.ProductStatus', {
                 dataIndex: 'contactid',
                 hidden: true,
                 renderer: function(value) {
-                    var store = Ext.getStore('GroupUsers'), idx = store.find('contactid', value, 0, false, true, true), rec = store.getAt(idx);
+                    var store = Ext.getStore('GroupUsers'),
+                        idx = store.find('contactid', value, 0, false, true, true),
+                        rec = store.getAt(idx);
                     if (rec) {
                         return rec.get('fullname');
                     }
                     return value;
                 },
-                text:'User'
+                text: 'User'
             }, {
                 xtype: 'gridcolumn',
                 dataIndex: 'comment',

@@ -5,58 +5,63 @@
 
 Ext.define('PTS.model.User', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'loginid',
-            mapping: 'loginid',
-            type: 'int',
-            persist: false
-        },
-        {
-            name: 'contactid',
-            mapping: 'contactid',
-            type: 'int',
-            persist: false
-        },
-        {
-            name: 'groupid',
-            mapping: 'groupid',
-            type: 'int',
-            persist: false
-        },
-        {
-            name: 'username', type: 'mystring', useNull: true
-        },
-        {
-            name: 'firstname', type: 'mystring', useNull: true
-        },
-        {
-            name: 'lastname', type: 'mystring', useNull: true
-        },
-        {
-            name: 'middlename', type: 'mystring', useNull: true
-        },
-        {
-            name: 'suffix', type: 'mystring', useNull: true
-        },
-        {
-            name: 'groupname', type: 'mystring', useNull: true
-        },
-        {
-            name: 'acronym', type: 'mystring', useNull: true
-        },
-        {
-            name: 'groupemail', type: 'mystring', useNull: true
-        },
-        {
-            name: 'projecturiformat', type: 'mystring', useNull: true
-        }
-    ],
+    fields: [{
+        name: 'loginid',
+        mapping: 'loginid',
+        type: 'int',
+        persist: false
+    }, {
+        name: 'contactid',
+        mapping: 'contactid',
+        type: 'int',
+        persist: false
+    }, {
+        name: 'groupid',
+        mapping: 'groupid',
+        type: 'int',
+        persist: false
+    }, {
+        name: 'username',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'firstname',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'lastname',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'middlename',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'suffix',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'groupname',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'acronym',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'groupemail',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'projecturiformat',
+        type: 'mystring',
+        useNull: true
+    }],
     idProperty: 'loginid',
 
     proxy: {
         type: 'rest',
-        url : '../userinfo',
+        url: '../userinfo',
         reader: {
             type: 'json',
             root: 'data'

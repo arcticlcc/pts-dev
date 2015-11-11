@@ -31,11 +31,10 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                 xtype: 'form',
                 itemId: 'itemForm',
                 model: 'PTS.model.Deliverable',
-                layout:'anchor',
+                layout: 'anchor',
                 region: 'center',
                 bodyPadding: 10,
-                items: [
-                    {
+                items: [{
                         xtype: 'container',
                         itemId: 'mainCon',
                         layout: {
@@ -46,59 +45,56 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             allowBlank: false
                         },
                         items: [{
-                            xtype : 'fieldcontainer',
-                            fieldLabel : 'Title',
-                            layout : {
-                                align : 'stretchmax',
-                                type : 'hbox'
+                            xtype: 'fieldcontainer',
+                            fieldLabel: 'Title',
+                            layout: {
+                                align: 'stretchmax',
+                                type: 'hbox'
                             },
-                            combineErrors : true,
-                            items : [{
-                                xtype : 'textfield',
-                                name : 'code',
+                            combineErrors: true,
+                            items: [{
+                                xtype: 'textfield',
+                                name: 'code',
                                 emptyText: 'Code',
-                                hideLabel : true,
-                                width : 40
+                                hideLabel: true,
+                                width: 40
                             }, {
-                                xtype : 'displayfield',
-                                name : 'codedelimiter',
-                                margin : '0 2',
-                                width : 5,
-                                value : '/',
-                                hideLabel : true
+                                xtype: 'displayfield',
+                                name: 'codedelimiter',
+                                margin: '0 2',
+                                width: 5,
+                                value: '/',
+                                hideLabel: true
                             }, {
-                                xtype : 'textfield',
-                                name : 'title',
-                                fieldLabel : 'Title',
-                                hideLabel : true,
-                                flex : 1
-                            }]},
-                            {
-                                xtype: 'textareafield',
-                                name: 'description',
-                                fieldLabel: 'Description',
-                                grow: true,
-                                anchor: '100%'
-                            },
-                            {
-                                xtype: 'combobox',
-                                name: 'deliverabletypeid',
-                                fieldLabel: 'Type',
-                                anchor: '100%',
-                                store: 'DeliverableTypes',
-                                displayField: 'type',
-                                valueField: 'deliverabletypeid',
-                                forceSelection: true,
-                                queryMode: 'local',
-                                listConfig: {
-                                    getInnerTpl: function() {
-                                        return '<div data-qtip="{description}">{type}</div>';
-                                    }
+                                xtype: 'textfield',
+                                name: 'title',
+                                fieldLabel: 'Title',
+                                hideLabel: true,
+                                flex: 1
+                            }]
+                        }, {
+                            xtype: 'textareafield',
+                            name: 'description',
+                            fieldLabel: 'Description',
+                            grow: true,
+                            anchor: '100%'
+                        }, {
+                            xtype: 'combobox',
+                            name: 'deliverabletypeid',
+                            fieldLabel: 'Type',
+                            anchor: '100%',
+                            store: 'DeliverableTypes',
+                            displayField: 'type',
+                            valueField: 'deliverabletypeid',
+                            forceSelection: true,
+                            queryMode: 'local',
+                            listConfig: {
+                                getInnerTpl: function() {
+                                    return '<div data-qtip="{description}">{type}</div>';
                                 }
                             }
-                        ]
-                    },
-                    {
+                        }]
+                    }, {
                         xtype: 'fieldcontainer',
                         itemId: 'delPeriod',
                         hidden: true,
@@ -111,32 +107,27 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             type: 'hbox'
                         },
                         fieldLabel: 'Period',
-                        items: [
-                            {
-                                xtype: 'daterangefield',
-                                itemId: 'startDate',
-                                name: 'startdate',
-                                fieldLabel: 'Start',
-                                margin: '0 20 0 0',
-                                vfield: 'beginDate',
-                                endDateField: 'endDate',
-                                vtype: 'daterange'
-                            },
-                            {
-                                xtype: 'daterangefield',
-                                itemId: 'endDate',
-                                name: 'enddate',
-                                vfield: 'endDate',
-                                startDateField: 'startDate',
-                                vtype: 'daterange',
-                                fieldLabel: 'End'
-                            }
-                        ]
-                    },
-                    {
+                        items: [{
+                            xtype: 'daterangefield',
+                            itemId: 'startDate',
+                            name: 'startdate',
+                            fieldLabel: 'Start',
+                            margin: '0 20 0 0',
+                            vfield: 'beginDate',
+                            endDateField: 'endDate',
+                            vtype: 'daterange'
+                        }, {
+                            xtype: 'daterangefield',
+                            itemId: 'endDate',
+                            name: 'enddate',
+                            vfield: 'endDate',
+                            startDateField: 'startDate',
+                            vtype: 'daterange',
+                            fieldLabel: 'End'
+                        }]
+                    }, {
                         xtype: 'managercombo'
-                    },
-                    {
+                    }, {
                         xtype: 'datefield',
                         name: 'duedate',
                         fieldLabel: 'Date Due',
@@ -159,47 +150,39 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                     {
                         xtype: 'fieldcontainer',
                         fieldLabel: 'Reminder',
-                        layout:'column',
+                        layout: 'column',
                         anchor: '100%',
-                        items: [
-                            {
-                                xtype: 'checkboxfield',
-                                name: 'reminder',
-                                boxLabel: 'Auto?',
-                                width: 100
-                            },
-                            {
-                                xtype: 'checkboxfield',
-                                name: 'staffonly',
-                                boxLabel: 'Staff Only?'
-                            }
-                        ]
-                    },
-                    {
+                        items: [{
+                            xtype: 'checkboxfield',
+                            name: 'reminder',
+                            boxLabel: 'Auto?',
+                            width: 100
+                        }, {
+                            xtype: 'checkboxfield',
+                            name: 'staffonly',
+                            boxLabel: 'Staff Only?'
+                        }]
+                    }, {
                         xtype: 'fieldcontainer',
                         fieldLabel: 'Publication',
-                        layout:'column',
+                        layout: 'column',
                         anchor: '100%',
-                        items: [
-                            {
-                                xtype: 'checkboxfield',
-                                name: 'publish',
-                                boxLabel: 'Publishable',
-                                width: 100
-                            },
-                            {
-                                xtype: 'checkboxfield',
-                                name: 'restricted',
-                                boxLabel: 'Restricted',
-                                listeners: {
-                                    change: function(f, newval, old) {
-                                        f.up('form').down('field[name=accessdescription]').validate();
-                                    }
+                        items: [{
+                            xtype: 'checkboxfield',
+                            name: 'publish',
+                            boxLabel: 'Publishable',
+                            width: 100
+                        }, {
+                            xtype: 'checkboxfield',
+                            name: 'restricted',
+                            boxLabel: 'Restricted',
+                            listeners: {
+                                change: function(f, newval, old) {
+                                    f.up('form').down('field[name=accessdescription]').validate();
                                 }
                             }
-                        ]
-                    },
-                    {
+                        }]
+                    }, {
                         xtype: 'textareafield',
                         name: 'accessdescription',
                         fieldLabel: 'Access Description',
@@ -208,15 +191,15 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                         validator: function(val) {
                             var r = this.up('form').down('checkboxfield[name=restricted]');
 
-                            if(!r.getValue() || r.getValue() === !!val) {
+                            if (!r.getValue() || r.getValue() === !!val) {
                                 return true;
                             }
                             return 'Access Description is required when publication is restricted';
                         }
                     }
                 ]
-            },{
-                xtype:'tabpanel',
+            }, {
+                xtype: 'tabpanel',
                 //disabled:true,
                 itemId: 'relatedDetails',
                 title: 'Details',
@@ -227,21 +210,20 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                 //activeTab: 1,
                 flex: 1,
                 defaults: {
-                    bodyStyle:'padding:10px',
+                    bodyStyle: 'padding:10px',
                     disabled: true
                 },
-                items:[{
-                    xtype: 'roweditgrid',
-                    store: 'DeliverableModStatuses',
-                    uri: 'deliverablemodstatus',
-                    itemId: 'statusGrid',
-                    title:'Status',
-                    disabled: false,
-                    columns: [
-                        {
+                items: [{
+                        xtype: 'roweditgrid',
+                        store: 'DeliverableModStatuses',
+                        uri: 'deliverablemodstatus',
+                        itemId: 'statusGrid',
+                        title: 'Status',
+                        disabled: false,
+                        columns: [{
                             xtype: 'gridcolumn',
                             dataIndex: 'deliverablestatusid',
-                            renderer: function(value, metaData, record, rowIdx, colIdx , store, view) {
+                            renderer: function(value, metaData, record, rowIdx, colIdx, store, view) {
                                 var combo = view.getHeaderAtIndex(colIdx).getEditor(),
                                     idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
                                     rec = combo.getStore().getAt(idx);
@@ -257,8 +239,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 allowBlank: false
                             },
                             text: 'Status'
-                        },
-                        {
+                        }, {
                             xtype: 'datecolumn',
                             dataIndex: 'effectivedate',
                             editor: {
@@ -267,8 +248,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 maxValue: new Date()
                             },
                             text: 'Effective Date'
-                        },
-                        {
+                        }, {
                             xtype: 'gridcolumn',
                             dataIndex: 'contactid',
                             //width: 150,
@@ -283,8 +263,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 return value;
                             },
                             text: 'User'
-                        },
-                        {
+                        }, {
                             xtype: 'gridcolumn',
                             dataIndex: 'comment',
                             editor: {
@@ -293,24 +272,22 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             },
                             flex: 1,
                             text: 'Comment'
-                        }
-                    ]
-                },{
-                    xtype: 'roweditgrid',
-                    store: 'DeliverableNotices',
-                    uri: 'deliverablenotice',
-                    title:'Notices',
-                    disabled: false,
-                    extraButtons:[{
-                        text: 'Send Notice',
-                        itemId: 'sendNotice',
-                        iconCls: 'pts-menu-emailgo'
-                    }],
-                    columns: [
-                        {
+                        }]
+                    }, {
+                        xtype: 'roweditgrid',
+                        store: 'DeliverableNotices',
+                        uri: 'deliverablenotice',
+                        title: 'Notices',
+                        disabled: false,
+                        extraButtons: [{
+                            text: 'Send Notice',
+                            itemId: 'sendNotice',
+                            iconCls: 'pts-menu-emailgo'
+                        }],
+                        columns: [{
                             xtype: 'gridcolumn',
                             dataIndex: 'noticeid',
-                            renderer: function(value, metaData, record, rowIdx, colIdx , store, view) {
+                            renderer: function(value, metaData, record, rowIdx, colIdx, store, view) {
                                 var combo = view.getHeaderAtIndex(colIdx).getEditor(),
                                     idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
                                     rec = combo.getStore().getAt(idx);
@@ -326,11 +303,10 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 allowBlank: false
                             },
                             text: 'Notice'
-                        },
-                        {
+                        }, {
                             xtype: 'gridcolumn',
                             dataIndex: 'recipientid',
-                            renderer: function(value, metaData, record, rowIdx, colIdx , store, view) {
+                            renderer: function(value, metaData, record, rowIdx, colIdx, store, view) {
                                 var combo = view.getHeaderAtIndex(colIdx).getEditor(),
                                     idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
                                     rec = combo.getStore().getAt(idx);
@@ -353,8 +329,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 lastQuery: ''
                             },
                             text: 'Recipient'
-                        },
-                        {
+                        }, {
                             xtype: 'datecolumn',
                             dataIndex: 'datesent',
                             editor: {
@@ -363,8 +338,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 maxValue: new Date()
                             },
                             text: 'Date Sent'
-                        },
-                        {
+                        }, {
                             xtype: 'gridcolumn',
                             dataIndex: 'contactid',
                             //width: 150,
@@ -379,8 +353,7 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                                 return value;
                             },
                             text: 'User'
-                        },
-                        {
+                        }, {
                             xtype: 'gridcolumn',
                             dataIndex: 'comment',
                             editor: {
@@ -388,19 +361,21 @@ Ext.define('PTS.view.project.form.DeliverableForm', {
                             },
                             flex: 1,
                             text: 'Comment'
-                        }
-                    ]
-                },/*{
-                    title:'Contacts'
-                },{
-                    title:'Progress'
-                },*/{
-                    title: 'Comments',
-                    disabled: false,
-                    xtype: 'commenteditgrid',
-                    store: 'DeliverableComments',
-                    uri: 'deliverablecomment'
-                }]
+                        }]
+                    },
+                    /*{
+                                        title:'Contacts'
+                                    },{
+                                        title:'Progress'
+                                    },*/
+                    {
+                        title: 'Comments',
+                        disabled: false,
+                        xtype: 'commenteditgrid',
+                        store: 'DeliverableComments',
+                        uri: 'deliverablecomment'
+                    }
+                ]
             }]
         });
 

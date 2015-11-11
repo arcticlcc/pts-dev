@@ -11,15 +11,15 @@ Ext.define('PTS.controller.product.tab.ProductTab', {
     refs: [{
         ref: 'productList',
         selector: 'producttab > productlist'
-    },{
+    }, {
         ref: 'productTab',
         selector: 'producttab'
     }],
 
     init: function() {
 
-        var list = this.getController('product.tab.ProductList');//,
-            //det = this.getController('product.tab.ProductDetail');
+        var list = this.getController('product.tab.ProductList'); //,
+        //det = this.getController('product.tab.ProductDetail');
 
         // Remember to call the init method manually
         list.init();
@@ -50,12 +50,12 @@ Ext.define('PTS.controller.product.tab.ProductTab', {
     editProduct: function() {
         var pc = this.getController('product.Product'),
             record = this.getProductList().getSelectionModel().getSelection()[0];
-        if(record) {
+        if (record) {
             pc.openProduct(record);
         }
     },
 
     onProductListSelect: function(prd) {
-            this.getProductTab().down('button[action=editproduct]').setDisabled(!prd);
+        this.getProductTab().down('button[action=editproduct]').setDisabled(!prd);
     }
 });

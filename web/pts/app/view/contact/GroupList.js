@@ -12,7 +12,7 @@ Ext.define('PTS.view.contact.GroupList', {
         'Ext.ux.grid.FilterBar'
     ],
 
-    title:'Group',
+    title: 'Group',
     store: 'ContactGroups',
     itemId: 'group', //do not change
 
@@ -29,26 +29,22 @@ Ext.define('PTS.view.contact.GroupList', {
                     Ext.create('Ext.ux.grid.SaveGrid', {})
                 ]
             }],
-            columns: [
-                {
+            columns: [{
                     xtype: 'gridcolumn',
                     dataIndex: 'fullname',
                     text: 'Full Name',
-                    flex:1
-                },
-                {
+                    flex: 1
+                }, {
                     xtype: 'gridcolumn',
                     dataIndex: 'name',
                     text: 'Name',
-                    flex:1,
+                    flex: 1,
                     hidden: true
-                },
-                {
+                }, {
                     xtype: 'gridcolumn',
                     dataIndex: 'acronym',
                     text: 'Acronym'
-                },
-                {
+                }, {
                     xtype: 'booleancolumn',
                     dataIndex: 'organization',
                     text: 'Organization?',
@@ -61,9 +57,9 @@ Ext.define('PTS.view.contact.GroupList', {
 
         me.callParent(arguments);
         me.addDocked({
-                xtype: 'filterbar',
-                searchStore: me.store,
-                dock: 'bottom'
+            xtype: 'filterbar',
+            searchStore: me.store,
+            dock: 'bottom'
         });
     }
 });

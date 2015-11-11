@@ -27,7 +27,7 @@ Ext.application({
         'PTS.util.VTypes', //custom validation types/
         'PTS.Overrides',
         'PTS.util.ActivityMonitor',
-        'PTS.util.AssociationJsonWriter',//custom writer
+        'PTS.util.AssociationJsonWriter', //custom writer
         'Ext.ux.window.Notification'
     ],
     name: 'PTS',
@@ -77,7 +77,7 @@ Ext.application({
     getError: function(full) {
         var error = this.lastError;
 
-        return (full || (error.length < 300)) ? error : error.substr(0,300) + '...';
+        return (full || (error.length < 300)) ? error : error.substr(0, 300) + '...';
     },
 
     /**
@@ -101,7 +101,7 @@ Ext.application({
             //myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),
             body = Ext.getBody(),
             removeMask = function() {
-                if(!Ext.Ajax.isLoading()) {
+                if (!Ext.Ajax.isLoading()) {
                     //myMask.destroy();
                     body.unmask();
                     Ext.Ajax.un('requestcomplete', removeMask, me);
@@ -117,37 +117,35 @@ Ext.application({
         body.mask('Please wait...Fetching User Info'); //mask the window body
 
         //get user details
-        me.getModel('PTS.model.User').load(PTS.UserId.id,{
+        me.getModel('PTS.model.User').load(PTS.UserId.id, {
 
             success: function(user) {
                 var store = this.getStore('GroupUsers'),
                     group = user.get('groupid');
 
-                PTS.user = user;//save user details
+                PTS.user = user; //save user details
                 PTS.orgcode = PTS.user.get('acronym'); //set orgcode
 
                 //set the GroupUsers proxy using the PTS.user groupid
                 store.setProxy({
                     type: 'ajax',
-                    url : '../contactgroup/' + group + '/person',
+                    url: '../contactgroup/' + group + '/person',
                     reader: {
                         type: 'json',
                         root: 'data'
                     },
                     //For ALCC, we only want staff not SC members
                     extraParams: {
-                        filter: Ext.encode([
-                            {
-                                property: 'positionid',
-                                value   : ['where not in',[96, 85]]
-                            }
-                        ])
+                        filter: Ext.encode([{
+                            property: 'positionid',
+                            value: ['where not in', [96, 85]]
+                        }])
                     }
                 });
 
                 store.load({
                     callback: function(rec, op, success) {
-                        if(success) {
+                        if (success) {
                             //add system account to store
                             this.loadRawData([{
                                 "contactid": 0,
@@ -169,9 +167,9 @@ Ext.application({
 
                 //setup activity monitor
                 PTS.util.ActivityMonitor.init({
-                    verbose : false,
-                    interval: (1000*900*1), //15 minutes
-                    maxInactive: (1000*13470*1), //224.5 minutes
+                    verbose: false,
+                    interval: (1000 * 900 * 1), //15 minutes
+                    maxInactive: (1000 * 13470 * 1), //224.5 minutes
                     isActive: function() {
                         Ext.Ajax.request({
                             url: '../poll'
@@ -198,7 +196,7 @@ Ext.application({
                         win.updateProgress(0);
                         win.seconds = 0;
                         win.task = Ext.TaskManager.start({
-                            run: function () {
+                            run: function() {
                                 win.seconds += 1;
                                 if (win.seconds > 6) {
                                     Ext.TaskManager.stop(win.task);
@@ -208,7 +206,7 @@ Ext.application({
                                 }
                             },
                             scope: this,
-                            interval: (1000*2) //ten seconds
+                            interval: (1000 * 2) //ten seconds
                         });
                     }
                 });
@@ -221,13 +219,13 @@ Ext.application({
             },
             failure: function(user, op) {
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error. Failed to retrieve user info.',
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   //fn: showResult,
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error. Failed to retrieve user info.',
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    //fn: showResult,
+                    icon: Ext.Msg.ERROR
+                });
             },
             scope: me
 
@@ -245,17 +243,17 @@ Ext.application({
 
         //Handle Ajax exceptions globally
         //TODO: Make Ajax exception handling better, remove redundant code
-        Ext.Ajax.on('requestexception',function(conn, response, op){
+        Ext.Ajax.on('requestexception', function(conn, response, op) {
             var txt = Ext.JSON.decode(response.responseText);
 
             //don't do anything for canceled requests
-            if(!response.aborted && txt) {
+            if (!response.aborted && txt) {
                 //set the global app error
                 PTS.app.setError(txt.message);
 
                 //only fire the global handler if no failure handler is passed
                 //we have to check for regular ajax and data operation callbacks
-                if(undefined === op.failure && (undefined === op.operation || undefined === op.operation.failure)) {
+                if (undefined === op.failure && (undefined === op.operation || undefined === op.operation.failure)) {
                     /*Ext.MessageBox.show({
                        title: 'Error',
                        msg: txt.message,
@@ -269,8 +267,8 @@ Ext.application({
                         iconCls: 'ux-notification-icon-error',
                         html: txt.message
                     }).show();
-               }
-           }
+                }
+            }
         });
 
         //add a reference to the app

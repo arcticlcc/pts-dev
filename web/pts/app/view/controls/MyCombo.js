@@ -11,7 +11,7 @@ Ext.define('PTS.view.controls.MyCombo', {
 
         me.callParent(arguments);
         //clear the filter when the combo is destroyed
-        me.on('beforedestroy', function(cmb){
+        me.on('beforedestroy', function(cmb) {
             cmb.getStore().clearFilter(false);
         });
     }

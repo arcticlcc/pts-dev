@@ -23,7 +23,7 @@ Ext.define('PTS.Overrides', {
 }, function() {
     //This method is included in 4.1, required by GeoExt
     Ext.override(Ext.data.Model, {
-        compatibility : '4',
+        compatibility: '4',
 
         /**
          * Gets all values for each field in this model and returns an object
@@ -33,7 +33,7 @@ Ext.define('PTS.Overrides', {
          * @return {Object} An object hash containing all the values in this
          * model
          */
-         getData: function(includeAssociated) {
+        getData: function(includeAssociated) {
             var me = this,
                 fields = me.fields.items,
                 fLen = fields.length,
@@ -41,7 +41,7 @@ Ext.define('PTS.Overrides', {
                 name,
                 f;
 
-            for ( f = 0; f < fLen; f++) {
+            for (f = 0; f < fLen; f++) {
                 name = fields[f].name;
                 data[name] = me.get(name);
             }
@@ -57,7 +57,7 @@ Ext.define('PTS.Overrides', {
     //https://www.sencha.com/forum/announcement.php?f=80&a=58
     Ext.override(Ext.menu.Menu, {
 
-        compatibility : '4',
+        compatibility: '4',
 
         onMouseLeave: function(e) {
             var me = this;
@@ -158,12 +158,12 @@ Ext.define('PTS.Overrides', {
     Ext.override(Ext.grid.RowEditor, {
         loadRecord: function(record) {
             var me = this,
-            form = me.getForm();
+                form = me.getForm();
             form.loadRecord(record);
 
-            if(form.isValid()) {
+            if (form.isValid()) {
                 me.hideToolTip();
-            } else if(me.errorSummary) {
+            } else if (me.errorSummary) {
                 me.showToolTip();
             }
 
@@ -188,13 +188,13 @@ Ext.define('PTS.Overrides', {
                 v2 = transform(v2);
             }
 
-            if(null !== v1 && null !== v2) { //neither value is null
+            if (null !== v1 && null !== v2) { //neither value is null
                 return v1 > v2 ? 1 : (v1 < v2 ? -1 : 0);
 
-            }else if(v1 === v2) { //both values are null
+            } else if (v1 === v2) { //both values are null
                 return 0;
 
-            }else { //one value is null
+            } else { //one value is null
                 return v1 === null ? 1 : -1;
 
             }
@@ -204,21 +204,21 @@ Ext.define('PTS.Overrides', {
     //http://www.sencha.com/forum/showthread.php?150040-Unexplained-load-mask-in-upper-left-corner-of-browser-again/page4
     Ext.override(Ext.view.AbstractView, {
         onMaskBeforeShow: function() {
-            if(!this.el.isVisible(true)) {
+            if (!this.el.isVisible(true)) {
                 return false;
             }
             this.callOverridden(arguments);
         },
-    //fix Ext.view.View itemadd event bug
-    //TODO: fixed in  4.1.2
-    //http://www.sencha.com/forum/showthread.php?142914-Ext.view.View-itemadd-event-bug
-        onAdd : function(ds, records, index) {
+        //fix Ext.view.View itemadd event bug
+        //TODO: fixed in  4.1.2
+        //http://www.sencha.com/forum/showthread.php?142914-Ext.view.View-itemadd-event-bug
+        onAdd: function(ds, records, index) {
             var me = this,
                 nodes;
 
             if (me.all.getCount() === 0) {
                 me.refresh();
-            }else {
+            } else {
                 nodes = me.bufferRender(records, index);
                 me.doAdd(nodes, records, index);
 
@@ -232,11 +232,11 @@ Ext.define('PTS.Overrides', {
     //http://www.sencha.com/forum/showthread.php?182524-RadioField-and-isDirty-problem&p=745308&viewfull=1#post745308
     //http://stackoverflow.com/questions/6490845/extjs-4-issue-with-a-radiogroup-which-is-always-dirty
     Ext.override(Ext.form.field.Radio, {
-        resetOriginalValue: function () {
+        resetOriginalValue: function() {
             //Override the original method in Ext.form.field.Field:
             //this.originalValue = this.getValue();
             //this.checkDirty();
-            this.getManager().getByName(this.name).each(function (item) {
+            this.getManager().getByName(this.name).each(function(item) {
                 item.originalValue = item.getValue();
                 item.checkDirty();
             });
@@ -284,11 +284,11 @@ Ext.define('PTS.Overrides', {
         //Adds rejectChanges.
         //TODO: Fixed in 4.1
         //http://www.sencha.com/forum/showthread.php?136871-Where-did-rejectChanges%28%29-go
-        getModifiedRecords : function(){
+        getModifiedRecords: function() {
             return [].concat(this.getNewRecords(), this.getUpdatedRecords());
         },
 
-        rejectChanges : function() {
+        rejectChanges: function() {
             var me = this,
                 recs = me.getModifiedRecords(),
                 len = recs.length,
@@ -318,7 +318,7 @@ Ext.define('PTS.Overrides', {
     });
 
     Ext.override(Ext.data.proxy.Proxy, {
-        batch: function(options, /* deprecated */listeners) {
+        batch: function(options, /* deprecated */ listeners) {
             var me = this,
                 useBatch = me.batchActions,
                 batch,
@@ -364,7 +364,7 @@ Ext.define('PTS.Overrides', {
                     } else {
                         Ext.each(records, function(record) {
                             batch.add(new Ext.data.Operation({
-                                action : action,
+                                action: action,
                                 records: [record]
                             }));
                         });
@@ -399,37 +399,36 @@ Ext.define('PTS.Overrides', {
     //Add tooltips to Extensible Calendars
     //http://ext.ensible.com/forum/viewtopic.php?f=4&t=191&p=1488&hilit=tooltip#p1488
     Extensible.calendar.view.Month.override({
-       getEventTemplate : function(){
-          if(!this.eventTpl){
-             var tpl, body = this.getEventBodyMarkup();
+        getEventTemplate: function() {
+            if (!this.eventTpl) {
+                var tpl, body = this.getEventBodyMarkup();
 
-             tpl = !(Ext.isIE || Ext.isOpera) ?
-                Ext.create('Ext.XTemplate',
-                   '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evr">',
-                      body,
-                   '</div>'
-                )
-                : Ext.create('Ext.XTemplate',
-                   '<tpl if="_renderAsAllDay">',
-                      '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evo">',
-                         '<div class="ext-cal-evm">',
-                            '<div class="ext-cal-evi">',
-                   '</tpl>',
-                   '<tpl if="!_renderAsAllDay">',
-                      '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} ext-cal-evt ext-cal-evr">',
-                   '</tpl>',
-                   body,
-                   '<tpl if="_renderAsAllDay">',
-                            '</div>',
-                         '</div>',
-                   '</tpl>',
-                      '</div>'
-                );
-             tpl.compile();
-             this.eventTpl = tpl;
-          }
-          return this.eventTpl;
-       }
+                tpl = !(Ext.isIE || Ext.isOpera) ?
+                    Ext.create('Ext.XTemplate',
+                        '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evr">',
+                        body,
+                        '</div>'
+                    ) : Ext.create('Ext.XTemplate',
+                        '<tpl if="_renderAsAllDay">',
+                        '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} {spanCls} ext-cal-evt ext-cal-evo">',
+                        '<div class="ext-cal-evm">',
+                        '<div class="ext-cal-evi">',
+                        '</tpl>',
+                        '<tpl if="!_renderAsAllDay">',
+                        '<div data-qtip="<b>{Title}</b><br/>Status: {Status}<br/>Project: {ProjectCode}<br/>Project Title: {ProjectTitle}<br/>Type: {Type}<br/>Manager: {Manager}<br/>Description: {Desc}" class="{_extraCls} ext-cal-evt ext-cal-evr">',
+                        '</tpl>',
+                        body,
+                        '<tpl if="_renderAsAllDay">',
+                        '</div>',
+                        '</div>',
+                        '</tpl>',
+                        '</div>'
+                    );
+                tpl.compile();
+                this.eventTpl = tpl;
+            }
+            return this.eventTpl;
+        }
     });
     //Fixes clearonload when using REST, from 4.1
     //TODO: Fixed in 4.1
@@ -455,7 +454,7 @@ Ext.define('PTS.Overrides', {
             options.id = node.getId();
 
             if (me.clearOnLoad) {
-                if(me.clearRemovedOnLoad) {
+                if (me.clearRemovedOnLoad) {
                     // clear from the removed array any nodes that were descendants of the node being reloaded so that they do not get saved on next sync.
                     me.clearRemoved(node);
                 }

@@ -10,23 +10,23 @@
 Ext.define('PTS.data.Calendar', {
     constructor: function() {
         return {
-            "calendars":[{
+            "calendars": [{
                 "id": 1,
                 "title": "Past Due",
                 "color": 2
-            },{
+            }, {
                 "id": 2,
                 "title": "Due Immediately",
                 "color": 6
-            },{
+            }, {
                 "id": 3,
                 "title": "Due Soon",
                 "color": 20
-            },{
+            }, {
                 "id": 4,
                 "title": "Received",
                 "color": 26
-            },{
+            }, {
                 "id": 5,
                 "title": "Completed",
                 "color": 33

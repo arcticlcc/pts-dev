@@ -44,7 +44,7 @@ Ext.define('PTS.view.product.form.ProductMetadataForm', {
                 style: {
                     marginBottom: '25px'
                 }
-            },{
+            }, {
                 xtype: 'boxselect',
                 fieldLabel: 'Spatial Format',
                 name: 'spatialformat',

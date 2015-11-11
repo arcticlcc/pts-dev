@@ -8,8 +8,9 @@ Ext.define('PTS.store.KeywordNodes', {
 
     clearOnLoad: true,
     //folderSort: true,
-    autoLoad: true/*,
-    root: {
-        children : []
-    }*/
+    autoLoad: true
+        /*,
+            root: {
+                children : []
+            }*/
 });

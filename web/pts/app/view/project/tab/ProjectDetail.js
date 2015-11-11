@@ -25,8 +25,7 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                 //autoScroll: true
                 layout: 'fit'
             },
-            items: [
-                {
+            items: [{
                     xtype: 'treepanel',
                     itemId: 'projectAgreements',
                     title: 'Agreements',
@@ -42,78 +41,66 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                         }*/
                         disableSelection: true
                     },
-                    columns: [
-                        {
-                            xtype: 'treecolumn',
-                            dataIndex: 'text',
-                            width: 300,
-                            text: 'Title'
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            //align: 'center',
-                            dataIndex: 'type',
-                            text: 'Type',
-                            width: 75
-                        },
-                        {
-                            xtype: 'gridcolumn',
-                            flex: 1,
-                            dataIndex: 'code',
-                            text: 'Agreement #'
-                        }
-                    ]
-                },
-                {
+                    columns: [{
+                        xtype: 'treecolumn',
+                        dataIndex: 'text',
+                        width: 300,
+                        text: 'Title'
+                    }, {
+                        xtype: 'gridcolumn',
+                        //align: 'center',
+                        dataIndex: 'type',
+                        text: 'Type',
+                        width: 75
+                    }, {
+                        xtype: 'gridcolumn',
+                        flex: 1,
+                        dataIndex: 'code',
+                        text: 'Agreement #'
+                    }]
+                }, {
                     xtype: 'deliverablelist',
                     title: 'Deliverables',
                     store: 'ProjectDeliverables',
                     initFilter: 'all',
                     uri: 'deliverabledue'
-                },
-                {
+                }, {
                     xtype: 'gridpanel',
                     itemId: 'projectContacts',
                     title: 'Contacts',
                     store: 'ProjectContacts',
                     uri: 'projectcontactfull',
-                    dockedItems: [
-                        {
-                            xtype: 'pagingtoolbar',
-                            store: 'ProjectContacts',   // same store GridPanel is using
-                            dock: 'top',
-                            displayInfo: true,
-                            plugins: [
-                                Ext.create('Ext.ux.grid.PrintGrid', {
-                                    printHidden: true
-                                }),
-                                Ext.create('Ext.ux.grid.SaveGrid', {})
-                            ]
-                        }
-                    ],
-                    columns: [
-                        {
+                    dockedItems: [{
+                        xtype: 'pagingtoolbar',
+                        store: 'ProjectContacts', // same store GridPanel is using
+                        dock: 'top',
+                        displayInfo: true,
+                        plugins: [
+                            Ext.create('Ext.ux.grid.PrintGrid', {
+                                printHidden: true
+                            }),
+                            Ext.create('Ext.ux.grid.SaveGrid', {})
+                        ]
+                    }],
+                    columns: [{
                             xtype: 'gridcolumn',
                             sortable: false,
                             dataIndex: 'name',
                             flex: 1,
                             text: 'Name'
-                        },
-                        {
+                        }, {
                             xtype: 'gridcolumn',
                             dataIndex: 'role',
                             sortable: false,
                             flex: 1,
                             text: 'Role'
-                        },
-                        {
+                        }, {
                             xtype: 'booleancolumn',
                             dataIndex: 'partner',
                             sortable: false,
                             text: 'Partner?',
                             width: 55
-                        },
-                        {
+                        }, {
                             xtype: 'booleancolumn',
                             dataIndex: 'reminder',
                             sortable: false,
@@ -122,11 +109,12 @@ Ext.define('PTS.view.project.tab.ProjectDetail', {
                         }
 
                     ]
-                }/*,
-                {
-                    xtype: 'panel',
-                    title: 'Files'
-                }*/
+                }
+                /*,
+                                {
+                                    xtype: 'panel',
+                                    title: 'Files'
+                                }*/
             ]
         });
 

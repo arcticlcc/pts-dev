@@ -6,46 +6,49 @@
 
 Ext.define('PTS.model.GroupUser', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'contactid',
             mapping: 'contactid',
             type: 'int',
             persist: false
-        },
-        {
+        }, {
             name: 'groupid',
             mapping: 'groupid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'firstname', type: 'mystring', useNull: true
-        },
-        {
-            name: 'lastname', type: 'mystring', useNull: true
-        },
-        {
-            name: 'middlename', type: 'mystring', useNull: true
-        },
-        {
-            name: 'suffix', type: 'mystring', useNull: true
-        },
-        {
-            name: 'groupname', type: 'mystring', useNull: true
-        },
-        {
-            name: 'acronym', type: 'mystring', useNull: true
-        },
-        {
+        }, {
+            name: 'firstname',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'lastname',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'middlename',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'suffix',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'groupname',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'acronym',
+            type: 'mystring',
+            useNull: true
+        }, {
             name: 'fullname',
             convert: function(v, record) {
                 return record.data.lastname + ', ' + record.data.firstname;
             }
 
-        },
-        {
-            name: 'inactive', type: 'myboolean'
+        }, {
+            name: 'inactive',
+            type: 'myboolean'
         }
 
     ],

@@ -3,51 +3,42 @@
  */
 Ext.define('PTS.model.ModDocStatus', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'moddocstatusid',
-            type: 'integer',
-            useNull: true,
-            persist: false
-        },
-        {
-            name: 'modificationid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'moddoctypeid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'moddocstatustypeid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'comment',
-            type: 'mystring',
-            useNull: true
-        },
-        {
-            name: 'effectivedate',
-            type: 'mydate',
-            useNull: true,
-            defaultValue: new Date()
-        },
-        {
-            name: 'weight',
-            type: 'int',
-            useNull: true,
-            persist: false
-        }
-    ],
+    fields: [{
+        name: 'moddocstatusid',
+        type: 'integer',
+        useNull: true,
+        persist: false
+    }, {
+        name: 'modificationid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'moddoctypeid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'moddocstatustypeid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'comment',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'effectivedate',
+        type: 'mydate',
+        useNull: true,
+        defaultValue: new Date()
+    }, {
+        name: 'weight',
+        type: 'int',
+        useNull: true,
+        persist: false
+    }],
     idProperty: 'moddocstatusid',
     validations: [{
         type: 'length',
@@ -65,7 +56,7 @@ Ext.define('PTS.model.ModDocStatus', {
 
     proxy: {
         type: 'rest',
-        url : '../moddocstatus',
+        url: '../moddocstatus',
         reader: {
             type: 'json',
             root: 'data'

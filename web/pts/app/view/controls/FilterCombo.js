@@ -17,7 +17,7 @@ Ext.define('PTS.view.controls.FilterCombo', {
     /**
      * Overrides the default method to allow filtering the combobox store
      */
-    doQuery: function (queryString, forceAll, rawQuery) {
+    doQuery: function(queryString, forceAll, rawQuery) {
         queryString = queryString || '';
 
         // store in object and pass by reference in 'beforequery'
@@ -31,7 +31,7 @@ Ext.define('PTS.view.controls.FilterCombo', {
             },
             store = me.store,
             isLocalMode = me.queryMode === 'local';
-            //country = me.up('addressfieldset').down('countrycombo').getValue();
+        //country = me.up('addressfieldset').down('countrycombo').getValue();
 
         if (me.fireEvent('beforequery', qe) === false || qe.cancel) {
             return false;
@@ -59,7 +59,7 @@ Ext.define('PTS.view.controls.FilterCombo', {
                         store.clearFilter(true);
                         store.filter(me.displayField, queryString);
                     }
-                    if(this.baseFilter) {
+                    if (this.baseFilter) {
                         // Apply the base filter in addition to the
                         // currently active query text filter:
                         store.filter(this.baseFilter);

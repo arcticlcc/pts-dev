@@ -68,6 +68,18 @@ module.exports = function(grunt) {
           ]
         }
       }
+    },
+
+    jsbeautifier : {
+        "default": {
+            src : ["web/pts/app/**/*.js","web/pts/app.js"]
+        },
+        "git-pre-commit": {
+            src : ["web/pts/app/**/*.js", "web/pts/app.js"],
+            options : {
+                mode:"VERIFY_ONLY"
+            }
+        }
     }
     /**
      * Copy
@@ -123,6 +135,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks("grunt-contrib-uglify");
   grunt.loadNpmTasks("grunt-contrib-clean");
   grunt.loadNpmTasks("grunt-contrib-copy");
+  grunt.loadNpmTasks("grunt-jsbeautifier");
 
   grunt.registerTask('dep', ['sencha_dependencies']);
   grunt.registerTask('default', ['jshint', 'dep', 'uglify']);

@@ -16,8 +16,7 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
 
     initComponent: function() {
         var me = this,
-            cols = [
-                {
+            cols = [{
                     xtype: 'gridcolumn',
                     dataIndex: 'moddocstatustypeid',
                     text: 'Status',
@@ -36,8 +35,7 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                         valueField: 'moddocstatustypeid',
                         allowBlank: false
                     }
-                },
-                {
+                }, {
                     xtype: 'datecolumn',
                     dataIndex: 'effectivedate',
                     text: 'Date',
@@ -45,8 +43,7 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                         xtype: 'datefield',
                         allowBlank: false
                     }
-                },
-                {
+                }, {
                     xtype: 'gridcolumn',
                     dataIndex: 'comment',
                     text: 'Comment',
@@ -56,8 +53,7 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
                         text: 'Comment',
                         allowBlank: true
                     }
-                },
-                {
+                }, {
                     xtype: 'gridcolumn',
                     dataIndex: 'contactid',
                     width: 125,
@@ -83,11 +79,11 @@ Ext.define('PTS.view.tps.tab.TpsDetailGrid', {
         });
 
         me.callParent(arguments);
-        me.getStore().on('add', function(store, records){
+        me.getStore().on('add', function(store, records) {
             Ext.each(records, function() {
                 var rec = this;
 
-                if(null === rec.get('contactid')) {
+                if (null === rec.get('contactid')) {
                     rec.set('contactid', PTS.user.get('contactid'));
                 }
             });

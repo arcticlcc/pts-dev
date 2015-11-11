@@ -4,19 +4,18 @@
 
 Ext.define('PTS.model.EpsgCode', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'srid',
             type: 'int',
             persist: false
-        },
-        {
+        }, {
             name: 'srid_text',
             type: 'mystring',
             persist: false
-        },
-        {
-            name: 'name', type: 'mystring', useNull: true
+        }, {
+            name: 'name',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -24,7 +23,7 @@ Ext.define('PTS.model.EpsgCode', {
 
     proxy: {
         type: 'rest',
-        url : '../epsg',
+        url: '../epsg',
         reader: {
             type: 'json',
             root: 'data'

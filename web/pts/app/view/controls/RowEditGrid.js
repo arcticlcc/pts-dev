@@ -39,10 +39,10 @@ Ext.define('PTS.view.controls.RowEditGrid', {
             model = store.getProxy().getModel(),
             rowEditing = grid.getPlugin('roweditplugin');
 
-            //rowEditing.cancelEdit();
+        //rowEditing.cancelEdit();
 
-            store.insert(0, Ext.create(model));
-            rowEditing.startEdit(0, 0);
+        store.insert(0, Ext.create(model));
+        rowEditing.startEdit(0, 0);
     },
 
     /**
@@ -56,56 +56,56 @@ Ext.define('PTS.view.controls.RowEditGrid', {
             //rowEditing = grid.getPlugin('roweditplugin');
             selection = grid.getView().getSelectionModel().getSelection()[0];
 
-            if(grid.fireEvent('beforeremoverow', selection, store) !== false) {
-                if (selection) {
-                    store.remove(selection);
-                }
-                //TODO: Fixed in 4.1?
-                //the failure and callback function won't be called on HTTP exception,
-                //we need to overload the getBatchListeners method and add exception
-                //handling directly to the batch, onBatchException is not defined by default
-                //http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
-                store.getBatchListeners = function() {
-                    var me = store,
-                        sel = selection, //the selected record
-                        listeners = {
-                            scope: me,
-                            exception: function(batch, op) {
-                                var rec;
-
-                                el.unmask();
-                                //if a destroy operation fails we need to add the record back to the store
-                                if(op.action === "destroy") {
-                                    rec = op.records[0];
-                                    rec.reject();//reject changes
-                                    Ext.Array.remove(store.removed, rec); //remove the record from the store's removed array
-                                    store.insert(sel.index, rec); //insert back into the store at the same position
-
-                                }
-                            }
-                        };
-
-                    if (me.batchUpdateMode === 'operation') {
-                        listeners.operationcomplete = me.onBatchOperationComplete;
-                    } else {
-                        listeners.complete = me.onBatchComplete;
-                    }
-
-                    return listeners;
-                };
-
-                if(!selection.phantom && grid.syncOnRemoveRow) {
-                    el.mask('Deleting...');
-                    store.sync({
-                        success: function() {
-                            el.unmask();
-                            grid.fireEvent('removerow', selection, store);
-                        }
-                    });
-                } else {
-                    grid.fireEvent('beforeremoverow', selection, store);
-                }
+        if (grid.fireEvent('beforeremoverow', selection, store) !== false) {
+            if (selection) {
+                store.remove(selection);
             }
+            //TODO: Fixed in 4.1?
+            //the failure and callback function won't be called on HTTP exception,
+            //we need to overload the getBatchListeners method and add exception
+            //handling directly to the batch, onBatchException is not defined by default
+            //http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
+            store.getBatchListeners = function() {
+                var me = store,
+                    sel = selection, //the selected record
+                    listeners = {
+                        scope: me,
+                        exception: function(batch, op) {
+                            var rec;
+
+                            el.unmask();
+                            //if a destroy operation fails we need to add the record back to the store
+                            if (op.action === "destroy") {
+                                rec = op.records[0];
+                                rec.reject(); //reject changes
+                                Ext.Array.remove(store.removed, rec); //remove the record from the store's removed array
+                                store.insert(sel.index, rec); //insert back into the store at the same position
+
+                            }
+                        }
+                    };
+
+                if (me.batchUpdateMode === 'operation') {
+                    listeners.operationcomplete = me.onBatchOperationComplete;
+                } else {
+                    listeners.complete = me.onBatchComplete;
+                }
+
+                return listeners;
+            };
+
+            if (!selection.phantom && grid.syncOnRemoveRow) {
+                el.mask('Deleting...');
+                store.sync({
+                    success: function() {
+                        el.unmask();
+                        grid.fireEvent('removerow', selection, store);
+                    }
+                });
+            } else {
+                grid.fireEvent('beforeremoverow', selection, store);
+            }
+        }
     },
 
     initComponent: function() {
@@ -123,7 +123,7 @@ Ext.define('PTS.view.controls.RowEditGrid', {
             tbar: [{
                 text: 'Add',
                 iconCls: 'pts-menu-addbasic',
-                handler : this.addRow
+                handler: this.addRow
             }, {
                 itemId: 'removeRow',
                 text: 'Remove',
@@ -133,7 +133,7 @@ Ext.define('PTS.view.controls.RowEditGrid', {
             }]
         });
 
-        Ext.each(me.extraButtons, function(b){
+        Ext.each(me.extraButtons, function(b) {
             me.tbar.push(b);
         });
 
@@ -156,7 +156,7 @@ Ext.define('PTS.view.controls.RowEditGrid', {
              */
             'removerow'
         );
-        me.getSelectionModel().on('selectionchange', function(selModel, selections){
+        me.getSelectionModel().on('selectionchange', function(selModel, selections) {
             me.down('#removeRow').setDisabled(selections.length === 0);
         });
     }

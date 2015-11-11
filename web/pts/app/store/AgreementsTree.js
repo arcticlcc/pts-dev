@@ -10,6 +10,6 @@ Ext.define('PTS.store.AgreementsTree', {
     folderSort: true,
     autoLoad: false,
     root: {
-        children : []
+        children: []
     }
 });

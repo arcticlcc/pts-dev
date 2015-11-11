@@ -21,8 +21,10 @@ Ext.define('PTS.view.controls.ManagerCombo', {
     },
     listeners: {
         beforeselect: {
-            fn: function(combo, rec){
-                if(rec.get('inactive')) {return false;}
+            fn: function(combo, rec) {
+                if (rec.get('inactive')) {
+                    return false;
+                }
             }
         }
     },

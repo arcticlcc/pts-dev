@@ -5,24 +5,23 @@
 
 Ext.define('PTS.model.CostCode', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'costcodeid',
             type: 'int',
             persist: false
-        },
-        {
+        }, {
             name: 'fundingid',
             type: 'int',
             persist: true
-        },
-        {name: 'costcode', type: 'mystring', useNull: true},
-        {
+        }, {
+            name: 'costcode',
+            type: 'mystring',
+            useNull: true
+        }, {
             name: 'startdate',
             type: 'mydate',
             useNull: true
-        },
-        {
+        }, {
             name: 'enddate',
             type: 'mydate',
             useNull: true
@@ -52,7 +51,7 @@ Ext.define('PTS.model.CostCode', {
 
     proxy: {
         type: 'rest',
-        url : '../costcode',
+        url: '../costcode',
         reader: {
             type: 'json',
             root: 'data'

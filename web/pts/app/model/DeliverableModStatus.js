@@ -4,45 +4,37 @@
 
 Ext.define('PTS.model.DeliverableModStatus', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'deliverablemodstatusid',
-            persist: false,
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'deliverableid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'modificationid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'deliverablestatusid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'effectivedate',
-            type: 'mydate',
-            useNull: true,
-            defaultValue: new Date()
-        },
-        {
-            name: 'comment',
-            type: 'mystring',
-            useNull: true
-        }
-    ],
+    fields: [{
+        name: 'deliverablemodstatusid',
+        persist: false,
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'deliverableid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'modificationid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'deliverablestatusid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'effectivedate',
+        type: 'mydate',
+        useNull: true,
+        defaultValue: new Date()
+    }, {
+        name: 'comment',
+        type: 'mystring',
+        useNull: true
+    }],
     idProperty: 'deliverablemodstatusid',
     validations: [{
         type: 'length',
@@ -63,7 +55,7 @@ Ext.define('PTS.model.DeliverableModStatus', {
 
     proxy: {
         type: 'rest',
-        url : '../deliverablemodstatus',
+        url: '../deliverablemodstatus',
         reader: {
             type: 'json',
             root: 'data'

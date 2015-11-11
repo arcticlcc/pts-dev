@@ -8,5 +8,8 @@ Ext.define('PTS.store.ProductKeywords', {
 
     clearOnLoad: true,
     autoLoad: false,
-    sorters: { property: 'text', direction : 'ASC' }
+    sorters: {
+        property: 'text',
+        direction: 'ASC'
+    }
 });

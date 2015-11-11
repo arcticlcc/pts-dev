@@ -57,123 +57,104 @@ Ext.define('PTS.view.project.window.Window', {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
-                    xtype: 'tabpanel',
-                    itemId: 'projecttabpanel',
-                    items: [
-                        {
-                            xtype: 'projectform'
+            items: [{
+                xtype: 'tabpanel',
+                itemId: 'projecttabpanel',
+                items: [{
+                    xtype: 'projectform'
+                }, {
+                    xtype: 'projectcontacts'
+                }, {
+                    xtype: 'projectagreements'
+                }, {
+                    title: 'Comments',
+                    xtype: 'commenteditgrid',
+                    store: 'ProjectComments'
+                }, {
+                    xtype: 'projectkeywords'
+                }, {
+                    xtype: 'panel',
+                    defaults: {
+                        preventHeader: true
+                    },
+                    layout: {
+                        type: 'border'
+                    },
+                    title: 'Map',
+                    items: [{
+                        xtype: 'projectmap',
+                        commonStore: 'CommonVectors',
+                        //center: '-130.95977783203,10.914916992189',
+                        center: '-16760019.526289, 9118642.6397498',
+                        zoom: 4,
+                        region: 'center'
+                    }, {
+                        xtype: 'gridpanel',
+                        itemId: 'featureGrid',
+                        store: 'ProjectVectors',
+                        height: 250,
+                        split: true,
+                        autoScroll: true,
+                        title: 'Feature List',
+                        region: 'south',
+                        columns: [{
+                            xtype: 'gridcolumn',
+                            dataIndex: 'name',
+                            flex: 1,
+                            text: 'Name',
+                            editor: {
+                                xtype: 'textfield',
+                                allowBlank: false
+                            }
+                        }, {
+                            xtype: 'gridcolumn',
+                            dataIndex: 'comment',
+                            flex: 2,
+                            text: 'Description',
+                            editor: {
+                                xtype: 'textfield',
+                                allowBlank: false
+                            }
+                        }],
+                        selModel: {
+                            //autoPanMapOnSelection: true,
+                            selectControl: {
+                                id: 'PTS-Select-Row'
+                            }
                         },
-                        {
-                            xtype: 'projectcontacts'
-                        },
-                        {
-                            xtype: 'projectagreements'
-                        },
-                        {
-                            title: 'Comments',
-                            xtype: 'commenteditgrid',
-                            store: 'ProjectComments'
-                        },
-                        {
-                            xtype: 'projectkeywords'
-                        },
-                        {
-                            xtype: 'panel',
-                            defaults: {
-                                preventHeader: true
-                            },
-                            layout: {
-                                type: 'border'
-                            },
-                            title: 'Map',
-                            items: [
-                                {
-                                    xtype: 'projectmap',
-                                    commonStore: 'CommonVectors',
-                                    //center: '-130.95977783203,10.914916992189',
-                                    center: '-16760019.526289, 9118642.6397498',
-                                    zoom: 4,
-                                    region: 'center'
-                                },
-                                {
-                                    xtype: 'gridpanel',
-                                    itemId: 'featureGrid',
-                                    store: 'ProjectVectors',
-                                    height: 250,
-                                    split: true,
-                                    autoScroll: true,
-                                    title: 'Feature List',
-                                    region: 'south',
-                                    columns: [
-                                        {
-                                            xtype: 'gridcolumn',
-                                            dataIndex: 'name',
-                                            flex: 1,
-                                            text: 'Name',
-                                            editor: {
-                                                xtype: 'textfield',
-                                                allowBlank: false
-                                            }
-                                        },
-                                        {
-                                            xtype: 'gridcolumn',
-                                            dataIndex: 'comment',
-                                            flex: 2,
-                                            text: 'Description',
-                                            editor: {
-                                                xtype: 'textfield',
-                                                allowBlank: false
-                                            }
-                                        }
-                                    ],
-                                    selModel: {
-                                        //autoPanMapOnSelection: true,
-                                        selectControl: {
-                                            id: 'PTS-Select-Row'
-                                        }
-                                    },
-                                    selType: 'featuremodel',
-                                    plugins: [
-                                        Ext.create('Ext.grid.plugin.CellEditing', {
-                                            pluginId: 'cellEdit',
-                                            clicksToEdit: 1
-                                        })
-                                    ]
-                                }
-                            ]
-                        },
-                        {
-                            xtype: 'projectmetadata',
-                            formItems: [{
-                                xtype: 'metadataform'
-                            }]
-                        }
-                    ]
-                }
-            ],
-            dockedItems: [
-                {
-                    xtype: 'toolbar',
-                    dock: 'bottom',
-                    items: [
-                        {
-                            xtype: 'tbfill'
-                        },
-                        /*{//TODO: save all button
-                            xtype: 'button',
-                            text: 'Save All',
-                            action: 'saveall'
-                        },*/
-                        {
-                            xtype: 'button',
-                            text: 'Close',
-                            action: 'closewindow'
-                        }
-                    ]
-                }
-            ]
+                        selType: 'featuremodel',
+                        plugins: [
+                            Ext.create('Ext.grid.plugin.CellEditing', {
+                                pluginId: 'cellEdit',
+                                clicksToEdit: 1
+                            })
+                        ]
+                    }]
+                }, {
+                    xtype: 'projectmetadata',
+                    formItems: [{
+                        xtype: 'metadataform'
+                    }]
+                }]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                items: [{
+                        xtype: 'tbfill'
+                    },
+                    /*{//TODO: save all button
+                        xtype: 'button',
+                        text: 'Save All',
+                        action: 'saveall'
+                    },*/
+                    {
+                        xtype: 'button',
+                        text: 'Close',
+                        action: 'closewindow'
+                    }
+                ]
+            }]
         });
 
         me.callParent(arguments);

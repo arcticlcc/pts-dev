@@ -5,17 +5,20 @@ Ext.define('PTS.controller.contact.window.Window', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'contact.window.Window'/*,
-        'contact.window.ContactForm'*/
+        'contact.window.Window'
+        /*,
+                'contact.window.ContactForm'*/
     ],
 
     refs: [{
-        ref: 'contactWindow',
-        selector: 'contactwindow'
-    }/*,{
-        ref: 'contactForm',
-        selector: 'contactform'
-    }*/],
+            ref: 'contactWindow',
+            selector: 'contactwindow'
+        }
+        /*,{
+                ref: 'contactForm',
+                selector: 'contactform'
+            }*/
+    ],
 
     init: function() {
 
@@ -27,13 +30,14 @@ Ext.define('PTS.controller.contact.window.Window', {
         this.control({
             'contactwindow [action=closewindow]': {
                 click: this.closeWindow
-            }/*,
-            'contacttab button[action=editcontact]': {
-                click: this.editContact
-            },
-            'contactwindow tool[type=save]' : {
-                click: this.closeWindow
-            }*/
+            }
+            /*,
+                        'contacttab button[action=editcontact]': {
+                            click: this.editContact
+                        },
+                        'contactwindow tool[type=save]' : {
+                            click: this.closeWindow
+                        }*/
         });
     },
 

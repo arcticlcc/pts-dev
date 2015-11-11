@@ -101,104 +101,91 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                     Ext.create('Ext.ux.grid.SaveGrid', {})
                 ]
             }],
-            columns: [
-                {
-                    xtype:'actioncolumn',
-                    width:25,
-                    items: [{
-                        iconCls: 'pts-world-link',
-                        tooltip: 'Open Website',
-                        handler: function(grid, rowIndex, colIndex) {
-                            var rec = grid.getStore().getAt(rowIndex),
-                                fy =rec.get('fiscalyear'),
-                                num =rec.get('number'),
-                                url = PTS.user.get('projecturiformat').replace(/(%s)/, fy).replace(/(%s)/, num < 10 ? '0' + num : num);
+            columns: [{
+                xtype: 'actioncolumn',
+                width: 25,
+                items: [{
+                    iconCls: 'pts-world-link',
+                    tooltip: 'Open Website',
+                    handler: function(grid, rowIndex, colIndex) {
+                        var rec = grid.getStore().getAt(rowIndex),
+                            fy = rec.get('fiscalyear'),
+                            num = rec.get('number'),
+                            url = PTS.user.get('projecturiformat').replace(/(%s)/, fy).replace(/(%s)/, num < 10 ? '0' + num : num);
 
-                            window.open(url);
-                        }
-                    }]
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'projectcode',
-                    text: 'Project'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    //width: 221,
-                    dataIndex: 'title',
-                    text: 'Title',
-                    flex: 1
-                },
-                {
-                    xtype: 'gridcolumn',
+                        window.open(url);
+                    }
+                }]
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'projectcode',
+                text: 'Project'
+            }, {
+                xtype: 'gridcolumn',
+                //width: 221,
+                dataIndex: 'title',
+                text: 'Title',
+                flex: 1
+            }, {
+                xtype: 'gridcolumn',
+                hidden: true,
+                dataIndex: 'shorttitle',
+                text: 'Short Title',
+                flex: 1
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'status',
+                text: 'Status',
+                width: 80
+            }, {
+                xtype: 'booleancolumn',
+                text: 'Export',
+                trueText: 'Yes',
+                falseText: 'No',
+                dataIndex: 'exportmetadata',
+                hidden: true,
+                width: 55
+            }, {
+                text: 'Funding',
+                columns: [{
+                    //xtype: 'gridcolumn',
+                    dataIndex: 'allocated',
+                    text: 'Allocated',
+                    width: 75,
+                    sortable: true,
+                    renderer: Ext.util.Format.usMoney
+                }, {
+                    //xtype: 'gridcolumn',
+                    dataIndex: 'invoiced',
+                    text: 'Invoiced',
+                    width: 75,
+                    sortable: true,
+                    renderer: Ext.util.Format.usMoney
+                }, {
+                    //xtype: 'gridcolumn',
+                    dataIndex: 'difference',
+                    text: 'Difference',
+                    width: 75,
+                    sortable: true,
+                    renderer: PTS.util.Format.netFunds
+                }, {
+                    //xtype: 'gridcolumn',
+                    dataIndex: 'leveraged',
+                    text: 'Leveraged',
+                    width: 75,
+                    sortable: true,
                     hidden: true,
-                    dataIndex: 'shorttitle',
-                    text: 'Short Title',
-                    flex: 1
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'status',
-                    text: 'Status',
-                    width: 80
-                },
-                {
-                    xtype: 'booleancolumn',
-                    text: 'Export',
-                    trueText: 'Yes',
-                    falseText: 'No',
-                    dataIndex: 'exportmetadata',
-                    hidden: true,
-                    width: 55
-                },
-                {
-                    text: 'Funding',
-                    columns: [
-                        {
-                            //xtype: 'gridcolumn',
-                            dataIndex: 'allocated',
-                            text: 'Allocated',
-                            width : 75,
-                            sortable : true,
-                            renderer: Ext.util.Format.usMoney
-                        },
-                        {
-                            //xtype: 'gridcolumn',
-                            dataIndex: 'invoiced',
-                            text: 'Invoiced',
-                            width : 75,
-                            sortable : true,
-                            renderer: Ext.util.Format.usMoney
-                        },
-                        {
-                            //xtype: 'gridcolumn',
-                            dataIndex: 'difference',
-                            text: 'Difference',
-                            width : 75,
-                            sortable : true,
-                            renderer: PTS.util.Format.netFunds
-                        },
-                        {
-                            //xtype: 'gridcolumn',
-                            dataIndex: 'leveraged',
-                            text: 'Leveraged',
-                            width : 75,
-                            sortable : true,
-                            hidden: true,
-                            renderer: Ext.util.Format.usMoney
-                        }
-                    ]
-                }
-            ]
+                    renderer: Ext.util.Format.usMoney
+                }]
+            }]
         });
 
         me.callParent(arguments);
 
         me.addDocked({
-                xtype: 'filterbar',
-                searchStore: me.store,
-                dock: 'bottom'
+            xtype: 'filterbar',
+            searchStore: me.store,
+            dock: 'bottom'
         });
     }
 });

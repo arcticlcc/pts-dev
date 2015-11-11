@@ -10,12 +10,15 @@ Ext.define('PTS.store.Persons', {
     remoteSort: true,
     remoteFilter: true,
     pageSize: PTS.Defaults.pageSize,
-    sorters: { property: 'lastname', direction : 'ASC' },
+    sorters: {
+        property: 'lastname',
+        direction: 'ASC'
+    },
     proxy: {
         type: 'rest',
-        url : '../person',
+        url: '../person',
         api: {
-            read:'../personlist'
+            read: '../personlist'
         },
         reader: {
             type: 'json',

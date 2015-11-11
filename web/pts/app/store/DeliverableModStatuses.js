@@ -8,19 +8,22 @@ Ext.define('PTS.store.DeliverableModStatuses', {
 
     autoLoad: false,
     autoSync: false,
-    sorters: [
-        { property: 'effectivedate', direction : 'DESC' },
-        { property: 'deliverablestatusid', direction : 'DESC' }
-    ],
+    sorters: [{
+        property: 'effectivedate',
+        direction: 'DESC'
+    }, {
+        property: 'deliverablestatusid',
+        direction: 'DESC'
+    }],
     listeners: {
-        'add': function(store, records){
-                    Ext.each(records, function() {
-                        var rec = this;
+        'add': function(store, records) {
+            Ext.each(records, function() {
+                var rec = this;
 
-                        if(null === rec.get('contactid')) {
-                            rec.set('contactid', PTS.user.get('contactid'));
-                        }
-                    });
+                if (null === rec.get('contactid')) {
+                    rec.set('contactid', PTS.user.get('contactid'));
                 }
-            }
+            });
+        }
+    }
 });

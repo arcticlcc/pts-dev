@@ -15,7 +15,7 @@ Ext.define('PTS.controller.contact.Contact', {
 
     init: function() {
         var tab = this.getController('contact.tab.ContactTab'),
-        win = this.getController('contact.window.Window');
+            win = this.getController('contact.window.Window');
 
         // Remember to call the init method manually
         tab.init();
@@ -33,20 +33,20 @@ Ext.define('PTS.controller.contact.Contact', {
      * - **getId** : Must return the id of the contact
      * - **getContactName** : Returns the title for the contact window.
      */
-    openContact: function(type,record) {
+    openContact: function(type, record) {
         var win, code,
             id = record ? record.getId() : false;
 
         type = type ? type : 'person';
 
-        if(id !== false) {
+        if (id !== false) {
             code = record.getContactName();
 
-            win = Ext.create(this.getContactWindowWindowView(),{
+            win = Ext.create(this.getContactWindowWindowView(), {
                 title: 'Edit Contact: ' + code
             });
-        } else{
-            win = Ext.create(this.getContactWindowWindowView(),{
+        } else {
+            win = Ext.create(this.getContactWindowWindowView(), {
                 title: 'New Contact'
             });
         }

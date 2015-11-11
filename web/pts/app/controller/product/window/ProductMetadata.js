@@ -10,11 +10,11 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
 
     views: ['product.window.ProductMetadata'],
     models: ['Product', 'ProductMetadata'],
-    stores: ['TopicCategories', 'EpsgCodes','SpatialFormats'],
+    stores: ['TopicCategories', 'EpsgCodes', 'SpatialFormats'],
     refs: [{
         ref: 'productMetadata',
         selector: 'productmetadata'
-    },{
+    }, {
         ref: 'metadataForm',
         selector: 'productmetadata productmetadataform'
     }, {
@@ -79,10 +79,10 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
     /**
      * Handle productmetadataform validity change event.
      */
-    onValidityChange: function(form,valid) {
+    onValidityChange: function(form, valid) {
         var saveBtn = this.getProductMetadata().down('button[action=save]');
 
-        if (valid /*&& form.isDirty()*/) {//dirtychange not working with itemselector in 4.0.7
+        if (valid /*&& form.isDirty()*/ ) { //dirtychange not working with itemselector in 4.0.7
             saveBtn.enable();
         } else {
             saveBtn.disable();
@@ -92,7 +92,7 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
     /**
      * Handle productmetadataform dirty change event.
      */
-    onDirtyChange: function(form,dirty) {
+    onDirtyChange: function(form, dirty) {
         var saveBtn = this.getProductMetadata().down('button[action=save]'),
             resetBtn = this.getProductMetadata().down('button[action=reset]');
 
@@ -120,10 +120,10 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
 
         btn.setActiveItem(items.get(idx), true);
 
-        if(id) {
+        if (id) {
             form.setLoading(true, true);
 
-            model.load(id, {// load with id from product record
+            model.load(id, { // load with id from product record
                 success: function(model) {
                     form.loadRecord(model);
                     form.setLoading(false);
@@ -196,7 +196,7 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
             openBtn = tab.down('button[action=openpreview]');
 
         layout.setActiveItem(1);
-        layout.getActiveItem().body.scrollTo('top',0);
+        layout.getActiveItem().body.scrollTo('top', 0);
         el.mask('Generating Preview...');
         //set the preview type
         openBtn.previewType = btn.action;

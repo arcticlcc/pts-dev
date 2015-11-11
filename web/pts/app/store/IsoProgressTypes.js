@@ -5,26 +5,21 @@
 Ext.define('PTS.store.IsoProgressTypes', {
     extend: 'Ext.data.Store',
 
-    fields: [
-        {
-            name: 'isoprogresstypeid',
-            type: 'int'
-        },
-        {
-            name: 'codename',
-            type: 'string'
-        },
-        {
-            name: 'description'
-        },
-        {
-            name: 'product',
-            type: 'myboolean'
-        }
-    ],
+    fields: [{
+        name: 'isoprogresstypeid',
+        type: 'int'
+    }, {
+        name: 'codename',
+        type: 'string'
+    }, {
+        name: 'description'
+    }, {
+        name: 'product',
+        type: 'myboolean'
+    }],
     proxy: {
         type: 'rest',
-        url : '../productprogresstype',
+        url: '../productprogresstype',
         reader: {
             type: 'json',
             root: 'data'
@@ -32,13 +27,15 @@ Ext.define('PTS.store.IsoProgressTypes', {
         limitParam: undefined
     },
     autoLoad: true,
-    sorters: [
-        { property: 'codename', direction : 'ASC' }
-    ]/*,
-    filters: [
-        {
-            property: 'product',
-            value   : true
-        }
-    ]*/
+    sorters: [{
+            property: 'codename',
+            direction: 'ASC'
+        }]
+        /*,
+            filters: [
+                {
+                    property: 'product',
+                    value   : true
+                }
+            ]*/
 });

@@ -11,7 +11,7 @@ Ext.define('PTS.view.contact.GroupDDList', {
         'Ext.grid.plugin.DragDrop'
     ],
 
-    title:'Groups',
+    title: 'Groups',
     store: 'DDContactGroups',
     itemId: 'groupsList', //do not change
 
@@ -35,34 +35,30 @@ Ext.define('PTS.view.contact.GroupDDList', {
                 store: 'DDContactGroups',
                 displayInfo: false
             }],
-            columns: [
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'fullname',
-                    flex: 1,
-                    text: 'Full Name'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'acronym',
-                    text: 'Acronym'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'name',
-                    flex: 1,
-                    text: 'Name',
-                    hidden: true
-                }
-            ]
+            columns: [{
+                xtype: 'gridcolumn',
+                dataIndex: 'fullname',
+                flex: 1,
+                text: 'Full Name'
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'acronym',
+                text: 'Acronym'
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'name',
+                flex: 1,
+                text: 'Name',
+                hidden: true
+            }]
         });
 
         me.callParent(arguments);
 
         me.addDocked({
-                xtype: 'filterbar',
-                searchStore: me.store,
-                dock: 'bottom'
+            xtype: 'filterbar',
+            searchStore: me.store,
+            dock: 'bottom'
         });
     }
 });

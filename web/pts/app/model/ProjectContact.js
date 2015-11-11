@@ -5,77 +5,68 @@
 
 Ext.define('PTS.model.ProjectContact', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'projectcontactid',
-            type: 'int',
-            persist: false,
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'projectid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'roletypeid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'priority',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'name',
-            persist: false
-        },
-        {
-            name: 'role',
-            persist: false
-        },
-        {
-            name: 'type',
-            persist: false
-        },
-        {
-            name: 'contactprojectcode'
-        },
-        {
-            name: 'partner',
-            type: 'boolean',
-            'default': false,
-            useNull: true,
-            convert: function(v) {
-                if (this.useNull && (v === undefined || v === null || v === '')) {
-                    return null;
-                }
-                return (v !== 'false') && !!v;
+    fields: [{
+        name: 'projectcontactid',
+        type: 'int',
+        persist: false,
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'projectid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'roletypeid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'priority',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'name',
+        persist: false
+    }, {
+        name: 'role',
+        persist: false
+    }, {
+        name: 'type',
+        persist: false
+    }, {
+        name: 'contactprojectcode'
+    }, {
+        name: 'partner',
+        type: 'boolean',
+        'default': false,
+        useNull: true,
+        convert: function(v) {
+            if (this.useNull && (v === undefined || v === null || v === '')) {
+                return null;
             }
-        },
-        {
-            name: 'projectcode',
-            type: 'mystring',
-            persist: false
-        },
-        {
-            name: 'shorttitle',
-            type: 'mystring',
-            persist: false
-        },
-        {name: 'reminder', type: 'boolean', defaultValue: false, useNull: true}
-    ],
+            return (v !== 'false') && !!v;
+        }
+    }, {
+        name: 'projectcode',
+        type: 'mystring',
+        persist: false
+    }, {
+        name: 'shorttitle',
+        type: 'mystring',
+        persist: false
+    }, {
+        name: 'reminder',
+        type: 'boolean',
+        defaultValue: false,
+        useNull: true
+    }],
     idProperty: 'projectcontactid',
 
     proxy: {
         type: 'rest',
-        url : '../projectcontact',
+        url: '../projectcontact',
         appendId: true,
         //batchActions: true,
         reader: {

@@ -18,7 +18,7 @@ Ext.define('PTS.controller.project.form.TaskForm', {
     refs: [{
         ref: 'deliverableForm',
         selector: 'deliverableform#itemCard-40 #itemForm'
-    },{
+    }, {
         ref: 'deliverableCard',
         selector: 'deliverableform#itemCard-40'
     }],
@@ -43,7 +43,8 @@ Ext.define('PTS.controller.project.form.TaskForm', {
     },
 
     onBeforeRender: function(form) {
-        var data = [], myGroup, cbx, idx, cont;
+        var data = [],
+            myGroup, cbx, idx, cont;
 
         //create radio items
         Ext.getStore('TaskTypes').each(function(rec) {
@@ -60,19 +61,19 @@ Ext.define('PTS.controller.project.form.TaskForm', {
             items: data,
             width: 300,
             listeners: {
-                change: function(cbx,newVal,oldVal){
-                //fix to make sure the form fires dirtychange events,
-                //not firing in 4.0.7 on initial change
+                change: function(cbx, newVal, oldVal) {
+                    //fix to make sure the form fires dirtychange events,
+                    //not firing in 4.0.7 on initial change
                     cbx.up('#itemForm').getForm().checkDirty();
                 }
             }
         };
         //replace type combo with radiogroup
-        cont =  form.down('#mainCon');
+        cont = form.down('#mainCon');
         cbx = cont.down('combobox[name=deliverabletypeid]');
         idx = cont.items.indexOf(cbx);
         cont.remove(cbx);
-        cont.insert(idx,myGroup);
+        cont.insert(idx, myGroup);
         //hide period fields
         form.down('#delPeriod').hide();
     }

@@ -4,19 +4,21 @@
 
 Ext.define('PTS.model.KeywordNode', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'keywordid',
             type: 'string'
-        },
-        {
-            name: 'text', type: 'mystring', useNull: true
-        },
-        {
-            name: 'definition', type: 'mystring', useNull: true
-        },
-        {
-            name: 'fullname', type: 'mystring', useNull: true
+        }, {
+            name: 'text',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'definition',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'fullname',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -24,7 +26,7 @@ Ext.define('PTS.model.KeywordNode', {
 
     proxy: {
         type: 'rest',
-        url : '../keyword/tree',
+        url: '../keyword/tree',
         reader: {
             type: 'json'
         },

@@ -9,11 +9,14 @@ Ext.define('PTS.store.Keywords', {
     remoteSort: true,
     remoteFilter: true,
     pageSize: PTS.Defaults.pageSize + 5,
-    sorters: { property: 'text', direction : 'ASC' },
+    sorters: {
+        property: 'text',
+        direction: 'ASC'
+    },
 
     proxy: {
         type: 'rest',
-        url : '../keywordlist',
+        url: '../keywordlist',
         reader: {
             type: 'json',
             root: 'data'

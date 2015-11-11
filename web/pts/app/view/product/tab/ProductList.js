@@ -30,36 +30,32 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     Ext.create('Ext.ux.grid.SaveGrid', {})
                 ]
             }],
-            columns: [
-                {
-                    xtype:'actioncolumn',
-                    width:25,
+            columns: [{
+                    xtype: 'actioncolumn',
+                    width: 25,
                     items: [{
                         iconCls: 'pts-world-link',
                         tooltip: 'Open Website',
                         handler: function(grid, rowIndex, colIndex) {
                             var rec = grid.getStore().getAt(rowIndex),
-                                fy =rec.get('fiscalyear'),
-                                num =rec.get('number'),
+                                fy = rec.get('fiscalyear'),
+                                num = rec.get('number'),
                                 url = PTS.user.get('producturiformat').replace(/(%s)/, fy).replace(/(%s)/, num < 10 ? '0' + num : num);
 
                             window.open(url);
                         }
                     }]
-                },
-                {
+                }, {
                     xtype: 'gridcolumn',
                     dataIndex: 'projectcode',
                     text: 'Project'
-                },
-                {
+                }, {
                     xtype: 'gridcolumn',
                     //width: 221,
                     dataIndex: 'title',
                     text: 'Title',
                     flex: 1
-                },
-                {
+                }, {
                     xtype: 'gridcolumn',
                     hidden: true,
                     dataIndex: 'description',
@@ -76,9 +72,8 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     xtype: 'gridcolumn',
                     text: 'Type',
                     dataIndex: 'type'
-                    //width: 55
-                },
-                {
+                        //width: 55
+                }, {
                     xtype: 'booleancolumn',
                     text: 'Export',
                     trueText: 'Yes',
@@ -86,28 +81,24 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     dataIndex: 'exportmetadata',
                     //hidden: true,
                     width: 55
-                },
-                {
+                }, {
                     text: 'Time Period',
                     hidden: true,
-                    columns: [
-                        {
-                            xtype: 'datecolumn',
-                            dataIndex: 'startdate',
-                            text: 'Begin',
-                            hidden: true,
-                            width : 75,
-                            sortable : true
-                        },
-                        {
-                            xtype: 'datecolumn',
-                            dataIndex: 'enddate',
-                            text: 'End',
-                            hidden: true,
-                            width : 75,
-                            sortable : true
-                        }
-                    ]
+                    columns: [{
+                        xtype: 'datecolumn',
+                        dataIndex: 'startdate',
+                        text: 'Begin',
+                        hidden: true,
+                        width: 75,
+                        sortable: true
+                    }, {
+                        xtype: 'datecolumn',
+                        dataIndex: 'enddate',
+                        text: 'End',
+                        hidden: true,
+                        width: 75,
+                        sortable: true
+                    }]
                 }
             ]
         });
@@ -115,9 +106,9 @@ Ext.define('PTS.view.product.tab.ProductList', {
         me.callParent(arguments);
 
         me.addDocked({
-                xtype: 'filterbar',
-                searchStore: me.store,
-                dock: 'bottom'
+            xtype: 'filterbar',
+            searchStore: me.store,
+            dock: 'bottom'
         });
     }
 });

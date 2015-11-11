@@ -7,10 +7,8 @@ Ext.define('PTS.store.ProjectCategories', {
     model: 'PTS.model.ProjectCategory',
 
     autoLoad: true,
-    sorters: [
-        {
-            property : 'category',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'category',
+        direction: 'ASC'
+    }]
 });

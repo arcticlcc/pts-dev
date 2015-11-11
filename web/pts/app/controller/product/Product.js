@@ -44,10 +44,10 @@ Ext.define('PTS.controller.product.Product', {
         var cstore = win.down('productlinks>gridpanel').getStore();
         cstore.setProxy({
             type: 'rest',
-            url : '../onlineresource',
+            url: '../onlineresource',
             appendId: true,
             api: {
-                read:'../product/' + id + '/onlineresource'
+                read: '../product/' + id + '/onlineresource'
             },
             reader: {
                 type: 'json',
@@ -59,10 +59,10 @@ Ext.define('PTS.controller.product.Product', {
         cstore = win.down('#producttabpanel>productstatus').getStore();
         cstore.setProxy({
             type: 'rest',
-            url : '../productstatus',
+            url: '../productstatus',
             appendId: true,
             api: {
-                read:'../product/' + id + '/productstatus'
+                read: '../product/' + id + '/productstatus'
             },
             reader: {
                 type: 'json',
@@ -94,23 +94,23 @@ Ext.define('PTS.controller.product.Product', {
         var win, code, cstore,
             id = record ? record.get('productid') : false;
 
-        if(id !== false) {
+        if (id !== false) {
             code = record.get('title');
 
-            win = Ext.create(this.getProductWindowWindowView(),{
+            win = Ext.create(this.getProductWindowWindowView(), {
                 title: 'Edit Product: ' + code,
                 productId: id
             });
 
             this.setProxies(id);
 
-        } else{
-            win = Ext.create(this.getProductWindowWindowView(),{
+        } else {
+            win = Ext.create(this.getProductWindowWindowView(), {
                 title: 'New Product'
             });
             //disable all tabs except productform
             win.down('#producttabpanel').items.each(function() {
-                if('productform' !== this.getXType()) {
+                if ('productform' !== this.getXType()) {
                     this.disable();
                 }
             });
@@ -129,7 +129,7 @@ Ext.define('PTS.controller.product.Product', {
         //TODO: we could check whether record is a phantom and not perform unnecessary enables
         //enable all tabs except productform, which should already be enabled
         win.down('#producttabpanel').items.each(function() {
-            if('productform' !== this.getXType()) {
+            if ('productform' !== this.getXType()) {
                 this.enable();
             }
         });

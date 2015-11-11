@@ -4,20 +4,22 @@
 
 Ext.define('PTS.model.ProjectCategory', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'projectcategoryid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'category', type: 'mystring', useNull: true
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
+        }, {
+            name: 'category',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -25,7 +27,7 @@ Ext.define('PTS.model.ProjectCategory', {
 
     proxy: {
         type: 'rest',
-        url : '../projectcategory',
+        url: '../projectcategory',
         reader: {
             type: 'json',
             root: 'data'

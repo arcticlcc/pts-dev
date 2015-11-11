@@ -9,26 +9,27 @@ Ext.define('PTS.view.controls.TextareaTriggerField', {
 
     fieldSubTpl: [
         '<textarea id="{id}" style="height:{height}"',
-            '<tpl if="name">name="{name}" </tpl>',
-            '<tpl if="rows">rows="{rows}" </tpl>',
-            '<tpl if="cols">cols="{cols}" </tpl>',
-            '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
-            'class="{fieldCls} {typeCls}" ',
-            'autocomplete="off">',
+        '<tpl if="name">name="{name}" </tpl>',
+        '<tpl if="rows">rows="{rows}" </tpl>',
+        '<tpl if="cols">cols="{cols}" </tpl>',
+        '<tpl if="tabIdx">tabIndex="{tabIdx}" </tpl>',
+        'class="{fieldCls} {typeCls}" ',
+        'autocomplete="off">',
         '</textarea>',
         '<div id="{cmpId}-triggerWrap" class="{triggerWrapCls}" role="presentation">',
-            '{triggerEl}',
-            '<div class="{clearCls}" role="presentation"></div>',
-        '</div>',
-        {
+        '{triggerEl}',
+        '<div class="{clearCls}" role="presentation"></div>',
+        '</div>', {
             compiled: true,
             disableFormats: true
         }
     ],
-    rows:2,
+    rows: 2,
     triggerCls: 'pts-trigger-zoom',
     height: 22,
-    style: {overflow: 'hidden'},
+    style: {
+        overflow: 'hidden'
+    },
 
     /**
      * @cfg {Boolean} preventScrollbars
@@ -47,18 +48,18 @@ Ext.define('PTS.view.controls.TextareaTriggerField', {
         Ext.MessageBox.show({
             title: 'Comment',
             //msg: 'Comment:',
-            width:350,
+            width: 350,
             buttons: Ext.MessageBox.OKCANCEL,
             multiline: true,
             value: val,
             fn: function(btn, txt) {
-                if (btn === 'ok'){
-                // process text value and close
+                if (btn === 'ok') {
+                    // process text value and close
                     me.setValue(txt);
                 }
             },
-           animateTarget: me.getEl()
-       });
+            animateTarget: me.getEl()
+        });
     },
 
     // private
@@ -73,7 +74,7 @@ Ext.define('PTS.view.controls.TextareaTriggerField', {
     },
 
     // private
-    afterRender: function(){
+    afterRender: function() {
         var me = this;
 
         me.callParent(arguments);

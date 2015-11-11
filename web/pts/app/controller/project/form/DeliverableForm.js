@@ -23,7 +23,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
     refs: [{
         ref: 'deliverableForm',
         selector: 'deliverableform#itemCard-30 #itemForm'
-    },{
+    }, {
         ref: 'deliverableCard',
         selector: 'deliverableform#itemCard-30'
     }],
@@ -61,7 +61,9 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         var model = btn.up('deliverableform').down('#itemForm').getRecord(),
             id = model.get('deliverableid'),
             grid = btn.up('roweditgrid'),
-            mask = new Ext.LoadMask(grid, {msg:"Sending Notice. Please wait..."}),
+            mask = new Ext.LoadMask(grid, {
+                msg: "Sending Notice. Please wait..."
+            }),
             active = PTS.app.getStore('ProjectContacts').findExact('reminder', true),
             txt = active > -1 ? '' : ' No recipients are selected  (see Contacts tab), so this notice will only be sent to staff.',
             send = function(b) {
@@ -106,11 +108,11 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
      */
     onNewItem: function(model, form) {
         //we have to check the itemId
-        if(this.getDeliverableCard().itemId === form.ownerCt.itemId) {
+        if (this.getDeliverableCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid');
 
             form.ownerCt.down('#relatedDetails').disable();
-            Ext.each(grids, function(gr){
+            Ext.each(grids, function(gr) {
                 gr.getStore().removeAll();
             });
         }
@@ -125,7 +127,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         var con,
             mod = !!model.get('parentdeliverableid');
 
-        if(Ext.getClassName(model) === "PTS.model.Deliverable") {
+        if (Ext.getClassName(model) === "PTS.model.Deliverable") {
             con = this.getDeliverableForm().down('#mainCon');
 
             con.items.each(function(itm) {
@@ -137,25 +139,25 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         }
 
         //we have to check the itemId
-        if(this.getDeliverableCard().itemId === form.ownerCt.itemId) {
+        if (this.getDeliverableCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid'),
                 id = model.get('deliverableid');
 
-            Ext.each(grids,function(gr){
+            Ext.each(grids, function(gr) {
                 var store = gr.getStore(),
                     active = gr.tab === undefined ? gr.ownerCt.tab.active : gr.tab.active; //check the tab status
 
-                if(active) {
+                if (active) {
                     this.updateDetailStore(store, id, gr.uri);
                     store.load({
                         callback: function(rec, op, success) {
-                            if(success) {
+                            if (success) {
                                 gr.up('#relatedDetails').enable();
                             }
                         },
                         scope: gr
                     });
-                }else {
+                } else {
                     store.removeAll();
                 }
             }, this);
@@ -170,10 +172,10 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             id = model.get('deliverableid'),
             mid = model.get('modificationid');
 
-        editor.record.set('deliverableid',id);
+        editor.record.set('deliverableid', id);
         //set modificationid if it exists
-        if(model.fields.containsKey('modificationid')) {
-            editor.record.set('modificationid',mid);
+        if (model.fields.containsKey('modificationid')) {
+            editor.record.set('modificationid', mid);
         }
         editor.store.sync();
 
@@ -186,10 +188,10 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         var model = this.getDeliverableForm().getRecord(),
             store, id;
 
-        if(model !== undefined) {
+        if (model !== undefined) {
             store = grid.getStore();
             //only load if the store is not loading
-            if(!store.isLoading() && store.count() === 0) {
+            if (!store.isLoading() && store.count() === 0) {
                 id = model.get('deliverableid');
                 this.updateDetailStore(store, id, grid.uri);
                 store.load();
@@ -201,7 +203,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
      * Change handler for deliverabletype combo.
      * Toggle visibility of period fieldcontainer.
      */
-    onChangeDelType: function(field,newVal, oldVal) {
+    onChangeDelType: function(field, newVal, oldVal) {
         var period = field.up('form').down('#delPeriod');
 
         //show period if type is financial or progress report
@@ -249,10 +251,10 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         //override store proxy based on deliverableid
         store.setProxy({
             type: 'rest',
-            url : '../'+ uri,
+            url: '../' + uri,
             //appendId: true,
             api: {
-                read:'../deliverable/' + id + '/' + uri
+                read: '../deliverable/' + id + '/' + uri
             },
             reader: {
                 type: 'json',
@@ -270,45 +272,45 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             oldDate = e.originalValues.effectivedate.getTime(),
             oldStatus = e.originalValues.deliverablestatusid;
 
-        if(newStatus === oldStatus && newDate === oldDate) {
+        if (newStatus === oldStatus && newDate === oldDate) {
             return true;
         } else {
             var rec = e.record,
                 modId = this.getDeliverableForm().getRecord().get('modificationid'),
-                mask = new Ext.LoadMask(e.grid, {msg:"Validating. Please wait..."});
+                mask = new Ext.LoadMask(e.grid, {
+                    msg: "Validating. Please wait..."
+                });
 
             mask.show();
             //query database for agreement status
             Ext.Ajax.request({
                 url: '../modificationstatus',
                 params: {
-                    filter: '[{"property":"modificationid","value":'+ modId +'}]'
+                    filter: '[{"property":"modificationid","value":' + modId + '}]'
                 },
                 method: 'GET',
-                success: function(response){
+                success: function(response) {
                     var resp = Ext.JSON.decode(response.responseText),
                         data = resp.data[0],
                         status = data === undefined ? 'Not Defined' : data.status,
                         msg = 'The agreement has has been marked <b>Completed</b>. ',
                         ctl = this,
                         //get the persisted records and filter for max date
-                        delStatus = e.store.data.filter('phantom',false);
-                        //get current deliverable status
-                        delStatus.sort([
-                            {
-                                property: 'effectivedate',
-                                direction:'DESC'
-                            },{
-                                property: 'deliverablestatusid',
-                                direction: 'DESC'
-                            }
-                        ]);
-                        delStatus = delStatus.first();
+                        delStatus = e.store.data.filter('phantom', false);
+                    //get current deliverable status
+                    delStatus.sort([{
+                        property: 'effectivedate',
+                        direction: 'DESC'
+                    }, {
+                        property: 'deliverablestatusid',
+                        direction: 'DESC'
+                    }]);
+                    delStatus = delStatus.first();
 
                     //test that modification status exists, is completed and that *current* del status is being set to < completed
-                    if(resp.total > 0 && data.weight >= 90 && (delStatus && delStatus.getId() === rec.getId() &&
-                        (newStatus < 40 || newDate < delStatus.get('effectivedate').getTime()))) {
-                    //if records are found, raise error and cancel the update
+                    if (resp.total > 0 && data.weight >= 90 && (delStatus && delStatus.getId() === rec.getId() &&
+                            (newStatus < 40 || newDate < delStatus.get('effectivedate').getTime()))) {
+                        //if records are found, raise error and cancel the update
                         e.column.getEditor().markInvalid(msg);
                         Ext.create('widget.uxNotification', {
                             title: 'Error',
@@ -321,18 +323,18 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                         ctl.onDetailRowEdit(e);
                         //check to see if agreement status is null or
                         // not completed and this is the only incomplete deliverable
-                        if(newStatus >= 40 && (resp.total === 0 || (data.weight < 90 && data.incdeliverables <= 1))) {
+                        if (newStatus >= 40 && (resp.total === 0 || (data.weight < 90 && data.incdeliverables <= 1))) {
                             msg = 'This agreement status is currently <i>' + status +
                                 '</i>.<br/>Do you want to set the status to <b>Completed</b>?</br>' +
                                 'You may also enter a comment (optional).</br></br>';
                             Ext.Msg.show({
-                                 title:'Set Agreement Status?',
-                                 msg: msg,
-                                 buttons: Ext.Msg.YESNO,
-                                 icon: Ext.Msg.QUESTION,
-                                 prompt: true,
-                                 fn: function(btn, text) {
-                                    if(btn === 'yes') {
+                                title: 'Set Agreement Status?',
+                                msg: msg,
+                                buttons: Ext.Msg.YESNO,
+                                icon: Ext.Msg.QUESTION,
+                                prompt: true,
+                                fn: function(btn, text) {
+                                    if (btn === 'yes') {
                                         var rec = ctl.getModStatusModel().create({
                                                 modificationid: modId,
                                                 statusid: 2,
@@ -352,8 +354,8 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                                             }
                                         });
                                     }
-                                 },
-                                 scope: ctl
+                                },
+                                scope: ctl
                             });
                         }
                     }

@@ -27,32 +27,110 @@ Ext.define('PTS.controller.dashboard.Calendar', {
             // as it is the key used to access the field data programmatically.
 
             // We can also add some new fields that do not exist in the standard EventRecord:
-            CreatedBy:      {name: 'Manager', mapping: 'manager'},
-            DateReceived:   {name: 'Received', mapping:'receiveddate', type: 'mydate'},
-            PersonId:       {name: 'PersonID', mapping:'personid', type:'int'},
-            Type:           {name: 'Type', mapping:'type', type:'string'},
-            ProjectCode:    {name: 'ProjectCode', mapping:'projectcode', type:'string'},
-            ProjectTitle:   {name: 'ProjectTitle', mapping:'shorttitle', type:'string'},
-            ProjectId:      {name: 'projectid', mapping:'projectid', type:'int'},
-            ModificationId: {name: 'modificationid', mapping:'modificationid', type:'int'},
-            Status:         {name: 'Status', mapping:'status', type:'string',
-                                convert: function(v) {
-                                    return v ? v : 'Not Received';
-                                }
-                            },
-            Completed:      {name: 'Completed', mapping:'completed', type:'mybool'},
+            CreatedBy: {
+                name: 'Manager',
+                mapping: 'manager'
+            },
+            DateReceived: {
+                name: 'Received',
+                mapping: 'receiveddate',
+                type: 'mydate'
+            },
+            PersonId: {
+                name: 'PersonID',
+                mapping: 'personid',
+                type: 'int'
+            },
+            Type: {
+                name: 'Type',
+                mapping: 'type',
+                type: 'string'
+            },
+            ProjectCode: {
+                name: 'ProjectCode',
+                mapping: 'projectcode',
+                type: 'string'
+            },
+            ProjectTitle: {
+                name: 'ProjectTitle',
+                mapping: 'shorttitle',
+                type: 'string'
+            },
+            ProjectId: {
+                name: 'projectid',
+                mapping: 'projectid',
+                type: 'int'
+            },
+            ModificationId: {
+                name: 'modificationid',
+                mapping: 'modificationid',
+                type: 'int'
+            },
+            Status: {
+                name: 'Status',
+                mapping: 'status',
+                type: 'string',
+                convert: function(v) {
+                    return v ? v : 'Not Received';
+                }
+            },
+            Completed: {
+                name: 'Completed',
+                mapping: 'completed',
+                type: 'mybool'
+            },
             //standard EventRecord fields
-            EventId:     {name: 'ID', mapping:'deliverableid', type:'int'}, // int by default
-            CalendarId:  {name: 'CalendarId', mapping: 'id', type: 'int', convert: this.getCalendar}, // int by default
-            Title:       {name: 'EvtTitle', mapping: 'title'},
-            StartDate:   {name: 'StartDt', mapping: 'duedate', type: 'mydate'},
-            EndDate:     {name: 'EndDt', mapping: 'duedate', type: 'mydate'},
-            RRule:       {name: 'RecurRule', mapping: 'recur'},
-            Location:    {name: 'Location', mapping: 'location'},
-            Notes:       {name: 'Desc', mapping: 'description'},
-            Url:         {name: 'LinkUrl', mapping: 'uri'},
-            IsAllDay:    {name: 'AllDay', mapping: 'allday', type: 'boolean', defaultValue: true},
-            Reminder:    {name: 'Reminder', mapping: 'reminder'}
+            EventId: {
+                name: 'ID',
+                mapping: 'deliverableid',
+                type: 'int'
+            }, // int by default
+            CalendarId: {
+                name: 'CalendarId',
+                mapping: 'id',
+                type: 'int',
+                convert: this.getCalendar
+            }, // int by default
+            Title: {
+                name: 'EvtTitle',
+                mapping: 'title'
+            },
+            StartDate: {
+                name: 'StartDt',
+                mapping: 'duedate',
+                type: 'mydate'
+            },
+            EndDate: {
+                name: 'EndDt',
+                mapping: 'duedate',
+                type: 'mydate'
+            },
+            RRule: {
+                name: 'RecurRule',
+                mapping: 'recur'
+            },
+            Location: {
+                name: 'Location',
+                mapping: 'location'
+            },
+            Notes: {
+                name: 'Desc',
+                mapping: 'description'
+            },
+            Url: {
+                name: 'LinkUrl',
+                mapping: 'uri'
+            },
+            IsAllDay: {
+                name: 'AllDay',
+                mapping: 'allday',
+                type: 'boolean',
+                defaultValue: true
+            },
+            Reminder: {
+                name: 'Reminder',
+                mapping: 'reminder'
+            }
         };
 
         // Don't forget to reconfigure!
@@ -60,7 +138,7 @@ Ext.define('PTS.controller.dashboard.Calendar', {
 
         //add ProjectCode method to model to support openproject method
         Extensible.calendar.data.EventModel.implement({
-            getProjectCode: function(){
+            getProjectCode: function() {
                 return this.get('ProjectCode');
             }
         });
@@ -104,18 +182,18 @@ Ext.define('PTS.controller.dashboard.Calendar', {
             today = new Date();
 
         //set the date to 11:59pm of the current day
-        today.setHours(0,0,0,0);
-        if(rec.data.Status === 'Overdue') {
+        today.setHours(0, 0, 0, 0);
+        if (rec.data.Status === 'Overdue') {
             return 1; //Overdue, set manually
-        }else if(rec.data.Completed) {
+        } else if (rec.data.Completed) {
             return 5; //Complete
-        }else if(rec.data.Received) {
+        } else if (rec.data.Received) {
             return 4; //Received
-        }else if (dt < today) {
+        } else if (dt < today) {
             return 1; //late
-        }else if (dt > Ext.Date.add(today, Ext.Date.DAY, 30)) {
+        } else if (dt > Ext.Date.add(today, Ext.Date.DAY, 30)) {
             return 3; //due more than 30 days into the future
-        }else {
+        } else {
             return 2; //due within 30 days
         }
     },
@@ -129,7 +207,7 @@ Ext.define('PTS.controller.dashboard.Calendar', {
         //Ext.getBody().mask('Loading...');
         //console.info(rec);
         //p = Ext.getStore('ProjectListings').getById(9);
-        this.getController('dashboard.Dashboard').openProject(panel,rec);
+        this.getController('dashboard.Dashboard').openProject(panel, rec);
 
         /*var id = rec.getId(),
             modid = rec.get('modificationid'),

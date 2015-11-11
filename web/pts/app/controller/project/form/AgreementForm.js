@@ -21,7 +21,7 @@ Ext.define('PTS.controller.project.form.AgreementForm', {
     refs: [{
         ref: 'agreementForm',
         selector: 'agreementform#itemCard-20 #itemForm'
-    },{
+    }, {
         ref: 'agreementCard',
         selector: 'agreementform#itemCard-20'
     }],

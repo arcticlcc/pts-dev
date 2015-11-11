@@ -8,7 +8,7 @@ Ext.define('PTS.util.Format', {
      * Formats values as US currency
      * @param {Number} value The value to format
      */
-    netFunds: function (val) {
+    netFunds: function(val) {
         var vf = Ext.util.Format.usMoney(val);
         if (val > 0) {
             return '<span style="color:green;">' + vf + '</span>';
@@ -22,8 +22,8 @@ Ext.define('PTS.util.Format', {
      * Formats documemt status for TPS report
      * @param {String} value The value to format
      */
-    docStatus: function (val) {
-        switch(val) {
+    docStatus: function(val) {
+        switch (val) {
             case 'Completed':
                 return '<span style="color:green;">' + val + '</span>';
             case 'Not Started':
@@ -42,8 +42,8 @@ Ext.define('PTS.util.Format', {
      * @param {Number/String} fiscalyear The fiscal year of the project
      * @param {Number/String} number The project number
      */
-    projectCode: function (fy,num) {
-        var s = (num < 10) ? '-0': '-';
+    projectCode: function(fy, num) {
+        var s = (num < 10) ? '-0' : '-';
         return fy + s + num;
     }
 });

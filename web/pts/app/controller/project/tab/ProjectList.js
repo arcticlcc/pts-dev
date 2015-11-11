@@ -19,7 +19,7 @@ Ext.define('PTS.controller.project.tab.ProjectList', {
 
     init: function() {
 
-       this.control({
+        this.control({
             'projectlist': {
                 itemdblclick: this.editProject,
                 viewready: this.onProjectListReady,
@@ -44,11 +44,11 @@ Ext.define('PTS.controller.project.tab.ProjectList', {
     onProjectListReady: function(grid) {
         var store = grid.getStore();
         if (store) {
-            store.on('load', function(store, records, success, oper){
-                if(store.count() > 0) {
+            store.on('load', function(store, records, success, oper) {
+                if (store.count() > 0) {
                     this.getSelectionModel().select(0);
                 }
-            },grid);
+            }, grid);
         }
         store.load();
     },
@@ -65,23 +65,23 @@ Ext.define('PTS.controller.project.tab.ProjectList', {
 
         index = store.indexOfId(id);
 
-        if(index === -1) {
-        //The record is new, refresh to update the "related" fields
+        if (index === -1) {
+            //The record is new, refresh to update the "related" fields
             copy = Ext.create(model);
-            store.insert(0,copy);
+            store.insert(0, copy);
         } else {
-        //The record exists in the store, so copy the data
-        //Note: this will only copy the "project" fields,
-        //refresh to update the "related" fields
+            //The record exists in the store, so copy the data
+            //Note: this will only copy the "project" fields,
+            //refresh to update the "related" fields
             copy = store.getAt(index);
 
         }
 
         copy.fields.each(function(field) {
-            copy.set(field.name,record.get(field.name));
+            copy.set(field.name, record.get(field.name));
         });
         //set projectcode
-        copy.set('projectcode',copy.getProjectCode());
+        copy.set('projectcode', copy.getProjectCode());
         copy.commit();
     },
 

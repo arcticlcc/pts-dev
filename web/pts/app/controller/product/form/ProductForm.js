@@ -84,7 +84,7 @@ Ext.define('PTS.controller.product.form.ProductForm', {
     /**
      * Save product.
      */
-     saveProduct: function() {
+    saveProduct: function() {
         var form = this.getProductForm().getForm(),
             el = this.getProductForm().getEl(),
             record = form.getRecord();
@@ -104,17 +104,17 @@ Ext.define('PTS.controller.product.form.ProductForm', {
             failure: function(model, op) {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error saving the product.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   //fn: showResult,
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error saving the product.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    //fn: showResult,
+                    icon: Ext.Msg.ERROR
+                });
             },
             scope: this //need the controller to load the model on success
         });
-     },
+    },
 
     /**
      * Confirm product deletion.
@@ -122,7 +122,7 @@ Ext.define('PTS.controller.product.form.ProductForm', {
     confirmDelete: function(btn) {
         var el = btn.getEl(),
             del = function(b) {
-                if('yes' === b) {
+                if ('yes' === b) {
                     this.deleteProduct();
                 }
             };
@@ -142,7 +142,7 @@ Ext.define('PTS.controller.product.form.ProductForm', {
     /**
      * Delete product.
      */
-     deleteProduct: function() {
+    deleteProduct: function() {
         var form = this.getProductForm().getForm(),
             el = this.getProductForm().getEl(),
             record = form.getRecord();
@@ -157,25 +157,25 @@ Ext.define('PTS.controller.product.form.ProductForm', {
             failure: function(model, op) {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error deleting the product.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error deleting the product.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    icon: Ext.Msg.ERROR
+                });
             },
             scope: this //need the controller
         });
-     },
+    },
 
     /**
      * Reset product form.
      */
-     resetProduct: function() {
+    resetProduct: function() {
         var form = this.getProductForm().getForm();
 
         form.reset();
-     },
+    },
 
     /**
      * Load product.
@@ -185,7 +185,7 @@ Ext.define('PTS.controller.product.form.ProductForm', {
             model = this.getProductModel(),
             form = this.getProductForm();
 
-        if(id) {
+        if (id) {
             model.load(id, { // load with id from selected record
                 success: function(model) {
                     form.loadRecord(model); // when model is loaded successfully, load the data into the form
@@ -217,15 +217,15 @@ Ext.define('PTS.controller.product.form.ProductForm', {
                 },
                 failure: function(model, op) {
                     Ext.MessageBox.show({
-                       title: 'Error',
-                       msg: 'There was an error loading the product.</br>Error:' + PTS.app.getError(),
-                       buttons: Ext.MessageBox.OK,
-                       //animateTarget: 'mb9',
-                       icon: Ext.Msg.ERROR
-                   });
+                        title: 'Error',
+                        msg: 'There was an error loading the product.</br>Error:' + PTS.app.getError(),
+                        buttons: Ext.MessageBox.OK,
+                        //animateTarget: 'mb9',
+                        icon: Ext.Msg.ERROR
+                    });
                 }
             });
-        } else{
+        } else {
             form.loadRecord(Ext.create(model));
             ctl.onLoadProduct(form.getForm().getRecord());
         }

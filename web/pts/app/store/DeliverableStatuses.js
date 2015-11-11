@@ -7,10 +7,8 @@ Ext.define('PTS.store.DeliverableStatuses', {
     model: 'PTS.model.DeliverableStatus',
 
     autoLoad: true,
-    sorters: [
-        {
-            property : 'deliverablestatusid',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'deliverablestatusid',
+        direction: 'ASC'
+    }]
 });

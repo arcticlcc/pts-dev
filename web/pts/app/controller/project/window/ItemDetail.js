@@ -25,13 +25,13 @@ Ext.define('PTS.controller.project.window.ItemDetail', {
     init: function() {
         //TODO: make this an array and ititerate to init controllers
         var ctlrs = [
-                this.getController('project.form.AgreementForm'),
-                this.getController('project.form.ModificationForm'),
-                this.getController('project.form.ProposalForm'),
-                this.getController('project.form.FundingForm'),
-                this.getController('project.form.DeliverableForm'),
-                this.getController('project.form.TaskForm')
-            ];
+            this.getController('project.form.AgreementForm'),
+            this.getController('project.form.ModificationForm'),
+            this.getController('project.form.ProposalForm'),
+            this.getController('project.form.FundingForm'),
+            this.getController('project.form.DeliverableForm'),
+            this.getController('project.form.TaskForm')
+        ];
         // Remember to call the init method manually
         Ext.each(ctlrs, function(c) {
             c.init();
@@ -56,20 +56,20 @@ Ext.define('PTS.controller.project.window.ItemDetail', {
     /*
      * Stuff to do when Project Contacts tab is activated.
      */
-     /*activate: function(tab) {
+    /*activate: function(tab) {
 
-     },*/
+    },*/
 
     /*
      * Contact list tab activated.
      */
-     /*activateList: function(grid) {
-        var store = grid.getStore();
+    /*activateList: function(grid) {
+       var store = grid.getStore();
 
-        //load the contact list
-        if (store.getCount() == 0) {
-            store.load();
-        }
-     },*/
+       //load the contact list
+       if (store.getCount() == 0) {
+           store.load();
+       }
+    },*/
 
 });

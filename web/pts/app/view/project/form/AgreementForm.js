@@ -170,7 +170,9 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                         xtype: 'gridcolumn',
                         dataIndex: 'statusid',
                         renderer: function(value, metaData, record, rowIdx, colIdx, store, view) {
-                            var combo = view.getHeaderAtIndex(colIdx).getEditor(), idx = combo.getStore().find(combo.valueField, value, 0, false, true, true), rec = combo.getStore().getAt(idx);
+                            var combo = view.getHeaderAtIndex(colIdx).getEditor(),
+                                idx = combo.getStore().find(combo.valueField, value, 0, false, true, true),
+                                rec = combo.getStore().getAt(idx);
                             if (rec) {
                                 return rec.get(combo.displayField);
                             }

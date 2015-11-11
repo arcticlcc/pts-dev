@@ -9,7 +9,7 @@ Ext.define('PTS.store.ModDocTypes', {
     sorters: [{
         property: 'sort',
         direction: 'ASC'
-    },{
+    }, {
         property: 'code',
         direction: 'ASC'
     }]

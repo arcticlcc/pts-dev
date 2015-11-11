@@ -58,128 +58,111 @@ Ext.define('PTS.view.product.window.Window', {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
-                    xtype: 'tabpanel',
-                    itemId: 'producttabpanel',
-                    items: [
-                        {
-                            xtype: 'productform'
+            items: [{
+                xtype: 'tabpanel',
+                itemId: 'producttabpanel',
+                items: [{
+                        xtype: 'productform'
+                    }, {
+                        xtype: 'productlinks'
+                    }, {
+                        xtype: 'productstatus'
+                    }, {
+                        xtype: 'productcontacts'
+                    },
+                    /*{
+                        title: 'Comments',
+                        xtype: 'commenteditgrid',
+                        store: 'ProductComments'
+                    },*/
+                    {
+                        xtype: 'productkeywords'
+                    }, {
+                        xtype: 'panel',
+                        defaults: {
+                            preventHeader: true
                         },
-                        {
-                            xtype: 'productlinks'
+                        layout: {
+                            type: 'border'
                         },
-                        {
-                            xtype: 'productstatus'
-                        },
-                        {
-                            xtype: 'productcontacts'
-                        },
-                        /*{
-                            title: 'Comments',
-                            xtype: 'commenteditgrid',
-                            store: 'ProductComments'
-                        },*/
-                        {
-                            xtype: 'productkeywords'
-                        },
-                        {
-                            xtype: 'panel',
-                            defaults: {
-                                preventHeader: true
-                            },
-                            layout: {
-                                type: 'border'
-                            },
-                            title: 'Map',
-                            items: [
-                                {
-                                    xtype: 'projectmap',
-                                    commonStore: 'CommonVectors',
-                                    //center: '-130.95977783203,10.914916992189',
-                                    center: '-16760019.526289, 9118642.6397498',
-                                    zoom: 4,
-                                    region: 'center',
-                                    layerName: 'Product Features',
-                                    layerUrl: '../productfeature'
-                                },
-                                {
-                                    xtype: 'gridpanel',
-                                    itemId: 'featureGrid',
-                                    store: 'ProductVectors',
-                                    height: 250,
-                                    split: true,
-                                    autoScroll: true,
-                                    title: 'Feature List',
-                                    region: 'south',
-                                    columns: [
-                                        {
-                                            xtype: 'gridcolumn',
-                                            dataIndex: 'name',
-                                            flex: 1,
-                                            text: 'Name',
-                                            editor: {
-                                                xtype: 'textfield',
-                                                allowBlank: false
-                                            }
-                                        },
-                                        {
-                                            xtype: 'gridcolumn',
-                                            dataIndex: 'comment',
-                                            flex: 2,
-                                            text: 'Description',
-                                            editor: {
-                                                xtype: 'textfield',
-                                                allowBlank: false
-                                            }
-                                        }
-                                    ],
-                                    selModel: {
-                                        //autoPanMapOnSelection: true,
-                                        selectControl: {
-                                            id: 'PTS-Select-Row'
-                                        }
-                                    },
-                                    selType: 'featuremodel',
-                                    plugins: [
-                                        Ext.create('Ext.grid.plugin.CellEditing', {
-                                            pluginId: 'cellEdit',
-                                            clicksToEdit: 1
-                                        })
-                                    ]
+                        title: 'Map',
+                        items: [{
+                            xtype: 'projectmap',
+                            commonStore: 'CommonVectors',
+                            //center: '-130.95977783203,10.914916992189',
+                            center: '-16760019.526289, 9118642.6397498',
+                            zoom: 4,
+                            region: 'center',
+                            layerName: 'Product Features',
+                            layerUrl: '../productfeature'
+                        }, {
+                            xtype: 'gridpanel',
+                            itemId: 'featureGrid',
+                            store: 'ProductVectors',
+                            height: 250,
+                            split: true,
+                            autoScroll: true,
+                            title: 'Feature List',
+                            region: 'south',
+                            columns: [{
+                                xtype: 'gridcolumn',
+                                dataIndex: 'name',
+                                flex: 1,
+                                text: 'Name',
+                                editor: {
+                                    xtype: 'textfield',
+                                    allowBlank: false
                                 }
+                            }, {
+                                xtype: 'gridcolumn',
+                                dataIndex: 'comment',
+                                flex: 2,
+                                text: 'Description',
+                                editor: {
+                                    xtype: 'textfield',
+                                    allowBlank: false
+                                }
+                            }],
+                            selModel: {
+                                //autoPanMapOnSelection: true,
+                                selectControl: {
+                                    id: 'PTS-Select-Row'
+                                }
+                            },
+                            selType: 'featuremodel',
+                            plugins: [
+                                Ext.create('Ext.grid.plugin.CellEditing', {
+                                    pluginId: 'cellEdit',
+                                    clicksToEdit: 1
+                                })
                             ]
-                        },
-                        {
-                            xtype: 'productmetadata',
-                            formItems: [{
-                                xtype: 'productmetadataform'
-                            }]
-                        }
-                    ]
-                }
-            ],
-            dockedItems: [
-                {
-                    xtype: 'toolbar',
-                    dock: 'bottom',
-                    items: [
-                        {
-                            xtype: 'tbfill'
-                        },
-                        /*{//TODO: save all button
-                            xtype: 'button',
-                            text: 'Save All',
-                            action: 'saveall'
-                        },*/
-                        {
-                            xtype: 'button',
-                            text: 'Close',
-                            action: 'closewindow'
-                        }
-                    ]
-                }
-            ]
+                        }]
+                    }, {
+                        xtype: 'productmetadata',
+                        formItems: [{
+                            xtype: 'productmetadataform'
+                        }]
+                    }
+                ]
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                items: [{
+                        xtype: 'tbfill'
+                    },
+                    /*{//TODO: save all button
+                        xtype: 'button',
+                        text: 'Save All',
+                        action: 'saveall'
+                    },*/
+                    {
+                        xtype: 'button',
+                        text: 'Close',
+                        action: 'closewindow'
+                    }
+                ]
+            }]
         });
 
         me.callParent(arguments);

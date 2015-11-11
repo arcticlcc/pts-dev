@@ -31,7 +31,7 @@ Ext.define('PTS.controller.MainToolbar', {
         btn.setText(txt);
 
         menu.add(PTS.UserId.paths);
-        menu.down('menuitem[url='+ window.location.pathname +']').disable();
+        menu.down('menuitem[url=' + window.location.pathname + ']').disable();
     },
 
     /**
@@ -46,6 +46,6 @@ Ext.define('PTS.controller.MainToolbar', {
      * Switch PTS by setting window location.
      */
     switchPTS: function(location) {
-         window.location.href = location;
+        window.location.href = location;
     }
 });

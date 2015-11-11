@@ -40,7 +40,7 @@ Ext.define('PTS.controller.dashboard.TaskList', {
         store.clearFilter(true);
         store.remoteFilter = true;
 
-        switch(itm.filter) {
+        switch (itm.filter) {
             case 'user':
                 store.filters.add(new Ext.util.Filter({
                     property: 'contactid',
@@ -58,7 +58,7 @@ Ext.define('PTS.controller.dashboard.TaskList', {
                 store.clearFilter();
         }
 
-        if(!this.showComplete) {
+        if (!this.showComplete) {
             store.filters.add(new Ext.util.Filter({
                 property: 'completed',
                 value: 'false'
@@ -76,12 +76,12 @@ Ext.define('PTS.controller.dashboard.TaskList', {
     toggleComplete: function(btn, pressed) {
         var store = this.getTasksStore(),
             filters = store.filters;
-            //idx = store.filters.findIndex('property','completed'),
-            //filter = store.filters.getAt(idx);
+        //idx = store.filters.findIndex('property','completed'),
+        //filter = store.filters.getAt(idx);
 
         this.showComplete = pressed;
-        if(pressed) {
-            filters.removeAt(filters.findIndex('property','completed'));
+        if (pressed) {
+            filters.removeAt(filters.findIndex('property', 'completed'));
         } else {
             filters.add(new Ext.util.Filter({
                 property: 'completed',

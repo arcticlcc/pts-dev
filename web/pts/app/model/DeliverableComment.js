@@ -3,35 +3,29 @@
  */
 Ext.define('PTS.model.DeliverableComment', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'deliverablecommentid',
-            type: 'integer',
-            useNull: true,
-            persist: false
-        },
-        {
-            name: 'deliverableid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'comment',
-            type: 'mystring',
-            useNull: true
-        },
-        {
-            name: 'datemodified',
-            type: 'mydate',
-            useNull: true,
-            defaultValue: new Date()
-        }
-    ],
+    fields: [{
+        name: 'deliverablecommentid',
+        type: 'integer',
+        useNull: true,
+        persist: false
+    }, {
+        name: 'deliverableid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'comment',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'datemodified',
+        type: 'mydate',
+        useNull: true,
+        defaultValue: new Date()
+    }],
     idProperty: 'deliverablecommentid',
     validations: [{
         type: 'length',
@@ -49,7 +43,7 @@ Ext.define('PTS.model.DeliverableComment', {
 
     proxy: {
         type: 'rest',
-        url : '../deliverablecomment',
+        url: '../deliverablecomment',
         reader: {
             type: 'json',
             root: 'data'

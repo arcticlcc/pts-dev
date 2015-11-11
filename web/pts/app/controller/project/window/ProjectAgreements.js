@@ -19,10 +19,10 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
     refs: [{
         ref: 'agreementsTab',
         selector: 'projectagreements'
-    },{
+    }, {
         ref: 'agreementsTree',
         selector: 'agreementstree'
-    },{
+    }, {
         ref: 'itemDetail',
         selector: 'agreementitemdetail'
     }],
@@ -50,10 +50,11 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
             },
             'agreementitemdetail #mainItemToolbar': {
                 beforerender: this.onRenderItemToolbar
-            }/*,
-            'projectcontacts button[action=addcontacts]': {
-                click: this.addContacts
-            }*/
+            }
+            /*,
+                        'projectcontacts button[action=addcontacts]': {
+                            click: this.addContacts
+                        }*/
         });
 
         // We listen for the application-wide openproject event
@@ -71,13 +72,15 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         text: 'New',
         iconCls: 'pts-menu-addbasic',
         hidden: true,
-        handler: function(){
+        handler: function() {
             Ext.Msg.alert('Click', 'You clicked on "New".');
         },
         listeners: {
-            show: function(){
+            show: function() {
                 var rootBtn = this.ownerCt.child('#rootBtn');
-                if(rootBtn){rootBtn.hide();}
+                if (rootBtn) {
+                    rootBtn.hide();
+                }
             }
         }
     }),
@@ -91,27 +94,27 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         text: 'Edit',
         iconCls: 'pts-menu-editbasic',
         disabled: true,
-        handler: function(b,e){
+        handler: function(b, e) {
             //TODO: set handler in event to avoid ComponentQuery, also save action
             var panel = Ext.ComponentQuery.query('projectagreements #itemDetail')[0],
                 form = panel.getLayout().getActiveItem().child('#itemForm');
 
             panel.setIconCls('pts-panel-unlocked');
-            Ext.each(form.query('field'), function() {// set fields as editable
-                if(!this.doNotEnable) {
+            Ext.each(form.query('field'), function() { // set fields as editable
+                if (!this.doNotEnable) {
                     this.setReadOnly(false);
-                }else {
+                } else {
                     this.getEl().setOpacity(0.5);
                 }
             });
 
-            Ext.each(Ext.ComponentQuery.query('#editItemBtn'),function(){//disable all instances of this action
+            Ext.each(Ext.ComponentQuery.query('#editItemBtn'), function() { //disable all instances of this action
                 this.disable();
             });
 
             //Ext.getCmp('alcc-agreements-tab').actions.editItemBtn.disable(); //disable edit button
 
-           //Ext.Msg.alert('Click', 'You clicked on "Edit".');
+            //Ext.Msg.alert('Click', 'You clicked on "Edit".');
         }
     }),
 
@@ -123,24 +126,24 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         text: 'Delete',
         iconCls: 'pts-menu-deletebasic',
         disabled: true,
-        handler: function(){
+        handler: function() {
             var tab = Ext.ComponentQuery.query('projectagreements')[0],
                 panel = tab.down('#itemDetail'),
                 card = panel.getLayout().getActiveItem(),
                 form = card.child('#itemForm').getForm(),
                 del = function(b) {
-                    if('yes' === b) {
+                    if ('yes' === b) {
                         var record = form.getRecord(),
                             tree = tab.down('agreementstree'),
                             treeRecord = tree.getSelectionModel().getSelection()[0];
-                            //newRecord = record.phantom;
+                        //newRecord = record.phantom;
 
                         //set mask
                         tab.getEl().mask('Deleting...');
 
                         record.destroy({
                             success: function(model, op) {
-                                var pid  = treeRecord.get('parentItm');
+                                var pid = treeRecord.get('parentItm');
 
                                 PTS.app.fireEvent('savedeliverable', op.records[0], op);
 
@@ -149,8 +152,8 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                                 treeRecord.remove(true);
                                 //if the record is a modification of another node
                                 //check to see if the parent still has child mods
-                                if(!!pid && !tree.getRootNode().findChild('parentItm',pid,true)) {
-                                    tree.getStore().getNodeById(pid).set('readonly',false);
+                                if (!!pid && !tree.getRootNode().findChild('parentItm', pid, true)) {
+                                    tree.getStore().getNodeById(pid).set('readonly', false);
                                     //TODO: check parent node invalid class
                                 }
                                 tab.getEl().unmask();
@@ -171,7 +174,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                     }
                 };
 
-            if(card.ptsConfirmDelete === true) {
+            if (card.ptsConfirmDelete === true) {
                 Ext.MessageBox.show({
                     title: 'Confirm Deletion',
                     msg: 'Are you sure you want to delete this <b>' + card.title + '</b>?',
@@ -196,11 +199,11 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         text: 'Reset',
         iconCls: 'pts-menu-reset',
         disabled: true,
-        handler: function(b){
+        handler: function(b) {
             var panel = b.up('panel'),
                 form = panel.getLayout().getActiveItem().child('#itemForm').getForm();
 
-                form.reset();
+            form.reset();
         }
     }),
 
@@ -214,7 +217,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         text: 'Save',
         iconCls: 'pts-menu-savebasic',
         disabled: true,
-        handler: function(){
+        handler: function() {
             //Ext.Msg.alert('Click', 'You clicked on "Save".');
             var tab = Ext.ComponentQuery.query('projectagreements')[0],
                 panel = tab.down('#itemDetail'),
@@ -237,11 +240,11 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         pNode;
                     //TODO: update title
 
-                    if(Ext.getClassName(model) === 'PTS.model.Deliverable') {
+                    if (Ext.getClassName(model) === 'PTS.model.Deliverable') {
                         PTS.app.fireEvent('savedeliverable', model, op);
                     }
 
-                    if(Ext.getClassName(model) === 'PTS.model.Modification') {
+                    if (Ext.getClassName(model) === 'PTS.model.Modification') {
                         PTS.app.fireEvent('savemodification', model, op, newRecord);
                     }
 
@@ -255,11 +258,11 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         dataid: model.getId()
                     };
                     //insert tree node
-                    if(newRecord) {
+                    if (newRecord) {
                         //add parentcode
                         tNode.parentcode = model.get('parentcode');
                         //if item is a modification or agreement,  we need to add child branches
-                        if(itemid === 'itemCard-20' || itemid === 'itemCard-60') {
+                        if (itemid === 'itemCard-20' || itemid === 'itemCard-60') {
                             children = [{
                                 "children": [],
                                 "text": "Deliverables",
@@ -298,7 +301,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                                 "defIcon": "pts-page-orange"
                             }];
                             //only add mod folder if new node is an agreement
-                            if(!model.get('parentmodificationid')) {
+                            if (!model.get('parentmodificationid')) {
                                 modChild = {
                                     "children": [],
                                     "text": "Modifications",
@@ -315,31 +318,31 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                                     }
                                 };
 
-                               children.push(modChild);
+                                children.push(modChild);
                             }
 
                             tNode.children = children;
                             tNode.leaf = false;
                         }
 
-                        if(!treeRecord) {//no node has been selected
+                        if (!treeRecord) { //no node has been selected
                             //TODO: come up with someting better here
-                            if(itemid === 'itemCard-10') {//proposal
+                            if (itemid === 'itemCard-10') { //proposal
                                 treeRecord = tab.down('agreementstree').getStore().getNodeById('prt-0');
-                            }else if(itemid === 'itemCard-20') {//agreement
+                            } else if (itemid === 'itemCard-20') { //agreement
                                 treeRecord = tab.down('agreementstree').getStore().getNodeById('art-0');
-                            }else {
+                            } else {
                                 //refresh tree, this should never happen
                                 Ext.Error.raise('TreeRecord Not Set');
                             }
                         }
 
                         //add new node
-                        if(!!treeRecord.get('dataid')) {//only "real" records have dataids
+                        if (!!treeRecord.get('dataid')) { //only "real" records have dataids
                             pNode = treeRecord.parentNode;
                             tNode.iconCls = pNode.get('defIcon'); //get from parent
                             nNode = pNode.appendChild(tNode);
-                        }else {//else add child to this node, it's a branch
+                        } else { //else add child to this node, it's a branch
                             tNode.iconCls = treeRecord.get('defIcon');
                             nNode = treeRecord.appendChild(tNode);
                         }
@@ -347,12 +350,12 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         tree.getView().select(nNode);
                         //expand tree
                         tree.expandPath(nNode.getPath());
-                    }else {
+                    } else {
                         //TODO: update record, i.e. title,validity
                         //update parentcode for modification sub-folder node
-                        pNode = treeRecord.findChild('text','Modifications');
-                        if(pNode) {
-                            pNode.set('parentcode',model.get('modificationcode'));
+                        pNode = treeRecord.findChild('text', 'Modifications');
+                        if (pNode) {
+                            pNode.set('parentcode', model.get('modificationcode'));
                         }
                     }
 
@@ -365,11 +368,11 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         tree = tab.down('agreementstree'),
                         treeRecord = tree.getSelectionModel().getSelection()[0];
 
-                        if(treeRecord) {
-                            ms = 'There was an error saving ' + treeRecord.get('text');
-                        }else {
-                            ms = 'There was an error saving the record';
-                        }
+                    if (treeRecord) {
+                        ms = 'There was an error saving ' + treeRecord.get('text');
+                    } else {
+                        ms = 'There was an error saving the record';
+                    }
 
                     /*Ext.MessageBox.show({
                        title: 'Error',
@@ -408,21 +411,21 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         return menu;
     },
 
-    getNewItemBtnHandler: function(typeid,title,rec) {
-            var ctrl = this,
+    getNewItemBtnHandler: function(typeid, title, rec) {
+        var ctrl = this,
             panel = ctrl.getItemDetail(),
             projectId = panel.up('projectwindow').projectId;
 
-        return function(){
+        return function() {
             var fkey, //vals,
                 form = panel.down('#itemCard-' + typeid + ' #itemForm'),
                 //basic = form.getForm(),
                 model = Ext.create(form.model);
 
-            panel.getLayout().setActiveItem('itemCard-'+typeid);
+            panel.getLayout().setActiveItem('itemCard-' + typeid);
 
             //set fkeys
-            if(rec) {
+            if (rec) {
                 fkey = rec.get('fkey') ? rec.get('fkey') : rec.parentNode.get('fkey');
                 //vals = [];
                 //create value objects array
@@ -431,8 +434,10 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                         vals.push({id: itm[1] , value: itm[0]});
                     }
                 });*/
-            }else { //no rec passed, so we assume root folder
-                fkey = {'projectid' : projectId};
+            } else { //no rec passed, so we assume root folder
+                fkey = {
+                    'projectid': projectId
+                };
             }
             //set key values in model, do not fire update event
             model.beginEdit();
@@ -444,8 +449,8 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
             //fire newitem event
             ctrl.application.fireEvent('newitem', model, form);
 
-            Ext.each(form.query('field'), function() {// set fields as writeable
-                    this.setReadOnly(false);
+            Ext.each(form.query('field'), function() { // set fields as writeable
+                this.setReadOnly(false);
             });
 
             panel.setTitle(title);
@@ -465,26 +470,26 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         var icon = 'pts-menu-addbasic',
             cfg, txt;
 
-        switch(typeid) {
+        switch (typeid) {
             case 0:
                 return false;
             case 10:
-                    txt = 'New Proposal';
+                txt = 'New Proposal';
                 break;
             case 20:
-                    txt = 'New Agreement';
+                txt = 'New Agreement';
                 break;
             case 30:
-                    txt = 'New Deliverable';
+                txt = 'New Deliverable';
                 break;
             case 40:
-                    txt = 'New Task';
+                txt = 'New Task';
                 break;
             case 50:
-                    txt = 'New Funding';
+                txt = 'New Funding';
                 break;
             case 60:
-                    txt = 'New Modification';
+                txt = 'New Modification';
 
                 break;
             default:
@@ -505,7 +510,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         return item;
     },*/
 
-    updateNewItemBtn: function(typeid,rec) {
+    updateNewItemBtn: function(typeid, rec) {
         var item = this.newItemBtn,
             text = this.getBtnConfig(typeid).text,
             handler = this.getNewItemBtnHandler(typeid, text, rec);
@@ -527,36 +532,33 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         newAgreement.handler = this.getNewItemBtnHandler(20, newAgreement.text);
         newProposal.handler = this.getNewItemBtnHandler(10, newProposal.text);
 
-        tab.addDocked([
-            {
-                xtype: 'toolbar',
-                dock: 'top',
-                items: [
-                    {
-                        xtype: 'button',
-                        itemId: 'rootBtn',
-                        text: 'New',
-                        iconCls: 'pts-menu-add',
-                        menu: {
-                            xtype: 'menu',
-                            items: [
-                                newAgreement,
-                                newProposal
-                            ]
-                        },
-                        listeners: {
-                            afterrender: function(){ //apparently the show event does not fire after rendering
-                                this.ownerCt.child('#newItemBtn').hide();
-                            },
-                            show: function(){
-                                this.ownerCt.child('#newItemBtn').hide();
-                            }
-                        }
+        tab.addDocked([{
+            xtype: 'toolbar',
+            dock: 'top',
+            items: [{
+                    xtype: 'button',
+                    itemId: 'rootBtn',
+                    text: 'New',
+                    iconCls: 'pts-menu-add',
+                    menu: {
+                        xtype: 'menu',
+                        items: [
+                            newAgreement,
+                            newProposal
+                        ]
                     },
-                    this.newItemBtn
-                ]
-            }
-        ]);
+                    listeners: {
+                        afterrender: function() { //apparently the show event does not fire after rendering
+                            this.ownerCt.child('#newItemBtn').hide();
+                        },
+                        show: function() {
+                            this.ownerCt.child('#newItemBtn').hide();
+                        }
+                    }
+                },
+                this.newItemBtn
+            ]
+        }]);
     },
 
     /**
@@ -569,29 +571,29 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
         detail.items.each(
             function(c) {
                 var form = c.down('#itemForm');
-                if(form) {
+                if (form) {
                     form.on({
                         dirtychange: {
-                            fn: function(f,dirty) {
-                             if(dirty) {
-                                this.resetItemBtn.enable();
-                                if(f.isValid()) {
-                                    this.saveItemBtn.enable();
+                            fn: function(f, dirty) {
+                                if (dirty) {
+                                    this.resetItemBtn.enable();
+                                    if (f.isValid()) {
+                                        this.saveItemBtn.enable();
+                                    }
+                                } else {
+                                    this.resetItemBtn.disable();
+                                    this.saveItemBtn.disable();
                                 }
-                             }else {
-                                this.resetItemBtn.disable();
-                                this.saveItemBtn.disable();
-                             }
                             },
                             scope: me
                         },
                         validitychange: {
-                            fn: function(f,valid) {
-                             if(valid && f.isDirty()) {
-                                this.saveItemBtn.enable();
-                             }else {
-                                this.saveItemBtn.disable();
-                             }
+                            fn: function(f, valid) {
+                                if (valid && f.isDirty()) {
+                                    this.saveItemBtn.enable();
+                                } else {
+                                    this.saveItemBtn.disable();
+                                }
                             },
                             scope: me
                         }
@@ -613,26 +615,26 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
             this.saveItemBtn,
             this.resetItemBtn
         ]);
-     },
+    },
 
     /**
      * Select listener for agreements tree.
      */
-    onSelectItem: function(rm, rec, index,opts) {
+    onSelectItem: function(rm, rec, index, opts) {
         var ctlr = this,
-        typeid = rec.get('typeid'),
-        id = rec.get('dataid'),
-        parentItm = rec.get('parentItm'),
-        readonly = !!rec.get('readonly'),
-        tp = this.getAgreementsTab(),
-        itemDetail = this.getItemDetail(),
-        btns = [this.editItemBtn,this.deleteItemBtn],
-        save = this.saveItemBtn,
-        reset = this.resetItemBtn,
-        view = this.getAgreementsTree().getView(),
-        itemForm,itemCard;
+            typeid = rec.get('typeid'),
+            id = rec.get('dataid'),
+            parentItm = rec.get('parentItm'),
+            readonly = !!rec.get('readonly'),
+            tp = this.getAgreementsTab(),
+            itemDetail = this.getItemDetail(),
+            btns = [this.editItemBtn, this.deleteItemBtn],
+            save = this.saveItemBtn,
+            reset = this.resetItemBtn,
+            view = this.getAgreementsTree().getView(),
+            itemForm, itemCard;
 
-        if(!typeid && id) {
+        if (!typeid && id) {
             typeid = rec.parentNode.get('typeid'); //get type from parent
             itemCard = itemDetail.down('#itemCard-' + typeid); //get card for selected node
             itemForm = itemCard.down('#itemForm'); //get form for selected node
@@ -643,7 +645,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
             Ext.each(itemForm.query('field'), function() {
                 var me = this;
 
-                if(me.isXType('combobox')) {
+                if (me.isXType('combobox')) {
                     me.getStore().clearFilter();
                 }
             });
@@ -651,22 +653,22 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
             Ext.ModelMgr.getModel(itemForm.model).load(id, { // load with id from selected record
                 success: function(model) {
                     itemForm.loadRecord(model); // when model is loaded successfully, load the data into the form
-                    ctlr.application.fireEvent('itemload',model, itemForm); //fire itemloaded event
+                    ctlr.application.fireEvent('itemload', model, itemForm); //fire itemloaded event
 
-                    Ext.each(itemForm.query('field'), function() {// set all fields as read-only on load
+                    Ext.each(itemForm.query('field'), function() { // set all fields as read-only on load
                         this.setReadOnly(true);
                     });
-                    itemDetail.setIconCls('pts-panel-locked');//set the lock icon on the panel
+                    itemDetail.setIconCls('pts-panel-locked'); //set the lock icon on the panel
                     //TODO: allow delete with warning about cascades.
                     //Will need to override the proxy for deliverables
-                    Ext.each(btns, function(){
+                    Ext.each(btns, function() {
                         this.setDisabled(readonly);
                     });
                     itemDetail.getLayout().setActiveItem(itemCard);
-                    if(itemForm.isXType('form')) {
-                        if(itemForm.getForm().isDirty()) {
+                    if (itemForm.isXType('form')) {
+                        if (itemForm.getForm().isDirty()) {
                             reset.enable();
-                            if(itemForm.getForm().isValid()) {
+                            if (itemForm.getForm().isValid()) {
                                 save.enable();
                             }
                         } else {
@@ -677,15 +679,17 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
 
                     //if selected node is a deliverable mod,
                     //we hightlight the parent node
-                    if(parentItm) {
+                    if (parentItm) {
                         var parentNode = view.getStore().getById(parentItm);
-                        view.addRowCls(parentNode,'pts-deliverable-highlight');
+                        view.addRowCls(parentNode, 'pts-deliverable-highlight');
                         view.getSelectionModel().on('selectionchange', function(view, sel) {
-                            this.removeRowCls(parentNode,'pts-deliverable-highlight');
-                        }, view,{single: true});
+                            this.removeRowCls(parentNode, 'pts-deliverable-highlight');
+                        }, view, {
+                            single: true
+                        });
                     }
 
-                    itemDetail.setTitle(rec.get('text') /*+ ": " + rec.get('task')*/);
+                    itemDetail.setTitle(rec.get('text') /*+ ": " + rec.get('task')*/ );
                     itemDetail.getEl().unmask();
                     itemDetail.enable();
                 },
@@ -701,8 +705,8 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
                 }
             });
 
-        }else{
-            Ext.each(btns, function(){
+        } else {
+            Ext.each(btns, function() {
                 this.disable();
             });
             itemDetail.getLayout().setActiveItem(0);
@@ -711,7 +715,7 @@ Ext.define('PTS.controller.project.window.ProjectAgreements', {
             itemDetail.setIconCls('x-tree-icon-parent');
             //itemDetail.disable();
         }
-        this.updateNewItemBtn(typeid,rec);
+        this.updateNewItemBtn(typeid, rec);
         tp.down('#rootBtn').hide();
 
     }

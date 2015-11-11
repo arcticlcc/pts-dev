@@ -7,11 +7,11 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
 
     views: ['project.window.ProjectMetadata'],
     models: ['Project', 'ProjectMetadata'],
-    stores: ['TopicCategories','UserTypes','ProjectCategories'],
+    stores: ['TopicCategories', 'UserTypes', 'ProjectCategories'],
     refs: [{
         ref: 'projectMetadata',
         selector: 'projectmetadata'
-    },{
+    }, {
         ref: 'metadataForm',
         selector: 'projectmetadata metadataform'
     }, {
@@ -109,10 +109,10 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
     /**
      * Handle metadataform validity change event.
      */
-    onValidityChange: function(form,valid) {
+    onValidityChange: function(form, valid) {
         var saveBtn = this.getProjectMetadata().down('button[action=save]');
 
-        if (valid /*&& form.isDirty()*/) {//dirtychange not working with itemselector in 4.0.7
+        if (valid /*&& form.isDirty()*/ ) { //dirtychange not working with itemselector in 4.0.7
             saveBtn.enable();
         } else {
             saveBtn.disable();
@@ -122,7 +122,7 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
     /**
      * Handle metadataform dirty change event.
      */
-    onDirtyChange: function(form,dirty) {
+    onDirtyChange: function(form, dirty) {
         var saveBtn = this.getProjectMetadata().down('button[action=save]'),
             resetBtn = this.getProjectMetadata().down('button[action=reset]');
 
@@ -150,10 +150,10 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
 
         btn.setActiveItem(items.get(idx), true);
 
-        if(id) {
+        if (id) {
             form.setLoading(true, true);
 
-            model.load(id, {// load with id from project record
+            model.load(id, { // load with id from project record
                 success: function(model) {
                     form.loadRecord(model);
                 }
@@ -239,7 +239,7 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
             openBtn = tab.down('button[action=openpreview]');
 
         layout.setActiveItem(1);
-        layout.getActiveItem().body.scrollTo('top',0);
+        layout.getActiveItem().body.scrollTo('top', 0);
         el.mask('Generating Preview...');
         //set the preview type
         openBtn.previewType = btn.action;

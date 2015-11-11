@@ -16,7 +16,7 @@ Ext.define('PTS.view.project.form.TaskForm', {
     initComponent: function() {
         var me = this;
         me.callParent(arguments);
-        
+
         //Bind the TaskStatuses store
         this.down('#relatedDetails>roweditgrid#statusGrid gridcolumn[dataIndex=deliverablestatusid]').getEditor().bindStore('TaskStatuses');
     }

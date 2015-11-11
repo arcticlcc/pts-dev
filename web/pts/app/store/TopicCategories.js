@@ -7,10 +7,8 @@ Ext.define('PTS.store.TopicCategories', {
     model: 'PTS.model.TopicCategory',
 
     autoLoad: true,
-    sorters: [
-        {
-            property : 'codename',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'codename',
+        direction: 'ASC'
+    }]
 });

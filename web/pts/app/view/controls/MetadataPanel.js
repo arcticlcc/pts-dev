@@ -31,49 +31,49 @@ Ext.define('PTS.view.controls.MetadataPanel', {
                     xtype: 'toolbar',
                     dock: 'top',
                     items: [{
-                        xtype: 'button',
-                        iconCls: 'pts-menu-savebasic',
-                        text: 'Save',
-                        action: 'save',
-                        disabled: true
-                    }, {
-                        xtype: 'button',
-                        iconCls: 'pts-menu-reset',
-                        text: 'Reset',
-                        action: 'reset'
-                    },
-                    '->',
-                    {
-                        xtype: 'button',
-                        iconCls: 'pts-menu-json',
-                        text: 'Preview JSON',
-                        action: 'json'
-                    }, {
-                        xtype: 'button',
-                        iconCls: 'pts-menu-code',
-                        text: 'Preview XML',
-                        action: 'xml'
-                    }, {
-                        xtype: 'button',
-                        iconCls: 'pts-menu-code',
-                        text: 'Preview HTML',
-                        action: 'html'
-                    }, {
-                        xtype: 'cycle',
-                        itemId: 'publishBtn',
-                        showText: true,
-                        menu: {
-                            items: [{
-                                iconCls: 'pts-menu-publish',
-                                text: 'Publish',
-                                action: 'DELETE'
-                            }, {
-                                iconCls: 'pts-menu-unpublish',
-                                text: 'Unpublish',
-                                action: 'PUT'
-                            }]
+                            xtype: 'button',
+                            iconCls: 'pts-menu-savebasic',
+                            text: 'Save',
+                            action: 'save',
+                            disabled: true
+                        }, {
+                            xtype: 'button',
+                            iconCls: 'pts-menu-reset',
+                            text: 'Reset',
+                            action: 'reset'
+                        },
+                        '->', {
+                            xtype: 'button',
+                            iconCls: 'pts-menu-json',
+                            text: 'Preview JSON',
+                            action: 'json'
+                        }, {
+                            xtype: 'button',
+                            iconCls: 'pts-menu-code',
+                            text: 'Preview XML',
+                            action: 'xml'
+                        }, {
+                            xtype: 'button',
+                            iconCls: 'pts-menu-code',
+                            text: 'Preview HTML',
+                            action: 'html'
+                        }, {
+                            xtype: 'cycle',
+                            itemId: 'publishBtn',
+                            showText: true,
+                            menu: {
+                                items: [{
+                                    iconCls: 'pts-menu-publish',
+                                    text: 'Publish',
+                                    action: 'DELETE'
+                                }, {
+                                    iconCls: 'pts-menu-unpublish',
+                                    text: 'Unpublish',
+                                    action: 'PUT'
+                                }]
+                            }
                         }
-                    }]
+                    ]
                 }],
                 items: me.formItems
             }, {

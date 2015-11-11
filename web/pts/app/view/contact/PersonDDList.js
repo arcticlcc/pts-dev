@@ -11,7 +11,7 @@ Ext.define('PTS.view.contact.PersonDDList', {
         'Ext.grid.plugin.DragDrop'
     ],
 
-    title:'Persons',
+    title: 'Persons',
     store: 'DDPersons',
     itemId: 'personsList', //do not change
 
@@ -35,41 +35,36 @@ Ext.define('PTS.view.contact.PersonDDList', {
                 store: 'DDPersons',
                 displayInfo: false
             }],
-            columns: [
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'firstname',
-                    flex: 1,
-                    text: 'First Name'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'lastname',
-                    flex: 3,
-                    text: 'Last Name'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'priacronym',
-                    width: 60,
-                    text: 'Group'
-                },
-                {
-                    xtype: 'gridcolumn',
-                    dataIndex: 'prigroupname',
-                    flex: 2,
-                    hidden: true,
-                    text: 'Group Name'
-                }
-            ]
+            columns: [{
+                xtype: 'gridcolumn',
+                dataIndex: 'firstname',
+                flex: 1,
+                text: 'First Name'
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'lastname',
+                flex: 3,
+                text: 'Last Name'
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'priacronym',
+                width: 60,
+                text: 'Group'
+            }, {
+                xtype: 'gridcolumn',
+                dataIndex: 'prigroupname',
+                flex: 2,
+                hidden: true,
+                text: 'Group Name'
+            }]
         });
 
         me.callParent(arguments);
 
         me.addDocked({
-                xtype: 'filterbar',
-                searchStore: me.store,
-                dock: 'bottom'
+            xtype: 'filterbar',
+            searchStore: me.store,
+            dock: 'bottom'
         });
     }
 });

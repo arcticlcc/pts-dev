@@ -22,10 +22,10 @@ Ext.define('PTS.view.dashboard.Dashboard', {
 
     initComponent: function() {
         var me = this,
-        calStore = Ext.create('Extensible.calendar.data.MemoryCalendarStore', {
-            data: Ext.create('PTS.data.Calendar'),
-            storeId: 'CalendarStore'
-        });
+            calStore = Ext.create('Extensible.calendar.data.MemoryCalendarStore', {
+                data: Ext.create('PTS.data.Calendar'),
+                storeId: 'CalendarStore'
+            });
 
         Ext.applyIf(me, {
             items: [{
@@ -39,20 +39,19 @@ Ext.define('PTS.view.dashboard.Dashboard', {
                         cls: 'ext-cal-nav-picker',
                         listeners: {
                             'select': {
-                                fn: function(dp, dt){
+                                fn: function(dp, dt) {
                                     Ext.ComponentQuery.query('dashboardcalendar')[0].setStartDate(dt);
                                 },
                                 scope: this
                             }
                         }
-                    },{
+                    }, {
                         xtype: 'extensible.calendarlist',
                         store: calStore,
                         border: false,
                         width: 178
                     }]
-                },
-                {
+                }, {
                     xtype: 'dashboardcalendar',
                     id: 'pts-dashboardcalendar',
                     calendarStore: calStore,
@@ -68,8 +67,7 @@ Ext.define('PTS.view.dashboard.Dashboard', {
                     viewConfig: {
                         showHeader: true
                     }
-                },
-                {
+                }, {
                     xtype: 'tabpanel',
                     width: Ext.getBody().getWidth() > 1490 ? 700 : 590,
                     title: 'Tasks and Deliverables',
@@ -80,22 +78,20 @@ Ext.define('PTS.view.dashboard.Dashboard', {
                     split: true,
                     preventHeader: true,
                     animCollapse: !Ext.isIE8, //TODO: remove this IE8 hack
-                    items: [
-                        {
-                            xtype: 'tasklist',
-                            title: 'Tasks'
-                        },
-                        {
-                            xtype: 'deliverablelist',
-                            title: 'Deliverables'
-                        }
-                    ]
-                }/*,
-                {
-                    xtype: 'dashboardquickview',
-                    region: 'south',
-                    collapsed: true
-                }*/
+                    items: [{
+                        xtype: 'tasklist',
+                        title: 'Tasks'
+                    }, {
+                        xtype: 'deliverablelist',
+                        title: 'Deliverables'
+                    }]
+                }
+                /*,
+                                {
+                                    xtype: 'dashboardquickview',
+                                    region: 'south',
+                                    collapsed: true
+                                }*/
             ]
         });
 

@@ -60,9 +60,9 @@ Ext.define('PTS.view.controls.MapToolbar', {
     showMask: function(message) {
         var me = this,
             cmp = me.maskCmp === true ? me.ownerCt : me.maskCmp,
-            m = message ? message: 'Loading Project Features...';
+            m = message ? message : 'Loading Project Features...';
 
-        if(cmp) {
+        if (cmp) {
             cmp.getEl().mask(m);
         }
     },
@@ -74,7 +74,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
         var me = this,
             cmp = me.maskCmp === true ? me.ownerCt : me.maskCmp;
 
-        if(cmp) {
+        if (cmp) {
             cmp.getEl().unmask();
         }
     },
@@ -91,7 +91,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             SelectHover;
 
         //select on hover
-        SelectHover = new OpenLayers.Control.SelectFeature(vector,{
+        SelectHover = new OpenLayers.Control.SelectFeature(vector, {
             id: 'PTS-Select-Hover',
             hover: true,
             highlightOnly: true,
@@ -100,10 +100,10 @@ Ext.define('PTS.view.controls.MapToolbar', {
             unhighlight: function(feature) {
                 var layer = feature.layer,
                     cont = this.events.triggerEvent("beforefeatureunhighlighted", {
-                        feature : feature
+                        feature: feature
                     });
 
-                if(cont !== false) {
+                if (cont !== false) {
                     // three cases:
                     // 1. there's no other highlighter, in that case _prev is undefined,
                     //    and we just need to undef _last
@@ -113,9 +113,9 @@ Ext.define('PTS.view.controls.MapToolbar', {
                     // 3. another control highlighted the feature before we did it, in
                     //    that case _prev references this other control, and we need to
                     //    set _last to _prev and undef _prev
-                    if(feature._prevHighlighter === undefined) {
+                    if (feature._prevHighlighter === undefined) {
                         delete feature._lastHighlighter;
-                    } else if(feature._prevHighlighter == this.id) {
+                    } else if (feature._prevHighlighter == this.id) {
                         delete feature._prevHighlighter;
                     } else {
                         feature._lastHighlighter = feature._prevHighlighter;
@@ -123,29 +123,31 @@ Ext.define('PTS.view.controls.MapToolbar', {
                     }
                     layer.drawFeature(feature, feature.style || feature.layer.style ||
                         "default");
-                    this.events.triggerEvent("featureunhighlighted", {feature : feature});
+                    this.events.triggerEvent("featureunhighlighted", {
+                        feature: feature
+                    });
                 }
             },
             outFeature: function(feature) {
-                if(this.hover) {
-                    if(this.highlightOnly) {
+                if (this.hover) {
+                    if (this.highlightOnly) {
                         var cont = this.events.triggerEvent("beforefeatureunhighlighted", {
-                                feature : feature
-                            });
-                        if(cont !== false) {
+                            feature: feature
+                        });
+                        if (cont !== false) {
                             // we do nothing if we're not the last highlighter of the
                             // feature
-                            if(feature._lastHighlighter == this.id) {
+                            if (feature._lastHighlighter == this.id) {
                                 // if another select control had highlighted the feature before
                                 // we did it ourself then we use that control to highlight the
                                 // feature as it was before we highlighted it, else we just
                                 // unhighlight it
-                                if(feature._prevHighlighter &&
-                                   feature._prevHighlighter != this.id) {
+                                if (feature._prevHighlighter &&
+                                    feature._prevHighlighter != this.id) {
                                     delete feature._lastHighlighter;
                                     var control = this.map.getControl(
                                         feature._prevHighlighter);
-                                    if(control) {
+                                    if (control) {
                                         control.highlight(feature);
                                     }
                                 } else {
@@ -191,7 +193,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
         items.push("-");
 
         // Navigation control
-        items.push(Ext.create('Ext.button.Button',{
+        items.push(Ext.create('Ext.button.Button', {
             text: 'Pan',
             iconCls: 'pts-menu-pan',
             // button options
@@ -201,7 +203,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             tooltip: "Pan the map"
         }));
 
-        items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
+        items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
             text: 'Point',
             iconCls: 'pts-menu-point',
             control: new OpenLayers.Control.DrawFeature(vector, OpenLayers.Handler.Point),
@@ -212,7 +214,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             tooltip: "Draw a point"
         })));
 
-        items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
+        items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
             text: 'Line',
             iconCls: 'pts-menu-line',
             control: new OpenLayers.Control.DrawFeature(vector, OpenLayers.Handler.Path),
@@ -223,7 +225,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             tooltip: "Draw a line"
         })));
 
-        items.push(Ext.create('Ext.button.Button',Ext.create('GeoExt.Action', {
+        items.push(Ext.create('Ext.button.Button', Ext.create('GeoExt.Action', {
             text: 'Polygon',
             iconCls: 'pts-menu-polygon',
             control: new OpenLayers.Control.DrawFeature(vector, OpenLayers.Handler.Polygon),
@@ -235,31 +237,31 @@ Ext.define('PTS.view.controls.MapToolbar', {
         })));
 
         vector.styleMap.styles.vertex = new OpenLayers.Style({
-                fillColor: "#EE00E2",
-                fillOpacity: 0.4,
-                hoverFillColor: "white",
-                hoverFillOpacity: 0.8,
-                strokeColor: "#EE00E2",
-                strokeOpacity: 1,
-                strokeWidth: 1,
-                strokeLinecap: "round",
-                strokeDashstyle: "solid",
-                hoverStrokeColor: "red",
-                hoverStrokeOpacity: 1,
-                hoverStrokeWidth: 0.2,
-                pointRadius: 6,
-                hoverPointRadius: 1,
-                hoverPointUnit: "%",
-                pointerEvents: "visiblePainted",
-                cursor: "inherit",
-                fontColor: "#000000",
-                labelAlign: "cm",
-                labelOutlineColor: "white",
-                labelOutlineWidth: 3
+            fillColor: "#EE00E2",
+            fillOpacity: 0.4,
+            hoverFillColor: "white",
+            hoverFillOpacity: 0.8,
+            strokeColor: "#EE00E2",
+            strokeOpacity: 1,
+            strokeWidth: 1,
+            strokeLinecap: "round",
+            strokeDashstyle: "solid",
+            hoverStrokeColor: "red",
+            hoverStrokeOpacity: 1,
+            hoverStrokeWidth: 0.2,
+            pointRadius: 6,
+            hoverPointRadius: 1,
+            hoverPointUnit: "%",
+            pointerEvents: "visiblePainted",
+            cursor: "inherit",
+            fontColor: "#000000",
+            labelAlign: "cm",
+            labelOutlineColor: "white",
+            labelOutlineWidth: 3
         });
 
-        ModifyFeature = new OpenLayers.Control.ModifyFeature(vector,{
-            id:'PTS-Modify-Feature',
+        ModifyFeature = new OpenLayers.Control.ModifyFeature(vector, {
+            id: 'PTS-Modify-Feature',
             vertexRenderIntent: 'vertex'
         });
 
@@ -273,51 +275,46 @@ Ext.define('PTS.view.controls.MapToolbar', {
             allowDepress: false,
             tooltip: "Modify a feature",
             menu: {
-                items: [
-                    {
-                        xtype: 'menucheckitem',
-                        text:'Modify',
-                        iconCls: 'pts-menu-modify',
-                        group: 'modoptions',
-                        checked: true,
-                        modoption: OpenLayers.Control.ModifyFeature.RESHAPE
-                    },
-                    {
-                        xtype: 'menucheckitem',
-                        text:'Move',
-                        iconCls: 'pts-menu-move',
-                        group: 'modoptions',
-                        modoption: OpenLayers.Control.ModifyFeature.DRAG
-                    },
-                    {
-                        xtype: 'menucheckitem',
-                        text:'Resize',
-                        iconCls: 'pts-menu-resize',
-                        group: 'modoptions',
-                        modoption: OpenLayers.Control.ModifyFeature.RESIZE
-                    },
-                    {
-                        xtype: 'menucheckitem',
-                        text:'Rotate',
-                        iconCls: 'pts-menu-rotate',
-                        group: 'modoptions',
-                        modoption: OpenLayers.Control.ModifyFeature.ROTATE
-                    }
-                ]
+                items: [{
+                    xtype: 'menucheckitem',
+                    text: 'Modify',
+                    iconCls: 'pts-menu-modify',
+                    group: 'modoptions',
+                    checked: true,
+                    modoption: OpenLayers.Control.ModifyFeature.RESHAPE
+                }, {
+                    xtype: 'menucheckitem',
+                    text: 'Move',
+                    iconCls: 'pts-menu-move',
+                    group: 'modoptions',
+                    modoption: OpenLayers.Control.ModifyFeature.DRAG
+                }, {
+                    xtype: 'menucheckitem',
+                    text: 'Resize',
+                    iconCls: 'pts-menu-resize',
+                    group: 'modoptions',
+                    modoption: OpenLayers.Control.ModifyFeature.RESIZE
+                }, {
+                    xtype: 'menucheckitem',
+                    text: 'Rotate',
+                    iconCls: 'pts-menu-rotate',
+                    group: 'modoptions',
+                    modoption: OpenLayers.Control.ModifyFeature.ROTATE
+                }]
             },
             listeners: {
-                render: function(btn){
+                render: function(btn) {
                     btn.menu.items.each(function(itm) {
                         itm.on('checkchange', function(chkItm, checked) {
                             var feature = ModifyFeature.feature;
 
-                            if(checked) {
+                            if (checked) {
                                 ModifyFeature.mode = chkItm.modoption;
                                 //set the correct icon and text
                                 btn.setText(chkItm.text);
                                 btn.setIconCls(chkItm.iconCls);
 
-                                if(feature) {
+                                if (feature) {
                                     //we need to reselect the feature to update the control
                                     ModifyFeature.unselectFeature(feature);
                                     ModifyFeature.selectFeature(feature);
@@ -334,7 +331,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
         items.push("-");
 
         //add events to saveStrategy to show/hide mask
-        if(me.maskCmp) {
+        if (me.maskCmp) {
             me.saveStrategy.events.on({
                 start: function() {
                     this.showMask('Saving project features...');
@@ -354,27 +351,28 @@ Ext.define('PTS.view.controls.MapToolbar', {
             handler: function() {
                 var remove = [],
                     persisted,
-                    dirty = Ext.Array.some(vector.features, function(f){
+                    dirty = Ext.Array.some(vector.features, function(f) {
                         return f.state;
                     });
 
-                if(dirty) {
+                if (dirty) {
                     Ext.each(vector.features, function(feature) {
-                        if(!!feature.state) {
+                        if (!!feature.state) {
                             //destroy "deleted" features that have not been persisted
-                            if(feature.fid === undefined && feature.state === OpenLayers.State.DELETE) {
+                            if (feature.fid === undefined && feature.state === OpenLayers.State.DELETE) {
                                 remove.push(feature);
-                            }else {
+                            } else {
                                 persisted = true;
                             }
-                        }/*else {
-                            persisted = true;
-                        }*/
+                        }
+                        /*else {
+                                                    persisted = true;
+                                                }*/
                     });
                     vector.destroyFeatures(remove);
-                    if(persisted) {
+                    if (persisted) {
                         me.saveStrategy.save();
-                    }else {
+                    } else {
                         this.unmask();
                     }
                 }
@@ -384,7 +382,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             tooltip: 'Save project features'
         });
 
-        if(me.refreshStrategy) {
+        if (me.refreshStrategy) {
             items.push({
                 xtype: 'resetbutton',
                 handler: function() {
@@ -399,8 +397,8 @@ Ext.define('PTS.view.controls.MapToolbar', {
         items.push("-");
 
         vector.styleMap.styles["delete"] = new OpenLayers.Style({
-                fillColor: "#FF272C",
-                strokeColor: "#FF272C"
+            fillColor: "#FF272C",
+            strokeColor: "#FF272C"
         });
 
         //Delete control
@@ -409,30 +407,40 @@ Ext.define('PTS.view.controls.MapToolbar', {
                 OpenLayers.Control.prototype.initialize.apply(this, [options]);
                 this.layer = layer;
                 this.handler = new OpenLayers.Handler.Feature(
-                    this, layer, {click: this.clickFeature}
+                    this, layer, {
+                        click: this.clickFeature
+                    }
                 );
             },
             clickFeature: function(feature) {
-                this.layer.events.triggerEvent("beforedeletetoggle", {feature: feature});
+                this.layer.events.triggerEvent("beforedeletetoggle", {
+                    feature: feature
+                });
 
-                if(feature.state === OpenLayers.State.DELETE) {
+                if (feature.state === OpenLayers.State.DELETE) {
                     // if feature doesn't have a fid, need to insert
-                    if(feature.fid === undefined) {
+                    if (feature.fid === undefined) {
                         feature.state = OpenLayers.State.INSERT;
                     } else {
                         feature.state = OpenLayers.State.UPDATE;
                     }
                     this.highlight(feature);
-                    this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
+                    this.layer.events.triggerEvent("afterfeaturemodified", {
+                        feature: feature
+                    });
 
                 } else {
                     // if feature doesn't have a fid, destroy it
                     feature.state = OpenLayers.State.DELETE;
-                    this.layer.events.triggerEvent("afterfeaturemodified", {feature: feature});
+                    this.layer.events.triggerEvent("afterfeaturemodified", {
+                        feature: feature
+                    });
                     this.highlight(feature);
                 }
 
-                this.layer.events.triggerEvent("deletetoggle", {feature: feature});
+                this.layer.events.triggerEvent("deletetoggle", {
+                    feature: feature
+                });
             },
             highlight: function(feature) {
                 var layer = feature.layer;
@@ -440,7 +448,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
                 feature._prevHighlighter = feature._lastHighlighter;
                 feature._lastHighlighter = this.id;
 
-                if(feature.state === OpenLayers.State.DELETE) {
+                if (feature.state === OpenLayers.State.DELETE) {
                     layer.drawFeature(feature, "delete");
                 } else {
                     layer.drawFeature(feature, "default");
@@ -454,7 +462,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
             CLASS_NAME: "OpenLayers.Control.DeleteFeature"
         });
 
-        items.push(Ext.create('PTS.view.button.Delete',Ext.create('GeoExt.Action', {
+        items.push(Ext.create('PTS.view.button.Delete', Ext.create('GeoExt.Action', {
             control: new DeleteFeature(vector),
             map: map,
             // button options
@@ -467,7 +475,7 @@ Ext.define('PTS.view.controls.MapToolbar', {
 
         items.push("-");
 
-        if(me.commonStore) {
+        if (me.commonStore) {
             items.push({
                 text: 'Add Feature',
                 iconCls: 'pts-menu-addbasic',
@@ -482,13 +490,15 @@ Ext.define('PTS.view.controls.MapToolbar', {
 
         // Help action
         items.push(
-            Ext.create('Ext.button.Button', {text: 'Help'})
+            Ext.create('Ext.button.Button', {
+                text: 'Help'
+            })
         );
 
         Ext.apply(me, {
 
-                dock: 'top',
-                items: items//,
+            dock: 'top',
+            items: items //,
                 /*style: {
                     border: 0,
                     padding: 0

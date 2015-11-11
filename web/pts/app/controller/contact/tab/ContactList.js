@@ -13,16 +13,18 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
         'contact.tab.ContactTab'
     ],
     refs: [{
-        ref: 'contactLists',
-        selector: 'contacttab > #contactList'
-    }/*,{
-        ref: 'personList',
-        selector: 'contacttab > personlist'
-    }*/],
+            ref: 'contactLists',
+            selector: 'contacttab > #contactList'
+        }
+        /*,{
+                ref: 'personList',
+                selector: 'contacttab > personlist'
+            }*/
+    ],
 
     init: function() {
 
-       this.control({
+        this.control({
             'contacttab personlist': {
                 itemdblclick: this.editContact,
                 viewready: this.onContactListReady,
@@ -57,7 +59,7 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
 
     editContact: function(grid, record) {
         var pc = this.getController('contact.Contact'),
-        type = record.getContactType();
+            type = record.getContactType();
 
         pc.openContact(type, record);
     },
@@ -65,11 +67,11 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
     onContactListReady: function(grid) {
         var store = grid.getStore();
         if (store) {
-            store.on('load', function(store, records, success, oper){
-                if(store.count() > 0) {
+            store.on('load', function(store, records, success, oper) {
+                if (store.count() > 0) {
                     this.getSelectionModel().select(0);
                 }
-            },grid);
+            }, grid);
         }
         store.load();
     },
@@ -87,27 +89,27 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
             id = record.getId(),
             type = record.getContactType();
 
-        switch(type) {
+        switch (type) {
             case 'person':
-              store = this.getPersonsStore();
-              break;
+                store = this.getPersonsStore();
+                break;
             case 'group':
-              store = this.getContactGroupsStore();
-              break;
+                store = this.getContactGroupsStore();
+                break;
         }
 
         index = store.indexOfId(id);
 
-        if(index === -1) {
-        //We assume grid and form are using the same model,
-        //This might change in the future. If so, this data would
-        //need to be copied to the gridstore model instead of inserted.
-            store.insert(0,record);
+        if (index === -1) {
+            //We assume grid and form are using the same model,
+            //This might change in the future. If so, this data would
+            //need to be copied to the gridstore model instead of inserted.
+            store.insert(0, record);
         } else {
-        //The record exists in the store, so copy the data
+            //The record exists in the store, so copy the data
             copy = store.getAt(index);
             copy.fields.each(function(field) {
-                copy.set(field.name,record.get(field.name));
+                copy.set(field.name, record.get(field.name));
             });
             copy.commit();
         }
@@ -122,13 +124,13 @@ Ext.define('PTS.controller.contact.tab.ContactList', {
         var store,
             type = op.records[0].getContactType();
 
-        switch(type) {
+        switch (type) {
             case 'person':
-              store = this.getPersonsStore();
-              break;
+                store = this.getPersonsStore();
+                break;
             case 'group':
-              store = this.getContactGroupsStore();
-              break;
+                store = this.getContactGroupsStore();
+                break;
         }
 
         Ext.each(op.records, function(rec) {

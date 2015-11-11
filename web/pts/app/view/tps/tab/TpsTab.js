@@ -21,23 +21,20 @@ Ext.define('PTS.view.tps.tab.TpsTab', {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
-                    xtype: 'tpsgrid',
-                    itemId: 'tpsGrid',
-                    region: 'center'
-                },
-                {
-                    xtype: 'tpsdetailgrid',
-                    itemId: 'tpsDetail',
-                    title: 'Details',
-                    region: 'east',
-                    split: true,
-                    flex: 0.5,
-                    minWidth: 350,
-                    collapsible: true
-                }
-            ]
+            items: [{
+                xtype: 'tpsgrid',
+                itemId: 'tpsGrid',
+                region: 'center'
+            }, {
+                xtype: 'tpsdetailgrid',
+                itemId: 'tpsDetail',
+                title: 'Details',
+                region: 'east',
+                split: true,
+                flex: 0.5,
+                minWidth: 350,
+                collapsible: true
+            }]
         });
 
         me.callParent(arguments);

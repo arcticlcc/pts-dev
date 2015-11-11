@@ -21,7 +21,7 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
     refs: [{
         ref: 'agreementForm',
         selector: 'modificationform#itemCard-60 #itemForm'
-    },{
+    }, {
         ref: 'agreementCard',
         selector: 'modificationform#itemCard-60'
     }],
@@ -55,14 +55,14 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
      */
     onSaveModification: function(model, op, phantom) {
         //only needed for modifications
-        if(phantom) {
+        if (phantom) {
             var store = this.getModStatusesStore(),
                 rec = this.getModStatusModel().create({
-                statusid: 10,
-                comment: 'This status was automatically created.',
-                effectivedate: new Date(),
-                modificationid: model.get('modificationid')
-            });
+                    statusid: 10,
+                    comment: 'This status was automatically created.',
+                    effectivedate: new Date(),
+                    modificationid: model.get('modificationid')
+                });
 
             store.add(rec);
             store.sync();
@@ -74,7 +74,7 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
      */
     onNewItem: function(model, form) {
         //only needed for modifications
-        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {
+        if (this.getAgreementCard().itemId === form.ownerCt.itemId) {
             var code = form.up('#projecttabpanel').down('agreementstree').getSelectionModel().selected.first().get('parentcode'),
                 bform = form.getForm();
 
@@ -91,23 +91,23 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
      */
     onItemLoad: function(model, form) {
         //only needed for modifications
-        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {
+        if (this.getAgreementCard().itemId === form.ownerCt.itemId) {
             var bform = form.getForm(),
-                modcode =  bform.findField('modcode'),
+                modcode = bform.findField('modcode'),
                 del = bform.findField('codedelimiter').getValue(),
                 val = model.get('modificationcode').split(del),
                 parentcode = String(model.get('parentcode')),
                 code, msg;
 
             //set the code
-            if(val.length > 1) {
+            if (val.length > 1) {
                 code = val.slice(1).join(del);
-            }else {
+            } else {
                 code = val[0];
             }
 
             //don't print null, use an empty string
-            if(code === null || code == 'null') {
+            if (code === null || code == 'null') {
                 code = '';
             }
 
@@ -115,23 +115,23 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             modcode.setValue(code).resetOriginalValue();
 
             //check parentcode against model
-            if(model.get('modificationcode') && val[0] !== parentcode) {
+            if (model.get('modificationcode') && val[0] !== parentcode) {
                 msg = 'The parent code for this modification has changed.' +
                     '<br/>Do you want to update the code for this modification now?</br>';
 
                 Ext.Msg.show({
-                     title:'Update Code?',
-                     msg: msg,
-                     buttons: Ext.Msg.YESNO,
-                     icon: Ext.Msg.QUESTION,
-                     fn: function(btn, text) {
-                        if(btn === 'yes') {
+                    title: 'Update Code?',
+                    msg: msg,
+                    buttons: Ext.Msg.YESNO,
+                    icon: Ext.Msg.QUESTION,
+                    fn: function(btn, text) {
+                        if (btn === 'yes') {
                             var wait = Ext.Msg.show({
-                                    title: 'Saving...',
-                                    msg: 'Saving Mod. Please wait...',
-                                    wait: true,
-                                    icon: Ext.window.MessageBox.INFO
-                                });
+                                title: 'Saving...',
+                                msg: 'Saving Mod. Please wait...',
+                                wait: true,
+                                icon: Ext.window.MessageBox.INFO
+                            });
                             bform.findField('modificationcode').setRawValue(parentcode + del + code);
                             bform.updateRecord(model);
                             model.save({
@@ -140,8 +140,8 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
                                 }
                             });
                         }
-                     },
-                     scope: this
+                    },
+                    scope: this
                 });
             }
         }
@@ -153,7 +153,7 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
      */
     onChangeCode: function(field) {
         var form = field.up('form').getForm(),
-            rec =  form.getRecord(),
+            rec = form.getRecord(),
             val = form.findField('modcode').getValue(),
             del = form.findField('codedelimiter').getValue(),
             code = rec.get('parentcode') + del + val;

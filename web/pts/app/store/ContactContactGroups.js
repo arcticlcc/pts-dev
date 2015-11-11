@@ -5,7 +5,7 @@
 
 Ext.define('PTS.store.ContactContactGroups', {
     extend: 'Ext.data.Store',
-    model: 'PTS.model.ContactContactGroup'//,
+    model: 'PTS.model.ContactContactGroup' //,
 
     //autoLoad: true,
     //storeId: 'ProjectListings'

@@ -21,7 +21,7 @@ Ext.define('PTS.controller.project.form.FundingForm', {
     refs: [{
         ref: 'fundingForm',
         selector: 'fundingform>form'
-    },{
+    }, {
         ref: 'fundingCard',
         selector: 'fundingform'
     }],
@@ -59,11 +59,11 @@ Ext.define('PTS.controller.project.form.FundingForm', {
 
         store.setProxy({
             type: 'rest',
-            url : '../projectfunder',
+            url: '../projectfunder',
             appendId: true,
             //batchActions: true,
             api: {
-                read:'../project/' + id + '/funder'
+                read: '../project/' + id + '/funder'
             },
             reader: {
                 type: 'json',
@@ -78,16 +78,16 @@ Ext.define('PTS.controller.project.form.FundingForm', {
      */
     onNewItem: function(model, form) {
         //we have to check the itemId
-        if(this.getFundingCard().itemId === form.ownerCt.itemId) {
+        if (this.getFundingCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid, #relatedDetails invoicegridform #invoiceList'),
                 store = this.getProjectRecipientsStore();
 
             form.ownerCt.down('#relatedDetails').disable();
-            Ext.each(grids, function(gr){
+            Ext.each(grids, function(gr) {
                 gr.getStore().removeAll();
             });
             //Check the ProjectRecipients store
-            if(store.count() === 1) {
+            if (store.count() === 1) {
                 //set the Project Recipient combo
                 this.getFundingForm().down('combo#recipientCombo').setValue(store.getAt(0).getId());
             }
@@ -100,31 +100,33 @@ Ext.define('PTS.controller.project.form.FundingForm', {
      */
     onItemLoad: function(model, form) {
         //we have to check the itemId
-        if(this.getFundingCard().itemId === form.ownerCt.itemId) {
+        if (this.getFundingCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid,#relatedDetails invoicegridform #invoiceList'),
                 id = model.getId(),
                 inv = form.ownerCt.down('invoicegridform');
 
-            Ext.each(grids,function(gr){
+            Ext.each(grids, function(gr) {
                 var store = gr.getStore(),
                     active = gr.tab === undefined ? gr.ownerCt.tab.active : gr.tab.active; //check the tab status
 
-                if(active) {
+                if (active) {
                     this.updateDetailStore(store, id, gr.uri);
                     store.load({
                         callback: function(rec, op, success) {
-                            if(success) {
+                            if (success) {
                                 gr.up('#relatedDetails').enable();
                             }
                         },
                         scope: gr
                     });
-                }else {
+                } else {
                     store.removeAll();
                 }
             }, this);
             //reset the invoice card panel
-            if(inv.rendered) {inv.getLayout().setActiveItem(0);}
+            if (inv.rendered) {
+                inv.getLayout().setActiveItem(0);
+            }
         }
 
     },
@@ -136,7 +138,7 @@ Ext.define('PTS.controller.project.form.FundingForm', {
         var model = this.getFundingForm().getRecord(),
             id = model.getId();
 
-        editor.record.set('fundingid',id);
+        editor.record.set('fundingid', id);
         editor.store.sync();
 
     },
@@ -148,10 +150,10 @@ Ext.define('PTS.controller.project.form.FundingForm', {
         var model = this.getFundingForm().getRecord(),
             store, id;
 
-        if(model !== undefined) {
+        if (model !== undefined) {
             store = grid.getStore();
             //only load if the store is not loading
-            if(!store.isLoading() && store.count() === 0) {
+            if (!store.isLoading() && store.count() === 0) {
                 id = model.getId();
                 this.updateDetailStore(store, id, grid.uri);
                 store.load();
@@ -176,10 +178,10 @@ Ext.define('PTS.controller.project.form.FundingForm', {
         //override store proxy based on fundingid
         store.setProxy({
             type: 'rest',
-            url : '../'+ uri,
+            url: '../' + uri,
             //appendId: true,
             api: {
-                read:'../funding/' + id + '/' + uri
+                read: '../funding/' + id + '/' + uri
             },
             reader: {
                 type: 'json',

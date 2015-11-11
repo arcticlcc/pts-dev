@@ -18,10 +18,10 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
     refs: [{
         ref: 'reportTree',
         selector: 'reporttab #reportTree'
-    },{
+    }, {
         ref: 'reportPanel',
         selector: 'reporttab #reportPanel'
-    },{
+    }, {
         ref: 'helpTab',
         selector: 'reporttab #helpTab'
     }],
@@ -42,22 +42,22 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
     /**
      * Click listener for report tree items.
      */
-    onClickItem: function(rm, rec, index,opts) {
+    onClickItem: function(rm, rec, index, opts) {
         var grid, storecfg, plugins,
             data = rec.data,
             itemId = rec.internalId + '-reportgrid',
             rp = this.getReportPanel(),
-            tab = rp.down('#'+itemId);
+            tab = rp.down('#' + itemId);
 
-        if(rec.isLeaf()) {
-            if(tab) {
+        if (rec.isLeaf()) {
+            if (tab) {
                 rp.setActiveTab(tab);
-            }else {
+            } else {
                 storecfg = {
                     //fields: data.fields,
                     proxy: {
                         type: 'ajax',
-                        url : data.url,
+                        url: data.url,
                         reader: {
                             type: 'json',
                             root: 'data'
@@ -67,13 +67,13 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                     remoteSort: true
                 };
 
-                if(data.limit) {
+                if (data.limit) {
                     storecfg.pageSize = data.limit;
                 }
 
-                if(data.model) {
+                if (data.model) {
                     storecfg.model = data.model;
-                }else {
+                } else {
                     storecfg.fields = data.fields;
                 }
                 tab = {
@@ -87,30 +87,30 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                         tooltip: data.qtip
                     }
                 };
-                if(data.cols) {
+                if (data.cols) {
                     Ext.each(data.cols, function(c) {
-                        if(c.renderer) {
+                        if (c.renderer) {
                             c.renderer = Ext.util.Format[c.renderer];
                         }
                     });
                     tab.columns = data.cols;
                 }
-                if(data.summary) {
+                if (data.summary) {
                     tab.features = [{
                         ftype: 'summary'
                     }];
                 }
-                if(data.pbarPlugins) {
+                if (data.pbarPlugins) {
                     tab.pbarPlugins = [];
 
-                    Ext.each(data.pbarPlugins, function(p){
+                    Ext.each(data.pbarPlugins, function(p) {
                         tab.pbarPlugins.push(
                             Ext.create(p.type, p.cfg)
                         );
                     });
                 }
-                if(data.filterBar) {
-                    if(tab.dockedItems === undefined) {
+                if (data.filterBar) {
+                    if (tab.dockedItems === undefined) {
                         tab.dockedItems = [];
                     }
                     tab.dockedItems.push({

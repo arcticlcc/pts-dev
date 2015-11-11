@@ -5,52 +5,42 @@
 
 Ext.define('PTS.model.Person', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'contactid',
             mapping: 'contactid',
             type: 'int',
             persist: false
-        },
-        {
+        }, {
             name: 'firstname',
             type: 'mystring',
             useNull: true
-        },
-        {
+        }, {
             name: 'lastname',
             type: 'mystring',
             useNull: true
-        },
-        {
+        }, {
             name: 'middlename',
             type: 'mystring',
             useNull: true
-        },
-        {
+        }, {
             name: 'suffix',
             type: 'mystring',
             useNull: true
-        },
-        {
+        }, {
             name: 'positionid',
             type: 'int',
             useNull: true
-        },
-        {
+        }, {
             name: 'contacttypeid',
             type: 'int',
             useNull: true
-        },
-        {
+        }, {
             name: 'dunsnumber',
             type: 'mystring'
-        },
-        {
+        }, {
             name: 'comment',
             type: 'mystring'
-        },
-        {
+        }, {
             name: 'inactive',
             type: 'myboolean'
         },
@@ -59,44 +49,37 @@ Ext.define('PTS.model.Person', {
             name: 'prigroupid',
             type: 'int',
             persist: false
-        },
-        {
+        }, {
             name: 'priacronym',
             type: 'mystring',
             persist: false,
             useNull: true
-        },
-        {
+        }, {
             name: 'prigroupname',
             type: 'mystring',
             persist: false,
             useNull: true
-        },
-        {
+        }, {
             name: 'priareacode',
             type: 'int',
             persist: false,
             useNull: true
-        },
-        {
+        }, {
             name: 'priphnumber',
             type: 'int',
             persist: false,
             useNull: true
-        },
-        {
+        }, {
             name: 'priextension',
             type: 'int',
             persist: false,
             useNull: true
-        },
-        {
+        }, {
             name: 'pricountryiso',
             type: 'mystring',
             persist: false,
             useNull: true
-        },
-        {
+        }, {
             name: 'priemail',
             type: 'mystring',
             persist: false,
@@ -105,15 +88,20 @@ Ext.define('PTS.model.Person', {
 
     ],
     idProperty: 'contactid',
-    hasMany: [
-        {model: 'PTS.model.Address', name: 'addresses'},
-        {model: 'PTS.model.Phone', name: 'phones'},
-        {model: 'PTS.model.EAddress', name: 'eaddresses'}
-    ],
+    hasMany: [{
+        model: 'PTS.model.Address',
+        name: 'addresses'
+    }, {
+        model: 'PTS.model.Phone',
+        name: 'phones'
+    }, {
+        model: 'PTS.model.EAddress',
+        name: 'eaddresses'
+    }],
 
     proxy: {
         type: 'rest',
-        url : '../person',
+        url: '../person',
         /*api: {
             read:'../personlist'
         },*/

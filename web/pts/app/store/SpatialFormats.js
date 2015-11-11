@@ -5,22 +5,18 @@
 Ext.define('PTS.store.SpatialFormats', {
     extend: 'Ext.data.Store',
 
-    fields: [
-        {
-            name: 'spatialformatid',
-            type: 'int'
-        },
-        {
-            name: 'codename',
-            type: 'string'
-        },
-        {
-            name: 'description'
-        }
-    ],
+    fields: [{
+        name: 'spatialformatid',
+        type: 'int'
+    }, {
+        name: 'codename',
+        type: 'string'
+    }, {
+        name: 'description'
+    }],
     proxy: {
         type: 'rest',
-        url : '../spatialformat',
+        url: '../spatialformat',
         reader: {
             type: 'json',
             root: 'data'
@@ -28,7 +24,8 @@ Ext.define('PTS.store.SpatialFormats', {
         limitParam: undefined
     },
     autoLoad: true,
-    sorters: [
-        { property: 'codename', direction : 'ASC' }
-    ]
+    sorters: [{
+        property: 'codename',
+        direction: 'ASC'
+    }]
 });

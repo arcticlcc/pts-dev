@@ -5,22 +5,18 @@
 Ext.define('PTS.store.DateTypes', {
     extend: 'Ext.data.Store',
 
-    fields: [
-        {
-            name: 'datetypeid',
-            type: 'int'
-        },
-        {
-            name: 'codename',
-            type: 'string'
-        },
-        {
-            name: 'description'
-        }
-    ],
+    fields: [{
+        name: 'datetypeid',
+        type: 'int'
+    }, {
+        name: 'codename',
+        type: 'string'
+    }, {
+        name: 'description'
+    }],
     proxy: {
         type: 'rest',
-        url : '../datetype',
+        url: '../datetype',
         reader: {
             type: 'json',
             root: 'data'
@@ -28,7 +24,8 @@ Ext.define('PTS.store.DateTypes', {
         limitParam: undefined
     },
     autoLoad: true,
-    sorters: [
-        { property: 'codename', direction : 'ASC' }
-    ]
+    sorters: [{
+        property: 'codename',
+        direction: 'ASC'
+    }]
 });

@@ -5,8 +5,9 @@ Ext.define('PTS.controller.project.window.Window', {
     extend: 'Ext.app.Controller',
 
     views: [
-        'project.window.Window'/*,
-        'project.form.ProjectForm'*/
+        'project.window.Window'
+        /*,
+                'project.form.ProjectForm'*/
     ],
     stores: [
         'ProjectComments',
@@ -16,13 +17,13 @@ Ext.define('PTS.controller.project.window.Window', {
     refs: [{
         ref: 'projectWindow',
         selector: 'projectwindow'
-    },{
+    }, {
         ref: 'projectForm',
         selector: 'projectwindow projectform'
-    },{
+    }, {
         ref: 'projectMap',
         selector: 'projectwindow projectmap'
-    },{
+    }, {
         ref: 'featureGrid',
         selector: 'projectwindow #featureGrid'
     }],
@@ -97,7 +98,7 @@ Ext.define('PTS.controller.project.window.Window', {
         var model = this.getProjectForm().getRecord(),
             id = model.getId();
 
-        editor.record.set('projectid',id);
+        editor.record.set('projectid', id);
         editor.store.sync();
     },
 
@@ -115,7 +116,7 @@ Ext.define('PTS.controller.project.window.Window', {
         var rec = this.getCommonVectorsStore().getById(item.itemId),
             wkt = rec.get('wkt');
 
-        if(wkt) {
+        if (wkt) {
             this.getProjectMap().addVector(wkt);
         }
     },
@@ -133,8 +134,8 @@ Ext.define('PTS.controller.project.window.Window', {
         //listeners for project vector layer
         mapPanel.projectVectors.events.on({
             "beforedeletetoggle": function(evt) {
-                if(evt.feature.state !== OpenLayers.State.DELETE) {
-                    this.getSelectionModel().deselect(this.getStore().getByFeature(evt.feature),true);
+                if (evt.feature.state !== OpenLayers.State.DELETE) {
+                    this.getSelectionModel().deselect(this.getStore().getByFeature(evt.feature), true);
                 }
             },
             "deletetoggle": function(evt) {
@@ -142,10 +143,14 @@ Ext.define('PTS.controller.project.window.Window', {
                     row = this.getView().getNode(rec),
                     rowEl = Ext.get(row);
 
-                if(evt.feature.state === OpenLayers.State.DELETE) {
-                    if(rowEl) {rowEl.addCls('pts-delete-highlight');}
+                if (evt.feature.state === OpenLayers.State.DELETE) {
+                    if (rowEl) {
+                        rowEl.addCls('pts-delete-highlight');
+                    }
                 } else {
-                    if(rowEl) {rowEl.removeCls('pts-delete-highlight');}
+                    if (rowEl) {
+                        rowEl.removeCls('pts-delete-highlight');
+                    }
                 }
             },
             "loadstart": function(evt) {
@@ -155,16 +160,16 @@ Ext.define('PTS.controller.project.window.Window', {
                 var resp = evt.response,
                     bnd, map, zoom;
 
-                if(resp.code !== OpenLayers.Protocol.Response.SUCCESS) {
+                if (resp.code !== OpenLayers.Protocol.Response.SUCCESS) {
                     PTS.app.showError('There was an error loading the features.</br>Error: ' + Ext.decode(resp.priv.responseText).message);
                 }
 
-                if(mapPanel.zoomOnLoad && evt.object.features.length) {
+                if (mapPanel.zoomOnLoad && evt.object.features.length) {
                     bnd = evt.object.getDataExtent();
                     map = mapPanel.map;
                     zoom = map.getZoomForExtent(bnd);
 
-                    if(zoom <= mapPanel.maxZoomOnLoad) {
+                    if (zoom <= mapPanel.maxZoomOnLoad) {
                         map.zoomToExtent(bnd);
                     } else {
                         map.setCenter(bnd.getCenterLonLat(),
@@ -186,10 +191,10 @@ Ext.define('PTS.controller.project.window.Window', {
                     features;
 
                 //update the state of the grid records
-                if(type === 'create') {
+                if (type === 'create') {
                     features = resp.reqFeatures;
                     //create does not return an array for single record
-                    if(Ext.typeOf(features) !== 'array') {
+                    if (Ext.typeOf(features) !== 'array') {
                         features = [features];
                     }
                     Ext.each(features, function(f) {
@@ -220,7 +225,7 @@ Ext.define('PTS.controller.project.window.Window', {
 
         //select on hover, proper way to do this would be to extend
         //the SelectFeature control
-        ctl = new OpenLayers.Control.SelectFeature(mapPanel.projectVectors,{
+        ctl = new OpenLayers.Control.SelectFeature(mapPanel.projectVectors, {
             id: 'PTS-Select-Hover',
             hover: true,
             highlightOnly: true,
@@ -229,10 +234,10 @@ Ext.define('PTS.controller.project.window.Window', {
             unhighlight: function(feature) {
                 var layer = feature.layer,
                     cont = this.events.triggerEvent("beforefeatureunhighlighted", {
-                        feature : feature
+                        feature: feature
                     });
 
-                if(cont !== false) {
+                if (cont !== false) {
                     // three cases:
                     // 1. there's no other highlighter, in that case _prev is undefined,
                     //    and we just need to undef _last
@@ -242,9 +247,9 @@ Ext.define('PTS.controller.project.window.Window', {
                     // 3. another control highlighted the feature before we did it, in
                     //    that case _prev references this other control, and we need to
                     //    set _last to _prev and undef _prev
-                    if(feature._prevHighlighter === undefined) {
+                    if (feature._prevHighlighter === undefined) {
                         delete feature._lastHighlighter;
-                    } else if(feature._prevHighlighter == this.id) {
+                    } else if (feature._prevHighlighter == this.id) {
                         delete feature._prevHighlighter;
                     } else {
                         feature._lastHighlighter = feature._prevHighlighter;
@@ -252,51 +257,55 @@ Ext.define('PTS.controller.project.window.Window', {
                     }
                     layer.drawFeature(feature, feature.style || feature.layer.style ||
                         "default");
-                    this.events.triggerEvent("featureunhighlighted", {feature : feature});
+                    this.events.triggerEvent("featureunhighlighted", {
+                        feature: feature
+                    });
                 }
             },
             //highlight gridrow
-            overFeature: function(feature,noHilite) {
+            overFeature: function(feature, noHilite) {
                 var layer = feature.layer;
 
-                if(this.hover) {
-                    if(this.highlightOnly) {
+                if (this.hover) {
+                    if (this.highlightOnly) {
                         this.highlight(feature);
-                    } else if(OpenLayers.Util.indexOf(
-                        layer.selectedFeatures, feature) == -1) {
+                    } else if (OpenLayers.Util.indexOf(
+                            layer.selectedFeatures, feature) == -1) {
                         this.select(feature);
                     }
                 }
 
-                if(!noHilite) {
+                if (!noHilite) {
                     var rec = grid.getStore().getByFeature(feature),
                         row = grid.getView().getNode(rec),
                         rowEl = Ext.get(row);
 
-                    if(rowEl) {rowEl.addCls('pts-vector-highlight');}
+                    if (rowEl) {
+                        rowEl.addCls('pts-vector-highlight');
+                    }
                 }
             },
             //remove row highlight ad beforeunhighlight event
             outFeature: function(feature) {
-                if(this.hover) {
-                    if(this.highlightOnly) {
+                if (this.hover) {
+                    if (this.highlightOnly) {
                         var cont = this.events.triggerEvent("beforefeatureunhighlighted", {
-                                feature : feature
-                            });
-                        if(cont !== false) {
+                            feature: feature
+                        });
+                        if (cont !== false) {
                             // we do nothing if we're not the last highlighter of the
                             // feature
-                            if(feature._lastHighlighter == this.id) {
+                            if (feature._lastHighlighter == this.id) {
                                 // if another select control had highlighted the feature before
                                 // we did it ourself then we use that control to highlight the
                                 // feature as it was before we highlighted it, else we just
                                 // unhighlight it
-                                if(feature._prevHighlighter &&
-                                   feature._prevHighlighter != this.id) {
+                                if (feature._prevHighlighter &&
+                                    feature._prevHighlighter != this.id) {
                                     delete feature._lastHighlighter;
                                     var control = this.map.getControl(
                                         feature._prevHighlighter);
-                                    if(control) {
+                                    if (control) {
                                         control.highlight(feature);
                                     }
                                 } else {
@@ -312,14 +321,16 @@ Ext.define('PTS.controller.project.window.Window', {
                         row = grid.getView().getNode(rec),
                         rowEl = Ext.get(row);
 
-                    if(rowEl) {rowEl.removeCls('pts-vector-highlight');}
+                    if (rowEl) {
+                        rowEl.removeCls('pts-vector-highlight');
+                    }
                 }
             }
         });
 
         ctl.events.on({
             "beforefeatureunhighlighted": function(evt) {
-                var mod = ctl.map.getControlsBy('id','PTS-Modify-Feature')[0].feature;
+                var mod = ctl.map.getControlsBy('id', 'PTS-Modify-Feature')[0].feature;
                 //redraw the feature with appropriate style if it's being modified
                 if (ctl.highlightOnly && evt.feature === mod) {
                     ctl.layer.drawFeature(evt.feature, "select");
@@ -328,14 +339,14 @@ Ext.define('PTS.controller.project.window.Window', {
             },
             "beforefeaturehighlighted": function(evt) {
                 //don't do anything if this is a vertex
-                if(evt.feature.renderIntent === 'vertex') {
-                    var mod = ctl.map.getControlsBy('id','PTS-Modify-Feature')[0].feature;
+                if (evt.feature.renderIntent === 'vertex') {
+                    var mod = ctl.map.getControlsBy('id', 'PTS-Modify-Feature')[0].feature;
                     //just redraw the feature if it's being modified
-                    if(ctl.highlightOnly && evt.feature === mod) {
+                    if (ctl.highlightOnly && evt.feature === mod) {
                         ctl.layer.drawFeature(evt.feature, "temporary");
                         return false;
                     }
-                return false;
+                    return false;
                 }
             },
             scope: this
@@ -358,9 +369,9 @@ Ext.define('PTS.controller.project.window.Window', {
         var map,
             sel = this.getFeatureGrid().getSelectionModel().selected;
 
-        if(pressed && sel.length === 1) {
+        if (pressed && sel.length === 1) {
             map = btn.up('projectmap').map;
-            map.getControlsBy('id','PTS-Modify-Feature')[0].selectControl.select(sel.first().raw);
+            map.getControlsBy('id', 'PTS-Modify-Feature')[0].selectControl.select(sel.first().raw);
         }
     },
 
@@ -373,27 +384,27 @@ Ext.define('PTS.controller.project.window.Window', {
     onFeatureGridReady: function(view) {
         var ctl,
             addId,
-            sel  = view.getSelectionModel().selectControl,
-            hover = this.getProjectMap().map.getControlsBy('id','PTS-Select-Hover')[0],
+            sel = view.getSelectionModel().selectControl,
+            hover = this.getProjectMap().map.getControlsBy('id', 'PTS-Select-Hover')[0],
             store = view.getStore(),
             edit = view.ownerCt.getPlugin('cellEdit');
 
         sel.onSelect = function(feature) {
-            ctl = this.map.getControlsBy('id','PTS-Modify-Feature')[0];
+            ctl = this.map.getControlsBy('id', 'PTS-Modify-Feature')[0];
 
-            if(ctl.active) {
+            if (ctl.active) {
                 ctl.selectFeature(feature);
             }
         };
 
         //add the projectid to new records
         addId = function(store, records) {
-                Ext.each(records, function(r) {
-                    r.beginEdit();
-                    r.set('projectid',view.up('projectwindow').projectId);
-                    r.endEdit();
-                });
-            };
+            Ext.each(records, function(r) {
+                r.beginEdit();
+                r.set('projectid', view.up('projectwindow').projectId);
+                r.endEdit();
+            });
+        };
 
         //register listeners to update records
         store.on({
@@ -403,7 +414,7 @@ Ext.define('PTS.controller.project.window.Window', {
         //don't allow editing or selecting records marked for deletion
         edit.on({
             beforeedit: function(e) {
-                if(e.record.raw.state === OpenLayers.State.DELETE) {
+                if (e.record.raw.state === OpenLayers.State.DELETE) {
                     return false;
                 }
             }
@@ -411,7 +422,7 @@ Ext.define('PTS.controller.project.window.Window', {
 
         view.ownerCt.on({
             beforeselect: function(grid, rec) {
-                if(rec.raw.state === OpenLayers.State.DELETE) {
+                if (rec.raw.state === OpenLayers.State.DELETE) {
                     return false;
                 }
             }
@@ -420,8 +431,8 @@ Ext.define('PTS.controller.project.window.Window', {
         view.on({
             //view listeners to higlight features on mouse over/out
             itemmouseenter: function(view, rec) {
-                if(view.ownerCt.getPlugin('cellEdit').activeRecord !== rec) {
-                    var ctl = rec.raw.layer.map.getControlsBy('id','PTS-Select-Hover')[0];
+                if (view.ownerCt.getPlugin('cellEdit').activeRecord !== rec) {
+                    var ctl = rec.raw.layer.map.getControlsBy('id', 'PTS-Select-Hover')[0];
                     ctl.overFeature(rec.raw, true);
                 }
             },
@@ -430,18 +441,18 @@ Ext.define('PTS.controller.project.window.Window', {
                     layer = rec.raw.layer,
                     map = layer.map;
 
-                if(view.ownerCt.getPlugin('cellEdit').activeRecord !== rec) {
-                    ctl = map.getControlsBy('id','PTS-Select-Hover')[0];
+                if (view.ownerCt.getPlugin('cellEdit').activeRecord !== rec) {
+                    ctl = map.getControlsBy('id', 'PTS-Select-Hover')[0];
                     ctl.outFeature(rec.raw);
-                } else{
+                } else {
                     //map.getControlsBy('id','PTS-Select-Row')[0].highlight(rec.raw);
                     layer.drawFeature(rec.raw, 'select');
                 }
             },
             //remove the add/load listeners from the store
             destroy: function(view) {
-                store.un('add',addId, store);
-                store.un('load',addId, store);
+                store.un('add', addId, store);
+                store.un('load', addId, store);
             },
             scope: this
         });

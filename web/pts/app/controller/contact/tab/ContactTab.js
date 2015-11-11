@@ -11,7 +11,7 @@ Ext.define('PTS.controller.contact.tab.ContactTab', {
     refs: [{
         ref: 'personList',
         selector: 'contacttab > personlist'
-    },{
+    }, {
         ref: 'contactTab',
         selector: 'contacttab'
     }],
@@ -57,7 +57,7 @@ Ext.define('PTS.controller.contact.tab.ContactTab', {
             cl = this.getController('contact.tab.ContactList'),
             record = cl.getContactList().getSelectionModel().getSelection()[0],
             type = record.getContactType();
-        if(record) {
+        if (record) {
             pc.openContact(type, record);
         }
     },

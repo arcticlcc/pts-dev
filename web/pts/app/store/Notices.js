@@ -6,10 +6,8 @@ Ext.define('PTS.store.Notices', {
     model: 'PTS.model.Notice',
 
     autoLoad: true,
-    sorters: [
-        {
-            property : 'priority',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'priority',
+        direction: 'ASC'
+    }]
 });

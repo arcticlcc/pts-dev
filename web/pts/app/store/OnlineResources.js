@@ -7,10 +7,8 @@ Ext.define('PTS.store.OnlineResources', {
     model: 'PTS.model.OnlineResource',
 
     autoLoad: false,
-    sorters: [
-        {
-            property : 'onlineresourceid',
-            direction: 'ASC'
-        }
-    ]
+    sorters: [{
+        property: 'onlineresourceid',
+        direction: 'ASC'
+    }]
 });

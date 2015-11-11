@@ -29,22 +29,22 @@ Ext.define('PTS.view.report.ReportGrid', {
 
         me.callParent(arguments);
 
-        me.addDocked(
-            {
-                xtype: 'pagingtoolbar',
-                store: me.store,   // same store GridPanel is using
-                dock: 'top',
-                displayInfo: true,
-                plugins: me.pbarPlugins.concat([
-                    Ext.create('Ext.ux.grid.PrintGrid', {
-                        /*title: function(){
-                            return this.child('cycle#filter').getActiveItem().text + ' (Tasks)';
-                        }*/
-                    }),
-                    Ext.create('Ext.ux.grid.SaveGrid', {}),
-                    Ext.create('Ext.ux.grid.PagingToolbarResizer', {options : [ 25, 50, 100, 200 ] })
-                ])
-            }
-        );
+        me.addDocked({
+            xtype: 'pagingtoolbar',
+            store: me.store, // same store GridPanel is using
+            dock: 'top',
+            displayInfo: true,
+            plugins: me.pbarPlugins.concat([
+                Ext.create('Ext.ux.grid.PrintGrid', {
+                    /*title: function(){
+                        return this.child('cycle#filter').getActiveItem().text + ' (Tasks)';
+                    }*/
+                }),
+                Ext.create('Ext.ux.grid.SaveGrid', {}),
+                Ext.create('Ext.ux.grid.PagingToolbarResizer', {
+                    options: [25, 50, 100, 200]
+                })
+            ])
+        });
     }
 });

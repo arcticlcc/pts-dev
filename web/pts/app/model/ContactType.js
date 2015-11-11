@@ -5,20 +5,22 @@
 
 Ext.define('PTS.model.ContactType', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'contacttypeid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'title', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'title',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -26,7 +28,7 @@ Ext.define('PTS.model.ContactType', {
 
     proxy: {
         type: 'rest',
-        url : '../contacttype',
+        url: '../contacttype',
         reader: {
             type: 'json',
             root: 'data'

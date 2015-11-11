@@ -16,11 +16,12 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
         'PurchaseRequests',
         'Statuses',
         'ModStatuses'
-    ],/*
-    refs: [{
-        ref: 'agreementForm',
-        selector: 'agreementform#itemCard-20'
-    }],*/
+    ],
+    /*
+        refs: [{
+            ref: 'agreementForm',
+            selector: 'agreementform#itemCard-20'
+        }],*/
 
     init: function() {
         /*this.control({
@@ -44,11 +45,11 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
     onNewItem: function(model, form) {
         //we have to check the itemId since this controller is extended by project.form.{Modification|Proposal}Form
         // and we don't want to fire multiple times
-        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {
+        if (this.getAgreementCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid');
 
             form.ownerCt.down('#relatedDetails').disable();
-            Ext.each(grids, function(gr){
+            Ext.each(grids, function(gr) {
                 gr.getStore().removeAll();
             });
         }
@@ -70,24 +71,24 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
 
         //we have to check the itemId since this controller is extended by project.form.{Modification|Proposal}Form
         // and we don't want to fire multiple times
-        if(this.getAgreementCard().itemId === form.ownerCt.itemId) {
+        if (this.getAgreementCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid'),
                 id = model.getId();
 
-            Ext.each(grids,function(gr){
+            Ext.each(grids, function(gr) {
                 var store = gr.getStore();
 
-                if(gr.tab.active) {
+                if (gr.tab.active) {
                     this.updateDetailStore(store, id, gr.uri);
                     store.load({
                         callback: function(rec, op, success) {
-                            if(success) {
+                            if (success) {
                                 gr.up('#relatedDetails').enable();
                             }
                         },
                         scope: gr
                     });
-                }else {
+                } else {
                     store.removeAll();
                 }
             }, this);
@@ -109,7 +110,7 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
         var model = this.getAgreementForm().getRecord(),
             id = model.getId();
 
-        editor.record.set('modificationid',id);
+        editor.record.set('modificationid', id);
         editor.store.sync();
 
     },
@@ -121,10 +122,10 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
         var model = this.getAgreementForm().getRecord(),
             store, id;
 
-        if(model !== undefined) {
+        if (model !== undefined) {
             store = grid.getStore();
             //only load if the store is not loading
-            if(!store.isLoading() && store.count() === 0) {
+            if (!store.isLoading() && store.count() === 0) {
                 id = model.getId();
                 this.updateDetailStore(store, id, grid.uri);
                 store.load();
@@ -140,10 +141,10 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
         //override store proxy based on modificationid
         store.setProxy({
             type: 'rest',
-            url : '../'+ uri,
+            url: '../' + uri,
             //appendId: true,
             api: {
-                read:'../modification/' + id + '/' + uri
+                read: '../modification/' + id + '/' + uri
             },
             reader: {
                 type: 'json',
@@ -156,67 +157,70 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
      * Validate the agreement status.
      */
     validateStatus: function(editor, e) {
-        var newStatus = e.newValues.statusid;
+            var newStatus = e.newValues.statusid;
 
-        if(newStatus === 2 && newStatus !== e.originalValues.statusid) {
-            var modId = this.getAgreementForm().getRecord().getId(),
-                rec = e.record,
-                ctl = this,
-                mask = new Ext.LoadMask(e.grid, {msg:"Validating. Please wait..."});
+            if (newStatus === 2 && newStatus !== e.originalValues.statusid) {
+                var modId = this.getAgreementForm().getRecord().getId(),
+                    rec = e.record,
+                    ctl = this,
+                    mask = new Ext.LoadMask(e.grid, {
+                        msg: "Validating. Please wait..."
+                    });
 
-            mask.show();
-            //query database for incomplete deliverables
-            Ext.Ajax.request({
-                url: '../deliverablestatuslist',
-                params: {
-                    filter: '[{"property":"deliverablestatusid","value":["<",40]},{"property":"modificationid","value":'+ modId +'}]'
-                },
-                method: 'GET',
-                success: function(response){
-                    var data = Ext.JSON.decode(response.responseText);
+                mask.show();
+                //query database for incomplete deliverables
+                Ext.Ajax.request({
+                    url: '../deliverablestatuslist',
+                    params: {
+                        filter: '[{"property":"deliverablestatusid","value":["<",40]},{"property":"modificationid","value":' + modId + '}]'
+                    },
+                    method: 'GET',
+                    success: function(response) {
+                        var data = Ext.JSON.decode(response.responseText);
 
-                    //if records are found, raise error and cancel the update
-                    if(data.total > 0) {
-                        e.column.getEditor().markInvalid('This agreement has incomplete deliverables.');
+                        //if records are found, raise error and cancel the update
+                        if (data.total > 0) {
+                            e.column.getEditor().markInvalid('This agreement has incomplete deliverables.');
+                            Ext.create('widget.uxNotification', {
+                                title: 'Error',
+                                iconCls: 'ux-notification-icon-error',
+                                html: 'This agreement has incomplete deliverables.'
+                            }).show();
+                        } else {
+                            //no errors, save the record
+                            editor.getEditor().completeEdit();
+                            ctl.onDetailRowEdit(e);
+                            //rec.set('modificationid',modId);
+                            //rec.save();
+                        }
+                        mask.destroy();
+                    },
+                    failure: function() {
+                        mask.destroy();
                         Ext.create('widget.uxNotification', {
                             title: 'Error',
                             iconCls: 'ux-notification-icon-error',
-                            html: 'This agreement has incomplete deliverables.'
+                            html: 'There was an error validating the status entry. </br>Error:' + PTS.app.getError()
                         }).show();
-                    } else {
-                        //no errors, save the record
-                        editor.getEditor().completeEdit();
-                        ctl.onDetailRowEdit(e);
-                        //rec.set('modificationid',modId);
-                        //rec.save();
-                    }
-                    mask.destroy();
-                },
-                failure: function() {
-                    mask.destroy();
-                    Ext.create('widget.uxNotification', {
-                        title: 'Error',
-                        iconCls: 'ux-notification-icon-error',
-                        html: 'There was an error validating the status entry. </br>Error:' + PTS.app.getError()
-                    }).show();
-                },
-                scope: this
-            });
+                    },
+                    scope: this
+                });
 
-            //we have to handle the update manually after the response is returned
-            return false;
+                //we have to handle the update manually after the response is returned
+                return false;
+            }
         }
-    }/*,
+        /*,
 
-    setStatusComboFilter: function(cmp) {
-        var rec = this.getAgreementForm().getRecord(),
-            bFilter = [{
-                id: "type",
-                property: "modtypeid",
-                value: rec.get('modtypeid')
-            }];
+            setStatusComboFilter: function(cmp) {
+                var rec = this.getAgreementForm().getRecord(),
+                    bFilter = [{
+                        id: "type",
+                        property: "modtypeid",
+                        value: rec.get('modtypeid')
+                    }];
 
-            cmp.getEditor().baseFilter = bFilter;
+                    cmp.getEditor().baseFilter = bFilter;
 
-    }*/
+            }*/
 });

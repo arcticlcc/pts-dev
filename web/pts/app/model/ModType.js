@@ -5,20 +5,22 @@
 
 Ext.define('PTS.model.ModType', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'modtypeid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'type', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'type',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -26,7 +28,7 @@ Ext.define('PTS.model.ModType', {
 
     proxy: {
         type: 'rest',
-        url : '../modtype',
+        url: '../modtype',
         reader: {
             type: 'json',
             root: 'data'

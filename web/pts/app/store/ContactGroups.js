@@ -10,5 +10,8 @@ Ext.define('PTS.store.ContactGroups', {
     remoteSort: true,
     remoteFilter: true,
     pageSize: PTS.Defaults.pageSize,
-    sorters: { property: 'fullname', direction : 'ASC' }
+    sorters: {
+        property: 'fullname',
+        direction: 'ASC'
+    }
 });

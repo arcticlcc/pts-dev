@@ -13,14 +13,14 @@ Ext.define('PTS.store.DeliverableListings', {
     sorters: [
         'duedate'
     ],
-    filters: [
-        {
+    filters: [{
             property: 'dayspastdue',
-            value   : ['>',0]
-        }/*,
-        {
-            property: 'receiveddate',
-            value   : ['null']
-        }*/
+            value: ['>', 0]
+        }
+        /*,
+                {
+                    property: 'receiveddate',
+                    value   : ['null']
+                }*/
     ]
 });

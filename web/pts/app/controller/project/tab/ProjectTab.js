@@ -11,7 +11,7 @@ Ext.define('PTS.controller.project.tab.ProjectTab', {
     refs: [{
         ref: 'projectList',
         selector: 'projecttab > projectlist'
-    },{
+    }, {
         ref: 'projectTab',
         selector: 'projecttab'
     }],
@@ -50,12 +50,12 @@ Ext.define('PTS.controller.project.tab.ProjectTab', {
     editProject: function() {
         var pc = this.getController('project.Project'),
             record = this.getProjectList().getSelectionModel().getSelection()[0];
-        if(record) {
+        if (record) {
             pc.openProject(record);
         }
     },
 
     onProjectListSelect: function(prj) {
-            this.getProjectTab().down('button[action=editproject]').setDisabled(!prj);
+        this.getProjectTab().down('button[action=editproject]').setDisabled(!prj);
     }
 });

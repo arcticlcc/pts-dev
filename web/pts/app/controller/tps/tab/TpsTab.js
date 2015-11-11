@@ -40,7 +40,9 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
      * The tab is masked initially.
      */
     onRender: function(tab) {
-        var mask = new Ext.LoadMask(tab, {msg:"Configuring. Please wait..."}),
+        var mask = new Ext.LoadMask(tab, {
+                msg: "Configuring. Please wait..."
+            }),
             grid = this.getTpsGrid(),
             cols = grid.columns,
             docStore = this.getModDocTypesStore();
@@ -48,9 +50,9 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
         //load store
         docStore.load({
             callback: function(rec, op, success) {
-                if(success) {
+                if (success) {
                     //create columns
-                    Ext.each(rec, function(r){
+                    Ext.each(rec, function(r) {
                         cols.push({
                             xtype: 'gridcolumn',
                             dataIndex: 'doctype_' + r.data.moddoctypeid,
@@ -66,14 +68,14 @@ Ext.define('PTS.controller.tps.tab.TpsTab', {
                     grid.reconfigure(false, cols);
                     mask.destroy();
                     //just select the first cell on load to avoid issues with detailGrid
-                    grid.getStore().on('load', function(store, records, success, oper){
-                        if(store.count() > 0) {
+                    grid.getStore().on('load', function(store, records, success, oper) {
+                        if (store.count() > 0) {
                             this.normalGrid.getSelectionModel().setCurrentPosition({
                                 row: 0,
                                 column: 0
                             });
                         }
-                    },grid);
+                    }, grid);
 
                     grid.getStore().load();
                 }

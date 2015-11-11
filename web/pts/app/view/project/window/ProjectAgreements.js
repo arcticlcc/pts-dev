@@ -7,8 +7,9 @@ Ext.define('PTS.view.project.window.ProjectAgreements', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.projectagreements',
     requires: [
-        'PTS.view.project.window.AgreementsTree'/*,
-        'PTS.model.Modification'*/
+        'PTS.view.project.window.AgreementsTree'
+        /*,
+                'PTS.model.Modification'*/
         //'Ext.ux.grid.HeaderToolTip'
     ],
 
@@ -54,21 +55,18 @@ Ext.define('PTS.view.project.window.ProjectAgreements', {
                     ]
                 }
             ],*/
-            items: [
-                {
-                    xtype: 'agreementitemdetail',
-                    flex: 2,
-                    region: 'center',
-                    minWidth: 450
-                },
-                {
-                    xtype: 'agreementstree',
-                    split: true,
-                    collapsible: false,
-                    flex: 1,
-                    region: 'west'
-                }
-            ]
+            items: [{
+                xtype: 'agreementitemdetail',
+                flex: 2,
+                region: 'center',
+                minWidth: 450
+            }, {
+                xtype: 'agreementstree',
+                split: true,
+                collapsible: false,
+                flex: 1,
+                region: 'west'
+            }]
         });
 
         me.callParent(arguments);

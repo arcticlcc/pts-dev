@@ -25,51 +25,51 @@ Ext.define('PTS.view.project.form.MetadataForm', {
             defaults: {
                 validateOnChange: true
             },
-            items:[{
-                xtype : 'boxselect',
+            items: [{
+                xtype: 'boxselect',
                 name: 'topiccategory',
-                fieldLabel : 'Topic Categories',
-                anchor : '100%',
-                store : 'TopicCategories',
-                displayField : 'codename',
-                valueField : 'topiccategoryid',
-                allowBlank : false,
+                fieldLabel: 'Topic Categories',
+                anchor: '100%',
+                store: 'TopicCategories',
+                displayField: 'codename',
+                valueField: 'topiccategoryid',
+                allowBlank: false,
                 listConfig: {
                     getInnerTpl: function() {
                         return '<div data-qtip="{description}">{codename}</div>';
                     }
                 },
                 //labelWidth : 130,
-                emptyText : 'Pick one or more categories',
-                queryMode : 'local',
-                style : {
-                    marginBottom : '25px'
+                emptyText: 'Pick one or more categories',
+                queryMode: 'local',
+                style: {
+                    marginBottom: '25px'
                 }
             }, {
-                xtype : 'itemselector',
-                name : 'projectcategory',
-                anchor : '100%',
-                fieldLabel : 'Project Categories',
+                xtype: 'itemselector',
+                name: 'projectcategory',
+                anchor: '100%',
+                fieldLabel: 'Project Categories',
                 delimiter: null,
-                store : 'ProjectCategories',
-                displayField : 'category',
-                valueField : 'projectcategoryid',
+                store: 'ProjectCategories',
+                displayField: 'category',
+                valueField: 'projectcategoryid',
                 //allowBlank : false,
-                msgTarget : 'side',
-                style : {
-                    marginBottom : '25px'
+                msgTarget: 'side',
+                style: {
+                    marginBottom: '25px'
                 }
             }, {
-                xtype : 'itemselector',
-                name : 'usertype',
-                anchor : '100%',
-                fieldLabel : 'User Types',
+                xtype: 'itemselector',
+                name: 'usertype',
+                anchor: '100%',
+                fieldLabel: 'User Types',
                 delimiter: null,
-                store : 'UserTypes',
-                displayField : 'usertype',
-                valueField : 'usertypeid',
+                store: 'UserTypes',
+                displayField: 'usertype',
+                valueField: 'usertypeid',
                 //allowBlank : false,
-                msgTarget : 'side'
+                msgTarget: 'side'
             }]
         });
 

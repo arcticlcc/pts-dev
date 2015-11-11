@@ -83,7 +83,7 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
     /**
      * Save project.
      */
-     saveProject: function() {
+    saveProject: function() {
         var form = this.getProjectForm().getForm(),
             el = this.getProjectForm().getEl(),
             record = form.getRecord();
@@ -103,17 +103,17 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
             failure: function(model, op) {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error saving the project.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   //fn: showResult,
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error saving the project.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    //fn: showResult,
+                    icon: Ext.Msg.ERROR
+                });
             },
             scope: this //need the controller to load the model on success
         });
-     },
+    },
 
     /**
      * Confirm project deletion.
@@ -121,7 +121,7 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
     confirmDelete: function(btn) {
         var el = btn.getEl(),
             del = function(b) {
-                if('yes' === b) {
+                if ('yes' === b) {
                     this.deleteProject();
                 }
             };
@@ -141,7 +141,7 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
     /**
      * Delete project.
      */
-     deleteProject: function() {
+    deleteProject: function() {
         var form = this.getProjectForm().getForm(),
             el = this.getProjectForm().getEl(),
             record = form.getRecord();
@@ -156,25 +156,25 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
             failure: function(model, op) {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error deleting the project.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error deleting the project.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    icon: Ext.Msg.ERROR
+                });
             },
             scope: this //need the controller
         });
-     },
+    },
 
     /**
      * Reset project form.
      */
-     resetProject: function() {
+    resetProject: function() {
         var form = this.getProjectForm().getForm();
 
         form.reset();
-     },
+    },
 
     /**
      * Load project.
@@ -184,7 +184,7 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
             model = this.getProjectModel(),
             form = this.getProjectForm();
 
-        if(id) {
+        if (id) {
             model.load(id, { // load with id from selected record
                 success: function(model) {
                     form.loadRecord(model); // when model is loaded successfully, load the data into the form
@@ -216,15 +216,15 @@ Ext.define('PTS.controller.project.form.ProjectForm', {
                 },
                 failure: function(model, op) {
                     Ext.MessageBox.show({
-                       title: 'Error',
-                       msg: 'There was an error loading the project.</br>Error:' + PTS.app.getError(),
-                       buttons: Ext.MessageBox.OK,
-                       //animateTarget: 'mb9',
-                       icon: Ext.Msg.ERROR
-                   });
+                        title: 'Error',
+                        msg: 'There was an error loading the project.</br>Error:' + PTS.app.getError(),
+                        buttons: Ext.MessageBox.OK,
+                        //animateTarget: 'mb9',
+                        icon: Ext.Msg.ERROR
+                    });
                 }
             });
-        } else{
+        } else {
             form.loadRecord(Ext.create(model));
             ctl.onLoadProject(form.getForm().getRecord());
         }

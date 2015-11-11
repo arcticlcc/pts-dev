@@ -23,10 +23,10 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     refs: [{
         ref: 'personGroups',
         selector: 'persongroups'
-    },{
+    }, {
         ref: 'contactLists',
         selector: 'persongroups #contactLists'
-    },{
+    }, {
         ref: 'groupMembersList',
         selector: 'persongroups #groupMembersList'
     }],
@@ -108,7 +108,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     setProxy: function(id, store, type) {
         var uri;
 
-        switch(type) {
+        switch (type) {
             case 'person':
                 uri = '../person/' + id + '/group';
                 break;
@@ -122,7 +122,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
         //override store proxy based on contactid
         store.setProxy({
             type: 'rest',
-            url : '../contactcontactgroup',
+            url: '../contactcontactgroup',
             appendId: true,
             //batchActions: true,
             api: {
@@ -143,7 +143,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     onOpenContact: function(id, type) {
         var store = this.getContactContactGroupsStore();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store, type);
             //load the ContactContactGroups store
             store.load();
@@ -163,7 +163,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
             id = record.getId(),
             type = record.getContactType();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store, type);
             this.contactId = id;
             //load the ContactContactGroups store
@@ -183,7 +183,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
 
 
         //activate the appropriate card
-        switch(this.contactType) {
+        switch (this.contactType) {
             case 'person':
                 layout.setActiveItem(1);
                 break;
@@ -223,9 +223,11 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
 
         headerCt.insert(0, column);
 
-        if(this.reorderCol) {
-            order = headerCt.insert(headerCt.getColumnCount()+1, {xtype: 'reordercolumn'});
-        }else {
+        if (this.reorderCol) {
+            order = headerCt.insert(headerCt.getColumnCount() + 1, {
+                xtype: 'reordercolumn'
+            });
+        } else {
             headerCt.items.each(function() {
                 this.sortable = true;
             });
@@ -237,9 +239,9 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
      */
     afterRenderGroupMembersList: function(view) {
         var plugin = view.getPlugin('contactsddplugin'),
-        contactId = this.contactId,
-        contactType = this.contactType,
-        dropZone = plugin.dropZone;
+            contactId = this.contactId,
+            contactType = this.contactType,
+            dropZone = plugin.dropZone;
         dropZone.handleNodeDrop = function(data, record, position) {
             var view = this.view,
                 store = view.getStore(),
@@ -255,33 +257,33 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
                         rec, cfg;
 
                     //combine names for a person record
-                    if(copy.name === undefined) {
+                    if (copy.name === undefined) {
                         copy.name = copy.lastname + ', ' + copy.firstname;
                     }
                     //create the new record, copying values from dropped record
                     //we need to handle contact types differently
-                    switch(contactType) {
+                    switch (contactType) {
                         case 'person':
                             cfg = {
-                                    'name': copy.name,
-                                    'positionid': '',
-                                    'groupid': copy.contactid,
-                                    'contactid': contactId
-                                };
+                                'name': copy.name,
+                                'positionid': '',
+                                'groupid': copy.contactid,
+                                'contactid': contactId
+                            };
                             break;
                         case 'group':
                             cfg = {
-                                    'name': copy.name,
-                                    'positionid': '',
-                                    'groupid': contactId,
-                                    'contactid': copy.contactid
-                                };
+                                'name': copy.name,
+                                'positionid': '',
+                                'groupid': contactId,
+                                'contactid': copy.contactid
+                            };
                             break;
                         default:
                             Ext.Error.raise('Contact type not supplied!');
                     }
 
-                    rec = Ext.create('PTS.model.ContactContactGroup',cfg);
+                    rec = Ext.create('PTS.model.ContactContactGroup', cfg);
                     // mark it as phantom since it doesn't exist in the serverside database
                     rec.phantom = true;
                     data.records.push(rec);
@@ -311,7 +313,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     /**
      * Remove contacts via drag/drop.
      */
-     removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
+    removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
         this.getContactContactGroupsStore().remove(data.records);
         return false;
     },
@@ -319,9 +321,9 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     /**
      * Remove contacts action.
      */
-     removeContacts: function(){
+    removeContacts: function() {
         var grid = this.getGroupMembersList(),
-        sel = grid.getSelectionModel().getSelection();
+            sel = grid.getSelectionModel().getSelection();
 
         grid.getStore().remove(sel);
     },
@@ -329,13 +331,13 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     /**
      * Refresh contacts action.
      */
-     refreshContacts: function(){
+    refreshContacts: function() {
         var grid = this.getGroupMembersList();
 
         grid.getStore().load({
             callback: function(records, operation, success) {
                 //hack to clear the removed records array
-                grid.getStore().removed =[];
+                grid.getStore().removed = [];
             }
         });
     },
@@ -343,15 +345,15 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     /**
      * Add contacts action.
      */
-     addContacts: function(){
+    addContacts: function() {
         var grid = this.getContactLists().getLayout().getActiveItem(),
-        sel = grid.getSelectionModel().getSelection(),
-        data = {//build data object
-            copy: true,
-            view: grid.getView(),
-            records: sel
-        },
-        dz = this.getGroupMembersList().getView().getPlugin('contactsddplugin').dropZone;
+            sel = grid.getSelectionModel().getSelection(),
+            data = { //build data object
+                copy: true,
+                view: grid.getView(),
+                records: sel
+            },
+            dz = this.getGroupMembersList().getView().getPlugin('contactsddplugin').dropZone;
 
         //use dropzone to add records
         dz.handleNodeDrop(data);
@@ -360,26 +362,26 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
     /**
      * Save contacts.
      */
-     saveContacts: function() {
+    saveContacts: function() {
         var store = this.getContactContactGroupsStore(),
             el = this.getGroupMembersList().getEl();
 
         //loop thru records and set the priority
-        if(this.reorderCol) {
+        if (this.reorderCol) {
             store.each(function() {
                 var rec = this,
                     priority = rec.get('priority'),
-                    idx  = store.indexOf(rec);
+                    idx = store.indexOf(rec);
 
-                if(priority !== idx) {
+                if (priority !== idx) {
                     rec.set('priority', idx);
                 }
             });
         }
 
         //mask panel if store is dirty
-        if(!!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
-            store.getNewRecords().length)) {
+        if (!!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
+                store.getNewRecords().length)) {
             el.mask('Saving...');
         }
         //TODO: Fixed in 4.1?
@@ -407,22 +409,22 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
 
         store.sync({
             success: function() {
-//console.log('Contacts saved');
+                //console.log('Contacts saved');
                 el.unmask();
             },
             failure: function() {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'The was a problem saving the contacts.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'The was a problem saving the contacts.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    icon: Ext.Msg.ERROR
+                });
             },
             callback: function() {
 
             }
         });
-     }
+    }
 });

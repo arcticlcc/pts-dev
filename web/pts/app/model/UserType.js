@@ -4,20 +4,22 @@
 
 Ext.define('PTS.model.UserType', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
+    fields: [{
             name: 'usertypeid',
             type: 'int',
             persist: false
-        },
-        {
-            name: 'usertype', type: 'mystring', useNull: true
-        },
-        {
-            name: 'code', type: 'mystring', useNull: true
-        },
-        {
-            name: 'description', type: 'mystring', useNull: true
+        }, {
+            name: 'usertype',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'code',
+            type: 'mystring',
+            useNull: true
+        }, {
+            name: 'description',
+            type: 'mystring',
+            useNull: true
         }
 
     ],
@@ -25,7 +27,7 @@ Ext.define('PTS.model.UserType', {
 
     proxy: {
         type: 'rest',
-        url : '../usertype',
+        url: '../usertype',
         reader: {
             type: 'json',
             root: 'data'

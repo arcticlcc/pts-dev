@@ -24,10 +24,10 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     refs: [{
         ref: 'projectContacts',
         selector: 'projectcontacts'
-    },{
+    }, {
         ref: 'contactLists',
         selector: 'projectcontacts #contactLists'
-    },{
+    }, {
         ref: 'projectContactsList',
         selector: 'projectcontacts #projectContactsList'
     }],
@@ -89,16 +89,16 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      * @param {Number} projectid
      * @param {PTS.store.ProjectContacts}
      */
-    setProxy: function(id,store) {
+    setProxy: function(id, store) {
 
         //override store proxy based on projectid
         store.setProxy({
             type: 'rest',
-            url : '../projectcontact',
+            url: '../projectcontact',
             appendId: true,
             //batchActions: true,
             api: {
-                read:'../project/' + id + '/contacts'
+                read: '../project/' + id + '/contacts'
             },
             reader: {
                 type: 'json',
@@ -113,7 +113,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     onOpenProject: function(id) {
         var store = this.getProjectContactsStore();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store);
             //load the projectcontacts store
             store.load();
@@ -145,16 +145,16 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
             },
             rec = e.record;
 
-        if(e.field === 'roletypeid') {
-            if(typeof rObj[e.value] !== "undefined"){
+        if (e.field === 'roletypeid') {
+            if (typeof rObj[e.value] !== "undefined") {
                 rec.set('reminder', true);
             } else {
                 rec.set('reminder', false);
             }
         }
 
-        if(e.field === 'roletypeid') {
-            if(typeof pObj[e.value] !== "undefined" && rec.get('contactid') !== PTS.user.get('groupid')) {
+        if (e.field === 'roletypeid') {
+            if (typeof pObj[e.value] !== "undefined" && rec.get('contactid') !== PTS.user.get('groupid')) {
                 rec.set('partner', true);
             } else {
                 rec.set('partner', false);
@@ -170,7 +170,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
         var store = this.getProjectContactsStore(),
             id = record.getId();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store);
             //load the projectcontacts store
             store.load();
@@ -180,21 +180,21 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     /**
      * Stuff to do when Project Contacts tab is activated.
      */
-     activate: function(tab) {
+    activate: function(tab) {
 
-     },
+    },
 
     /**
      * Contact list tab activated.
      */
-     activateList: function(grid) {
+    activateList: function(grid) {
         var store = grid.getStore();
 
         //load the contact list
         if (store.getCount() === 0) {
             store.load();
         }
-     },
+    },
 
     /**
      * Configure extra columns, checkboxSelection and reorder.
@@ -207,23 +207,23 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     /**
      * Save contacts.
      */
-     saveContacts: function() {
+    saveContacts: function() {
         var store = this.getProjectContactsStore(),
             el = this.getProjectContactsList().getEl(),
             isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
                 store.getNewRecords().length);
 
         //mask panel
-        if(isDirty) {
+        if (isDirty) {
             el.mask('Saving...');
         }
         //loop thru records and set the priority
         store.each(function() {
             var rec = this,
                 priority = rec.get('priority'),
-                idx  = store.indexOf(rec);
+                idx = store.indexOf(rec);
 
-            if(priority !== idx) {
+            if (priority !== idx) {
                 rec.set('priority', idx);
             }
         });
@@ -241,12 +241,12 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                         el.unmask();
                         //This just replaces the global error message box.
                         Ext.MessageBox.show({
-                           title: 'Error',
-                           msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
-                           buttons: Ext.MessageBox.OK,
-                           //animateTarget: 'mb9',
-                           icon: Ext.Msg.ERROR
-                       });
+                            title: 'Error',
+                            msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
+                            buttons: Ext.MessageBox.OK,
+                            //animateTarget: 'mb9',
+                            icon: Ext.Msg.ERROR
+                        });
                     }
                 };
 
@@ -267,25 +267,25 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
             failure: function() {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    icon: Ext.Msg.ERROR
+                });
             },
             callback: function() {
 
             }
         });
-     },
+    },
 
     /**
      * Remove contacts action.
      */
-     removeContacts: function(){
+    removeContacts: function() {
         var grid = this.getProjectContactsList(),
-        sel = grid.getSelectionModel().getSelection();
+            sel = grid.getSelectionModel().getSelection();
 
         grid.getStore().remove(sel);
     },
@@ -293,13 +293,13 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     /**
      * Refresh contacts action.
      */
-     refreshContacts: function(){
+    refreshContacts: function() {
         var grid = this.getProjectContactsList();
 
         grid.getStore().load({
             callback: function(records, operation, success) {
                 //hack to clear the removed records array
-                grid.getStore().removed =[];
+                grid.getStore().removed = [];
             }
         });
     },
@@ -307,15 +307,15 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     /**
      * Add contacts action.
      */
-     addContacts: function(){
+    addContacts: function() {
         var grid = this.getContactLists().getActiveTab(),
-        sel = grid.getSelectionModel().getSelection(),
-        data = {//build data object
-            copy: true,
-            view: grid.getView(),
-            records: sel
-        },
-        dz = this.getProjectContactsList().getView().getPlugin('contactsddplugin').dropZone;
+            sel = grid.getSelectionModel().getSelection(),
+            data = { //build data object
+                copy: true,
+                view: grid.getView(),
+                records: sel
+            },
+            dz = this.getProjectContactsList().getView().getPlugin('contactsddplugin').dropZone;
 
         //use dropzone to add records
         dz.handleNodeDrop(data);
@@ -324,7 +324,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
     /**
      * Remove contacts via drag/drop.
      */
-     removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
+    removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
         this.getProjectContactsStore().remove(data.records);
         return false;
     },
@@ -337,7 +337,9 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
         var column = Ext.create('Ext.grid.column.Column', grid.getSelectionModel().getHeaderConfig());
 
         grid.headerCt.insert(0, column);
-        grid.headerCt.insert(grid.headerCt.getColumnCount()+1, {xtype: 'reordercolumn'});
+        grid.headerCt.insert(grid.headerCt.getColumnCount() + 1, {
+            xtype: 'reordercolumn'
+        });
     },
 
     /**
@@ -345,7 +347,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
      */
     afterRenderProjectContactsList: function(view) {
         var plugin = view.getPlugin('contactsddplugin'),
-        dropZone = plugin.dropZone;
+            dropZone = plugin.dropZone;
         dropZone.handleNodeDrop = function(data, record, position) {
             var view = this.view,
                 store = view.getStore(),
@@ -360,11 +362,11 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                     var copy = records[i].data;
 
                     //combine names for a person record
-                    if(copy.name === undefined) {
+                    if (copy.name === undefined) {
                         copy.name = copy.lastname + ', ' + copy.firstname;
                     }
                     //create the new record, copying values from dropped record
-                    var rec = Ext.create('PTS.model.ProjectContact',{
+                    var rec = Ext.create('PTS.model.ProjectContact', {
                         'name': copy.name,
                         'roletypeid': '',
                         'contactid': copy.contactid,

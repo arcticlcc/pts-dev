@@ -3,41 +3,34 @@
  */
 Ext.define('PTS.model.ModificationComment', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'modcommentid',
-            type: 'integer',
-            useNull: true,
-            persist: false
-        },
-        {
-            name: 'modificationid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'comment',
-            type: 'mystring',
-            useNull: true
-        },
-        {
-            name: 'publish',
-            type: 'myboolean',
-            useNull: true,
-            defaultValue: false
-        },
-        {
-            name: 'datemodified',
-            type: 'mydate',
-            useNull: true,
-            defaultValue: new Date()
-        }
-    ],
+    fields: [{
+        name: 'modcommentid',
+        type: 'integer',
+        useNull: true,
+        persist: false
+    }, {
+        name: 'modificationid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'comment',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'publish',
+        type: 'myboolean',
+        useNull: true,
+        defaultValue: false
+    }, {
+        name: 'datemodified',
+        type: 'mydate',
+        useNull: true,
+        defaultValue: new Date()
+    }],
     idProperty: 'modcommentid',
     validations: [{
         type: 'length',
@@ -55,7 +48,7 @@ Ext.define('PTS.model.ModificationComment', {
 
     proxy: {
         type: 'rest',
-        url : '../modcomment',
+        url: '../modcomment',
         reader: {
             type: 'json',
             root: 'data'

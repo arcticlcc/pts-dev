@@ -20,7 +20,7 @@ Ext.define('PTS.controller.project.Project', {
 
     init: function() {
         var tab = this.getController('project.tab.ProjectTab'),
-        win = this.getController('project.window.Window');
+            win = this.getController('project.window.Window');
 
         // Remember to call the init method manually
         tab.init();
@@ -42,10 +42,10 @@ Ext.define('PTS.controller.project.Project', {
         var win, code, cstore,
             id = record ? record.get('projectid') : false;
 
-        if(id !== false) {
+        if (id !== false) {
             code = record.getProjectCode();
 
-            win = Ext.create(this.getProjectWindowWindowView(),{
+            win = Ext.create(this.getProjectWindowWindowView(), {
                 title: 'Edit Project: ' + code,
                 projectId: id
             });
@@ -53,10 +53,10 @@ Ext.define('PTS.controller.project.Project', {
             cstore = win.down('#projecttabpanel>commenteditgrid').getStore();
             cstore.setProxy({
                 type: 'rest',
-                url : '../projectcomment',
+                url: '../projectcomment',
                 appendId: true,
                 api: {
-                    read:'../project/' + id + '/projectcomment'
+                    read: '../project/' + id + '/projectcomment'
                 },
                 reader: {
                     type: 'json',
@@ -64,13 +64,13 @@ Ext.define('PTS.controller.project.Project', {
                 }
             });
             cstore.load();
-        } else{
-            win = Ext.create(this.getProjectWindowWindowView(),{
+        } else {
+            win = Ext.create(this.getProjectWindowWindowView(), {
                 title: 'New Project'
             });
             //disable all tabs except projectform
             win.down('#projecttabpanel').items.each(function() {
-                if('projectform' !== this.getXType()) {
+                if ('projectform' !== this.getXType()) {
                     this.disable();
                 }
             });
@@ -89,7 +89,7 @@ Ext.define('PTS.controller.project.Project', {
         //TODO: we could check whether record is a phantom and not perform unnecessary enables
         //enable all tabs except projectform, which should already be enabled
         win.down('#projecttabpanel').items.each(function() {
-            if('projectform' !== this.getXType()) {
+            if ('projectform' !== this.getXType()) {
                 this.enable();
             }
         });
@@ -99,10 +99,10 @@ Ext.define('PTS.controller.project.Project', {
         var cstore = win.down('#projecttabpanel>commenteditgrid').getStore();
         cstore.setProxy({
             type: 'rest',
-            url : '../projectcomment',
+            url: '../projectcomment',
             appendId: true,
             api: {
-                read:'../project/' + record.getId() + '/projectcomment'
+                read: '../project/' + record.getId() + '/projectcomment'
             },
             reader: {
                 type: 'json',

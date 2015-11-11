@@ -20,7 +20,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
     refs: [{
         ref: 'tpsGrid',
         selector: 'tpstab tpsgrid#tpsGrid'
-    },{
+    }, {
         ref: 'detailGrid',
         selector: 'tpstab tpsdetailgrid#tpsDetail'
     }],
@@ -94,7 +94,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         //override store proxy based on contactid
         store.setProxy({
             type: 'rest',
-            url : '../moddocstatus',
+            url: '../moddocstatus',
             appendId: true,
             //batchActions: true,
             api: {
@@ -106,12 +106,12 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             }
         });
 
-        if(val === null) {
+        if (val === null) {
             this.getDetailGrid().disable();
             var title = 'Details for <i>' + col.text + '</i> (' + record.get('projectcode') + ')';
 
             this.getDetailGrid().setTitle(title);
-        }else{
+        } else {
             this.getDetailGrid().enable();
 
             store.load({
@@ -150,7 +150,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
 
         editor.store.sync({
             success: function(batch) {
-                if(batch.isComplete && !batch.hasException) {
+                if (batch.isComplete && !batch.hasException) {
                     this.updateCell(rec, col);
                 }
             },
@@ -163,7 +163,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
      * Update the cell.
      */
     onDetailRowRemove: function(record, store) {
-        var rec = this.getTpsRecordsStore().findRecord('modificationid',record.get('modificationid') , 0, false, true, true),
+        var rec = this.getTpsRecordsStore().findRecord('modificationid', record.get('modificationid'), 0, false, true, true),
             col = this.getTpsGrid().normalGrid.headerCt.child('gridcolumn[dataIndex=doctype_' + record.get('moddoctypeid') + ']');
 
         this.updateCell(rec, col);
@@ -178,7 +178,7 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             normal = grid.normalGrid,
             h = normal.horizontalScroller.rendered ? normal.horizontalScroller.getHeight() : 0;
 
-        if(h > 0) {
+        if (h > 0) {
             grid.spacerHidden = false;
             grid.getSpacerEl().removeCls(Ext.baseCSSPrefix + 'hidden');
         }
@@ -196,15 +196,15 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
             sorter = [{
                 property: 'effectivedate',
                 direction: 'DESC'
-            },{
+            }, {
                 property: 'weight',
                 direction: 'DESC'
             }];
-        if(store.count() > 0) {
+        if (store.count() > 0) {
             store.sort(sorter);
             typeid = store.first().get('moddocstatustypeid');
             html = PTS.util.Format.docStatus(typestore.findRecord('moddocstatustypeid', typeid, 0, false, true, true).get('code'));
-        }else {
+        } else {
             html = PTS.util.Format.docStatus('Not Started');
         }
         me.getTpsGrid().getView().getCell(rec, col).down('div').dom.innerHTML = html;
@@ -223,17 +223,17 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         store.clearFilter(true);
         store.remoteFilter = true;
 
-        switch(itm.filter) {
+        switch (itm.filter) {
             case 'active':
                 store.filter({
                     property: 'weight',
-                    value: ['<',40]
+                    value: ['<', 40]
                 });
                 break;
             case 'funded':
                 store.filter({
                     property: 'weight',
-                    value: ['>=',40]
+                    value: ['>=', 40]
                 });
                 break;
             default:
@@ -261,35 +261,35 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
     openProject: function(rec) {
         var id = rec.get('modificationid'),
             callBack = function() {
-            var win = this,
-                store = win.down('agreementstree').getStore(),
-                tab = win.down('projectagreements'),
-                setPath = function(store) {
-                    var path = store.getNodeById("af-" + id).getPath();
-                    this.down('agreementstree').selectPath(path);
-                    this.getEl().unmask();
-                };
+                var win = this,
+                    store = win.down('agreementstree').getStore(),
+                    tab = win.down('projectagreements'),
+                    setPath = function(store) {
+                        var path = store.getNodeById("af-" + id).getPath();
+                        this.down('agreementstree').selectPath(path);
+                        this.getEl().unmask();
+                    };
 
-            //Ext.getBody().unmask();
-            win.getEl().mask('Loading...');
-            win.down('tabpanel').setActiveTab(tab);
+                //Ext.getBody().unmask();
+                win.getEl().mask('Loading...');
+                win.down('tabpanel').setActiveTab(tab);
 
-            if(store.getRootNode().hasChildNodes()) {
-                setPath(store);
-            }else {
-                store.on('load', setPath, win, {
-                    single: true
-                });
-            }
-        };
+                if (store.getRootNode().hasChildNodes()) {
+                    setPath(store);
+                } else {
+                    store.on('load', setPath, win, {
+                        single: true
+                    });
+                }
+            };
         //set the getProjectCode method, if it doesn't exist
         //we assume that the record contains the projectcode
-        if(rec.getProjectCode === undefined) {
+        if (rec.getProjectCode === undefined) {
             rec.getProjectCode = function() {
                 return rec.get('projectcode');
             };
         }
 
-        this.getController('project.Project').openProject(rec,callBack);
+        this.getController('project.Project').openProject(rec, callBack);
     }
 });

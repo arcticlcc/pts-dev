@@ -12,7 +12,7 @@ Ext.define('PTS.store.ReportTree', {
 
     proxy: {
         type: 'ajax',
-        url : '../report/tree',
+        url: '../report/tree',
         reader: {
             type: 'json'
         }

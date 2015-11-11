@@ -21,7 +21,7 @@ Ext.define('PTS.view.button.New', {
         Ext.applyIf(me, {
             iconCls: 'pts-menu-addbasic',
             disabled: true,
-            handler: function(){
+            handler: function() {
 
                 Ext.Msg.alert('Click', 'You clicked on "New".');
             }

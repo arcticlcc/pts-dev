@@ -24,10 +24,10 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     refs: [{
         ref: 'productContacts',
         selector: 'productcontacts'
-    },{
+    }, {
         ref: 'contactLists',
         selector: 'productcontacts #contactLists'
-    },{
+    }, {
         ref: 'productContactsList',
         selector: 'productcontacts #productContactsList'
     }],
@@ -61,8 +61,8 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                 afterrender: this.afterRenderProductContactsList
             },
             'productcontacts #productContactsList': {
-                beforerender: this.beforeRenderProductContactsList//,
-                //edit: this.onEditRole
+                beforerender: this.beforeRenderProductContactsList //,
+                    //edit: this.onEditRole
             },
             'combo[itemId=roletypeCbx]': {
                 select: this.onSelectRoleType
@@ -82,16 +82,16 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
      * @param {Number} productid
      * @param {PTS.store.ProductContacts}
      */
-    setProxy: function(id,store) {
+    setProxy: function(id, store) {
 
         //override store proxy based on productid
         store.setProxy({
             type: 'rest',
-            url : '../productcontact',
+            url: '../productcontact',
             appendId: true,
             //batchActions: true,
             api: {
-                read:'../product/' + id + '/productcontactlist'
+                read: '../product/' + id + '/productcontactlist'
             },
             reader: {
                 type: 'json',
@@ -106,7 +106,7 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     onOpenProduct: function(id) {
         var store = this.getProductContactsStore();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store);
             //load the productcontacts store
             store.load();
@@ -163,7 +163,7 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
         var store = this.getProductContactsStore(),
             id = record.getId();
 
-        if(id) {
+        if (id) {
             this.setProxy(id, store);
             //load the productcontacts store
             store.load();
@@ -173,21 +173,21 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     /**
      * Stuff to do when Product Contacts tab is activated.
      */
-     activate: function(tab) {
+    activate: function(tab) {
 
-     },
+    },
 
     /**
      * Contact list tab activated.
      */
-     activateList: function(grid) {
+    activateList: function(grid) {
         var store = grid.getStore();
 
         //load the contact list
         if (store.getCount() === 0) {
             store.load();
         }
-     },
+    },
 
     /**
      * Configure extra columns, checkboxSelection.
@@ -200,23 +200,23 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     /**
      * Save contacts.
      */
-     saveContacts: function() {
+    saveContacts: function() {
         var store = this.getProductContactsStore(),
             el = this.getProductContactsList().getEl(),
             isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
                 store.getNewRecords().length);
 
         //mask panel
-        if(isDirty) {
+        if (isDirty) {
             el.mask('Saving...');
         }
         //loop thru records and set the priority
         store.each(function() {
             var rec = this,
                 priority = rec.get('priority'),
-                idx  = store.indexOf(rec);
+                idx = store.indexOf(rec);
 
-            if(priority !== idx) {
+            if (priority !== idx) {
                 rec.set('priority', idx);
             }
         });
@@ -234,12 +234,12 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                         el.unmask();
                         //This just replaces the global error message box.
                         Ext.MessageBox.show({
-                           title: 'Error',
-                           msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
-                           buttons: Ext.MessageBox.OK,
-                           //animateTarget: 'mb9',
-                           icon: Ext.Msg.ERROR
-                       });
+                            title: 'Error',
+                            msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
+                            buttons: Ext.MessageBox.OK,
+                            //animateTarget: 'mb9',
+                            icon: Ext.Msg.ERROR
+                        });
                     }
                 };
 
@@ -260,25 +260,25 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
             failure: function() {
                 el.unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   //animateTarget: 'mb9',
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    //animateTarget: 'mb9',
+                    icon: Ext.Msg.ERROR
+                });
             },
             callback: function() {
 
             }
         });
-     },
+    },
 
     /**
      * Remove contacts action.
      */
-     removeContacts: function(){
+    removeContacts: function() {
         var grid = this.getProductContactsList(),
-        sel = grid.getSelectionModel().getSelection();
+            sel = grid.getSelectionModel().getSelection();
 
         grid.getStore().remove(sel);
     },
@@ -286,13 +286,13 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     /**
      * Refresh contacts action.
      */
-     refreshContacts: function(){
+    refreshContacts: function() {
         var grid = this.getProductContactsList();
 
         grid.getStore().load({
             callback: function(records, operation, success) {
                 //hack to clear the removed records array
-                grid.getStore().removed =[];
+                grid.getStore().removed = [];
             }
         });
     },
@@ -300,15 +300,15 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     /**
      * Add contacts action.
      */
-     addContacts: function(){
+    addContacts: function() {
         var grid = this.getContactLists().getActiveTab(),
-        sel = grid.getSelectionModel().getSelection(),
-        data = {//build data object
-            copy: true,
-            view: grid.getView(),
-            records: sel
-        },
-        dz = this.getProductContactsList().getView().getPlugin('contactsddplugin').dropZone;
+            sel = grid.getSelectionModel().getSelection(),
+            data = { //build data object
+                copy: true,
+                view: grid.getView(),
+                records: sel
+            },
+            dz = this.getProductContactsList().getView().getPlugin('contactsddplugin').dropZone;
 
         //use dropzone to add records
         dz.handleNodeDrop(data);
@@ -317,7 +317,7 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
     /**
      * Remove contacts via drag/drop.
      */
-     removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
+    removeContactsByDrag: function(node, data, overModel, dropPosition, dropFunction) {
         this.getProductContactsStore().remove(data.records);
         return false;
     },
@@ -338,7 +338,7 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
      */
     afterRenderProductContactsList: function(view) {
         var plugin = view.getPlugin('contactsddplugin'),
-        dropZone = plugin.dropZone;
+            dropZone = plugin.dropZone;
         dropZone.handleNodeDrop = function(data, record, position) {
             var view = this.view,
                 store = view.getStore(),
@@ -353,11 +353,11 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                     var copy = records[i].data;
 
                     //combine names for a person record
-                    if(copy.name === undefined) {
+                    if (copy.name === undefined) {
                         copy.name = copy.lastname + ', ' + copy.firstname;
                     }
                     //create the new record, copying values from dropped record
-                    var rec = Ext.create('PTS.model.ProductContact',{
+                    var rec = Ext.create('PTS.model.ProductContact', {
                         'name': copy.name,
                         'isoroletypeid': '',
                         'contactid': copy.contactid,

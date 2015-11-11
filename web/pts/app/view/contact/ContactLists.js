@@ -25,33 +25,26 @@ Ext.define('PTS.view.contact.ContactLists', {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
-                    xtype: 'personddlist',
-                    itemId: 'personsList',
-                    title: 'Persons'
-                },
-                {
-                    xtype: 'groupddlist',
-                    itemId: 'groupsList',
-                    title: 'Groups'
-                }
-            ],
-            dockedItems: [
-                {
-                    xtype: 'toolbar',
-                    dock: 'top',
-                    items: [
-                        {
-                            xtype: 'button',
-                            //itemId: 'addtoproject',
-                            iconCls: 'pts-menu-addbasic',
-                            text: me.addBtnText,
-                            action: 'addcontacts'
-                        }
-                    ]
-                }
-            ]
+            items: [{
+                xtype: 'personddlist',
+                itemId: 'personsList',
+                title: 'Persons'
+            }, {
+                xtype: 'groupddlist',
+                itemId: 'groupsList',
+                title: 'Groups'
+            }],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'top',
+                items: [{
+                    xtype: 'button',
+                    //itemId: 'addtoproject',
+                    iconCls: 'pts-menu-addbasic',
+                    text: me.addBtnText,
+                    action: 'addcontacts'
+                }]
+            }]
         });
 
         me.callParent(arguments);

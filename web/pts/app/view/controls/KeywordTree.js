@@ -5,8 +5,8 @@ Ext.define('PTS.view.controls.KeywordTree', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.keywordtree',
     requires: [
-       'Ext.tree.plugin.TreeViewDragDrop',
-       'Ext.grid.column.Template'
+        'Ext.tree.plugin.TreeViewDragDrop',
+        'Ext.grid.column.Template'
     ],
 
     //useArrows: true,
@@ -28,21 +28,19 @@ Ext.define('PTS.view.controls.KeywordTree', {
                     dragGroup: 'keywords'
                 }
             },
-            columns: [
-                {
-                    xtype: 'treecolumn',
-                    text: 'Keyword',
-                    dataIndex: 'text',
-                    flex:1
-                },{
-                    xtype: 'templatecolumn',
-                    width: 20,
-                    text: '',
-                    hideable: false,
-                    cls: 'x-action-col-cell',
-                    tpl: '<tpl if="definition"><div data-qtip="{[Ext.htmlEncode(values.definition)]}" class="pts-col-info"></div></tpl>'
-                }
-            ]
+            columns: [{
+                xtype: 'treecolumn',
+                text: 'Keyword',
+                dataIndex: 'text',
+                flex: 1
+            }, {
+                xtype: 'templatecolumn',
+                width: 20,
+                text: '',
+                hideable: false,
+                cls: 'x-action-col-cell',
+                tpl: '<tpl if="definition"><div data-qtip="{[Ext.htmlEncode(values.definition)]}" class="pts-col-info"></div></tpl>'
+            }]
         });
 
         me.callParent(arguments);

@@ -74,13 +74,13 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     getActiveModel: function() {
         var form = this.getActiveForm();
 
-        switch(form.getItemId()) {
+        switch (form.getItemId()) {
             case 'personForm':
-              return this.getPersonModel();
+                return this.getPersonModel();
             case 'groupForm':
-              return this.getContactGroupModel();
+                return this.getContactGroupModel();
             default:
-              Ext.Error.raise('No model found for item!');
+                Ext.Error.raise('No model found for item!');
         }
     },
 
@@ -96,7 +96,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var cnt = this.getContactForm(),
             tab, cfg, setItem;
 
-        switch(type) {
+        switch (type) {
             case 'person':
                 cfg = {
                     title: 'Manage Groups',
@@ -111,7 +111,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                 break;
         }
 
-        tab = Ext.create('PTS.view.contact.window.PersonGroups',cfg);
+        tab = Ext.create('PTS.view.contact.window.PersonGroups', cfg);
 
         setItem = function() {
             cnt.getLayout().setActiveItem(type);
@@ -122,10 +122,10 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         };
 
         //make sure the card container is rendered
-        if(cnt.rendered) {
+        if (cnt.rendered) {
             setItem.call(this);
         } else {
-            cnt.on('render',setItem, this, {
+            cnt.on('render', setItem, this, {
                 single: true
             });
         }
@@ -138,13 +138,13 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var rec, store;
 
         //we need to update the corresponding ContactIDs record
-        if( Ext.getClassName(record) === 'PTS.model.ContactGroup') {
+        if (Ext.getClassName(record) === 'PTS.model.ContactGroup') {
             store = this.getContactGroupIDsStore();
             rec = store.getById(record.getId());
-            if(rec) {
+            if (rec) {
                 //update
                 rec.set('fullname', record.get('fullname'));
-            } else{
+            } else {
                 //add new
                 store.add(record);
             }
@@ -165,7 +165,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var rec, store;
 
         //we need to remove the corresponding ContactIDs record
-        if( Ext.getClassName(record) === 'PTS.model.ContactGroup') {
+        if (Ext.getClassName(record) === 'PTS.model.ContactGroup') {
             store = this.getContactGroupIDsStore();
             rec = store.getById(record.getId());
             store.remove(rec);
@@ -193,26 +193,26 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var itmRec, itmId,
             save = fieldset.isDirty() && fieldset.isValid();
         //we only save if valid and dirty
-        if(save) {
+        if (save) {
             itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
 
-            if((itmRec = store.getById(itmId))) {
+            if ((itmRec = store.getById(itmId))) {
                 //load the new data into existing model
-                    itmRec.beginEdit();
-                        Ext.each(fieldset.query('field'), function() {
-                            itmRec.set(this.name, this.getValue());
-                        });
-                    itmRec.endEdit();
+                itmRec.beginEdit();
+                Ext.each(fieldset.query('field'), function() {
+                    itmRec.set(this.name, this.getValue());
+                });
+                itmRec.endEdit();
 
-            }else{ //we need to create a new record
-                    var cfg = {};
+            } else { //we need to create a new record
+                var cfg = {};
 
-                    Ext.each(fieldset.query('field'), function() {
-                        cfg[this.name] = this.getValue();
-                    });
-                    Ext.applyIf(cfg,type);
-                    itmRec = store.add(cfg);
-                    itmRec[0].setDirty();
+                Ext.each(fieldset.query('field'), function() {
+                    cfg[this.name] = this.getValue();
+                });
+                Ext.applyIf(cfg, type);
+                itmRec = store.add(cfg);
+                itmRec[0].setDirty();
             }
         }
     },
@@ -224,26 +224,26 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var itmRec, itmId,
             save = field.isValid() && field.isDirty();
         //we only save if valid and dirty
-        if(save) {
+        if (save) {
             itmId = parseInt(field.getValue(), 10);
             //we grab the first record here
             //we assume the first record is the primary group
-            if((itmRec = store.getAt(0))) {
+            if ((itmRec = store.getAt(0))) {
                 //load the new data into existing model
-                    itmRec.beginEdit();
-                            itmRec.set('groupid', field.getValue());
-                    itmRec.endEdit();
+                itmRec.beginEdit();
+                itmRec.set('groupid', field.getValue());
+                itmRec.endEdit();
 
-            }else{ //we need to create a new record
-                    var cfg = {
-                        contactid: contactId,
-                        groupid: field.getValue(),
-                        positionid: 0,
-                        priority: 1
-                    };
+            } else { //we need to create a new record
+                var cfg = {
+                    contactid: contactId,
+                    groupid: field.getValue(),
+                    positionid: 0,
+                    priority: 1
+                };
 
-                    itmRec = store.add(cfg);
-                    itmRec[0].setDirty();
+                itmRec = store.add(cfg);
+                itmRec[0].setDirty();
             }
         }
     },
@@ -253,15 +253,15 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     deleteFieldSet: function(store, fieldset) {
         var itmRec, itmId, del;
 
-            itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
+        itmId = parseInt(fieldset.down('#recordId').getValue(), 10);
 
-            if((itmRec = store.getById(itmId))) {
-                store.remove(itmRec);
-            }
-            //disable the checkbox
-            if((del = fieldset.down('checkboxfield#delete'))) {
-                del.disable();
-            }
+        if ((itmRec = store.getById(itmId))) {
+            store.remove(itmRec);
+        }
+        //disable the checkbox
+        if ((del = fieldset.down('checkboxfield#delete'))) {
+            del.disable();
+        }
     },
 
     /**
@@ -271,7 +271,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var itmRec;
 
         //we just remove the first record
-        if((itmRec = store.getAt(0))) {
+        if ((itmRec = store.getAt(0))) {
             store.remove(itmRec);
         }
     },
@@ -283,62 +283,79 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         var panel = pnl ? pnl : this.getActiveForm(),
             form = frm ? frm : panel.getForm(),
             record = rec ? rec : form.getRecord(),
-            store,fieldset,
-            phone = [
-                {type:'fax',val:'1'},
-                {type:'office',val:'3'},
-                {type:'mobile',val:'2'}
-            ],
-            address = [
-                {type:'mail',val:'1'},
-                {type:'physical',val:'2'}
-            ],
-            eaddress = [
-                {type:'web',val:'2'},
-                {type:'email',val:'1'}
-            ];
+            store, fieldset,
+            phone = [{
+                type: 'fax',
+                val: '1'
+            }, {
+                type: 'office',
+                val: '3'
+            }, {
+                type: 'mobile',
+                val: '2'
+            }],
+            address = [{
+                type: 'mail',
+                val: '1'
+            }, {
+                type: 'physical',
+                val: '2'
+            }],
+            eaddress = [{
+                type: 'web',
+                val: '2'
+            }, {
+                type: 'email',
+                val: '1'
+            }];
 
         //update the details
-        Ext.each(address, function(itm){
+        Ext.each(address, function(itm) {
             store = record.addresses();
             fieldset = panel.down('fieldset#' + itm.type + 'Address');
             //check the status of the delete checkbox
-            if(fieldset.down('checkboxfield#delete').getValue()) {
+            if (fieldset.down('checkboxfield#delete').getValue()) {
                 this.deleteFieldSet(store, fieldset);
-            }else {
-                this.saveFieldSet(store, fieldset, {addresstypeid: itm.val});
+            } else {
+                this.saveFieldSet(store, fieldset, {
+                    addresstypeid: itm.val
+                });
             }
-        },this);
+        }, this);
 
-        Ext.each(eaddress, function(itm){
+        Ext.each(eaddress, function(itm) {
             store = record.eaddresses();
             fieldset = panel.down('fieldcontainer#' + itm.type + 'Address');
             //delete the record if the field is empty
-            if(Ext.String.trim(fieldset.down('textfield[name=uri]').getValue()) === '' && fieldset.isDirty()) {
+            if (Ext.String.trim(fieldset.down('textfield[name=uri]').getValue()) === '' && fieldset.isDirty()) {
                 this.deleteFieldSet(store, fieldset);
-            }else {
-                this.saveFieldSet(store, fieldset, {eaddresstypeid: itm.val});
+            } else {
+                this.saveFieldSet(store, fieldset, {
+                    eaddresstypeid: itm.val
+                });
             }
-        },this);
+        }, this);
 
-        Ext.each(phone, function(itm){
+        Ext.each(phone, function(itm) {
             store = record.phones();
             fieldset = panel.down('fieldcontainer#' + itm.type + 'Phone');
 
-            if(fieldset.down('checkboxfield#delete').getValue()) {
+            if (fieldset.down('checkboxfield#delete').getValue()) {
                 this.deleteFieldSet(store, fieldset);
-            }else {
-                this.saveFieldSet(store, fieldset, {phonetypeid: itm.val});
+            } else {
+                this.saveFieldSet(store, fieldset, {
+                    phonetypeid: itm.val
+                });
             }
-        },this);
+        }, this);
 
         //handle parent group for contactgroups
-        if((fieldset = panel.down('field#parentGroup'))) {
+        if ((fieldset = panel.down('field#parentGroup'))) {
             store = record.contactcontactgroups();
 
-            if(null === fieldset.getValue() && fieldset.isDirty()) {
+            if (null === fieldset.getValue() && fieldset.isDirty()) {
                 this.deleteParentGroup(store, fieldset);
-            }else {
+            } else {
                 this.saveParentGroup(store, fieldset, record.getId());
             }
         }
@@ -349,7 +366,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     /**
      * Save contact.
      */
-     saveContact: function() {
+    saveContact: function() {
         var panel = this.getActiveForm(),
             form = panel.getForm(),
             record = form.getRecord();
@@ -364,7 +381,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         record.save({
             success: function(model, op) {
                 //clear fields to remove old/invalid data
-                Ext.each(panel.query('field'),function(){
+                Ext.each(panel.query('field'), function() {
                     this.setValue('');
                     this.clearInvalid();
                 });
@@ -381,29 +398,29 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             },
             failure: function(model, op) {
                 //TODO: clean out phantom associated records to prevent duplicates
-                if(record.associations.items.length) {//check for associations
+                if (record.associations.items.length) { //check for associations
                     //loop thru associations
-                    record.associations.each(function(assoc){
+                    record.associations.each(function(assoc) {
                         var store = record[assoc.name]();
                         //and get phantom records
                         store.remove(store.getNewRecords());
 
-                    },this);
+                    }, this);
                 }
 
                 panel.getEl().unmask();
                 Ext.MessageBox.show({
-                   title: 'Error',
-                   msg: 'There was a problem saving the contact.</br>' + PTS.app.getError(),
-                   buttons: Ext.MessageBox.OK,
-                   animateTarget: panel.down('button[action=savecontact]').getEl(),
-                   //fn: showResult,
-                   icon: Ext.Msg.ERROR
-               });
+                    title: 'Error',
+                    msg: 'There was a problem saving the contact.</br>' + PTS.app.getError(),
+                    buttons: Ext.MessageBox.OK,
+                    animateTarget: panel.down('button[action=savecontact]').getEl(),
+                    //fn: showResult,
+                    icon: Ext.Msg.ERROR
+                });
             },
             scope: this //need the controller to load the model on success
         });
-     },
+    },
 
     /**
      * Confirm contact deletion.
@@ -411,7 +428,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     confirmDelete: function(btn) {
         var el = btn.getEl(),
             del = function(b) {
-                if('yes' === b) {
+                if ('yes' === b) {
                     this.deleteContact();
                 }
             };
@@ -431,9 +448,9 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     /**
      * Delete contact.
      */
-     deleteContact: function() {
+    deleteContact: function() {
         var form = this.getActiveForm().getForm(),
-        record = form.getRecord();
+            record = form.getRecord();
 
         record.destroy({
             success: function(model, op) {
@@ -453,21 +470,21 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
             },*/
             scope: this //need the controller
         });
-     },
+    },
 
     /**
      * Reset contact form.
      */
-     resetContact: function() {
+    resetContact: function() {
         var panel = this.getActiveForm(),
             form = panel.getForm(),
             record = form.getRecord();
 
         //we need to reject the changes to the associated records
         //TODO: handle association rejections in the base model class
-        if(record.associations.items.length) {//check for associations
+        if (record.associations.items.length) { //check for associations
             //loop thru associations
-            record.associations.each(function(assoc){
+            record.associations.each(function(assoc) {
                 var store = record[assoc.name]();
 
                 store.rejectChanges();
@@ -476,7 +493,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
         record.reject();
 
         form.reset();
-     },
+    },
 
     /**
      * Load contact detail fieldset.
@@ -484,7 +501,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     loadFieldSet: function(rec, fieldSet, cbx) {
         var del = fieldSet.items.get('delete');
 
-        if(cbx) {
+        if (cbx) {
             cbx.setValue(true);
             cbx.resetOriginalValue();
         }
@@ -493,13 +510,13 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                 val,
                 name = this.getName();
 
-            if(undefined !== (val = rec.get(name))) {
+            if (undefined !== (val = rec.get(name))) {
                 me.setValue(val);
                 me.resetOriginalValue();
             }
         });
         //show delete checkbox
-        if(del) {
+        if (del) {
             del.enable();
         }
     },
@@ -510,7 +527,7 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
     loadRecord: function(id) {
         var model = this.getActiveModel(),
             form = this.getActiveForm();
-        if(id) {
+        if (id) {
             form.getEl().mask('Loading...');
             model.load(id, { // load with id from selected record
                 success: function(model) {
@@ -591,17 +608,17 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
                 failure: function(model, op) {
                     form.getEl().unmask();
                     Ext.MessageBox.show({
-                       title: 'Error',
-                       msg: 'The was a problem loading the record.</br>Error:' + PTS.app.getError(),
-                       buttons: Ext.MessageBox.OK,
-                       //animateTarget: 'mb9',
-                       //fn: showResult,
-                       icon: Ext.Msg.ERROR
-                   });
+                        title: 'Error',
+                        msg: 'The was a problem loading the record.</br>Error:' + PTS.app.getError(),
+                        buttons: Ext.MessageBox.OK,
+                        //animateTarget: 'mb9',
+                        //fn: showResult,
+                        icon: Ext.Msg.ERROR
+                    });
                 },
                 scope: this
             });
-        } else{
+        } else {
             form.loadRecord(Ext.create(model));
         }
     },
@@ -611,54 +628,62 @@ Ext.define('PTS.controller.contact.window.ContactForm', {
      */
     loadRecordDetails: function(model, form) {
         var addRec, addSet, addCbx,
-            phone = [
-                {type:'fax',val:'1'},
-                {type:'office',val:'3'},
-                {type:'mobile',val:'2'}
-            ],
-            eaddress = [
-                {type:'web',val:'2'},
-                {type:'email',val:'1'}
-            ];
+            phone = [{
+                type: 'fax',
+                val: '1'
+            }, {
+                type: 'office',
+                val: '3'
+            }, {
+                type: 'mobile',
+                val: '2'
+            }],
+            eaddress = [{
+                type: 'web',
+                val: '2'
+            }, {
+                type: 'email',
+                val: '1'
+            }];
         //load the contact details
         //TODO: implement "primary" filtering client-side
         //Allow management of additional addresses & phone#s
-        if(model.addresses().count()) {//load addresses
+        if (model.addresses().count()) { //load addresses
             //mailing address
-            if((addRec = model.addresses().findRecord( 'addresstypeid',1))) {
+            if ((addRec = model.addresses().findRecord('addresstypeid', 1))) {
                 addSet = form.down('fieldset#mailAddress');
                 addCbx = addSet.down('checkbox[name=mailingCbx]');
                 this.loadFieldSet(addRec, addSet, addCbx);
             }
             //physical address
-            if((addRec = model.addresses().findRecord( 'addresstypeid',2))) {
+            if ((addRec = model.addresses().findRecord('addresstypeid', 2))) {
                 addSet = form.down('fieldset#physicalAddress');
                 addCbx = addSet.down('checkbox[name=physicalCbx]');
                 this.loadFieldSet(addRec, addSet, addCbx);
             }
         }
 
-        if(model.phones().count()) {//load phones
+        if (model.phones().count()) { //load phones
             addCbx = form.down('checkbox[name=phoneCbx]');
-            Ext.each(phone, function(itm){
-                if((addRec = model.phones().findRecord( 'phonetypeid',itm.val))) {
+            Ext.each(phone, function(itm) {
+                if ((addRec = model.phones().findRecord('phonetypeid', itm.val))) {
                     addSet = form.down('fieldcontainer#' + itm.type + 'Phone');
                     this.loadFieldSet(addRec, addSet, addCbx);
                 }
-            },this);
+            }, this);
         }
 
-        if(model.eaddresses().count()) {//load electronic addresses
-            Ext.each(eaddress, function(itm){
-                if((addRec = model.eaddresses().findRecord( 'eaddresstypeid',itm.val))) {
+        if (model.eaddresses().count()) { //load electronic addresses
+            Ext.each(eaddress, function(itm) {
+                if ((addRec = model.eaddresses().findRecord('eaddresstypeid', itm.val))) {
                     addSet = form.down('fieldcontainer#' + itm.type + 'Address');
                     this.loadFieldSet(addRec, addSet);
                 }
-            },this);
+            }, this);
         }
 
-        if((addSet = form.down('field#parentGroup'))) {//load primary parent group
-            if((addRec = model.contactcontactgroups().getAt(0))) {
+        if ((addSet = form.down('field#parentGroup'))) { //load primary parent group
+            if ((addRec = model.contactcontactgroups().getAt(0))) {
                 //addRec = model.contactcontactgroups().getAt(0);
                 //addSet = form.down('field#parentGroup');
                 addSet.setValue(addRec.get('groupid'));

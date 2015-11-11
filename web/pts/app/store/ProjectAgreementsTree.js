@@ -10,7 +10,7 @@ Ext.define('PTS.store.ProjectAgreementsTree', {
     folderSort: false,
     autoLoad: false,
     root: {
-        children : []
+        children: []
     }
     //sorters: { property: 'lastname', direction : 'ASC' }
 });

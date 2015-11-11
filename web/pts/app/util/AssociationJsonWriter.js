@@ -22,7 +22,7 @@ Ext.define('PTS.util.AssociationJsonWriter', {
             key;
 
         if (writeAll) {
-            fields.each(function(field){
+            fields.each(function(field) {
                 if (field.persist) {
                     name = field[nameProperty] || field.name;
                     data[name] = record.get(field.name);
@@ -44,25 +44,26 @@ Ext.define('PTS.util.AssociationJsonWriter', {
             }
         }
 
-        if(record.associations.items.length) {//check for associations
+        if (record.associations.items.length) { //check for associations
             //loop thru associations
-            record.associations.each(function(assoc){
+            record.associations.each(function(assoc) {
                 var store = record[assoc.name](),
                     proxy = store.getProxy(),
                     removed = store.getRemovedRecords(),
-                    rdata = [], remData = [];
+                    rdata = [],
+                    remData = [];
                 //and get dirty records
                 store.each(function(r) {
-                    if(r.dirty){
+                    if (r.dirty) {
                         rdata.push(proxy.getWriter().getRecordData(r));
                     }
-                },this);
+                }, this);
                 data[assoc.name] = rdata;
 
                 //check for removed records
-                if(removed.length > 0) {
+                if (removed.length > 0) {
                     //check to see if the destroy object exists
-                    if(undefined === data.destroy) {
+                    if (undefined === data.destroy) {
                         data.destroy = {};
                     }
                     Ext.each(removed, function(r) {
@@ -70,11 +71,11 @@ Ext.define('PTS.util.AssociationJsonWriter', {
                         remData.push({
                             id: r.getId()
                         });
-                    },this);
+                    }, this);
                     //add records to data object
                     data.destroy[assoc.name] = remData;
                 }
-            },this);
+            }, this);
         }
         return data;
     }

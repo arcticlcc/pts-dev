@@ -11,7 +11,8 @@ Ext.define('PTS.store.Products', {
     remoteSort: true,
     remoteFilter: true,
     pageSize: PTS.Defaults.pageSize,
-    sorters: [
-        { property: 'projectcode', direction : 'DESC' }
-    ]
+    sorters: [{
+        property: 'projectcode',
+        direction: 'DESC'
+    }]
 });

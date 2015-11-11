@@ -4,50 +4,41 @@
 
 Ext.define('PTS.model.DeliverableNotice', {
     extend: 'PTS.model.Base',
-    fields: [
-        {
-            name: 'deliverablenoticeid',
-            persist: false,
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'deliverableid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'modificationid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'noticeid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'recipientid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'contactid',
-            type: 'int',
-            useNull: true
-        },
-        {
-            name: 'datesent',
-            type: 'mydate',
-            useNull: true,
-            defaultValue: new Date()
-        },
-        {
-            name: 'comment',
-            type: 'mystring',
-            useNull: true
-        }
-    ],
+    fields: [{
+        name: 'deliverablenoticeid',
+        persist: false,
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'deliverableid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'modificationid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'noticeid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'recipientid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'contactid',
+        type: 'int',
+        useNull: true
+    }, {
+        name: 'datesent',
+        type: 'mydate',
+        useNull: true,
+        defaultValue: new Date()
+    }, {
+        name: 'comment',
+        type: 'mystring',
+        useNull: true
+    }],
     idProperty: 'deliverablenoticeid',
     validations: [{
         type: 'length',
@@ -68,7 +59,7 @@ Ext.define('PTS.model.DeliverableNotice', {
 
     proxy: {
         type: 'rest',
-        url : '../deliverablenotice',
+        url: '../deliverablenotice',
         reader: {
             type: 'json',
             root: 'data'

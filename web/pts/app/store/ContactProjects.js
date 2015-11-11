@@ -11,7 +11,7 @@ Ext.define('PTS.store.ContactProjects', {
 
     proxy: {
         type: 'ajax',
-        url : '../projectcontactfull',
+        url: '../projectcontactfull',
         reader: {
             type: 'json',
             root: 'data'

@@ -20,13 +20,13 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
     refs: [{
         ref: 'invoiceGridForm',
         selector: 'invoicegridform'
-    },{
+    }, {
         ref: 'invoiceList',
         selector: 'invoicegridform>#invoiceList'
-    },{
+    }, {
         ref: 'invoiceForm',
         selector: 'invoicegridform>#invoiceForm'
-    },{
+    }, {
         ref: 'fundingForm',
         selector: 'fundingform>form'
     }],
@@ -97,7 +97,7 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
     /**
      * Reset the invoice form.
      */
-    resetInvoice: function(){
+    resetInvoice: function() {
         this.getInvoiceForm().getForm().reset();
     },
 
@@ -120,8 +120,8 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
 
         //load the funding costcodes if not loaded
         //TODO: create method for this, see also #addInvoice
-        if(!ccStore.count()) {
-            if(!ccStore.isLoading() && ccStore.count() === 0) {
+        if (!ccStore.count()) {
+            if (!ccStore.isLoading() && ccStore.count() === 0) {
                 ccGrid = invForm.down('roweditgrid#costCodes');
                 ccGrid.getEl().mask('Loading...');
                 fundingid = invForm.up('fundingform').down('#itemForm').getRecord().getId();
@@ -151,8 +151,8 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
             rec = Ext.create(this.getInvoiceModel());
 
         //load the funding costcodes if not loaded
-        if(!ccStore.count()) {
-            if(!ccStore.isLoading() && ccStore.count() === 0) {
+        if (!ccStore.count()) {
+            if (!ccStore.isLoading() && ccStore.count() === 0) {
                 ccGrid = invForm.down('roweditgrid#costCodes');
                 ccGrid.getEl().mask('Loading...');
                 fundingid = invForm.up('fundingform').down('#itemForm').getRecord().getId();
@@ -174,7 +174,7 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
     /**
      * Save invoice.
      */
-     saveInvoice: function() {
+    saveInvoice: function() {
         var options = {},
             panel = this.getInvoiceForm(),
             form = panel.getForm(),
@@ -184,7 +184,7 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
             fid = this.getFundingForm().getRecord().getId();
 
         //check the costcodes
-        if(0 === costcodes.count() || 0 === costcodes.collect('costcodeid').length) {
+        if (0 === costcodes.count() || 0 === costcodes.collect('costcodeid').length) {
             Ext.MessageBox.show({
                 title: 'Error',
                 msg: 'At least one Cost Code is required.</br>',
@@ -200,7 +200,7 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
         //mask the form
         panel.getEl().mask('Saving...');
         //set the fundingid
-        record.set('fundingid',fid);
+        record.set('fundingid', fid);
         //update the record
         form.updateRecord(record);
         //we need to destroy the deleted costcodes first,
@@ -216,72 +216,75 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
 
                 panel.getEl().unmask();
                 //if a destroy operation fails we need to add the record back to the store
-                if(op.action === "destroy") {
+                if (op.action === "destroy") {
                     rec = op.records[0];
-                    rec.reject();//reject changes
+                    rec.reject(); //reject changes
                     Ext.Array.remove(store.removed, rec); //remove the record from the store's removed array
                     store.add(rec); //insert back into the store at the same position
 
                 }
             },
-            complete: {fn: function() {
-                // save the main invoice record
-                var me = this;
-                record.save({
-                    success: function(model, op) {
-                        var listStore = me.getInvoicesStore(),
-                            idx = listStore.indexOfId(model.getId());
+            complete: {
+                fn: function() {
+                    // save the main invoice record
+                    var me = this;
+                    record.save({
+                        success: function(model, op) {
+                            var listStore = me.getInvoicesStore(),
+                                idx = listStore.indexOfId(model.getId());
 
-                        form.loadRecord(model); //load the model
-                        panel.down('roweditgrid#costCodes').bindStore(model.costcodes());//bind the new associated store
-                        //reset all the original values to get desired trackresetonload behaviour
-                        Ext.each(panel.query('field'), function() {
-                            this.resetOriginalValue();
-                        });
-                        //if the record is in the invoicelist replace it
-                        if( idx !== -1) {
-                            listStore.removeAt(idx);
-                            listStore.insert(idx, model);
-                        } else {//add it
-                            listStore.add(model);
-                        }
+                            form.loadRecord(model); //load the model
+                            panel.down('roweditgrid#costCodes').bindStore(model.costcodes()); //bind the new associated store
+                            //reset all the original values to get desired trackresetonload behaviour
+                            Ext.each(panel.query('field'), function() {
+                                this.resetOriginalValue();
+                            });
+                            //if the record is in the invoicelist replace it
+                            if (idx !== -1) {
+                                listStore.removeAt(idx);
+                                listStore.insert(idx, model);
+                            } else { //add it
+                                listStore.add(model);
+                            }
 
-                        panel.getEl().unmask();
-                    },
-                    failure: function(model, op) {
-                        //TODO: clean out phantom associated records to prevent duplicates
-                        /*if(record.associations.items.length) {//check for associations
-                            //loop thru associations
-                            record.associations.each(function(assoc){
-                                var store = record[assoc.name]();
-                                //and get phantom records
-                                store.remove(store.getNewRecords());
-                            },this);
-                        }*/
+                            panel.getEl().unmask();
+                        },
+                        failure: function(model, op) {
+                            //TODO: clean out phantom associated records to prevent duplicates
+                            /*if(record.associations.items.length) {//check for associations
+                                //loop thru associations
+                                record.associations.each(function(assoc){
+                                    var store = record[assoc.name]();
+                                    //and get phantom records
+                                    store.remove(store.getNewRecords());
+                                },this);
+                            }*/
 
-                        //panel.getEl().unmask();
+                            //panel.getEl().unmask();
 
-                        Ext.MessageBox.show({
-                            title: 'Error',
-                            msg: 'There was a problem saving the invoice.</br>' + PTS.app.getError(),
-                            buttons: Ext.MessageBox.OK,
-                            animateTarget: panel.down('button[action=saveinvoice]').getEl(),
-                            fn: function() {
-                                panel.getEl().unmask();
-                            },
-                            icon: Ext.Msg.ERROR
-                       });
-                    },
-                    scope: this //need the controller to load the model on success
-                });
-            }, scope: this}
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: 'There was a problem saving the invoice.</br>' + PTS.app.getError(),
+                                buttons: Ext.MessageBox.OK,
+                                animateTarget: panel.down('button[action=saveinvoice]').getEl(),
+                                fn: function() {
+                                    panel.getEl().unmask();
+                                },
+                                icon: Ext.Msg.ERROR
+                            });
+                        },
+                        scope: this //need the controller to load the model on success
+                    });
+                },
+                scope: this
+            }
         });
-     },
+    },
 
     /**
      * Delete invoice.
      */
-     deleteInvoice: function() {
+    deleteInvoice: function() {
         var panel = this.getInvoiceForm(),
             form = panel.getForm(),
             record = form.getRecord();
@@ -295,7 +298,7 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
                     idx = listStore.indexOfId(record.getId());
 
                 //if the record is in the invoicelist replace it
-                if( idx !== -1) {
+                if (idx !== -1) {
                     listStore.removeAt(idx);
                 }
                 panel.getEl().unmask();
@@ -309,20 +312,20 @@ Ext.define('PTS.controller.project.form.InvoiceGridForm', {
                     buttons: Ext.MessageBox.OK,
                     animateTarget: panel.down('button[action=deleteinvoice]').getEl(),
                     fn: function() {
-                         panel.getEl().unmask();
+                        panel.getEl().unmask();
                     },
                     icon: Ext.Msg.ERROR
-               });
+                });
             },
             scope: this
         });
-     },
+    },
 
     /**
      * Perform costcode validation.
      */
-    beforeRemoveCostcode: function(rec, store){
-        if(store.count() === 1) {
+    beforeRemoveCostcode: function(rec, store) {
+        if (store.count() === 1) {
             Ext.MessageBox.show({
                 title: 'Error',
                 msg: 'At least one Cost Code is required.</br>',

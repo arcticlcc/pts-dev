@@ -8,42 +8,47 @@ Ext.define('PTS.store.ModTypes', {
     model: 'PTS.model.ModType',
 
     autoLoad: true,
-    listeners: {//TODO: move to controller?
+    listeners: { //TODO: move to controller?
         load: { //create stores for proposal and agreement types
-            fn: function(store, recs, success, op){
-                    var adata = [], pdata = [],
-                        pstore = Ext.getStore('ProposalTypes'),
-                        astore = Ext.getStore('AgreementTypes');
+            fn: function(store, recs, success, op) {
+                var adata = [],
+                    pdata = [],
+                    pstore = Ext.getStore('ProposalTypes'),
+                    astore = Ext.getStore('AgreementTypes');
 
-                    store.each(function(rec) {
-                        var txt = 'proposal'.toLowerCase(),
-                            itm = rec.get('type');
+                store.each(function(rec) {
+                    var txt = 'proposal'.toLowerCase(),
+                        itm = rec.get('type');
 
-                        if(!(itm.indexOf(txt)+1)) {
-                            adata.push(rec);
-                        } else {
-                            pdata.push(rec);
-                        }
-                    });
+                    if (!(itm.indexOf(txt) + 1)) {
+                        adata.push(rec);
+                    } else {
+                        pdata.push(rec);
+                    }
+                });
 
-                if(undefined === pstore) {
+                if (undefined === pstore) {
                     Ext.create('Ext.data.Store', {
                         storeId: 'ProposalTypes',
                         model: 'PTS.model.ModType',
-                        data : pdata
+                        data: pdata
                     });
-                }else {
-                    pstore.loadRecords(pdata,{addRecords: false});
+                } else {
+                    pstore.loadRecords(pdata, {
+                        addRecords: false
+                    });
                 }
 
-                if(undefined === astore) {
+                if (undefined === astore) {
                     Ext.create('Ext.data.Store', {
                         storeId: 'AgreementTypes',
                         model: 'PTS.model.ModType',
-                        data : adata
+                        data: adata
                     });
-                }else {
-                    astore.loadRecords(adata,{addRecords: false});
+                } else {
+                    astore.loadRecords(adata, {
+                        addRecords: false
+                    });
                 }
             }
         }

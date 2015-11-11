@@ -24,13 +24,11 @@ Ext.define('PTS.view.controls.StateCombo', {
         var me = this;
         me.callParent(arguments);
 
-        me.baseFilter = [
-            {
-                filterFn: function(item) {
-                    var c = me.up('addressfieldset').down('countrycombo').getValue();
-                    return item.get('countryalpha') === c;
-                }
+        me.baseFilter = [{
+            filterFn: function(item) {
+                var c = me.up('addressfieldset').down('countrycombo').getValue();
+                return item.get('countryalpha') === c;
             }
-        ];
+        }];
     }
 });

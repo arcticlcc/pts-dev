@@ -26,39 +26,36 @@ Ext.define('PTS.view.contact.window.Window', {
         var me = this;
 
         Ext.applyIf(me, {
-            items: [
-                {
+            items: [{
                     xtype: 'contactform',
                     region: 'center'
-                }/*,
-                {
-                    xtype: 'contactcontactstab'
-                },
-                {
-                    xtype: 'contactagreementstab'
-                }*/
-            ],
-            dockedItems: [
-                {
-                    xtype: 'toolbar',
-                    dock: 'bottom',
-                    items: [
-                        {
-                            xtype: 'tbfill'
-                        },
-                        /*{//TODO: save all button
-                            xtype: 'button',
-                            text: 'Save All',
-                            action: 'saveall'
-                        },*/
-                        {
-                            xtype: 'button',
-                            text: 'Close',
-                            action: 'closewindow'
-                        }
-                    ]
                 }
+                /*,
+                                {
+                                    xtype: 'contactcontactstab'
+                                },
+                                {
+                                    xtype: 'contactagreementstab'
+                                }*/
             ],
+            dockedItems: [{
+                xtype: 'toolbar',
+                dock: 'bottom',
+                items: [{
+                        xtype: 'tbfill'
+                    },
+                    /*{//TODO: save all button
+                        xtype: 'button',
+                        text: 'Save All',
+                        action: 'saveall'
+                    },*/
+                    {
+                        xtype: 'button',
+                        text: 'Close',
+                        action: 'closewindow'
+                    }
+                ]
+            }],
             tools: [
                 /*{
                     xtype: 'tool',
