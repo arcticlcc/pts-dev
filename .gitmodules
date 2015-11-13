@@ -7,9 +7,6 @@
 [submodule "vendor/Twig"]
 	path = vendor/Twig
 	url = https://github.com/fabpot/Twig.git
-[submodule "vendor/Idiorm"]
-	path = vendor/Idiorm
-	url = https://github.com/j4mie/idiorm.git
 [submodule "vendor/Monolog"]
 	path = vendor/Monolog
 	url = https://github.com/Seldaek/monolog.git
