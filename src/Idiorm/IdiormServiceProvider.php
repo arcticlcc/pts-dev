@@ -112,8 +112,12 @@ class IdiormWrapper
     }
 
     public function setPath($schema) {
+        if (!isset($this->app['dbOptions.schemas'][$schema])) {
+            throw new \Exception("Invalid schema: $schema");
+
+        }
+
         $sql = "SET search_path=common, $schema, cvl, gcmd, public;";
-//echo $sql;
         $stmt = $this->getDb()->prepare($sql);
         $stmt->execute();
         $this->schema = $schema;
