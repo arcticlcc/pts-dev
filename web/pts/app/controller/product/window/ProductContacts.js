@@ -58,7 +58,8 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                 beforedrop: this.removeContactsByDrag
             },
             'productcontacts #productContactsList > gridview': {
-                afterrender: this.afterRenderProductContactsList
+                afterrender: this.afterRenderProductContactsList,
+                drop: this.dropProductContactsList
             },
             'productcontacts #productContactsList': {
                 beforerender: this.beforeRenderProductContactsList //,
@@ -74,6 +75,19 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
             openproduct: this.onOpenProduct,
             saveproduct: this.onSaveProduct,
             scope: this
+        });
+    },
+
+    /**
+     * Activate role editor on first record of dropped set.
+     */
+    dropProductContactsList: function(node, recs) {
+        var idx = this.getProductContactsStore().indexOf(recs.records[0]),
+            editor = this.getProductContactsList().getPlugin('contactEditor');
+
+        editor.startEditByPosition({
+            row: idx,
+            column: 2
         });
     },
 
@@ -308,10 +322,13 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                 view: grid.getView(),
                 records: sel
             },
-            dz = this.getProductContactsList().getView().getPlugin('contactsddplugin').dropZone;
+            pcGrid = this.getProductContactsList(),
+            dz = pcGrid.getView().getPlugin('contactsddplugin').dropZone;
 
         //use dropzone to add records
         dz.handleNodeDrop(data);
+        //fire drop event
+        pcGrid.getView().fireEvent('drop', null, data, null, null);
     },
 
     /**
