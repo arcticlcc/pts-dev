@@ -16,9 +16,13 @@ use Symfony\Component\HttpFoundation\Response;
 class GoogleServiceProvider implements ServiceProviderInterface {
 
     public function register(Application $app) {
+        $config = new \Google_Config();
+        if($app['google']['cache_dir']) {
+            $config->setClassConfig('Google_Cache_File', 'directory', $app['google']['cache_dir']);
+        }
 
-        $app['gcal'] = $app->protect(function($batch = false) use ($app) {
-            $client = new \Google_Client();
+        $app['gcal'] = $app->protect(function($batch = false) use ($app, $config) {
+            $client = new \Google_Client($config);
             // Replace this with your application name.
             $client->setApplicationName("PTS Calendar Service");
             // Replace this with the service you are using.
@@ -41,8 +45,6 @@ class GoogleServiceProvider implements ServiceProviderInterface {
               $key
             );
 
-            //$cred->sub = "jbradley@arcticlcc.org";
-
             $client->setAssertionCredentials($cred);
 
             if($client->getAuth()->isAccessTokenExpired()) {
@@ -60,9 +62,15 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             return $service;
         });
 
-        $app['eventData'] = $app->protect(function(\ORM $values) use ($app) {
+        $app['eventData'] = $app->protect(function(\ORM $values, $schema = null) use ($app) {
+            $schema = $schema ? $schema : $app['session']->get('schema');
+
+            if (!$schema) {
+                throw new \Exception('gcalSync: No schema provided.');
+            }
+
             $event = array(
-                'id' => bin2hex($app['session']->get('schema') . '-' . $values->deliverableid),
+                'id' => bin2hex($schema . '-' . $values->deliverableid),
                 'date' => $values->duedate,
                 'summary' => $values->title,
                 'desc' => "Project: $values->projectcode\nDescription: $values->description"
@@ -87,7 +95,6 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             //attendees
             $att = array(
                 array('email' => 'joshua_bradley@fws.gov', 'responseStatus' => 'accepted') ,
-                //array('email' => 'suzanne_worker@fws.gov', 'responseStatus' => 'accepted')
             );
             //$event->setAttendees($att);
 
@@ -97,30 +104,8 @@ class GoogleServiceProvider implements ServiceProviderInterface {
 
         $app['insertEvent'] = $app->protect(function($event, $calId) use ($app) {
             $cal = $app['gcal']();
-            //$calId = 'arcticlcc.org_abfo22c9ei4quuf4n50cs5qnlg@group.calendar.google.com';
 
             return $createdEvent = $cal->events->insert($calId, $event);
-
-            //echo $createdEvent->getId();
-
-
-            //$result = $cal->events->listEvents($calId);
-            //print json_encode($result->getItems());
-
-            /*$colors = $cal->colors->get();
-
-            // Print available calendarListEntry colors.
-            foreach ($colors->getCalendar() as $key => $color) {
-              print "colorId : {$key}\n";
-              print "  Background: {$color->getBackground()}\n";
-              print "  Foreground: {$color->getForeground()}\n";
-            }
-            // Print available event colors.
-            foreach ($colors->getEvent() as $key => $color) {
-              print "colorId : {$key}\n";
-              print "  Background: {$color->getBackground()}\n";
-              print "  Foreground: {$color->getForeground()}\n";
-            }*/
         });
 
         $app['updateEvent'] = $app->protect(function($event, $calId, $notice = false) use ($app) {
@@ -131,19 +116,17 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             );
 
             $event->setSequence($old->getSequence() + 1);
-            //$calId = 'arcticlcc.org_abfo22c9ei4quuf4n50cs5qnlg@group.calendar.google.com';
             return $cal->events->update($calId, $event->getId(), $event, $opt_params);
         });
 
         $app['deleteEvent'] = $app->protect(function($eventId, $calId) use ($app) {
             $cal = $app['gcal']();
-            //$calId = 'arcticlcc.org_abfo22c9ei4quuf4n50cs5qnlg@group.calendar.google.com';
 
             return $cal->events->delete($calId, $eventId);
         });
 
-        $app['sendMail'] = $app->protect(function($email, $account = false) use ($app) {
-            $client = new \Google_Client();
+        $app['sendMail'] = $app->protect(function($email, $account = false) use ($app, $config) {
+            $client = new \Google_Client($config);
             $batch = false;
 
             if (is_array($email)) {
@@ -213,7 +196,7 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             }
         });
 
-        $app['gcalSync'] = $app->protect(function($data, $calId) use ($app) {
+        $app['gcalSync'] = $app->protect(function($data, $calId, $schema = null) use ($app) {
             ini_set('max_execution_time', 300);
             $service = $app['gcal']();
             $optParams = array('showDeleted' => TRUE);
@@ -222,10 +205,15 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             $cal = $gcal['service'];
             $batch = $gcal['batch'];
             $update = array();
+            $schema = $schema ? $schema : $app['session']->get('schema');
+
+            if (!$schema) {
+                throw new \Exception('gcalSync: No schema provided.');
+            }
 
             //index data by eventid to make look-ups more efficient
             foreach ($data as $d) {
-                $dataIdx[bin2hex($app['session']->get('schema') . '-' . $d->deliverableid)] = $d;
+                $dataIdx[bin2hex($schema . '-' . $d->deliverableid)] = $d;
             }
 
             while(true) {
@@ -251,7 +239,7 @@ class GoogleServiceProvider implements ServiceProviderInterface {
 
             foreach ($dataIdx as $values) {
                 //action, insert or update
-                $eventData = $app['eventData']($values);
+                $eventData = $app['eventData']($values, $schema);
 
                 $createdEvent = $app['createEvent']($eventData);
 

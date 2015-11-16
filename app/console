@@ -13,12 +13,14 @@ use PTS\Console\MyCommand;
 use PTS\Console\SendNotice;
 use PTS\Console\BatchNotice;
 use PTS\Console\MetadataProduct;
+use PTS\Console\SyncCalendar;
 
 $application = $app['console'];
 $application->add(new MyCommand);
 $application->add(new SendNotice);
 $application->add(new BatchNotice);
 $application->add(new MetadataProduct);
+$application->add(new SyncCalendar);
 $application->run($app['console.input'], $app['console.output']);
 
 ?>

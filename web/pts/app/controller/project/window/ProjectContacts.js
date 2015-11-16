@@ -65,7 +65,8 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                 beforedrop: this.removeContactsByDrag
             },
             'projectcontacts #projectContactsList > gridview': {
-                afterrender: this.afterRenderProjectContactsList
+                afterrender: this.afterRenderProjectContactsList,
+                drop: this.dropProjectContactsList
             },
             'projectcontacts #projectContactsList': {
                 beforerender: this.beforeRenderProjectContactsList,
@@ -84,6 +85,18 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
         });
     },
 
+    /**
+     * Activate role editor on first record of dropped set.
+     */
+    dropProjectContactsList: function(node, recs) {
+        var idx = this.getProjectContactsStore().indexOf(recs.records[0]),
+            editor = this.getProjectContactsList().getPlugin('contactEditor');
+
+        editor.startEditByPosition({
+            row: idx,
+            column: 2
+        });
+    },
     /**
      * Set proxy based on current projectid.
      * @param {Number} projectid
@@ -315,10 +328,13 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                 view: grid.getView(),
                 records: sel
             },
-            dz = this.getProjectContactsList().getView().getPlugin('contactsddplugin').dropZone;
+            pcGrid = this.getProjectContactsList(),
+            dz = pcGrid.getView().getPlugin('contactsddplugin').dropZone;
 
         //use dropzone to add records
         dz.handleNodeDrop(data);
+        //fire drop event
+        pcGrid.getView().fireEvent('drop', null, data, null, null);
     },
 
     /**
