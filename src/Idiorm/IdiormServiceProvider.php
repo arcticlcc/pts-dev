@@ -78,6 +78,13 @@ class PTSORM extends ORM {
         $instance->hydrate($row);
         return $instance;
     }
+
+    /**
+     * Add a WHERE ... ILIKE clause to your query.
+     */
+    public function where_ilike($column_name, $value) {
+        return $this->_add_simple_where($column_name, 'ILIKE', $value);
+    }
 }
 
 class IdiormServiceProvider implements ServiceProviderInterface {
