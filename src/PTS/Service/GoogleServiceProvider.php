@@ -17,7 +17,7 @@ class GoogleServiceProvider implements ServiceProviderInterface {
 
     public function register(Application $app) {
         $config = new \Google_Config();
-        if($app['google']['cache_dir']) {
+        if(isset($app['google']['cache_dir'])) {
             $config->setClassConfig('Google_Cache_File', 'directory', $app['google']['cache_dir']);
         }
 
