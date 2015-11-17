@@ -115,38 +115,29 @@ class PTSServiceProvider implements ServiceProviderInterface {
         $app['saveRelated'] = $app->protect(function($values, $class, $id = null, $idCol = null, $list = false) use ($app) {
             $result = array();
 
-            try {
-                if ($id) {
-                    $object = $app['idiorm']->getTable($class)->find_one($id);
-                } else {
-                    $object = $app['idiorm']->getTable($class)->create();
-                }
-
-                foreach ($values as $k => $v) {
-                    $pcol = $idCol ? $idCol : $class . 'id';
-                    //don't ever overwrite the primary key
-                    if ($k != $pcol) {
-                        $v = is_string($v) ? trim($v) : $v;
-                        $object->set($k, $v);
-                    }
-                }
-
-                $object->save();
-
-                //see if we want to return the list record
-                if ($list)
-                    $object = $app['idiorm']->getTable($class . 'list')->find_one($object->id());
-
-                $result = $object->as_array();
-                return $result;
-
-            } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
-                $message = $exc->getMessage();
-                $success = false;
-                $code = 400;
-                $app['json']->setAll($result, $code, $success, $message);
+            if ($id) {
+                $object = $app['idiorm']->getTable($class)->find_one($id);
+            } else {
+                $object = $app['idiorm']->getTable($class)->create();
             }
+
+            foreach ($values as $k => $v) {
+                $pcol = $idCol ? $idCol : $class . 'id';
+                //don't ever overwrite the primary key
+                if ($k != $pcol) {
+                    $v = is_string($v) ? trim($v) : $v;
+                    $object->set($k, $v);
+                }
+            }
+
+            $object->save();
+
+            //see if we want to return the list record
+            if ($list)
+                $object = $app['idiorm']->getTable($class . 'list')->find_one($object->id());
+
+            $result = $object->as_array();
+            return $result;
         });
 
         /**
@@ -345,46 +336,39 @@ class PTSServiceProvider implements ServiceProviderInterface {
             $sort = json_decode($request->query->get('sort'));
             $filter = json_decode($request->query->get('filter'));
 
-            try {
-                if ($addfilter) {
-                    //add the filters
-                    if (isset($filter)) {
-                        //loop thru filter array
-                        foreach ($filter as $val) {
-                            $app['addFilter']($query, $val);
-                        }
+            if ($addfilter) {
+                //add the filters
+                if (isset($filter)) {
+                    //loop thru filter array
+                    foreach ($filter as $val) {
+                        $app['addFilter']($query, $val);
                     }
                 }
-
-                if ($addsort) {
-                    //add the sort params
-                    if (isset($sort)) {
-                        //loop thru sort array
-                        foreach ($sort as $val) {
-                            switch ($val->direction) {
-                                case 'ASC' :
-                                    $query->order_by_asc($val->property);
-                                    break;
-                                case 'DESC' :
-                                    $query->order_by_desc($val->property);
-                                    break;
-                            }
-                        }
-                    }
-                }
-
-                if ($addpage) {
-                    //add offset and limit
-                    $query->offset($start)->limit($limit);
-                }
-
-                return $query;
-
-            } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
-
-                $app['json']->setAll(null, 409, false, $exc->getMessage());
             }
+
+            if ($addsort) {
+                //add the sort params
+                if (isset($sort)) {
+                    //loop thru sort array
+                    foreach ($sort as $val) {
+                        switch ($val->direction) {
+                            case 'ASC' :
+                                $query->order_by_asc($val->property);
+                                break;
+                            case 'DESC' :
+                                $query->order_by_desc($val->property);
+                                break;
+                        }
+                    }
+                }
+            }
+
+            if ($addpage) {
+                //add offset and limit
+                $query->offset($start)->limit($limit);
+            }
+
+            return $query;
         });
 
         /**

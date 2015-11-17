@@ -52,30 +52,7 @@ class Keyword implements ControllerProviderInterface
         });
 
         $controllers->get('keyword/tree/{id}', function (Application $app, Request $request, $id) {
-
-            try {
-
-                    $app['getRelated']($request, 'keywordtree', 'parentkeywordid', $id);
-               /* //create root node($id,$text,$iconCls,$leaf)
-                $rootNode = $app['tree']->node('root','.','',false);
-                //get base nodes
-                $query = $app['idiorm']->getTable('keywordtree')
-                    ->where_null('parentkeywordid');
-                //$node = $app['tree']->node(null,'Contact Reports','pts-agreement-folder',false);
-                foreach ($query->find_many() as $object) {
-                    $result[] = $object->as_array();
-                }
-                $rootNode->addChildren($result, $rootNode);
-                $app['tree']->add($rootNode);
-
-                $app['json']->setData($app['tree']->nodes[0]);*/
-
-            } catch (Exception $exc) {
-                $this->app['monolog']->addError($exc->getMessage());
-
-                $this->app['json']->setAll(null, 409, false, $exc->getMessage());
-            }
-
+            $app['getRelated']($request, 'keywordtree', 'parentkeywordid', $id);
             return $app['json']->getResponse(true);
         });
 
