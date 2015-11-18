@@ -29,14 +29,14 @@ If you are unsure which license is appropriate for your use, please contact the 
  * @constructor
  * Create a new ItemSelector
  * @param {Object} config Configuration options
- * @xtype itemselector 
+ * @xtype itemselector
  */
 Ext.define('Ext.ux.form.ItemSelector', {
     extend: 'Ext.ux.form.MultiSelect',
     alias: ['widget.itemselectorfield', 'widget.itemselector'],
     alternateClassName: ['Ext.ux.ItemSelector'],
     requires: ['Ext.ux.layout.component.form.ItemSelector', 'Ext.button.Button'],
-    
+
     hideNavIcons:false,
 
     /**
@@ -61,6 +61,11 @@ Ext.define('Ext.ux.form.ItemSelector', {
      * additional configuration to be applied to the internal MultiSelect fields.
      */
     multiselects: [],
+
+    /**
+     * @cfg {String} innerAlign An hbox alignment option applied to the inner container.
+     */
+    innerAlign: 'middle',
 
     componentLayout: 'itemselectorfield',
 
@@ -154,12 +159,17 @@ Ext.define('Ext.ux.form.ItemSelector', {
             renderTo: me.bodyEl,
             layout: {
                 type: 'hbox',
-                align: 'middle'
+                align: me.innerAlign
             },
             items: [
                 me.fromField,
                 {
                     xtype: 'container',
+                    layout: me.innerAlign === 'stretch' ? {
+                        type:'vbox',
+                        pack:'center',
+                        align:'center'
+                    } : undefined,
                     margins: '0 4',
                     items: buttons
                 },
@@ -176,21 +186,21 @@ Ext.define('Ext.ux.form.ItemSelector', {
         // Set the initial value
         me.setRawValue(me.rawValue);
     },
-    
+
     onToFieldChange: function() {
         this.checkChange();
     },
-    
+
     getSelections: function(list){
         var store = list.getStore(),
             selections = list.getSelectionModel().getSelection(),
             i = 0,
             len = selections.length;
-            
+
         return Ext.Array.sort(selections, function(a, b){
             a = store.indexOf(a);
             b = store.indexOf(b);
-            
+
             if (a < b) {
                 return -1;
             } else if (a > b) {
@@ -206,8 +216,8 @@ Ext.define('Ext.ux.form.ItemSelector', {
             selected = this.getSelections(list),
             i = selected.length - 1,
             selection;
-        
-        
+
+
         store.suspendEvents();
         for (; i > -1; --i) {
             selection = selected[i];
@@ -215,7 +225,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
             store.insert(0, selected);
         }
         store.resumeEvents();
-        list.refresh();    
+        list.refresh();
     },
 
     onBottomBtnClick : function() {
@@ -225,7 +235,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
             i = 0,
             len = selected.length,
             selection;
-            
+
         store.suspendEvents();
         for (; i < len; ++i) {
             selection = selected[i];
@@ -244,7 +254,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
             len = selected.length,
             selection,
             index;
-            
+
         store.suspendEvents();
         for (; i < len; ++i) {
             selection = selected[i];
@@ -265,7 +275,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
             max = store.getCount(),
             selection,
             index;
-            
+
         store.suspendEvents();
         for (; i < len; ++i) {
             selection = selected[i];
@@ -281,7 +291,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
         var me = this,
             fromList = me.fromField.boundList,
             selected = this.getSelections(fromList);
-            
+
         fromList.getStore().remove(selected);
         this.toField.boundList.getStore().add(selected);
     },
@@ -290,7 +300,7 @@ Ext.define('Ext.ux.form.ItemSelector', {
         var me = this,
             toList = me.toField.boundList,
             selected = this.getSelections(toList);
-            
+
         toList.getStore().remove(selected);
         this.fromField.boundList.getStore().add(selected);
     },
@@ -367,23 +377,23 @@ Ext.define('Ext.ux.form.ItemSelector', {
             });
         }
     },
-    
+
     onDisable: function(){
         this.callParent();
         var fromField = this.fromField;
-        
-        // if we have one, we have both, they get created at the same time    
+
+        // if we have one, we have both, they get created at the same time
         if (fromField) {
             fromField.disable();
             this.toField.disable();
         }
     },
-    
+
     onEnable: function(){
         this.callParent();
         var fromField = this.fromField;
-        
-        // if we have one, we have both, they get created at the same time    
+
+        // if we have one, we have both, they get created at the same time
         if (fromField) {
             fromField.enable();
             this.toField.enable();

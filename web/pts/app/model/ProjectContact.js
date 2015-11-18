@@ -61,6 +61,12 @@ Ext.define('PTS.model.ProjectContact', {
         type: 'boolean',
         defaultValue: false,
         useNull: true
+    }, {
+        name: 'namerole',
+        persist: false,
+        convert: function(v, record) {
+            return record.data.name + ': ' + record.data.role;
+        }
     }],
     idProperty: 'projectcontactid',
 
