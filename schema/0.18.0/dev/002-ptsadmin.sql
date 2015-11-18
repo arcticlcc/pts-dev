@@ -1,0 +1,9 @@
+-- Role: pts_admin
+
+-- DROP ROLE pts_admin;
+
+CREATE ROLE pts_admin
+  NOSUPERUSER INHERIT NOCREATEDB NOCREATEROLE NOREPLICATION;
+
+ALTER DATABASE pts
+  OWNER TO pts_admin;
