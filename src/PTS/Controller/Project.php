@@ -222,7 +222,7 @@ class Project implements ControllerProviderInterface
                         $dataid = $d['modificationid'] .'/deliverable/'. $d['deliverableid'];
                         //create deliverable node
                         $icon = $d['parentmodificationid'] ? 'pts-page-bluecopy' : 'pts-page-blue'; //check if the deliverable is a mod
-                        $dnode = $app['tree']->node("d-$did",$d['title'],$icon,true);
+                        $dnode = $app['tree']->node("d-$did",$d['code'] . ' '  .$d['title'],$icon,true);
                         //set attributes
                         /*if($d['parentmodificationid']) { //if the deliverable is a mod
                             $dfkey[] = array($d['parentdeliverableid'], 'parentdeliverableid');
