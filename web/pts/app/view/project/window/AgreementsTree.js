@@ -79,12 +79,13 @@ Ext.define('PTS.view.project.window.AgreementsTree', {
             }, {
                 xtype: 'tool',
                 tooltip: 'Expand All',
-                type: 'expand'
+                type: 'expand',
+                hidden: true
             }, {
                 xtype: 'tool',
                 tooltip: 'Collapse All',
                 type: 'collapse',
-                hidden: true
+                hidden: false
             }]
         });
 
