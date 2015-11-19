@@ -34,6 +34,12 @@ Ext.define('PTS.controller.project.form.AgreementForm', {
             },
             'agreementform#itemCard-20 #statusGrid': {
                 validateedit: this.validateStatus
+            },
+            'agreementform#itemCard-20 #contactsForm button[action=reset]': {
+                click: this.clickContactReset
+            },
+            'agreementform#itemCard-20 #contactsForm button[action=save]': {
+                click: this.clickContactSave
             }
         });
 

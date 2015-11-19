@@ -6,12 +6,10 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
 
     /*views: [
         'project.form.AgreementForm'
-    ],
-    models: [
-        'PurchaseRequest',
-        'Status',
-        'ModStatus'
     ],*/
+    models: [
+        'ModificationContact'
+    ],
     stores: [
         'PurchaseRequests',
         'Statuses',
@@ -40,18 +38,30 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
     },
 
     /**
+     * Get the contactsForm
+     */
+    getContactsForm: function() {
+        var form = this.getAgreementCard().query('#relatedDetails>form#contactsForm')[0];
+        return form;
+    },
+
+    /**
      * Disable the related details panel and clear any related grid stores.
      */
     onNewItem: function(model, form) {
         //we have to check the itemId since this controller is extended by project.form.{Modification|Proposal}Form
         // and we don't want to fire multiple times
         if (this.getAgreementCard().itemId === form.ownerCt.itemId) {
-            var grids = form.ownerCt.query('#relatedDetails>roweditgrid');
+            var grids = form.ownerCt.query('#relatedDetails>roweditgrid'),
+                contactsForm = this.getContactsForm();
 
             form.ownerCt.down('#relatedDetails').disable();
             Ext.each(grids, function(gr) {
                 gr.getStore().removeAll();
             });
+
+            //unbind form record
+            delete contactsForm.getForm().reset()._record;
         }
     },
 
@@ -73,7 +83,9 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
         // and we don't want to fire multiple times
         if (this.getAgreementCard().itemId === form.ownerCt.itemId) {
             var grids = form.ownerCt.query('#relatedDetails>roweditgrid'),
-                id = model.getId();
+                id = model.getId(),
+                contactsForm = this.getContactsForm(),
+                contactModel = this.getModel('ModificationContact');
 
             Ext.each(grids, function(gr) {
                 var store = gr.getStore();
@@ -93,6 +105,19 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
                 }
             }, this);
 
+            //handle contact form
+            if(contactsForm.tab.active) {
+                form.setLoading(true, true);
+            }
+
+            if (id) {
+                contactModel.load(id, { // load with id from modification
+                    success: function(model) {
+                        contactsForm.loadRecord(model);
+                    }
+                });
+            }
+
             //set the baseFilter on the statuscombo
             form.ownerCt.down('#relatedDetails gridcolumn[dataIndex=statusid]').getEditor().baseFilter = bFilter;
 
@@ -100,6 +125,7 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
             statusStore.clearFilter();
             statusStore.filter(bFilter);
             statusStore.sort('weight');
+
         }
     },
 
@@ -209,18 +235,41 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
                 //we have to handle the update manually after the response is returned
                 return false;
             }
-        }
-        /*,
+        },
+    /**
+     * Reset button click handler for contact form.
+     */
+    clickContactReset: function(btn) {
+        this.getContactsForm().getForm().reset();
+    },
 
-            setStatusComboFilter: function(cmp) {
-                var rec = this.getAgreementForm().getRecord(),
-                    bFilter = [{
-                        id: "type",
-                        property: "modtypeid",
-                        value: rec.get('modtypeid')
-                    }];
+    /**
+     * Save button click handler for contact form.
+     */
+    clickContactSave: function(btn) {
+        var form = this.getContactsForm().getForm(),
+            el = this.getContactsForm().getEl(),
+            record = form.getRecord();
 
-                    cmp.getEditor().baseFilter = bFilter;
+        el.mask('Saving...');
+        form.updateRecord(record);
+        record.save({
+            success: function(model, op) {
+                var form = this.getContactsForm();
 
-            }*/
+                //load the model to get desired trackresetonload behavior
+                form.loadRecord(model);
+                el.unmask();
+            },
+            failure: function(model, op) {
+                el.unmask();
+                Ext.create('widget.uxNotification', {
+                    title: 'Error',
+                    iconCls: 'ux-notification-icon-error',
+                    html: 'There was an error saving the contacts.</br>Error: ' + PTS.app.getError()
+                }).show();
+            },
+            scope: this
+        });
+    },
 });

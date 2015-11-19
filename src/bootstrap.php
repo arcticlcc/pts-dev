@@ -105,6 +105,7 @@ Idiorm\PTSORM::configure('id_column_overrides', array(
         'modification' => 'modificationid',
         'projectcontact' => 'projectcontactid'
     ),
+    'modificationcontactlist' => 'modificationid',
     //TODO: fix these to use compound keys after Idiorm upgrade
     'producttopiccategory' => 'productid',
     'productspatialformat' => 'productid',

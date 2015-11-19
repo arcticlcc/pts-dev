@@ -1,8 +1,8 @@
 /**
- * Description: ModficationContact model.
+ * Description: ModificationContact model.
  */
 
-Ext.define('PTS.model.ModficationContact', {
+Ext.define('PTS.model.ModificationContact', {
     extend: 'PTS.model.Base',
     fields: [{
         name: 'modificationid',
@@ -20,7 +20,10 @@ Ext.define('PTS.model.ModficationContact', {
 
     proxy: {
         type: 'rest',
-        url: '../modificationidprojectcontact',
+        url: '../modificationcontact',
+        api: {
+            read: '../modificationcontactlist'
+        },
         reader: {
             type: 'json',
             root: 'data'

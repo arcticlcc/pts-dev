@@ -227,6 +227,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                 }, {
                     title: 'Contacts',
                     xtype: 'form',
+                    itemId: 'contactsForm',
                     trackResetOnLoad: true,
                     disabled: false,
                     layout: 'fit',
@@ -240,7 +241,7 @@ Ext.define('PTS.view.project.form.AgreementForm', {
                             iconCls: 'pts-menu-savebasic',
                             text: 'Save',
                             action: 'save',
-                            disabled: true
+                            disabled: false
                         }, {
                             xtype: 'button',
                             iconCls: 'pts-menu-reset',

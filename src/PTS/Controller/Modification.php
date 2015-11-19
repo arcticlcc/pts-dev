@@ -184,6 +184,42 @@ class Modification implements ControllerProviderInterface
             return $app['json']->getResponse();
         });
 
+        $controllers->match('modificationcontact/{id}', function (Application $app, Request $request, $id) {
+            try{
+                $app['db']->transactional(function($conn) use ($app, $request, $id) {
+                    $values = json_decode($request->getContent());
+                    $modcontact = $app['idiorm']->getTable('modificationcontact');
+
+                    if($request->getMethod() === 'PUT') {
+                        //delete any existing records
+                        $modcontact->where_equal('modificationid', $id)->delete_many();
+
+                    }
+
+                    //create new records based on submitted data
+                    foreach ($values->modificationcontact as $key => $value) {
+                        $modcontact->create();
+                        $modcontact->set('modificationid', $id);
+                        $modcontact->set('projectcontactid', $value);
+                        $modcontact->set('priority', $key);
+                        $modcontact->save();
+                    }
+
+                });
+
+                $object = $app['idiorm']->getTable('modificationcontactlist')->find_one($id);
+                $result = $object->as_array();
+                $app['json']->setData($result);
+
+            } catch (\Exception $exc) {
+                $app['monolog']->addError($exc->getMessage());
+                $app['json']->setAll(null, 500, false, $exc->getMessage());
+            }
+
+            return $app['json']->getResponse();
+
+        })->method('PUT');
+
         return $controllers;
     }
 }

@@ -37,6 +37,12 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             },
             'agreementform#itemCard-60 textfield[name=modcode]': {
                 change: this.onChangeCode
+            },
+            'agreementform#itemCard-60 #contactsForm button[action=reset]': {
+                click: this.clickContactReset
+            },
+            'agreementform#itemCard-60 #contactsForm button[action=save]': {
+                click: this.clickContactSave
             }
         });
 
