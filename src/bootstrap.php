@@ -1,6 +1,7 @@
 <?php
 
 use Silex\Application;
+use Silex\Provider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Debug\ErrorHandler;
 use Symfony\Component\HttpKernel\Debug\ExceptionHandler;
@@ -164,7 +165,20 @@ $env = getenv("SILEX_ENV") ? $_SERVER['SILEX_ENV'] : 'dev';
 
 if ('dev' == $env) {
     $app['debug'] = TRUE;
-    //$app['my.param'] = '...';
+    $app['my.profiler'] = preg_match('/^\/_profiler.*/', $_SERVER["REQUEST_URI"]) === 1;
+
+    $app->register(new Silex\Provider\ServiceControllerServiceProvider());
+    $app->register(new Silex\Provider\UrlGeneratorServiceProvider());
+    $app->register(new Silex\Provider\HttpFragmentServiceProvider());
+    $app->register(new Silex\Provider\WebProfilerServiceProvider(), array(
+        'profiler.cache_dir' => __DIR__.'/../tmp/cache/profiler',
+        'profiler.mount_prefix' => '/_profiler', // this is the default
+    ));
+
+    $app->register(new Silex\Provider\DebugServiceProvider, array(
+        'debug.max_items' => 250, // this is the default
+        'debug.max_string_length' => -1, // this is the default
+    ));
 }
 
 ErrorHandler::register();

@@ -19,7 +19,6 @@ $app->before(function(Request $request) use ($app) {
             return $app->redirect("/login?r=$uri");
         } else {
             //set database search_path
-            //TODO: white-list schemas?
             $schema = $app['session']->get('schema');
             $app['idiorm']->setPath($schema);
         }
