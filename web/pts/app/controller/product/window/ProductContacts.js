@@ -65,7 +65,7 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                 beforerender: this.beforeRenderProductContactsList //,
                     //edit: this.onEditRole
             },
-            'combo[itemId=roletypeCbx]': {
+            'productcontacts combo[itemId=roletypeCbx]': {
                 select: this.onSelectRoleType
             }
         });
