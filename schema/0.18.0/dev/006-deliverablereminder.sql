@@ -137,7 +137,7 @@ CREATE OR REPLACE VIEW dev.deliverablereminder AS
           WHERE deliverablemodstatus.deliverablestatusid = ANY (ARRAY[10, 40])
           ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.deliverablestatusid, deliverablemodstatus.effectivedate DESC) efd USING (deliverableid)
      JOIN contactgroup ON project.orgid = contactgroup.contactid
-     JOIN groupschema ON project.orgid = groupschema.groupid AND NOT groupschema.groupschemaid::text = 'dev1'::text AND (groupschema.groupschemaid::name = ANY (current_schemas(false)))
+     JOIN groupschema ON project.orgid = groupschema.groupid AND NOT groupschema.groupschemaid::text = 'dev'::text AND (groupschema.groupschemaid::name = ANY (current_schemas(false)))
   WHERE NOT (EXISTS ( SELECT 1
            FROM deliverablemod dp
           WHERE dm.modificationid = dp.parentmodificationid AND dm.deliverableid = dp.parentdeliverableid))
