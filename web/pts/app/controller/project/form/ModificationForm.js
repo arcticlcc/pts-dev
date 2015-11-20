@@ -51,6 +51,7 @@ Ext.define('PTS.controller.project.form.ModificationForm', {
             itemload: this.onItemLoad,
             newitem: this.onNewItem,
             savemodification: this.onSaveModification,
+            syncprojectcontacts: this.updateContacts,
             scope: this
         });
 

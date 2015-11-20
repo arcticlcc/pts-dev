@@ -63,6 +63,10 @@ Ext.application({
      */
 
     /**
+     * @event syncprojectcontacts
+     */
+
+    /**
      * Store the last application error.
      * @param {String} txt The error string.
      */

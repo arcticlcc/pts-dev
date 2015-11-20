@@ -260,6 +260,8 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
                             //animateTarget: 'mb9',
                             icon: Ext.Msg.ERROR
                         });
+
+                        store.rejectChanges();
                     }
                 };
 
@@ -275,6 +277,7 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
         store.sync({
             success: function() {
                 el.unmask();
+                PTS.app.fireEvent('syncprojectcontacts', store);
                 //console.log('Contacts saved');
             },
             failure: function() {

@@ -47,6 +47,7 @@ Ext.define('PTS.controller.project.form.AgreementForm', {
         this.application.on({
             itemload: this.onItemLoad,
             newitem: this.onNewItem,
+            syncprojectcontacts: this.updateContacts,
             scope: this
         });
 

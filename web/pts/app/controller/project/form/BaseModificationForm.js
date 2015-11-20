@@ -41,7 +41,7 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
      * Get the contactsForm
      */
     getContactsForm: function() {
-        var form = this.getAgreementCard().query('#relatedDetails>form#contactsForm')[0];
+        var form = this.getAgreementCard().down('#relatedDetails>form#contactsForm');
         return form;
     },
 
@@ -104,11 +104,6 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
                     store.removeAll();
                 }
             }, this);
-
-            //handle contact form
-            if(contactsForm.tab.active) {
-                form.setLoading(true, true);
-            }
 
             if (id) {
                 contactModel.load(id, { // load with id from modification
@@ -183,59 +178,59 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
      * Validate the agreement status.
      */
     validateStatus: function(editor, e) {
-            var newStatus = e.newValues.statusid;
+        var newStatus = e.newValues.statusid;
 
-            if (newStatus === 2 && newStatus !== e.originalValues.statusid) {
-                var modId = this.getAgreementForm().getRecord().getId(),
-                    rec = e.record,
-                    ctl = this,
-                    mask = new Ext.LoadMask(e.grid, {
-                        msg: "Validating. Please wait..."
-                    });
+        if (newStatus === 2 && newStatus !== e.originalValues.statusid) {
+            var modId = this.getAgreementForm().getRecord().getId(),
+                rec = e.record,
+                ctl = this,
+                mask = new Ext.LoadMask(e.grid, {
+                    msg: "Validating. Please wait..."
+                });
 
-                mask.show();
-                //query database for incomplete deliverables
-                Ext.Ajax.request({
-                    url: '../deliverablestatuslist',
-                    params: {
-                        filter: '[{"property":"deliverablestatusid","value":["<",40]},{"property":"modificationid","value":' + modId + '}]'
-                    },
-                    method: 'GET',
-                    success: function(response) {
-                        var data = Ext.JSON.decode(response.responseText);
+            mask.show();
+            //query database for incomplete deliverables
+            Ext.Ajax.request({
+                url: '../deliverablestatuslist',
+                params: {
+                    filter: '[{"property":"deliverablestatusid","value":["<",40]},{"property":"modificationid","value":' + modId + '}]'
+                },
+                method: 'GET',
+                success: function(response) {
+                    var data = Ext.JSON.decode(response.responseText);
 
-                        //if records are found, raise error and cancel the update
-                        if (data.total > 0) {
-                            e.column.getEditor().markInvalid('This agreement has incomplete deliverables.');
-                            Ext.create('widget.uxNotification', {
-                                title: 'Error',
-                                iconCls: 'ux-notification-icon-error',
-                                html: 'This agreement has incomplete deliverables.'
-                            }).show();
-                        } else {
-                            //no errors, save the record
-                            editor.getEditor().completeEdit();
-                            ctl.onDetailRowEdit(e);
-                            //rec.set('modificationid',modId);
-                            //rec.save();
-                        }
-                        mask.destroy();
-                    },
-                    failure: function() {
-                        mask.destroy();
+                    //if records are found, raise error and cancel the update
+                    if (data.total > 0) {
+                        e.column.getEditor().markInvalid('This agreement has incomplete deliverables.');
                         Ext.create('widget.uxNotification', {
                             title: 'Error',
                             iconCls: 'ux-notification-icon-error',
-                            html: 'There was an error validating the status entry. </br>Error:' + PTS.app.getError()
+                            html: 'This agreement has incomplete deliverables.'
                         }).show();
-                    },
-                    scope: this
-                });
+                    } else {
+                        //no errors, save the record
+                        editor.getEditor().completeEdit();
+                        ctl.onDetailRowEdit(e);
+                        //rec.set('modificationid',modId);
+                        //rec.save();
+                    }
+                    mask.destroy();
+                },
+                failure: function() {
+                    mask.destroy();
+                    Ext.create('widget.uxNotification', {
+                        title: 'Error',
+                        iconCls: 'ux-notification-icon-error',
+                        html: 'There was an error validating the status entry. </br>Error:' + PTS.app.getError()
+                    }).show();
+                },
+                scope: this
+            });
 
-                //we have to handle the update manually after the response is returned
-                return false;
-            }
-        },
+            //we have to handle the update manually after the response is returned
+            return false;
+        }
+    },
     /**
      * Reset button click handler for contact form.
      */
@@ -272,4 +267,15 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
             scope: this
         });
     },
+    /**
+     * Update modification contacts fromField.
+     */
+    updateContacts: function(store) {
+        var field = this.getContactsForm().down('itemselector');
+
+        if (field.rendered) {
+            field.bindStore(store);
+            field.setRawValue(field.rawValue);
+        }
+    }
 });
