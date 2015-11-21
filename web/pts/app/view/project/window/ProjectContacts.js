@@ -117,7 +117,7 @@ Ext.define('PTS.view.project.window.ProjectContacts', {
                         },
                         editor: {
                             xtype: 'combobox',
-                            itemId: 'roletypeCbx',
+                            itemId: 'roletypeCbxProject',
                             typeAhead: true,
                             forceSelection: true,
                             triggerAction: 'all',

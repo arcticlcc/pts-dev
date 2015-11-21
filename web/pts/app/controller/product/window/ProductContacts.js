@@ -65,7 +65,7 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
                 beforerender: this.beforeRenderProductContactsList //,
                     //edit: this.onEditRole
             },
-            'productcontacts combo[itemId=roletypeCbx]': {
+            'combo[itemId=roletypeCbxProduct]': {
                 select: this.onSelectRoleType
             }
         });
@@ -220,71 +220,75 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
             isDirty = !!(store.getRemovedRecords().length + store.getUpdatedRecords().length +
                 store.getNewRecords().length);
 
-        //mask panel
-        if (isDirty) {
-            el.mask('Saving...');
+        if (store.findExact('isoroletypeid', null) === -1) {
+            //mask panel
+            if (isDirty) {
+                el.mask('Saving...');
+            }
+            //loop thru records and set the priority
+            store.each(function() {
+                var rec = this,
+                    priority = rec.get('priority'),
+                    idx = store.indexOf(rec);
+
+                if (priority !== idx) {
+                    rec.set('priority', idx);
+                }
+            });
+
+            //TODO: Fixed in 4.1?
+            //the failure and callback function won't be called on HTTP exception,
+            //we need to overload the getBatchListeners method and add exception
+            //handling directly to the batch, onBatchException is not defined by default
+            //http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
+            store.getBatchListeners = function() {
+                var me = store,
+                    listeners = {
+                        scope: me,
+                        exception: function(batch, op) {
+                            el.unmask();
+                            //This just replaces the global error message box.
+                            Ext.MessageBox.show({
+                                title: 'Error',
+                                msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
+                                buttons: Ext.MessageBox.OK,
+                                //animateTarget: 'mb9',
+                                icon: Ext.Msg.ERROR
+                            });
+                        }
+                    };
+
+                if (me.batchUpdateMode == 'operation') {
+                    listeners.operationcomplete = me.onBatchOperationComplete;
+                } else {
+                    listeners.complete = me.onBatchComplete;
+                }
+
+                return listeners;
+            };
+
+            store.sync({
+                success: function() {
+                    el.unmask();
+                    //console.log('Contacts saved');
+                },
+                failure: function() {
+                    el.unmask();
+                    Ext.MessageBox.show({
+                        title: 'Error',
+                        msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
+                        buttons: Ext.MessageBox.OK,
+                        //animateTarget: 'mb9',
+                        icon: Ext.Msg.ERROR
+                    });
+                },
+                callback: function() {
+
+                }
+            });
+        } else {
+            PTS.app.showError('All contacts must be assigned a role before saving.');
         }
-        //loop thru records and set the priority
-        store.each(function() {
-            var rec = this,
-                priority = rec.get('priority'),
-                idx = store.indexOf(rec);
-
-            if (priority !== idx) {
-                rec.set('priority', idx);
-            }
-        });
-
-        //TODO: Fixed in 4.1?
-        //the failure and callback function won't be called on HTTP exception,
-        //we need to overload the getBatchListeners method and add exception
-        //handling directly to the batch, onBatchException is not defined by default
-        //http://www.sencha.com/forum/showthread.php?137580-ExtJS-4-Sync-and-success-failure-processing
-        store.getBatchListeners = function() {
-            var me = store,
-                listeners = {
-                    scope: me,
-                    exception: function(batch, op) {
-                        el.unmask();
-                        //This just replaces the global error message box.
-                        Ext.MessageBox.show({
-                            title: 'Error',
-                            msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
-                            buttons: Ext.MessageBox.OK,
-                            //animateTarget: 'mb9',
-                            icon: Ext.Msg.ERROR
-                        });
-                    }
-                };
-
-            if (me.batchUpdateMode == 'operation') {
-                listeners.operationcomplete = me.onBatchOperationComplete;
-            } else {
-                listeners.complete = me.onBatchComplete;
-            }
-
-            return listeners;
-        };
-
-        store.sync({
-            success: function() {
-                el.unmask();
-                //console.log('Contacts saved');
-            },
-            failure: function() {
-                el.unmask();
-                Ext.MessageBox.show({
-                    title: 'Error',
-                    msg: 'There was an error saving the contacts.</br>Error:' + PTS.app.getError(),
-                    buttons: Ext.MessageBox.OK,
-                    //animateTarget: 'mb9',
-                    icon: Ext.Msg.ERROR
-                });
-            },
-            callback: function() {
-
-            }
-        });
     },
 
     /**

@@ -110,7 +110,7 @@ Ext.define('PTS.view.product.window.ProductContacts', {
                     },
                     editor: {
                         xtype: 'combobox',
-                        itemId: 'roletypeCbx',
+                        itemId: 'roletypeCbxProduct',
                         typeAhead: true,
                         forceSelection: true,
                         triggerAction: 'all',
