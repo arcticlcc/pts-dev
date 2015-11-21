@@ -9,7 +9,8 @@ Ext.define('PTS.view.project.form.ProposalForm', {
     requires: [
         'PTS.view.controls.ManagerCombo',
         'PTS.view.controls.StatusCombo',
-        'PTS.view.controls.CommentEditGrid'
+        'PTS.view.controls.CommentEditGrid',
+        'Ext.ux.form.ItemSelector'
     ],
 
     itemId: 'itemCard-10',
@@ -148,7 +149,41 @@ Ext.define('PTS.view.project.form.ProposalForm', {
                     }]
                 }, {
                     title: 'Contacts',
-                    disabled: true
+                    xtype: 'form',
+                    itemId: 'contactsForm',
+                    trackResetOnLoad: true,
+                    disabled: false,
+                    layout: 'fit',
+                    bodyPadding: 10,
+                    border: 0,
+                    dockedItems: [{
+                        xtype: 'toolbar',
+                        dock: 'top',
+                        items: [{
+                            xtype: 'button',
+                            iconCls: 'pts-menu-savebasic',
+                            text: 'Save',
+                            action: 'save',
+                            disabled: false
+                        }, {
+                            xtype: 'button',
+                            iconCls: 'pts-menu-reset',
+                            text: 'Reset',
+                            action: 'reset'
+                        }]
+                    }],
+                    items: [{
+                        xtype: 'itemselector',
+                        name: 'modificationcontact',
+                        height: '100%',
+                        innerAlign: 'stretch',
+                        //fieldLabel: 'Contacts',
+                        delimiter: null,
+                        store: 'ProjectContacts',
+                        displayField: 'namerole',
+                        valueField: 'projectcontactid',
+                        msgTarget: 'side'
+                    }]
                 }, {
                     title: 'Comments',
                     disabled: false,
