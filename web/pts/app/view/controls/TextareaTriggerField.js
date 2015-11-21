@@ -6,6 +6,7 @@
 Ext.define('PTS.view.controls.TextareaTriggerField', {
     extend: 'Ext.form.field.Trigger',
     alias: 'widget.areatrigger',
+    requires: 'Ext.window.Window',
 
     fieldSubTpl: [
         '<textarea id="{id}" style="height:{height}"',
@@ -45,21 +46,38 @@ Ext.define('PTS.view.controls.TextareaTriggerField', {
         var me = this,
             val = me.getRawValue();
 
-        Ext.MessageBox.show({
+        Ext.create('Ext.window.Window', {
             title: 'Comment',
-            //msg: 'Comment:',
-            width: 350,
-            buttons: Ext.MessageBox.OKCANCEL,
-            multiline: true,
-            value: val,
-            fn: function(btn, txt) {
-                if (btn === 'ok') {
+            layout: 'fit',
+            width: 400,
+            height: 300,
+            items: [{
+                xtype: 'textarea',
+                flex: 1,
+                height: '100%',
+                value: val
+            }],
+            buttons: [{
+                xtype: 'button',
+                text: 'OK',
+                handler: function(btn) {
+                    var txt = btn.up('window').down('textarea').getRawValue();
                     // process text value and close
                     me.setValue(txt);
+                    btn.up('window').close();
                 }
-            },
+            }, {
+                xtype: 'button',
+                text: 'Cancel',
+                handler: function(btn) {
+                    btn.up('window').close();
+                }
+            }],
+            resizable: true,
+            maximizable: true,
+            modal: true,
             animateTarget: me.getEl()
-        });
+        }).show();
     },
 
     // private
