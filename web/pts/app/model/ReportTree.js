@@ -39,7 +39,14 @@ Ext.define('PTS.model.ReportTree', {
         type: 'myboolean',
         defaultValue: false
     }, {
+        name: 'remoteFilter',
+        type: 'myboolean',
+        defaultValue: false
+    }, {
         name: 'pbarPlugins',
+        type: 'auto'
+    }, {
+        name: 'pbarItems',
         type: 'auto'
     }],
     idProperty: 'id'

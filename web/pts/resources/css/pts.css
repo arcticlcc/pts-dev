@@ -191,7 +191,7 @@
 .pts-keyword-tree .x-tree-icon {
     display: none !important;
     }
-.pts-keyword-tree .pts-tree-branch {
+.pts-keyword-tree .pts-tree-branch, .pts-bold {
     font-weight: bold !important;
     }
 .pts-keyword-tree .x-grid-table .x-grid-row .x-grid-cell {

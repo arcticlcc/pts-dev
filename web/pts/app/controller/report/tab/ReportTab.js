@@ -121,7 +121,18 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
 
                     tab.store.remoteFilter = true;
                 }
+
+                tab.store.remoteFilter = data.remoteFilter;
+
                 rp.add(tab);
+
+                if (data.pbarItems) {
+                    var pbar = rp.down('#' + tab.itemId + ' pagingtoolbar');
+
+                    Ext.each(data.pbarItems, function(p) {
+                        pbar.insert(pbar.items.length - 2, Ext.create(p.type, p.cfg));
+                    });
+                }
             }
         }
     },

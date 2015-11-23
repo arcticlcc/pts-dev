@@ -10,7 +10,8 @@ Ext.define('PTS.view.project.tab.ProjectList', {
         'PTS.util.Format',
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid',
-        'Ext.ux.grid.FilterBar'
+        'Ext.ux.grid.FilterBar',
+        'PTS.view.controls.FilterByStatusMenu'
     ],
 
     store: 'ProjectListings',
@@ -99,7 +100,10 @@ Ext.define('PTS.view.project.tab.ProjectList', {
                 plugins: [
                     Ext.create('Ext.ux.grid.PrintGrid', {}),
                     Ext.create('Ext.ux.grid.SaveGrid', {})
-                ]
+                ],
+                items: [{
+                    xtype: 'filterstatusmenu'
+                }]
             }],
             columns: [{
                 xtype: 'actioncolumn',

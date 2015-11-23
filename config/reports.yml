@@ -98,6 +98,9 @@ reports:
           - {text: Description, dataIndex: description, flex: 2}
           - {text: Abstract, dataIndex: abstract, flex: 2, hidden:true}
         fields: [projectcode, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract]
+        remoteFilter: true
+        pbarItems:
+          - type: 'PTS.view.controls.FilterByStatusMenu'
       - text: Long Project Summary
         url: ../longprojectsummary
         qtip: Lists projectcode, title, shorttitle, PIs, startdate, enddate, description, abstract, funding
@@ -118,6 +121,9 @@ reports:
           - {text: Leveraged, dataIndex: leveraged, renderer: usMoney}
           - {text: Total, dataIndex: total, renderer: usMoney}
         fields: [projectcode, uuid, status, principalinvestigators, shorttitle, title, startdate, enddate, description, abstract, allocated, invoiced, difference, leveraged, total]
+        remoteFilter: true
+        pbarItems:
+          - type: 'PTS.view.controls.FilterByStatusMenu'
       - text: Project Keywords
         url: ../projectkeywords
         qtip: Lists keywords for each project
