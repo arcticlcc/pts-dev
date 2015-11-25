@@ -4,7 +4,8 @@
 Ext.define('PTS.controller.MainToolbar', {
     extend: 'Ext.app.Controller',
     views: [
-        'MainToolbar'
+        'MainToolbar',
+        'PTS.view.config.Window'
     ],
     /*refs: [{
         ref: 'viewport',
@@ -17,6 +18,9 @@ Ext.define('PTS.controller.MainToolbar', {
             },
             'maintoolbar #switchPTS menu': {
                 click: this.onClickSwitchPTS
+            },
+            'maintoolbar #configBtn': {
+                click: this.showSettings
             }
         });
     },
@@ -41,11 +45,21 @@ Ext.define('PTS.controller.MainToolbar', {
         this.switchPTS(item.url);
     },
 
-
     /**
      * Switch PTS by setting window location.
      */
     switchPTS: function(location) {
         window.location.href = location;
+    },
+
+    /**
+     * Open settings window.
+     */
+    showSettings: function(btn) {
+        if (PTS.userConfigWindow === undefined) {
+            PTS.userConfigWindow = Ext.create('PTS.view.config.Window');
+        }
+
+        PTS.userConfigWindow.show();
     }
 });

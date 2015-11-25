@@ -56,6 +56,22 @@ Ext.define('PTS.model.User', {
         name: 'projecturiformat',
         type: 'mystring',
         useNull: true
+    }, {
+        name: 'config',
+        type: 'auto',
+        useNull: true,
+        convert: function(v, rec) {
+            if (v) {
+                var obj = JSON.parse(v);
+                obj.loginid = rec.data.loginid;
+                return obj;
+            } else {
+                return {
+                    loginid: rec.data.loginid
+                };
+            }
+        }
+
     }],
     idProperty: 'loginid',
 

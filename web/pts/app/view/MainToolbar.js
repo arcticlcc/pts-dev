@@ -42,6 +42,7 @@ Ext.define('PTS.view.MainToolbar', {
                         xtype: 'menu',
                         items: [{
                             xtype: 'menuitem',
+                            itemId: 'configBtn',
                             iconCls: 'pts-menu-settings',
                             text: 'Settings'
                         }, {

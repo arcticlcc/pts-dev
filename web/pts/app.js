@@ -37,7 +37,7 @@ Ext.application({
     autoCreateViewport: false,
     enableQuickTips: true,
 
-    models: ['User'],
+    models: ['User', 'UserConfig'],
     stores: ['States', 'Countries', 'Positions', 'ProjectIDs'],
     controllers: [
         'MainToolbar',
@@ -129,6 +129,8 @@ Ext.application({
 
                 PTS.user = user; //save user details
                 PTS.orgcode = PTS.user.get('acronym'); //set orgcode
+
+                PTS.userConfig = Ext.create('PTS.model.UserConfig', user.get('config'));
 
                 //set the GroupUsers proxy using the PTS.user groupid
                 store.setProxy({
