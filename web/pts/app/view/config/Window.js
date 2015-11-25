@@ -8,9 +8,6 @@ Ext.define('PTS.view.config.Window', {
         'Ext.form.Panel'
     ],
 
-    //height: Ext.Element.getViewportHeight() - 40,
-    minHeight: 250,
-    //width: 900,
     layout: {
         type: 'fit'
     },
@@ -21,11 +18,12 @@ Ext.define('PTS.view.config.Window', {
      * custom close tool.
      */
     closable: false,
+    closeAction: 'hide',
     maximizable: true,
     title: 'Edit Settings',
     constrain: true,
-    modal: true,
-    y: 10,
+    modal: false,
+    y: 20,
 
     /**
      * Adds the custom close tool.
@@ -49,10 +47,18 @@ Ext.define('PTS.view.config.Window', {
         Ext.applyIf(me, {
             items: [{
                 xtype: 'form',
+                trackResetOnLoad: true,
+                bodyPadding: 15,
                 items: [{
                     xtype: 'combobox',
-                    editable: false, 
-                    store: ['Red', 'Yellow', 'Green', 'Brown', 'Blue', 'Pink', 'Black']                     
+                    fieldLabel: 'Window Width',
+                    name: 'windowWidth',
+                    editable: false,
+                    store: [
+                        [900, 'normal'],
+                        [1200, 'wide'],
+                        [0, 'maximize']
+                    ]
                 }]
             }],
             dockedItems: [{
@@ -62,6 +68,7 @@ Ext.define('PTS.view.config.Window', {
                     xtype: 'tbfill'
                 }, {
                     xtype: 'button',
+                    iconCls: 'pts-menu-savebasic',
                     text: 'Save',
                     action: 'save'
                 }, {
@@ -73,5 +80,7 @@ Ext.define('PTS.view.config.Window', {
         });
 
         me.callParent(arguments);
+
+        me.down('form').loadRecord(PTS.userConfig);
     }
 });

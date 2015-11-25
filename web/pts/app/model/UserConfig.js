@@ -11,7 +11,8 @@ Ext.define('PTS.model.UserConfig', {
     }, {
         name: 'windowWidth',
         type: 'int',
-        persist: false
+        persist: false,
+        defaultValue: '900'
     }],
     idProperty: 'loginid',
 
