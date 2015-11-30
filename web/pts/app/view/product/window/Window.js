@@ -3,7 +3,7 @@
  * Description: Product window containing tab panel.
  */
 Ext.define('PTS.view.product.window.Window', {
-    extend: 'Ext.window.Window',
+    extend: 'PTS.view.controls.ConfigWindow',
     alias: 'widget.productwindow',
     requires: [
         'PTS.view.product.form.ProductForm',

@@ -3,7 +3,7 @@
  * Description: Project window containing tab panel.
  */
 Ext.define('PTS.view.project.window.Window', {
-    extend: 'Ext.window.Window',
+    extend: 'PTS.view.controls.ConfigWindow',
     alias: 'widget.projectwindow',
     requires: [
         'PTS.view.project.form.ProjectForm',
@@ -20,7 +20,7 @@ Ext.define('PTS.view.project.window.Window', {
 
     height: Ext.Element.getViewportHeight() - 40,
     minWidth: 750,
-    width: 900,
+    //width: 900,
     layout: {
         type: 'fit'
     },

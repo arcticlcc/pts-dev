@@ -4,7 +4,7 @@
  */
 
 Ext.define('PTS.view.contact.window.Window', {
-    extend: 'Ext.window.Window',
+    extend: 'PTS.view.controls.ConfigWindow',
     alias: 'widget.contactwindow',
     requires: [
         'PTS.view.contact.window.ContactForm'
