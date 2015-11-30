@@ -523,4 +523,55 @@ Ext.define('PTS.Overrides', {
             }
         }
     });
+
+    //Add qtip support to form fields
+    Ext.override(Ext.form.field.Base, {
+        labelableRenderTpl: [
+            '<tpl if="!hideLabel && !(!fieldLabel && hideEmptyLabel)">',
+            '<label id="{id}-labelEl"<tpl if="inputId"> for="{inputId}"</tpl> class="{labelCls}"',
+            '<tpl if="labelStyle"> style="{labelStyle}"</tpl>>',
+            '<tpl if="fieldLabel">{fieldLabel}',
+            '<tpl if="qtip"><span class="pts-field-tip" data-qtip="{qtip}">&nbsp;</span></tpl>',
+            '{labelSeparator}</tpl>',
+            '</label>',
+            '</tpl>',
+            '<div class="{baseBodyCls} {fieldBodyCls}" id="{id}-bodyEl" role="presentation">{subTplMarkup}</div>',
+            '<div id="{id}-errorEl" class="{errorMsgCls}" style="display:none"></div>',
+            '<div class="{clearCls}" role="presentation"><!-- --></div>', {
+                compiled: true,
+                disableFormats: true
+            }
+        ],
+        getLabelableRenderData: function() {
+            var me = this,
+                labelAlign = me.labelAlign,
+                labelCls = me.labelCls,
+                labelClsExtra = me.labelClsExtra,
+                labelPad = me.labelPad,
+                labelStyle;
+
+            // Calculate label styles up front rather than in the Field layout for speed; this
+            // is safe because label alignment/width/pad are not expected to change.
+            if (labelAlign === 'top') {
+                labelStyle = 'margin-bottom:' + labelPad + 'px;';
+            } else {
+                labelStyle = 'margin-right:' + labelPad + 'px;';
+                // Add the width for border-box browsers; will be set by the Field layout for content-box
+                if (Ext.isBorderBox) {
+                    labelStyle += 'width:' + me.labelWidth + 'px;';
+                }
+            }
+            return Ext.copyTo({
+                    inputId: me.getInputId(),
+                    fieldLabel: me.getFieldLabel(),
+                    labelCls: labelClsExtra ? labelCls + ' ' + labelClsExtra : labelCls,
+                    labelStyle: labelStyle + (me.labelStyle || ''),
+                    subTplMarkup: me.getSubTplMarkup()
+                },
+                me,
+                'hideLabel,hideEmptyLabel,fieldBodyCls,baseBodyCls,errorMsgCls,clearCls,labelSeparator,qtip',
+                true
+            );
+        }
+    });
 });

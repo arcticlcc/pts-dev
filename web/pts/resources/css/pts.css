@@ -40,6 +40,13 @@
 .pts-agreementstree em {
     font-style: italic;
 }
+.pts-field-tip {
+    background: url("../images/icons/help_12.png") no-repeat;
+    width: 12px !important;
+    height: 12px !important;
+    display: inline-block;
+    cursor: help;
+    }
 .pts-col-info {
     background: url("../images/icons/information.png") no-repeat;
     width: 16px !important;

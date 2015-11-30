@@ -53,6 +53,7 @@ Ext.define('PTS.view.config.Window', {
                     xtype: 'combobox',
                     fieldLabel: 'Window Width',
                     name: 'windowWidth',
+                    qtip: 'Sets the default width for editor windows.',
                     editable: false,
                     store: [
                         [900, 'normal'],
