@@ -26,7 +26,7 @@ Ext.define('PTS.model.Notice', {
     idProperty: 'noticeid',
     proxy: {
         type: 'rest',
-        url: '../notice',
+        url: PTS.baseURL + '/notice',
         reader: {
             type: 'json',
             root: 'data'

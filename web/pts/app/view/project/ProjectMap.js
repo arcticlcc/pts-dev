@@ -42,7 +42,7 @@ Ext.define('PTS.view.project.ProjectMap', {
      * The store to use for the add feature menu,
      * passed to the toolbar. Only applicable if displayTools is true.
      */
-    layerUrl: '../projectfeature',
+    layerUrl: PTS.baseURL + '/projectfeature',
 
     /**
      * @cfg {string} commonStore

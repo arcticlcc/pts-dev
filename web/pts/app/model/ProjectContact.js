@@ -72,7 +72,7 @@ Ext.define('PTS.model.ProjectContact', {
 
     proxy: {
         type: 'rest',
-        url: '../projectcontact',
+        url: PTS.baseURL + '/projectcontact',
         appendId: true,
         //batchActions: true,
         reader: {

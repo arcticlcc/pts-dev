@@ -59,7 +59,7 @@ Ext.define('PTS.model.DeliverableNotice', {
 
     proxy: {
         type: 'rest',
-        url: '../deliverablenotice',
+        url: PTS.baseURL + '/deliverablenotice',
         reader: {
             type: 'json',
             root: 'data'

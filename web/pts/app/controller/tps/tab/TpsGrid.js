@@ -94,11 +94,11 @@ Ext.define('PTS.controller.tps.tab.TpsGrid', {
         //override store proxy based on contactid
         store.setProxy({
             type: 'rest',
-            url: '../moddocstatus',
+            url: PTS.baseURL + '/moddocstatus',
             appendId: true,
             //batchActions: true,
             api: {
-                read: '../modification/' + modid + '/moddoctype/' + doctypeid + '/moddocstatus'
+                read: PTS.baseURL + '/modification/' + modid + '/moddoctype/' + doctypeid + '/moddocstatus'
             },
             reader: {
                 type: 'json',

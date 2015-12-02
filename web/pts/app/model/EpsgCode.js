@@ -23,7 +23,7 @@ Ext.define('PTS.model.EpsgCode', {
 
     proxy: {
         type: 'rest',
-        url: '../epsg',
+        url: PTS.baseURL + '/epsg',
         reader: {
             type: 'json',
             root: 'data'

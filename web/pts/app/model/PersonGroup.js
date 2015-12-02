@@ -59,7 +59,7 @@ Ext.define('PTS.model.PersonGroup', {
 
     proxy: {
         type: 'ajax',
-        url: '../grouppersonfull',
+        url: PTS.baseURL + '/grouppersonfull',
         reader: {
             type: 'json',
             root: 'data'

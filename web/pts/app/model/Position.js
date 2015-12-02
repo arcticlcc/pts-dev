@@ -19,7 +19,7 @@ Ext.define('PTS.model.Position', {
 
     proxy: {
         type: 'rest',
-        url: '../position',
+        url: PTS.baseURL + '/position',
         reader: {
             type: 'json',
             root: 'data'

@@ -34,9 +34,9 @@ Ext.define('PTS.model.ProductKeyword', {
 
     proxy: {
         type: 'rest',
-        url: '../productkeyword',
+        url: PTS.baseURL + '/productkeyword',
         api: {
-            read: '../productkeywordlist'
+            read: PTS.baseURL + '/productkeywordlist'
         },
         reader: {
             type: 'json'

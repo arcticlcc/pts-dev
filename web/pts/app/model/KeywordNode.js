@@ -26,7 +26,7 @@ Ext.define('PTS.model.KeywordNode', {
 
     proxy: {
         type: 'rest',
-        url: '../keyword/tree',
+        url: PTS.baseURL + '/keyword/tree',
         reader: {
             type: 'json'
         },

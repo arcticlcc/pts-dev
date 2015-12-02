@@ -65,7 +65,7 @@ Ext.define('PTS.controller.project.window.AgreementsTree', {
         //override store proxy based on projectid
         store.setProxy({
             type: 'ajax',
-            url: '../project/' + id + '/tree',
+            url: PTS.baseURL + '/project/' + id + '/tree',
             reader: {
                 type: 'json'
             }

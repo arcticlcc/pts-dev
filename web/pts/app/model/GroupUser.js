@@ -57,7 +57,7 @@ Ext.define('PTS.model.GroupUser', {
     //need to set proxy at runtime due to dynamic url
     /*proxy: {
         type: 'ajax',
-        url : '../contactgroup/' + PTS.user.get('groupid') + '/person',
+        url : PTS.baseURL + '/contactgroup/' + PTS.user.get('groupid') + '/person',
         reader: {
             type: 'json',
             root: 'data'

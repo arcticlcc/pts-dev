@@ -9,7 +9,7 @@ Ext.define('PTS.store.PurchaseRequests', {
     autoSync: false,
     proxy: {
         type: 'rest',
-        url: '../purchaserequest',
+        url: PTS.baseURL + '/purchaserequest',
         reader: {
             type: 'json',
             root: 'data'

@@ -19,7 +19,7 @@ Ext.define('PTS.store.IsoProgressTypes', {
     }],
     proxy: {
         type: 'rest',
-        url: '../productprogresstype',
+        url: PTS.baseURL + '/productprogresstype',
         reader: {
             type: 'json',
             root: 'data'

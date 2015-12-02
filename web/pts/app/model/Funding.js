@@ -39,7 +39,7 @@ Ext.define('PTS.model.Funding', {
 
     proxy: {
         type: 'rest',
-        url: '../funding',
+        url: PTS.baseURL + '/funding',
         reader: {
             type: 'json',
             root: 'data'

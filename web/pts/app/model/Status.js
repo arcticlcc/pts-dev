@@ -29,7 +29,7 @@ Ext.define('PTS.model.Status', {
 
     proxy: {
         type: 'rest',
-        url: '../statuslist',
+        url: PTS.baseURL + '/statuslist',
         reader: {
             type: 'json',
             root: 'data'

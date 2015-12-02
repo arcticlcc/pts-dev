@@ -94,10 +94,10 @@ Ext.define('PTS.model.Deliverable', {
 
     proxy: {
         type: 'rest',
-        url: '../modification',
+        url: PTS.baseURL + '/modification',
         api: {
-            read: '../modification',
-            create: '../deliverable'
+            read: PTS.baseURL + '/modification',
+            create: PTS.baseURL + '/deliverable'
         },
         reader: {
             type: 'json',

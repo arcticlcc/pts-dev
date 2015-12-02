@@ -33,7 +33,7 @@ Ext.define('PTS.model.ProductContact', {
 
     proxy: {
         type: 'rest',
-        url: '../productcontact',
+        url: PTS.baseURL + '/productcontact',
         appendId: true,
         //batchActions: true,
         reader: {

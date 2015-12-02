@@ -28,7 +28,7 @@ Ext.define('PTS.model.ContactType', {
 
     proxy: {
         type: 'rest',
-        url: '../contacttype',
+        url: PTS.baseURL + '/contacttype',
         reader: {
             type: 'json',
             root: 'data'

@@ -48,7 +48,8 @@ class PTS implements ControllerProviderInterface
                 return $app['twig']->render($twig, array(
                     'loginid' => $user['loginid'],
                     'paths' => $schemas,
-                    'apptitle' => $schemas[$schema]
+                    'apptitle' => $schemas[$schema],
+                    'baseURL' => $app['baseURL']
                 ));
             } catch(\Exception $exc) {
                 $msg = $exc->getMessage();

@@ -135,7 +135,7 @@ Ext.application({
                 //set the GroupUsers proxy using the PTS.user groupid
                 store.setProxy({
                     type: 'ajax',
-                    url: '../contactgroup/' + group + '/person',
+                    url: PTS.baseURL + '/contactgroup/' + group + '/person',
                     reader: {
                         type: 'json',
                         root: 'data'
@@ -178,7 +178,7 @@ Ext.application({
                     maxInactive: (1000 * 13470 * 1), //224.5 minutes
                     isActive: function() {
                         Ext.Ajax.request({
-                            url: '../poll'
+                            url: PTS.baseURL + '/poll'
                         });
                     },
                     isInactive: function() {
@@ -206,7 +206,7 @@ Ext.application({
                                 win.seconds += 1;
                                 if (win.seconds > 6) {
                                     Ext.TaskManager.stop(win.task);
-                                    window.location = '../logout'; //logout
+                                    window.location = PTS.baseURL + '/logout'; //logout
                                 } else {
                                     win.updateProgress(win.seconds / 6);
                                 }

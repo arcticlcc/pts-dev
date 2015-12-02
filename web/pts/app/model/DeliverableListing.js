@@ -86,7 +86,7 @@ Ext.define('PTS.model.DeliverableListing', {
 
     proxy: {
         type: 'rest',
-        url: '../deliverabledue',
+        url: PTS.baseURL + '/deliverabledue',
         reader: {
             type: 'json',
             root: 'data'

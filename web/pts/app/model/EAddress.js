@@ -35,7 +35,7 @@ Ext.define('PTS.model.EAddress', {
 
     proxy: {
         type: 'rest',
-        url: '../eaddress',
+        url: PTS.baseURL + '/eaddress',
         reader: {
             type: 'json',
             root: 'data'

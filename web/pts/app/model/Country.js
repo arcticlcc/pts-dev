@@ -51,7 +51,7 @@ Ext.define('PTS.model.Country', {
 
     proxy: {
         type: 'rest',
-        url: '../country',
+        url: PTS.baseURL + '/country',
         reader: {
             type: 'json',
             root: 'data'

@@ -162,10 +162,10 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
         //override store proxy based on modificationid
         store.setProxy({
             type: 'rest',
-            url: '../' + uri,
+            url: PTS.baseURL + '/' + uri,
             //appendId: true,
             api: {
-                read: '../modification/' + id + '/' + uri
+                read: PTS.baseURL + '/modification/' + id + '/' + uri
             },
             reader: {
                 type: 'json',
@@ -191,7 +191,7 @@ Ext.define('PTS.controller.project.form.BaseModificationForm', {
             mask.show();
             //query database for incomplete deliverables
             Ext.Ajax.request({
-                url: '../deliverablestatuslist',
+                url: PTS.baseURL + '/deliverablestatuslist',
                 params: {
                     filter: '[{"property":"deliverablestatusid","value":["<",40]},{"property":"modificationid","value":' + modId + '}]'
                 },

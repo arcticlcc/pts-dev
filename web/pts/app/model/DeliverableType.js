@@ -36,7 +36,7 @@ Ext.define('PTS.model.DeliverableType', {
 
     proxy: {
         type: 'rest',
-        url: '../deliverabletype',
+        url: PTS.baseURL + '/deliverabletype',
         reader: {
             type: 'json',
             root: 'data'

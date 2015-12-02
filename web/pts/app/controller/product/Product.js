@@ -44,10 +44,10 @@ Ext.define('PTS.controller.product.Product', {
         var cstore = win.down('productlinks>gridpanel').getStore();
         cstore.setProxy({
             type: 'rest',
-            url: '../onlineresource',
+            url: PTS.baseURL + '/onlineresource',
             appendId: true,
             api: {
-                read: '../product/' + id + '/onlineresource'
+                read: PTS.baseURL + '/product/' + id + '/onlineresource'
             },
             reader: {
                 type: 'json',
@@ -59,10 +59,10 @@ Ext.define('PTS.controller.product.Product', {
         cstore = win.down('#producttabpanel>productstatus').getStore();
         cstore.setProxy({
             type: 'rest',
-            url: '../productstatus',
+            url: PTS.baseURL + '/productstatus',
             appendId: true,
             api: {
-                read: '../product/' + id + '/productstatus'
+                read: PTS.baseURL + '/product/' + id + '/productstatus'
             },
             reader: {
                 type: 'json',
@@ -74,10 +74,10 @@ Ext.define('PTS.controller.product.Product', {
         /*cstore = win.down('#producttabpanel>commenteditgrid').getStore();
         cstore.setProxy({
             type: 'rest',
-            url : '../productcomment',
+            url : PTS.baseURL + '/productcomment',
             appendId: true,
             api: {
-                read:'../product/' + id + '/productcomment'
+                read:PTS.baseURL + '/product/' + id + '/productcomment'
             },
             reader: {
                 type: 'json',

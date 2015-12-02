@@ -7,7 +7,7 @@ Ext.define('PTS.store.TaskStatuses', {
 
     proxy: {
         type: 'rest',
-        url: '../taskstatus',
+        url: PTS.baseURL + '/taskstatus',
         reader: {
             type: 'json',
             root: 'data'

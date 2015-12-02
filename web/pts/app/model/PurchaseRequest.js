@@ -34,7 +34,7 @@ Ext.define('PTS.model.PurchaseRequest', {
 
     proxy: {
         type: 'rest',
-        url: '../purchaserequest',
+        url: PTS.baseURL + '/purchaserequest',
         reader: {
             type: 'json',
             root: 'data'

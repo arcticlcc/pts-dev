@@ -53,10 +53,10 @@ Ext.define('PTS.controller.project.Project', {
             cstore = win.down('#projecttabpanel>commenteditgrid').getStore();
             cstore.setProxy({
                 type: 'rest',
-                url: '../projectcomment',
+                url: PTS.baseURL + '/projectcomment',
                 appendId: true,
                 api: {
-                    read: '../project/' + id + '/projectcomment'
+                    read: PTS.baseURL + '/project/' + id + '/projectcomment'
                 },
                 reader: {
                     type: 'json',
@@ -99,10 +99,10 @@ Ext.define('PTS.controller.project.Project', {
         var cstore = win.down('#projecttabpanel>commenteditgrid').getStore();
         cstore.setProxy({
             type: 'rest',
-            url: '../projectcomment',
+            url: PTS.baseURL + '/projectcomment',
             appendId: true,
             api: {
-                read: '../project/' + record.getId() + '/projectcomment'
+                read: PTS.baseURL + '/project/' + record.getId() + '/projectcomment'
             },
             reader: {
                 type: 'json',

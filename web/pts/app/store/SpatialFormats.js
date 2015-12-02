@@ -16,7 +16,7 @@ Ext.define('PTS.store.SpatialFormats', {
     }],
     proxy: {
         type: 'rest',
-        url: '../spatialformat',
+        url: PTS.baseURL + '/spatialformat',
         reader: {
             type: 'json',
             root: 'data'

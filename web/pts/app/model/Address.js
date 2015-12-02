@@ -63,7 +63,7 @@ Ext.define('PTS.model.Address', {
 
     proxy: {
         type: 'rest',
-        url: '../address',
+        url: PTS.baseURL + '/address',
         reader: {
             type: 'json',
             root: 'data'

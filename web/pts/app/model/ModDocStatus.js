@@ -56,7 +56,7 @@ Ext.define('PTS.model.ModDocStatus', {
 
     proxy: {
         type: 'rest',
-        url: '../moddocstatus',
+        url: PTS.baseURL + '/moddocstatus',
         reader: {
             type: 'json',
             root: 'data'

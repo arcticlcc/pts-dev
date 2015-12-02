@@ -80,11 +80,11 @@ Ext.define('PTS.controller.project.window.ProjectMetadata', {
     //override store proxy based on projectid
     store.setProxy({
     type: 'rest',
-    url : '../project',
+    url : PTS.baseURL + '/project',
     appendId: true,
     //batchActions: true,
     api: {
-    read:'../project/' + id + '/'
+    read:PTS.baseURL + '/project/' + id + '/'
     },
     reader: {
     type: 'json',

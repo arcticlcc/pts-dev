@@ -107,11 +107,11 @@ Ext.define('PTS.controller.project.window.ProjectContacts', {
         //override store proxy based on projectid
         store.setProxy({
             type: 'rest',
-            url: '../projectcontact',
+            url: PTS.baseURL + '/projectcontact',
             appendId: true,
             //batchActions: true,
             api: {
-                read: '../project/' + id + '/contacts'
+                read: PTS.baseURL + '/project/' + id + '/contacts'
             },
             reader: {
                 type: 'json',

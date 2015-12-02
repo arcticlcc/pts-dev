@@ -46,7 +46,7 @@ Ext.define('PTS.model.Task', {
 
     proxy: {
         type: 'ajax',
-        url: '../task',
+        url: PTS.baseURL + '/task',
         reader: {
             type: 'json',
             root: 'data'

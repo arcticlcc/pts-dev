@@ -17,7 +17,7 @@ Ext.define('PTS.model.UserConfig', {
 
     proxy: {
         type: 'rest',
-        url: '../userinfo/config',
+        url: PTS.baseURL + '/userinfo/config',
         reader: {
             type: 'json',
             root: 'data'

@@ -43,7 +43,7 @@ Ext.define('PTS.model.Phone', {
 
     proxy: {
         type: 'rest',
-        url: '../phone',
+        url: PTS.baseURL + '/phone',
         reader: {
             type: 'json',
             root: 'data'

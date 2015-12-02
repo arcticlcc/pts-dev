@@ -100,7 +100,7 @@ Ext.define('PTS.controller.contact.window.ContactDetail', {
         //look up the state and city
         if (fld.isDirty() && !Ext.isEmpty(fld.getValue())) {
             Ext.Ajax.request({
-                url: '../country/' + country + '/postalcode/' + val,
+                url: PTS.baseURL + '/country/' + country + '/postalcode/' + val,
                 success: function(response) {
                     var state = fldset.down('#state'),
                         city = fldset.down('#city'),

@@ -19,7 +19,7 @@ Ext.define('PTS.store.ProjectIDs', {
     }],
     proxy: {
         type: 'rest',
-        url: '../projectlist',
+        url: PTS.baseURL + '/projectlist',
         reader: {
             type: 'json',
             root: 'data'

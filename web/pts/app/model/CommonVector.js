@@ -23,7 +23,7 @@ Ext.define('PTS.model.CommonVector', {
 
     proxy: {
         type: 'ajax',
-        url: '../commonfeature',
+        url: PTS.baseURL + '/commonfeature',
         reader: {
             type: 'json',
             root: 'data'

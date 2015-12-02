@@ -16,7 +16,7 @@ Ext.define('PTS.store.IsoRoleTypes', {
     }],
     proxy: {
         type: 'rest',
-        url: '../isoroletype',
+        url: PTS.baseURL + '/isoroletype',
         reader: {
             type: 'json',
             root: 'data'

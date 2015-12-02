@@ -46,9 +46,9 @@ Ext.define('PTS.model.ProductStatus', {
 
     proxy: {
         type: 'rest',
-        url: '../productstatus',
+        url: PTS.baseURL + '/productstatus',
         /*api: {
-            read: '../productstatuslist'
+            read: PTS.baseURL + '/productstatuslist'
         },*/
         reader: {
             type: 'json',

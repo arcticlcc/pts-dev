@@ -66,7 +66,7 @@ Ext.define('PTS.controller.project.tab.ProjectDetail', {
         Ext.each(grids, function(grid) {
             grid.getStore().setProxy({
                 type: 'ajax',
-                url: '../project/' + id + '/' + grid.uri,
+                url: PTS.baseURL + '/project/' + id + '/' + grid.uri,
                 reader: {
                     type: 'json',
                     root: grid.isXType('grid') ? 'data' : ''

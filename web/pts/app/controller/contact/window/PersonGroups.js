@@ -110,10 +110,10 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
 
         switch (type) {
             case 'person':
-                uri = '../person/' + id + '/group';
+                uri = PTS.baseURL + '/person/' + id + '/group';
                 break;
             case 'group':
-                uri = '../contactgroup/' + id + '/member';
+                uri = PTS.baseURL + '/contactgroup/' + id + '/member';
                 break;
             default:
                 Ext.Error.raise('Contact type not supplied!');
@@ -122,7 +122,7 @@ Ext.define('PTS.controller.contact.window.PersonGroups', {
         //override store proxy based on contactid
         store.setProxy({
             type: 'rest',
-            url: '../contactcontactgroup',
+            url: PTS.baseURL + '/contactcontactgroup',
             appendId: true,
             //batchActions: true,
             api: {

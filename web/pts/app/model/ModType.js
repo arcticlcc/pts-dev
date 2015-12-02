@@ -28,7 +28,7 @@ Ext.define('PTS.model.ModType', {
 
     proxy: {
         type: 'rest',
-        url: '../modtype',
+        url: PTS.baseURL + '/modtype',
         reader: {
             type: 'json',
             root: 'data'

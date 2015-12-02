@@ -94,7 +94,7 @@ Ext.define('PTS.view.product.window.Window', {
                             zoom: 4,
                             region: 'center',
                             layerName: 'Product Features',
-                            layerUrl: '../productfeature'
+                            layerUrl: PTS.baseURL + '/productfeature'
                         }, {
                             xtype: 'gridpanel',
                             itemId: 'featureGrid',

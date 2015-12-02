@@ -154,6 +154,7 @@ $app['tree'] = $app->share(function() {
 
 // Configuration parameters
 $app['salt'] = 'PTS2012';
+$app['baseURL'] = '..';
 $app['debug'] = false;
 //query defaults
 $app['page'] = 1;

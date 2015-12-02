@@ -29,7 +29,7 @@ Ext.define('PTS.model.OnlineResource', {
     idProperty: 'onlineresourceid',
     proxy: {
         type: 'rest',
-        url: '../onlineresource',
+        url: PTS.baseURL + '/onlineresource',
         reader: {
             type: 'json',
             root: 'data'

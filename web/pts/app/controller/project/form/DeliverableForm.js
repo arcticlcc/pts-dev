@@ -70,7 +70,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
                 if ('yes' === b) {
                     mask.show();
                     Ext.Ajax.request({
-                        url: '../deliverable/' + id + '/reminder',
+                        url: PTS.baseURL + '/deliverable/' + id + '/reminder',
                         method: 'POST',
                         /*params: {
                          'template': ''
@@ -221,11 +221,11 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
 
         switch (method) {
             case 'POST':
-                url = '../deliverable/calendar/event';
+                url = PTS.baseURL + '/deliverable/calendar/event';
                 break;
             case 'PUT':
             case 'DELETE':
-                url = '../deliverable/calendar/event/' + data.deliverableid;
+                url = PTS.baseURL + '/deliverable/calendar/event/' + data.deliverableid;
                 break;
         }
 
@@ -251,10 +251,10 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
         //override store proxy based on deliverableid
         store.setProxy({
             type: 'rest',
-            url: '../' + uri,
+            url: PTS.baseURL + '/' + uri,
             //appendId: true,
             api: {
-                read: '../deliverable/' + id + '/' + uri
+                read: PTS.baseURL + '/deliverable/' + id + '/' + uri
             },
             reader: {
                 type: 'json',
@@ -284,7 +284,7 @@ Ext.define('PTS.controller.project.form.DeliverableForm', {
             mask.show();
             //query database for agreement status
             Ext.Ajax.request({
-                url: '../modificationstatus',
+                url: PTS.baseURL + '/modificationstatus',
                 params: {
                     filter: '[{"property":"modificationid","value":' + modId + '}]'
                 },

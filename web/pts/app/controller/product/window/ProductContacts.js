@@ -101,11 +101,11 @@ Ext.define('PTS.controller.product.window.ProductContacts', {
         //override store proxy based on productid
         store.setProxy({
             type: 'rest',
-            url: '../productcontact',
+            url: PTS.baseURL + '/productcontact',
             appendId: true,
             //batchActions: true,
             api: {
-                read: '../product/' + id + '/productcontactlist'
+                read: PTS.baseURL + '/product/' + id + '/productcontactlist'
             },
             reader: {
                 type: 'json',

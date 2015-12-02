@@ -21,7 +21,7 @@ Ext.define('PTS.view.controls.FilterByStatusMenu', {
             store;
 
         Ext.Ajax.request({
-            url: '../status',
+            url: PTS.baseURL + '/status',
             params: {
                 sort: '[{"property":"weight","direction":"ASC"}]'
             },

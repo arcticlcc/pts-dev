@@ -28,7 +28,7 @@ Ext.define('PTS.model.RoleType', {
 
     proxy: {
         type: 'rest',
-        url: '../roletype',
+        url: PTS.baseURL + '/roletype',
         reader: {
             type: 'json',
             root: 'data'

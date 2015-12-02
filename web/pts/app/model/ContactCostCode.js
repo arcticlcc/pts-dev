@@ -20,7 +20,7 @@ Ext.define('PTS.model.ContactCostCode', {
 
     proxy: {
         type: 'rest',
-        url: '../contactcostcode',
+        url: PTS.baseURL + '/contactcostcode',
         reader: {
             type: 'json',
             root: 'data'

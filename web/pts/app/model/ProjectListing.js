@@ -77,7 +77,7 @@ Ext.define('PTS.model.ProjectListing', {
 
     proxy: {
         type: 'rest',
-        url: '../projectlist',
+        url: PTS.baseURL + '/projectlist',
         reader: {
             type: 'json',
             root: 'data'

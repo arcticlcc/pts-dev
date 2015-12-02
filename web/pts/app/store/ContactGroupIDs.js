@@ -15,7 +15,7 @@ Ext.define('PTS.store.ContactGroupIDs', {
     },
     proxy: {
         type: 'ajax',
-        url: '../contactgrouplist',
+        url: PTS.baseURL + '/contactgrouplist',
         reader: {
             type: 'json',
             root: 'data'

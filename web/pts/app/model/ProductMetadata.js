@@ -37,7 +37,7 @@ Ext.define('PTS.model.ProductMetadata', {
 
     proxy: {
         type: 'rest',
-        url: '../productmetadata',
+        url: PTS.baseURL + '/productmetadata',
         reader: {
             type: 'json',
             root: 'data'

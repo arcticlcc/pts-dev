@@ -34,7 +34,7 @@ Ext.define('PTS.model.ProjectKeyword', {
 
     proxy: {
         type: 'rest',
-        url: '../project/keyword',
+        url: PTS.baseURL + '/project/keyword',
         reader: {
             type: 'json'
         },

@@ -16,7 +16,7 @@ Ext.define('PTS.store.OnlineFunctions', {
     }],
     proxy: {
         type: 'rest',
-        url: '../onlinefunction',
+        url: PTS.baseURL + '/onlinefunction',
         reader: {
             type: 'json',
             root: 'data'

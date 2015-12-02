@@ -77,7 +77,7 @@ Ext.define('PTS.model.ContactGroup', {
 
     proxy: {
         type: 'rest',
-        url: '../contactgroup',
+        url: PTS.baseURL + '/contactgroup',
         reader: {
             type: 'json',
             root: 'data'

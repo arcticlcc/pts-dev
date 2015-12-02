@@ -34,7 +34,7 @@ Ext.define('PTS.model.ProjectMetadata', {
 
     proxy: {
         type: 'rest',
-        url: '../projectmetadata',
+        url: PTS.baseURL + '/projectmetadata',
         reader: {
             type: 'json',
             root: 'data'

@@ -5,7 +5,7 @@ Ext.define('PTS.controller.MainToolbar', {
     extend: 'Ext.app.Controller',
     views: [
         'MainToolbar',
-        'PTS.view.config.Window'
+        'config.Window'
     ],
     refs: [{
         ref: 'configForm',

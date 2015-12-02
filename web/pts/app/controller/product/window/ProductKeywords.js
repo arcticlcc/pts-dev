@@ -79,11 +79,11 @@ Ext.define('PTS.controller.product.window.ProductKeywords', {
         //override store proxy based on productid
         store.setProxy({
             type: 'rest',
-            url: '../productkeyword',
+            url: PTS.baseURL + '/productkeyword',
             appendId: true,
             //batchActions: true,
             api: {
-                read: '../product/' + id + '/productkeywordlist'
+                read: PTS.baseURL + '/product/' + id + '/productkeywordlist'
             },
             reader: {
                 type: 'json',

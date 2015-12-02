@@ -48,7 +48,7 @@ Ext.define('PTS.model.ModificationComment', {
 
     proxy: {
         type: 'rest',
-        url: '../modcomment',
+        url: PTS.baseURL + '/modcomment',
         reader: {
             type: 'json',
             root: 'data'

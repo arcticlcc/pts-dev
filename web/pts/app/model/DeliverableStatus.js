@@ -23,7 +23,7 @@ Ext.define('PTS.model.DeliverableStatus', {
     idProperty: 'deliverablestatusid',
     proxy: {
         type: 'rest',
-        url: '../deliverablestatus',
+        url: PTS.baseURL + '/deliverablestatus',
         reader: {
             type: 'json',
             root: 'data'

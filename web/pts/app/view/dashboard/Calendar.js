@@ -30,7 +30,7 @@ Ext.define('PTS.view.dashboard.Calendar', {
                     pageSize: undefined,
                     proxy: {
                         type: 'rest',
-                        url: '../deliverable/calendar',
+                        url: PTS.baseURL + '/deliverable/calendar',
                         noCache: true,
 
                         reader: {

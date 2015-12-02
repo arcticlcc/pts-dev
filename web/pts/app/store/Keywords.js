@@ -16,7 +16,7 @@ Ext.define('PTS.store.Keywords', {
 
     proxy: {
         type: 'rest',
-        url: '../keywordlist',
+        url: PTS.baseURL + '/keywordlist',
         reader: {
             type: 'json',
             root: 'data'

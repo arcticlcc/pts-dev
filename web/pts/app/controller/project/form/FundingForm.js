@@ -59,11 +59,11 @@ Ext.define('PTS.controller.project.form.FundingForm', {
 
         store.setProxy({
             type: 'rest',
-            url: '../projectfunder',
+            url: PTS.baseURL + '/projectfunder',
             appendId: true,
             //batchActions: true,
             api: {
-                read: '../project/' + id + '/funder'
+                read: PTS.baseURL + '/project/' + id + '/funder'
             },
             reader: {
                 type: 'json',
@@ -178,10 +178,10 @@ Ext.define('PTS.controller.project.form.FundingForm', {
         //override store proxy based on fundingid
         store.setProxy({
             type: 'rest',
-            url: '../' + uri,
+            url: PTS.baseURL + '/' + uri,
             //appendId: true,
             api: {
-                read: '../funding/' + id + '/' + uri
+                read: PTS.baseURL + '/funding/' + id + '/' + uri
             },
             reader: {
                 type: 'json',

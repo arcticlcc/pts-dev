@@ -7,8 +7,9 @@ Ext.define('PTS.view.controls.ConfigWindow', {
 
     initComponent: function() {
         var me = this,
+            width,
             configWidth = PTS.userConfig.get('windowWidth'),
-            vpWidth = Ext.Element.getViewportWidth() -20;
+            vpWidth = Ext.Element.getViewportWidth() - 20;
 
         width = me.width ? me.width : configWidth > 0 ? configWidth : 900;
 

@@ -20,9 +20,9 @@ Ext.define('PTS.model.ModificationContact', {
 
     proxy: {
         type: 'rest',
-        url: '../modificationcontact',
+        url: PTS.baseURL + '/modificationcontact',
         api: {
-            read: '../modificationcontactlist'
+            read: PTS.baseURL + '/modificationcontactlist'
         },
         reader: {
             type: 'json',

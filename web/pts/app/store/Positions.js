@@ -12,9 +12,9 @@ Ext.define('PTS.store.Positions', {
     ],
     proxy: {
         type: 'rest',
-        url: '../person',
+        url: PTS.baseURL + '/person',
         api: {
-            read: '../personpositionlist'
+            read: PTS.baseURL + '/personpositionlist'
         },
         reader: {
             type: 'json',

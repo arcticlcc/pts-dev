@@ -16,7 +16,7 @@ Ext.define('PTS.store.DateTypes', {
     }],
     proxy: {
         type: 'rest',
-        url: '../datetype',
+        url: PTS.baseURL + '/datetype',
         reader: {
             type: 'json',
             root: 'data'

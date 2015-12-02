@@ -43,7 +43,7 @@ Ext.define('PTS.model.DeliverableComment', {
 
     proxy: {
         type: 'rest',
-        url: '../deliverablecomment',
+        url: PTS.baseURL + '/deliverablecomment',
         reader: {
             type: 'json',
             root: 'data'

@@ -75,13 +75,13 @@ Ext.define('PTS.controller.project.window.ProjectKeywords', {
      * @param {PTS.store.ProjectKeywords}
      */
     setProxy: function(id, store) {
-        var read = '../project/' + id + '/projectkeywordlist';
+        var read = PTS.baseURL + '/project/' + id + '/projectkeywordlist';
 
         if (store.getProxy().api.read !== read) {
             //override store proxy based on projectid
             store.setProxy({
                 type: 'rest',
-                url: '../projectkeyword',
+                url: PTS.baseURL + '/projectkeyword',
                 appendId: true,
                 //batchActions: true,
                 api: {

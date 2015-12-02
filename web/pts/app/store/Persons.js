@@ -16,9 +16,9 @@ Ext.define('PTS.store.Persons', {
     },
     proxy: {
         type: 'rest',
-        url: '../person',
+        url: PTS.baseURL + '/person',
         api: {
-            read: '../personlist'
+            read: PTS.baseURL + '/personlist'
         },
         reader: {
             type: 'json',
