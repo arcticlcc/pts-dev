@@ -4,23 +4,32 @@ use Symfony\Component\HttpFoundation\Response;
 
 $app->before(function(Request $request) use ($app) {
     // redirect the user to the login screen if access to the Resource is protected
-    $uri_root = parse_url($request->server->get("REQUEST_URI"), PHP_URL_PATH);
-    $uri = $request->server->get("REQUEST_URI");
-    //uncomment for building and comment the check below
-    /*$app['session']->set('user', array(
-     'username' => 'Dev',
-     'loginid' => 1,
-     'firstname' => 'Dev'
-     ));*/
+    $uri_root = parse_url($request->server->get('REQUEST_URI'), PHP_URL_PATH);
+    $uri = $request->server->get('REQUEST_URI');
+
     //check for user, ignore requests to login/logout/openid uri
     if ($uri_root != "/login" && $uri_root != "/logout" && $uri_root != "/openid" && $uri_root != "/oauth2") {
-        if(!$app['session']->has('user')) {
-            //redirect after login
-            return $app->redirect("/login?r=$uri");
+
+        if('build' !== $app['env']) {
+            if(!$app['session']->has('user')) {
+                //redirect after login
+                return $app->redirect("/login?r=$uri");
+            } else {
+                //set database search_path
+                $schema = $app['session']->get('schema');
+                $app['idiorm']->setPath($schema);
+            }
         } else {
             //set database search_path
-            $schema = $app['session']->get('schema');
-            $app['idiorm']->setPath($schema);
+            $app['idiorm']->setPath('dev');
+            //set userinfo
+            $app['session']->replace(array(
+                'user' => array(
+                    'loginid' => 1,
+                ),
+                'schema' => 'dev',
+                'schemas' => ['build' => 'Build']
+            ));
         }
     }
 });
@@ -75,6 +84,10 @@ $app->get('/poll', function() use ($app) {
     return $response;
 
 });
+
+$app->match('{url}', function($url) use ($app){
+    return 'OK';
+})->assert('url', '.*')->method('OPTIONS');
 
 //TODO: $request->get() should be $request->query->get() for better performance
 
@@ -134,7 +147,7 @@ $app->get('/{class}/{id}', function(Request $request, $class, $id) use ($app) {
         $u = $app['session']->get('user');
 
         if (isset($restricted[$class]) && $u['loginid'] != $id) {
-            throw new \Exception("Unauthorized.");
+            throw new \Exception("Unauthorized Access.");
         }
         $object = $app['idiorm']->getTable($class)->find_one($id);
 

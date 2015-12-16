@@ -6,21 +6,22 @@
     <title>Project Tracking System</title>
 
     <link rel="stylesheet" type="text/css" href="extjs/resources/css/ext-all.css">
-    <link rel="stylesheet" type="text/css" href="extensible-1.5.1/resources/css/extensible-all.css" />
+    <link rel="stylesheet" type="text/css" href="lib/extensible/resources/css/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="lib/extensible/resources/css/calendar-colors.css" />
     <link rel="stylesheet" type="text/css" href="resources/css/pts.css">
-    <link rel="stylesheet" type="text/css" href="resources/css/dev.css">
     <link rel="stylesheet" type="text/css" href="lib/highlight/src/styles/github.css">
 
     <script type="text/javascript" src="extjs/ext.js"></script>
     <script type="text/javascript" src="lib/extensible/src/Extensible.js"></script>
 
-    <script src="lib/openlayers/lib/OpenLayers.js"></script>
+    <script src="lib/openlayers/build/OpenLayers.js"></script>
     <script type="text/javascript">
         Ext.namespace('PTS');
+        PTS.baseURL = 'http://localhost:81';
         Ext.define('PTS.UserId', {
             singleton: true,
 
-            id: '2',
+            id: '1',
             paths: [{title:"Arctic\x20LCC",  path:"/pts/alcc"}, {title:"Development",  path:"/pts/dev"}],
             title: "Arctic\x20LCC"
         });

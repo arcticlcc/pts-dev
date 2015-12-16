@@ -163,9 +163,9 @@ $app['limit'] = 1000;
 //$app['my.param'] = '...';
 
 // Override settings for your dev environment
-$env = getenv("SILEX_ENV") ? $_SERVER['SILEX_ENV'] : 'dev';
+$app['env'] = getenv("SILEX_ENV") ? $_SERVER['SILEX_ENV'] : 'dev';
 
-if ('dev' == $env) {
+if ('dev' == $app['env'] && php_sapi_name() !== 'cli') {
     $app['debug'] = TRUE;
     $app['my.profiler'] = preg_match('/^\/_profiler.*/', $_SERVER["REQUEST_URI"]) === 1;
 

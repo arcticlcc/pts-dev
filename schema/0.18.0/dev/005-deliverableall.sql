@@ -1,4 +1,4 @@
-﻿-- View: dev.deliverableall
+-- View: dev.deliverableall
 
 -- DROP VIEW dev.deliverableall;
 
@@ -40,13 +40,13 @@ CREATE OR REPLACE VIEW dev.deliverableall AS
             deliverablestatus.description,
             deliverablestatus.comment
            FROM deliverablemodstatus
-             JOIN deliverablestatus USING (deliverablestatusid)
+             JOIN cvl.deliverablestatus USING (deliverablestatusid)
           ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid)
      LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
             deliverablemodstatus.modificationid,
             deliverablemodstatus.deliverableid
            FROM deliverablemodstatus
-             JOIN deliverablestatus USING (deliverablestatusid)
+             JOIN cvl.deliverablestatus USING (deliverablestatusid)
           WHERE deliverablemodstatus.deliverablestatusid = 10
           ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) efd USING (deliverableid)
      JOIN deliverable USING (deliverableid);

@@ -16,9 +16,9 @@ CREATE OR REPLACE VIEW dev.userinfo AS
     groupschema.projecturiformat,
     groupschema.email AS groupemail,
     login.config
-   FROM login
-     JOIN logingroupschema USING (loginid)
-     JOIN groupschema USING (groupschemaid)
+   FROM common.login
+     JOIN common.logingroupschema USING (loginid)
+     JOIN common.groupschema USING (groupschemaid)
      JOIN contactgroup ON groupschema.groupid = contactgroup.contactid
      JOIN person ON logingroupschema.contactid = person.contactid
   WHERE logingroupschema.groupschemaid::name = ANY (current_schemas(false));

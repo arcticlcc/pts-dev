@@ -78,7 +78,8 @@
         "Ext": true,
         "OpenLayers": true,
         "Extensible": true,
-        "hljs": true
+        "hljs": true,
+        "JSON": true
     },
     "-W018": true
 }

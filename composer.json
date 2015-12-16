@@ -17,7 +17,9 @@
         "aws/aws-sdk-php-silex": "1.*",
         "j4mie/idiorm": "1.*",
         "silex/web-profiler": "~1.0@dev",
-        "jeromemacias/silex-debug": "~1.0@dev"
+        "jeromemacias/silex-debug": "~1.0@dev",
+        "symfony/finder": "^3.0",
+        "composer/semver": "^1.2"
     },
 
     "autoload": {

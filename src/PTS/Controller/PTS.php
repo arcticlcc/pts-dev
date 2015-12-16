@@ -26,6 +26,43 @@ class PTS implements ControllerProviderInterface
             return $app->redirect("/logout");
         });
 
+        $controllers->get('/pts/build', function (Application $app, Request $request) {
+            try{
+
+                if('build' !== $app['env']) {
+                    throw new \Exception("System is not in build mode.");
+                }
+
+                //set database search_path
+                $app['idiorm']->setPath('dev');
+                //set fake session
+                $app['session']->replace(array(
+                    'user' => array(
+                        'loginid' => 1,
+                    ),
+                    'schema' => 'dev',
+                    'schemas' => ['build' => 'Build']
+                ));
+
+                return $app['twig']->render('pts.build.twig', array(
+                    /*'loginid' => $user['loginid'],
+                    'paths' => $schemas,
+                    'apptitle' => $schemas[$schema],
+                    'baseURL' => $app['baseURL']*/
+                ));
+            } catch(\Exception $exc) {
+                $msg = $exc->getMessage();
+                $app['monolog']->addError($msg);
+
+                //show home page with error
+                return $app['twig']->render('home.twig', array(
+                    'message' => $msg,
+                    'name' => 'Build Failure',
+                    'paths' => ['build' => 'Build']
+                ));
+            }
+        });
+
         $controllers->get('/pts/{schema}', function (Application $app, Request $request, $schema) {
             $user = $app['session']->get('user');
 

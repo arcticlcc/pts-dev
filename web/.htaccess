@@ -1,7 +1,8 @@
 ErrorDocument 404 /404.html
 ErrorDocument 500 /500.html
 
-SetEnv SILEX_ENV "dev"
+# One of: prod, dev, build
+SetEnv SILEX_ENV "prod"
 
 RewriteEngine On
 
@@ -15,3 +16,8 @@ php_value session.gc_maxlifetime 14400
 # running on each session_start()
 php_value session.gc_probability 10
 php_value session.gc_divisor 100
+
+# For build support with phantomJS
+Header add Access-Control-Allow-Origin "*"
+Header add Access-Control-Allow-Methods: "GET"
+Header add Access-Control-Allow-Headers "origin, x-requested-with, content-type"

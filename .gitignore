@@ -24,3 +24,7 @@ patches
 node_modules
 bower_components
 tmp
+web/pts/resources/images/default
+web/pts/resources/themes
+web/pts/resources/images/ol/*
+!web/pts/resources/images/ol/layer-switcher-maximize.png

@@ -29,6 +29,7 @@
     "grunt-contrib-uglify": "^0",
     "grunt-jsbeautifier": "^0.2.10",
     "grunt-jsduck": "^1.0.1",
-    "grunt-sencha-dependencies": "^0.8.1"
+    "grunt-sencha-dependencies": "^0.8.1",
+    "grunt-wget": "^0.1.3"
   }
 }

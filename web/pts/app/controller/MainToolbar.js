@@ -39,12 +39,17 @@ Ext.define('PTS.controller.MainToolbar', {
      */
     onBeforeShowUserBtn: function(btn) {
         var txt = PTS.user.getUserName(),
-            menu = btn.menu.down('#switchPTS').menu;
+            menu = btn.menu.down('#switchPTS').menu,
+            curr;
 
         btn.setText(txt);
 
         menu.add(PTS.UserId.paths);
-        menu.down('menuitem[url=' + window.location.pathname + ']').disable();
+        curr = menu.down('menuitem[url=' + window.location.pathname + ']');
+
+        if (curr) {
+            curr.disable();
+        }
     },
 
     /**

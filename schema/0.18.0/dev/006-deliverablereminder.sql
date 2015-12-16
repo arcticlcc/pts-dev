@@ -46,7 +46,7 @@ CREATE OR REPLACE VIEW dev.deliverablereminder AS
     d.title,
     dt.type,
     d.description,
-    form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+    common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
     project.shorttitle AS project,
         CASE
             WHEN d.deliverabletypeid = 7 THEN man.name
@@ -84,7 +84,7 @@ CREATE OR REPLACE VIEW dev.deliverablereminder AS
     dm.staffonly
    FROM deliverable d
      JOIN deliverablemod dm USING (deliverableid)
-     JOIN deliverabletype dt USING (deliverabletypeid)
+     JOIN cvl.deliverabletype dt USING (deliverabletypeid)
      JOIN modification USING (modificationid)
      JOIN project USING (projectid)
      JOIN ( SELECT projectcontact_1.modificationid,
@@ -128,16 +128,16 @@ CREATE OR REPLACE VIEW dev.deliverablereminder AS
             deliverablestatus.description,
             deliverablestatus.comment
            FROM deliverablemodstatus
-             JOIN deliverablestatus USING (deliverablestatusid)
+             JOIN cvl.deliverablestatus USING (deliverablestatusid)
           ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.effectivedate DESC, deliverablemodstatus.deliverablestatusid DESC) status(deliverablestatusid, deliverablemodstatusid, deliverableid, effectivedate, comment, contactid, code, status, description, comment_1) USING (deliverableid)
      LEFT JOIN ( SELECT DISTINCT ON (deliverablemodstatus.deliverableid) deliverablemodstatus.effectivedate,
             deliverablemodstatus.deliverableid
            FROM deliverablemodstatus
-             JOIN deliverablestatus USING (deliverablestatusid)
+             JOIN cvl.deliverablestatus USING (deliverablestatusid)
           WHERE deliverablemodstatus.deliverablestatusid = ANY (ARRAY[10, 40])
           ORDER BY deliverablemodstatus.deliverableid, deliverablemodstatus.deliverablestatusid, deliverablemodstatus.effectivedate DESC) efd USING (deliverableid)
      JOIN contactgroup ON project.orgid = contactgroup.contactid
-     JOIN groupschema ON project.orgid = groupschema.groupid AND NOT groupschema.groupschemaid::text = 'dev'::text AND (groupschema.groupschemaid::name = ANY (current_schemas(false)))
+     JOIN common.groupschema ON project.orgid = groupschema.groupid AND NOT groupschema.groupschemaid::text = 'dev'::text AND (groupschema.groupschemaid::name = ANY (current_schemas(false)))
   WHERE NOT (EXISTS ( SELECT 1
            FROM deliverablemod dp
           WHERE dm.modificationid = dp.parentmodificationid AND dm.deliverableid = dp.parentdeliverableid))

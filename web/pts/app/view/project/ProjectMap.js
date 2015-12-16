@@ -367,6 +367,7 @@ Ext.define('PTS.view.project.ProjectMap', {
 
         me.map = new OpenLayers.Map('map', {
             maxExtent: maxExtent,
+            theme: null,
             //StartBounds: layerMaxExtent,
             units: (layerInfo.units == "esriFeet") ? 'ft' : 'm',
             resolutions: resolutions,

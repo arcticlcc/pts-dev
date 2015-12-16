@@ -7,18 +7,19 @@ module.exports = function(grunt) {
                 options: {
                     pageRoot: './web/pts', // relative to dir where grunt will be run
                     appJs: 'app.js', // relative to www
-                    pageToProcess: 'build.html', // relative to www
-                    exclude: ['./extjs/ext-debug.js']
+                    pageToProcess: 'buildtemp.html', // relative to www
+                    exclude: []
                 }
             }
         },
         /**
          * Clean
          *
-         * Before generating any new files, remove any previously-created output files.
+         *  Remove output files.
          */
         clean: {
-            build: ["build"]
+            build: ["build", "web/pts/buildtemp.html"],
+            wget: ["web/pts/buildtemp.html"]
         },
 
         /**
@@ -41,14 +42,24 @@ module.exports = function(grunt) {
          * Write the output file to our "build/www" directory
          */
         uglify: {
-            build: {
+            buildapp: {
                 options: {
                     sourceMap: "web/pts/source-map.map",
                     sourceMappingURL: "./pts/source-map.map",
                     sourceMapRoot: ".."
                 },
                 files: {
-                    "web/pts/app-all.min.js": ["<%= sencha_dependencies_dist %>"]
+                    "web/pts/app-all.min.js": ["<%= sencha_dependencies_dist_app %>"]
+                }
+            },
+            buildext: {
+                options: {
+                    sourceMap: "web/pts/ext-map.map",
+                    sourceMappingURL: "./pts/ext-map.map",
+                    sourceMapRoot: ".."
+                },
+                files: {
+                    "web/pts/ext.min.js": ["<%= sencha_dependencies_dist_ext_core %>"]
                 }
             }
         },
@@ -60,11 +71,13 @@ module.exports = function(grunt) {
             },
             target: {
                 files: {
-                    'web/pts/resources/css/pts.min.css': [
+                    'web/pts/resources/css/pts-all.min.css': [
                         'web/pts/extjs/resources/css/ext-all.css',
-                        'web/pts/extensible-1.5.1/resources/css/extensible-all.css',
+                        'web/pts/lib/extensible/resources/css/calendar.css',
+                        'web/pts/lib/extensible/resources/css/calendar-colors.css',
                         'web/pts/resources/css/pts.css',
-                        'web/pts/lib/highlight/src/styles/github.css'
+                        'web/pts/lib/highlight/src/styles/github.css',
+                        'web/pts/lib/openlayers/theme/default/style.css'
                     ]
                 }
             }
@@ -72,10 +85,10 @@ module.exports = function(grunt) {
 
         jsbeautifier: {
             "default": {
-                src: ["web/pts/app/**/*.js", "web/pts/app.js"]
+                src: ["web/pts/app/**/*.js", "web/pts/app.js", "Gruntfile.js"]
             },
             "git-pre-commit": {
-                src: ["web/pts/app/**/*.js", "web/pts/app.js"],
+                src: ["web/pts/app/**/*.js", "web/pts/app.js", "Gruntfile.js"],
                 options: {
                     mode: "VERIFY_ONLY"
                 }
@@ -102,7 +115,7 @@ module.exports = function(grunt) {
                     'title': 'PTS Docs'
                 }
             }
-        }
+        },
         /**
          * Copy
          *
@@ -111,44 +124,35 @@ module.exports = function(grunt) {
          * Note that we also do some replacement on the index.html to point it to our new
          * concat"d/minified JS file.
          */
-        /*copy : {
-        build : {
-        files : [{
-        expand : true,
-        src : ["ext-4.1.1a/resources/css/ext-all.css"],
-        dest : "build/www",
-        cwd : "www"
-        }, {
-        expand : true,
-        src : ["ext-4.1.1a/resources/themes/images/**"],
-        dest : "build/www",
-        cwd : "www"
-        }, {
-        expand : true,
-        src : ["data/**"],
-        dest : "build/www",
-        cwd : "www"
-        }, {
-        expand : true,
-        src : ["index.html"],
-        dest : "build/www",
-        cwd : "www"
-        }],*/
-        //options : {
-        //processContentExclude : ["**/*.{gif,jpg,png}"],
-        //processContent : function(content, filePath) {
-        /*if (/index.html/.test(filePath)) {
-        // remove the ext script
-        content = content.replace(/<script.*ext.js"><\/script>/, "");
-        // now update the css location
-        content = content.replace(/\.\.\/libs\/ext-4.1.1a\//, "");
-        return content.replace(/app\/app.js/, "app.min.js");
+
+        copy: {
+            build: {
+                files: [{
+                    expand: true,
+                    src: ["**/*"],
+                    dest: "web/pts/resources/themes/images",
+                    cwd: "web/pts/extjs/resources/themes/images"
+                }, {
+                    expand: true,
+                    src: ["**/*"],
+                    dest: "web/pts/resources/images",
+                    cwd: "web/pts/lib/extensible/resources/images"
+                }, {
+                    expand: true,
+                    src: ["**/*",  "!**/*(layer-switcher-maximize.png)"],
+                    dest: "web/pts/resources/images/ol",
+                    cwd: "web/pts/lib/openlayers/img"
+                }]
+            }
+        },
+
+        wget: {
+            build: {
+                files: {
+                    'web/pts/buildtemp.html': 'http://localhost:81/pts/build'
+                }
+            }
         }
-        return content;
-        }
-        }*/
-        //}
-        //},
     });
 
     grunt.loadNpmTasks('grunt-sencha-dependencies');
@@ -159,9 +163,10 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks("grunt-contrib-copy");
     grunt.loadNpmTasks("grunt-jsbeautifier");
     grunt.loadNpmTasks('grunt-jsduck');
+    grunt.loadNpmTasks('grunt-wget');
 
-    grunt.registerTask('dep', ['sencha_dependencies']);
+    grunt.registerTask('dep', ['wget:build', 'sencha_dependencies', 'clean:wget']);
     grunt.registerTask('default', ['jshint', 'dep', 'uglify']);
-    grunt.registerTask('prod', ['default', 'cssmin']);
+    grunt.registerTask('build', ['clean:build', 'default', 'cssmin', 'copy']);
 
 };
