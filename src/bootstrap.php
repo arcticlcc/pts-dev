@@ -16,6 +16,7 @@ $app['config.dir'] = __DIR__.'/../config/';
 $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new PTS\Controller\Feature());
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "reports.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "config.yml"));
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "db.yml"));
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "google.yml", array(
     'config_path' => $app['config.dir'],
@@ -153,13 +154,13 @@ $app['tree'] = $app->share(function() {
 });
 
 // Configuration parameters
-$app['salt'] = 'PTS2012';
-$app['baseURL'] = '..';
-$app['debug'] = false;
+$app['salt'] = isset($app['config']['salt']) ? $app['config']['salt'] : '';
+$app['baseURL'] = isset($app['config']['baseURL']) ? $app['config']['baseURL'] : '.';
+$app['debug'] = FALSE;
 //query defaults
-$app['page'] = 1;
-$app['start'] = 0;
-$app['limit'] = 1000;
+$app['page'] = isset($app['config']['page']) ? $app['config']['page'] : 1;
+$app['start'] = isset($app['config']['start']) ? $app['config']['start'] : 0;
+$app['limit'] = isset($app['config']['limit']) ? $app['config']['limit'] : 1000;
 //$app['my.param'] = '...';
 
 // Override settings for your dev environment
