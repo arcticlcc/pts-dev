@@ -163,6 +163,7 @@ class ADIwg {
         if($withAssoc) {
             $prj = $this->getProject($product['projectid']);
             $prj['assocType'] = 'largerWorkCitation';
+            $projuuid = $prj['resource']['resourceIdentifier'];
             $assoc = [$prj];
 
             //get products
@@ -211,7 +212,8 @@ class ADIwg {
             'roles' => $roles,
             'dates' => $dates,
             'links' => $links,
-            'associated' => $assoc
+            'associated' => $assoc,
+            'projectuuid' => isset($projuuid) ? $projuuid : null
         );
 
         //add product keywords if present
@@ -230,34 +232,43 @@ class ADIwg {
         return $this->app['twig']->render('metadata/mdjson.json.twig', $product);
     }
 
-    function saveProject($id) {
-        $conn = $this->app['dbs'][$this->app['session']->get('schema')];
+    function saveProject($id, $schema = FALSE, $_conn = FALSE) {
+        $schema = $schema ? $schema : $this->app['session']->get('schema');
+        //if none, create the db file
+        $this->buildMetaDB(FALSE, $schema);
+
+        $conn = $_conn ? $_conn : $this->app['dbs'][$schema];
         $sql = "SELECT * FROM project WHERE projectid = ?";
 
-        $project = $conn->fetchAssoc($sql, array((int) $id));
-
-        $probject = $this->getProject($id);
+        $probject = $this->getProject($id, TRUE);
+        $uuid = $probject['resource']['resourceIdentifier'];
+        $project = $conn->fetchAssoc($sql, array($uuid));
         $json = $this->renderProject($probject);
         $xml = $this->translate($json);
+        $html = $this->translate($json, 'html');
         $data = array(
-                'uuid' => $probject['resource']['resourceIdentifier'],
                 'projectcode' => $probject['resource']['projectcode'],
+                'groupid' => $schema,
                 'json' => $json,
-                'xml' => $xml
+                'xml' => $xml,
+                'html' => $html,
+                'metadataupdate' => (new \DateTime())->format(\DateTime::ISO8601)
             );
 
         if($project) {
-            $conn->update('project', $data, array('projectid' => $id));
+            $conn->update('project', $data, array('projectid' => $uuid));
         } else {
-            $data['projectid'] = $id;
+            $data['projectid'] = $uuid;
             $conn->insert('project', $data);
         }
 
-        $conn->close();
+        if(!$_conn) {
+            $conn->close();
+        }
 
         //update the metadata info
         $object = $this->app['idiorm']->getTable('project')->find_one($id);
-        $object->set('metadataupdate', (new \DateTime())->format(\DateTime::ISO8601));
+        $object->set('metadataupdate', $data['metadataupdate']);
         $object->save();
     }
 
@@ -266,34 +277,44 @@ class ADIwg {
         $conn->delete('project', array('projectid' => $id));
     }
 
-    function saveProduct($id) {
-        $conn = $this->app['dbs'][$this->app['session']->get('schema')];
+    function saveProduct($id, $schema = FALSE, $_conn = FALSE) {
+        $schema = $schema ? $schema : $this->app['session']->get('schema');
+        //if none, create the db file
+        $this->buildMetaDB(FALSE, $schema);
+
+        $conn = $_conn ? $_conn : $this->app['dbs'][$schema];
         $sql = "SELECT * FROM product WHERE productid = ?";
 
-        $product = $conn->fetchAssoc($sql, array((int) $id));
-
-        $probject = $this->getProduct($id);
+        $probject = $this->getProduct($id, TRUE);
+        $uuid = $probject['resource']['resourceIdentifier'];
+        $product = $conn->fetchAssoc($sql, array($uuid));
         $json = $this->renderProduct($probject);
         $xml = $this->translate($json);
+        $html = $this->translate($json, 'html');
         $data = array(
-                'uuid' => $probject['resource']['resourceIdentifier'],
+                'projectid' => $probject['projectuuid'],
+                'groupid' => $schema,
                 'projectcode' => $probject['resource']['projectcode'],
                 'json' => $json,
-                'xml' => $xml
+                'xml' => $xml,
+                'html' => $html,
+                'metadataupdate' => (new \DateTime())->format(\DateTime::ISO8601)
             );
 
         if($product) {
-            $conn->update('product', $data, array('productid' => $id));
+            $conn->update('product', $data, array('productid' => $uuid));
         } else {
-            $data['productid'] = $id;
+            $data['productid'] = $uuid;
             $conn->insert('product', $data);
         }
 
-        $conn->close();
+        if(!$_conn) {
+            $conn->close();
+        }
 
         //update the metadata info
         $object = $this->app['idiorm']->getTable('product')->find_one($id);
-        $object->set('metadataupdate', (new \DateTime())->format(\DateTime::ISO8601));
+        $object->set('metadataupdate', $data['metadataupdate']);
         $object->save();
     }
 
@@ -320,6 +341,56 @@ class ADIwg {
         }
 
         return $xml->writerOutput;
+    }
+
+    function buildMetaDB($path = FALSE, $schema = FALSE) {
+        if(!$path) {
+            if($schema) {
+            //get the file from $app['dbs'] config
+            $path = $this->app['dbOptions'][$schema]['path'];
+            } else {
+                throw new \Exception("buildMetaDB failed. No schema or path supplied.");
+            }
+        }
+
+        if(!file_exists($path)) {
+            $conn = $this->app['dbs'][$schema];
+
+            $schema = new \Doctrine\DBAL\Schema\Schema();
+            $project = $schema->createTable("project");
+            $project->addColumn("projectid", "string");
+            $project->addColumn("projectcode", "string");
+            $project->addColumn("json", "string");
+            $project->addColumn("xml", "string");
+            $project->addColumn("html", "string");
+            $project->addColumn("metadataupdate", "string");
+            $project->addColumn("groupid", "string");
+            $project->setPrimaryKey(array("projectid"));
+
+            $product = $schema->createTable("product");
+            $product->addColumn("productid", "string");
+            $product->addColumn("projectid", "string", ['notnull' => FALSE]);
+            $product->addColumn("projectcode", "string");
+            $product->addColumn("json", "string");
+            $product->addColumn("xml", "string");
+            $product->addColumn("html", "string");
+            $product->addColumn("metadataupdate", "string");
+            $product->addColumn("groupid", "string");
+            $product->setPrimaryKey(array("productid"));
+            $product->addForeignKeyConstraint($project,
+                array("projectid"), array("projectid"), array("onUpdate" => "CASCADE"));
+
+            $queries = $schema->toSql($conn->getDatabasePlatform()); // get queries to create this schema.
+
+            foreach ($queries as $sql) {
+                $conn->exec($sql);
+            }
+
+            chmod($path, 0664);
+            return $conn;
+        }
+
+        return FALSE;
     }
 
 }
