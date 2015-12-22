@@ -13,6 +13,7 @@ use PTS\Console\MyCommand;
 use PTS\Console\SendNotice;
 use PTS\Console\BatchNotice;
 use PTS\Console\MetadataProduct;
+use PTS\Console\MetadataSync;
 use PTS\Console\SyncCalendar;
 use PTS\Console\SchemaUpdate;
 
@@ -21,6 +22,7 @@ $application->add(new MyCommand);
 $application->add(new SendNotice);
 $application->add(new BatchNotice);
 $application->add(new MetadataProduct);
+$application->add(new MetadataSync);
 $application->add(new SyncCalendar);
 $application->add(new SchemaUpdate);
 $application->run($app['console.input'], $app['console.output']);

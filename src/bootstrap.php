@@ -17,7 +17,9 @@ $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new PTS\Controller\Feature());
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "reports.yml"));
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "config.yml"));
-$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "db.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "db.yml", array(
+    'data_path' => __DIR__. '/../data',
+)));
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "google.yml", array(
     'config_path' => $app['config.dir'],
 )));
