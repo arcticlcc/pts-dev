@@ -58,6 +58,7 @@ $app->register(new Aws\Silex\AwsServiceProvider(), array(
 $app->register(new PTS\Service\AwsEmailServiceProvider(), array(
     'ses.limit' => 1,
 ));
+$app->register(new PTS\Service\AwsS3ServiceProvider());
 $app->register(new PTS\Service\NoticeServiceProvider(), array());
 
 $app->register(new PTS\Service\OpenIDServiceProvider(), array(
