@@ -232,22 +232,21 @@ class ADIwg {
         return $this->app['twig']->render('metadata/mdjson.json.twig', $product);
     }
 
-    function saveProject($id, $schema = FALSE) {
+    function saveProject($id, $schema = FALSE, $_conn = FALSE) {
         $schema = $schema ? $schema : $this->app['session']->get('schema');
         //if none, create the db file
         $this->buildMetaDB(FALSE, $schema);
 
-        $conn = $this->app['dbs'][$schema];
+        $conn = $_conn ? $_conn : $this->app['dbs'][$schema];
         $sql = "SELECT * FROM project WHERE projectid = ?";
 
-        $project = $conn->fetchAssoc($sql, array((int) $id));
-
         $probject = $this->getProject($id, TRUE);
+        $uuid = $probject['resource']['resourceIdentifier'];
+        $project = $conn->fetchAssoc($sql, array($uuid));
         $json = $this->renderProject($probject);
         $xml = $this->translate($json);
         $html = $this->translate($json, 'html');
         $data = array(
-                'projectid' => $probject['resource']['resourceIdentifier'],
                 'projectcode' => $probject['resource']['projectcode'],
                 'groupid' => $schema,
                 'json' => $json,
@@ -257,13 +256,15 @@ class ADIwg {
             );
 
         if($project) {
-            $conn->update('project', $data, array('projectid' => $data['projectid']));
+            $conn->update('project', $data, array('projectid' => $uuid));
         } else {
-            //$data['projectid'] = $id;
+            $data['projectid'] = $uuid;
             $conn->insert('project', $data);
         }
 
-        $conn->close();
+        if(!$_conn) {
+            $conn->close();
+        }
 
         //update the metadata info
         $object = $this->app['idiorm']->getTable('project')->find_one($id);
@@ -276,22 +277,21 @@ class ADIwg {
         $conn->delete('project', array('projectid' => $id));
     }
 
-    function saveProduct($id, $schema = FALSE) {
+    function saveProduct($id, $schema = FALSE, $_conn = FALSE) {
         $schema = $schema ? $schema : $this->app['session']->get('schema');
         //if none, create the db file
         $this->buildMetaDB(FALSE, $schema);
 
-        $conn = $this->app['dbs'][$schema];
+        $conn = $_conn ? $_conn : $this->app['dbs'][$schema];
         $sql = "SELECT * FROM product WHERE productid = ?";
 
-        $product = $conn->fetchAssoc($sql, array((int) $id));
-
         $probject = $this->getProduct($id, TRUE);
+        $uuid = $probject['resource']['resourceIdentifier'];
+        $product = $conn->fetchAssoc($sql, array($uuid));
         $json = $this->renderProduct($probject);
         $xml = $this->translate($json);
         $html = $this->translate($json, 'html');
         $data = array(
-                'productid' => $probject['resource']['resourceIdentifier'],
                 'projectid' => $probject['projectuuid'],
                 'groupid' => $schema,
                 'projectcode' => $probject['resource']['projectcode'],
@@ -302,13 +302,15 @@ class ADIwg {
             );
 
         if($product) {
-            $conn->update('product', $data, array('productid' => $data['productid']));
+            $conn->update('product', $data, array('productid' => $uuid));
         } else {
-            //$data['productid'] = $id;
+            $data['productid'] = $uuid;
             $conn->insert('product', $data);
         }
 
-        $conn->close();
+        if(!$_conn) {
+            $conn->close();
+        }
 
         //update the metadata info
         $object = $this->app['idiorm']->getTable('product')->find_one($id);
