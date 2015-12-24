@@ -2,8 +2,10 @@
     {
       "contactId": "{{ contact.contactId }}",
       {% if contact.individualName %}"individualName": "{{ contact.individualName }}",{% endif %}
-      "organizationName": "{{ contact.organizationName }}",
-      "positionName": "{{ contact.positionName }}"
+      "organizationName": "{{ contact.organizationName }}"
+      {% if contact.positionName %}
+      ,"positionName": "{{ contact.positionName }}"
+      {% endif %}
       {% if contact.uri %}
       ,
       "onlineResource": [

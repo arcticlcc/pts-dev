@@ -423,9 +423,9 @@
         }
       ],#}
       {% if resourceType == 'project' %}
-      "supplementalInfo": "{{ resource.supplemental }}"
+      "supplementalInfo": "{{ resource.supplemental ?: '' }}"
       {% else %}
-      "purpose": "{{ resource.purpose }}"
+      "purpose": "{{ resource.purpose ?: '' }}"
       {% endif %}
     }
 {% endautoescape %}
