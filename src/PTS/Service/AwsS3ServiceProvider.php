@@ -18,8 +18,6 @@ class AwsS3ServiceProvider implements ServiceProviderInterface {
     public function register(Application $app) {
         $app['s3.upload'] = $app -> protect(function($file, $bucket, $key , $compress = FALSE) use ($app) {
 
-            //$bucket = 'metadata.arcticlcc.org';
-
             // Get the Amazon S3 client
             $s3 = $app['aws'] -> get('s3');
             //return $results;
@@ -47,7 +45,9 @@ class AwsS3ServiceProvider implements ServiceProviderInterface {
                 'Body'   => fopen($file, 'r+')
             ));
 
-            unlink($file);
+            if ($compress) {
+                unlink($file);
+            }
 
             return $result;
         });

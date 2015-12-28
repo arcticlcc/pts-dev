@@ -69,6 +69,7 @@ class MetadataSync extends \Knp\Command\Command {
                 }
             } catch (\Exception $exc) {
                 $app['monolog']->addError($exc->getMessage());
+                die;
             }
         }
 
