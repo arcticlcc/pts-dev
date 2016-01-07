@@ -84,6 +84,7 @@ class ADIwg {
 
         return array(
             'resourceType' => 'project',
+            'published' => $project['exportmetadata'],
             'organization' => $org,
             'resource' => $project,
             'keywords' => array_filter(explode('|', $project['keywords'])),
@@ -160,21 +161,27 @@ class ADIwg {
         }
 
         //get project and related products
+        $prj = $this->getProject($product['projectid']);
+        $assoc = [];
+
         if($withAssoc) {
-            $prj = $this->getProject($product['projectid']);
-            $prj['assocType'] = 'largerWorkCitation';
-            $projuuid = $prj['resource']['resourceIdentifier'];
-            $assoc = [$prj];
+            if($prj['published']) {
+                $prj['assocType'] = 'largerWorkCitation';
+                $projuuid = $prj['resource']['resourceIdentifier'];
+                $assoc = [$prj];
+            }
 
             //get products
             foreach ($this->app['idiorm']->getTable('product')
             ->where('projectid', $product['projectid'])
+            ->where('exportmetadata', TRUE)
             ->where_not_equal('productid', $id)
             ->find_many() as $object) {
                 $prd = $this->getProduct($object->productid);
                 $prd['assocType'] = 'projectProduct';
                 $assoc[] = $prd;
             }
+
             //merge contacts
             foreach ($assoc as $arr) {
                 if(isset($arr['contacts'])) {
@@ -185,14 +192,12 @@ class ADIwg {
                     }
                 }
             }
-        }else {
-            $assoc = [];
         }
 
-        //if no project features, use product features if present
-        if($product['features'] === NULL && !empty($assoc)) {
-            $product['features'] = $assoc[0]['resource']['features'];
-            $product['bbox'] = $assoc[0]['resource']['bbox'];
+        //if no product features, use project features if present
+        if($product['features'] === NULL && isset($prj['resource']['features'])) {
+            $product['features'] = $prj['resource']['features'];
+            $product['bbox'] = $prj['resource']['bbox'];
             $product['featuresInherited'] = true;
         }
 
@@ -216,9 +221,9 @@ class ADIwg {
             'projectuuid' => isset($projuuid) ? $projuuid : null
         );
 
-        //add product keywords if present
-        if(!empty($assoc)) {
-            $return['projectkeywords'] = $assoc[0]['keywords'];
+        //add project keywords if present
+        if(isset($prj['keywords'])) {
+            $return['projectkeywords'] = $prj['keywords'];
         }
 
         return $return;
@@ -378,7 +383,9 @@ class ADIwg {
             $product->addColumn("groupid", "string");
             $product->setPrimaryKey(array("productid"));
             $product->addForeignKeyConstraint($project,
-                array("projectid"), array("projectid"), array("onUpdate" => "CASCADE"));
+                array("projectid"), array("projectid"),
+                array("onUpdate" => "CASCADE","onDelete" => "SET NULL")
+            );
 
             $queries = $schema->toSql($conn->getDatabasePlatform()); // get queries to create this schema.
 
