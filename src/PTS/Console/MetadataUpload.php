@@ -34,6 +34,13 @@ class MetadataUpload extends \Knp\Command\Command {
                 'c',
                 InputOption::VALUE_NONE,
                 'Compress the file using gz?'
+            )
+            ->addOption(
+                'time',
+                't',
+                InputOption::VALUE_OPTIONAL,
+                'Time in seconds. If provided, file modification must have occurred within this
+                    interval.'
             );
     }
 
@@ -44,17 +51,22 @@ class MetadataUpload extends \Knp\Command\Command {
         $bucket = $input->getArgument('bucket');
         $key = $input->getOption('key') ? $input->getOption('key') : basename($file);
         $compress = $input->getOption('compress');
+        $time = $input->getOption('time');
+        $inv = time()-filemtime($file);
 
         try {
             if (!file_exists($file)) {
                 Throw new \Exception("Could not find file $file.");
             }
-
-            $result = $app['s3.upload']($file, $bucket, $key, $compress);
-            $message = "Uploaded to {$result['ObjectURL']}";
-            $app['monolog']->addInfo($message);
-            $output->writeln($message);
-
+            
+            if(!$time || ($time > $inv)) {
+                $result = $app['s3.upload']($file, $bucket, $key, $compress);
+                $message = "Uploaded to {$result['ObjectURL']}";
+                $app['monolog']->addInfo($message);
+                $output->writeln($message);
+            } else {
+                $output->writeln("File $file is older than $time seconds ($inv).");
+            }
         } catch (\Exception $exc) {
             $app['monolog']->addError($exc->getMessage());
         }
