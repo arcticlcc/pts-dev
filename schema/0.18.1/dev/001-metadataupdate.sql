@@ -8,7 +8,7 @@ ALTER TABLE dev.product ALTER COLUMN metadataupdate SET DATA TYPE timestamp with
 
 CREATE OR REPLACE VIEW dev.metadataproduct AS 
  SELECT product.productid,
-    form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+    common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
     project.orgid,
     product.title,
     deliverabletype.isocodename AS resourcetype,
@@ -36,30 +36,30 @@ CREATE OR REPLACE VIEW dev.metadataproduct AS
    FROM ( SELECT groupschema.groupschemaid,
             groupschema.groupid,
             groupschema.producturiformat
-           FROM groupschema
+           FROM common.groupschema
           WHERE groupschema.groupschemaid::name = ANY (current_schemas(false))) gschema,
     product
      JOIN project USING (projectid)
-     JOIN deliverabletype USING (deliverabletypeid)
+     JOIN cvl.deliverabletype USING (deliverabletypeid)
      JOIN contactgroup ON project.orgid = contactgroup.contactid
-     LEFT JOIN isoprogresstype USING (isoprogresstypeid)
+     LEFT JOIN cvl.isoprogresstype USING (isoprogresstypeid)
      LEFT JOIN ( SELECT productkeyword.productid,
             string_agg(productkeyword.preflabel::text, '|'::text) AS keywords
            FROM ( SELECT productkeyword_1.productid,
                     keyword.preflabel
                    FROM productkeyword productkeyword_1
-                     JOIN keyword USING (keywordid)
+                     JOIN gcmd.keyword USING (keywordid)
                   GROUP BY productkeyword_1.productid, keyword.preflabel) productkeyword
           GROUP BY productkeyword.productid) kw USING (productid)
      LEFT JOIN ( SELECT producttopiccategory.productid,
             string_agg(topiccategory.codename::text, '|'::text) AS topiccategory
            FROM producttopiccategory
-             JOIN topiccategory USING (topiccategoryid)
+             JOIN cvl.topiccategory USING (topiccategoryid)
           GROUP BY producttopiccategory.productid) tc USING (productid)
      LEFT JOIN ( SELECT productspatialformat.productid,
             string_agg(spatialformat.codename::text, '|'::text) AS spatialformat
            FROM productspatialformat
-             JOIN spatialformat USING (spatialformatid)
+             JOIN cvl.spatialformat USING (spatialformatid)
           GROUP BY productspatialformat.productid) sf USING (productid)
      LEFT JOIN ( SELECT productepsg.productid,
             string_agg(productepsg.srid::text, '|'::text) AS epsgcode
@@ -126,11 +126,11 @@ CREATE OR REPLACE VIEW dev.metadataproject AS
             groupschema.displayname,
             groupschema.deliverablecalendarid,
             groupschema.projecturiformat
-           FROM groupschema
+           FROM common.groupschema
           WHERE groupschema.groupschemaid::name = ANY (current_schemas(false))
         )
  SELECT project.projectid,
-    form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+    common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
     project.orgid,
     project.title,
     project.parentprojectid,
@@ -159,29 +159,29 @@ CREATE OR REPLACE VIEW dev.metadataproject AS
    FROM gschema,
     project
      JOIN contactgroup ON project.orgid = contactgroup.contactid
-     JOIN status ON status.statusid = project_status(project.projectid)
+     JOIN cvl.status ON status.statusid = common.project_status(project.projectid)
      LEFT JOIN ( SELECT projectkeyword.projectid,
             string_agg(projectkeyword.preflabel::text, '|'::text) AS keywords
            FROM ( SELECT projectkeyword_1.projectid,
                     keyword.preflabel
                    FROM projectkeyword projectkeyword_1
-                     JOIN keyword USING (keywordid)
+                     JOIN gcmd.keyword USING (keywordid)
                   GROUP BY projectkeyword_1.projectid, keyword.preflabel) projectkeyword
           GROUP BY projectkeyword.projectid) kw USING (projectid)
      LEFT JOIN ( SELECT projectusertype.projectid,
             string_agg(usertype.usertype::text, '|'::text) AS usertype
            FROM projectusertype
-             JOIN usertype USING (usertypeid)
+             JOIN cvl.usertype USING (usertypeid)
           GROUP BY projectusertype.projectid) ut USING (projectid)
      LEFT JOIN ( SELECT projecttopiccategory.projectid,
             string_agg(topiccategory.codename::text, '|'::text) AS topiccategory
            FROM projecttopiccategory
-             JOIN topiccategory USING (topiccategoryid)
+             JOIN cvl.topiccategory USING (topiccategoryid)
           GROUP BY projecttopiccategory.projectid) tc USING (projectid)
      LEFT JOIN ( SELECT projectprojectcategory.projectid,
             string_agg(projectcategory.category::text, '|'::text) AS projectcategory
            FROM projectprojectcategory
-             JOIN projectcategory USING (projectcategoryid)
+             JOIN cvl.projectcategory USING (projectcategoryid)
           GROUP BY projectprojectcategory.projectid) pc USING (projectid)
      LEFT JOIN ( SELECT f.projectid,
             array_to_json(array_agg(( SELECT fj.*::record AS fj
