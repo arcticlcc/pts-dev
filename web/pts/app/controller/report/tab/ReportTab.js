@@ -118,11 +118,9 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                         searchStore: tab.store,
                         dock: 'bottom'
                     });
-
-                    tab.store.remoteFilter = true;
                 }
 
-                tab.store.remoteFilter = data.remoteFilter;
+                tab.store.remoteFilter = data.remoteFilter || data.filterBar ? true : false;
 
                 rp.add(tab);
 
