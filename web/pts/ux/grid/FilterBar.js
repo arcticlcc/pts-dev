@@ -45,7 +45,7 @@ Ext.define("Ext.ux.grid.FilterBar", {
                 fieldLabel: 'Search',
                 labelWidth: 50,
                 store: Ext.create('Ext.data.ArrayStore', {
-                    fields:[ 'fieldId', 'fieldName' ]
+                    fields:[ 'fieldId', 'fieldName', 'fieldType' ]
                 }),
                 queryMode: 'local',
                 valueField: 'fieldId',
@@ -56,7 +56,15 @@ Ext.define("Ext.ux.grid.FilterBar", {
                 listeners: {
                     change: function(cbx, newVal, oldVal) {
                         var disable = newVal === '';
-                        cbx.ownerCt.down('searchfield').setDisabled(disable);
+                        var type = cbx.getStore().findRecord('fieldId', newVal).get('fieldType');
+                        var bool = type === 'booleancolumn';
+                        var sf = cbx.ownerCt.down('searchfield');
+                        var bf = cbx.ownerCt.down('#booleanField');
+
+                        sf.setVisible(!bool);
+                        bf.setVisible(bool);
+                        bf.reset();
+                        sf.setDisabled(disable);
                     }
                 }
             }, {
@@ -113,6 +121,44 @@ Ext.define("Ext.ux.grid.FilterBar", {
                     }
                 }
 
+            },{
+                xtype: 'radiogroup',
+                itemId: 'booleanField',
+                padding: '0 0 0 25',
+                hidden: true,
+                width: 175,
+                columns: 3,
+                items: [
+                    { boxLabel: 'Yes', name: 'bool', inputValue: true },
+                    { boxLabel: 'No', name: 'bool', inputValue: false},
+                    //{ boxLabel: 'Both', name: 'bool', inputValue: 'all'}
+                    {
+                      xtype: 'button',
+                      text:'Clear',
+                      handler: function() {
+                          this.searchStore.clearFilter();
+                          this.down('#booleanField').reset();
+                      },
+                      scope: this
+                    }
+                ],
+                listeners: {
+                  change: function(radio, newVal, oldVal) {
+                    var me = this,
+                        store = me.searchStore,
+                        field = me.ownerCt.down('#searchCombo').getValue(),
+                        //proxy = store.getProxy(),
+                        value = radio.getValue();
+
+                    if (value.bool === undefined || Ext.isArray(value.bool)) {
+                        return;
+                    }
+
+                    store.filters.clear();
+                    store.filter(field, value.bool);
+                  },
+                  scope: this
+                }
             }],
             listeners: {
                 added: function(c) {
@@ -122,7 +168,7 @@ Ext.define("Ext.ux.grid.FilterBar", {
 
                     Ext.each(cols, function(c){
                         if(c.dataIndex) {
-                            data.push([c.dataIndex, c.text]);
+                            data.push([c.dataIndex, c.text, c.xtype]);
                         }
                     });
 
