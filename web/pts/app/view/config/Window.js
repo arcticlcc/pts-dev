@@ -60,6 +60,18 @@ Ext.define('PTS.view.config.Window', {
                         [1200, 'wide'],
                         [0, 'maximize']
                     ]
+                }, {
+                    xtype: 'combobox',
+                    fieldLabel: 'Page Size',
+                    name: 'pageSize',
+                    qtip: 'Sets the default page size for grids. Select an option or enter a custom value.',
+                    editable: true,
+                    store: [
+                        [25, 25],
+                        [30, 30],
+                        [40, 40],
+                        [50, 50]
+                    ]
                 }]
             }],
             dockedItems: [{
