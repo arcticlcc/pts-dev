@@ -62,7 +62,7 @@ Ext.define('PTS.view.config.Window', {
                     ]
                 }, {
                     xtype: 'combobox',
-                    fieldLabel: 'Page Size',
+                    fieldLabel: '*Page Size',
                     name: 'pageSize',
                     qtip: 'Sets the default page size for grids. Select an option or enter a custom value.',
                     editable: true,
@@ -75,21 +75,26 @@ Ext.define('PTS.view.config.Window', {
                 }]
             }],
             dockedItems: [{
-                xtype: 'toolbar',
-                dock: 'bottom',
-                items: [{
-                    xtype: 'tbfill'
-                }, {
-                    xtype: 'button',
-                    iconCls: 'pts-menu-savebasic',
-                    text: 'Save',
-                    action: 'save'
-                }, {
-                    xtype: 'button',
-                    text: 'Close',
-                    action: 'close'
-                }]
+              xtype: 'toolbar',
+              dock: 'bottom',
+              items: [{
+                xtype: 'tbtext',
+                text: '*Requires restart'
+              }, {
+                xtype: 'tbfill'
+              }, {
+                xtype: 'button',
+                iconCls: 'pts-menu-savebasic',
+                text: 'Save',
+                action: 'save'
+              }, {
+                xtype: 'button',
+                text: 'Close',
+                action: 'close'
+              }]
+
             }]
+
         });
 
         me.callParent(arguments);
