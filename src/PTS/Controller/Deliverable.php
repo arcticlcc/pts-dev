@@ -95,7 +95,8 @@ class Deliverable implements ControllerProviderInterface
                     unset($values->deliverabletypeid);
                     unset($values->title);
                     unset($values->description);
-                }else {
+                    unset($values->code);
+                } else {
                     $sql = "WITH del as (INSERT INTO deliverable
                         (deliverabletypeid, title, description, code)
                         VALUES (:deliverabletypeid, :title, :description, :code)
@@ -263,5 +264,3 @@ class Deliverable implements ControllerProviderInterface
         return $controllers;
     }
 }
-
-?>
