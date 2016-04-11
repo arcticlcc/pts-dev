@@ -5,7 +5,6 @@ Ext.define('PTS.controller.Main', {
     extend: 'Ext.app.Controller',
 
     init: function() {
-        console.info('main');
         var me = this,
             task,
             //myMask = new Ext.LoadMask(Ext.getBody(), {msg:"Please wait...Fetching User Info"}),

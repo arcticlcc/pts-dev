@@ -38,7 +38,7 @@ Ext.application({
     enableQuickTips: true,
 
     models: ['User', 'UserConfig'],
-    stores: ['States', 'Countries', 'Positions', 'ProjectIDs'],
+    stores: ['States', 'Countries', 'Positions', 'ProjectIDs', 'ProductGroupIDs'],
     controllers: [
         'Main',
         'MainToolbar',
@@ -100,7 +100,7 @@ Ext.application({
     /**
      * Launch the application.
      */
-    launch: function() {        
+    launch: function() {
         //Use Notifications for Ext errors
         Ext.Error.handle = function(err) {
             PTS.app.showError(err.msg);

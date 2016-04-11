@@ -61,6 +61,14 @@ Ext.define('PTS.view.product.form.ProductForm', {
                 title: 'Product',
                 anchor: '-15',
                 items: [{
+                        xtype: 'checkboxfield',
+                        name: 'isgroup',
+                        //margin: '0 0 0 20',
+                        width: 175,
+                        boxLabel: 'Is Group?',
+                        labelPad: 3,
+                        labelWidth: 120
+                    },{
                         xtype: 'textfield',
                         name: 'title',
                         fieldLabel: 'Title',
@@ -84,7 +92,7 @@ Ext.define('PTS.view.product.form.ProductForm', {
                         xtype: 'combobox',
                         name: 'projectid',
                         forceSelection: true,
-                        allowBlank: false,
+                        allowBlank: true,
                         //queryMode: 'local',
                         fieldLabel: 'Project',
                         displayField: 'projectcode',
@@ -99,9 +107,26 @@ Ext.define('PTS.view.product.form.ProductForm', {
                         queryParam: 'filter'
                     }, {
                         xtype: 'combobox',
+                        name: 'productgroupid',
+                        forceSelection: true,
+                        allowBlank: true,
+                        //queryMode: 'local',
+                        fieldLabel: 'Product Group',
+                        displayField: 'title',
+                        listConfig: {
+                            getInnerTpl: function() {
+                                return '<div>{projectcode}: {title}</div>';
+                            }
+                        },
+                        store: 'ProductGroupIDs',
+                        valueField: 'productid',
+                        anchor: '100%',
+                        queryParam: 'filter'
+                    }, {
+                        xtype: 'combobox',
                         name: 'deliverabletypeid',
                         fieldLabel: 'Type',
-                        allowBlank: false,
+                        allowBlank: true,
                         anchor: '50%',
                         store: 'ProductTypes',
                         displayField: 'type',
@@ -144,7 +169,7 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             vfield: 'beginDate',
                             endDateField: 'endDate',
                             vtype: 'daterange',
-                            labelWidth: 50
+                            labelWidth: 70
                         }, {
                             xtype: 'daterangefield',
                             itemId: 'endDate',
@@ -154,7 +179,13 @@ Ext.define('PTS.view.product.form.ProductForm', {
                             startDateField: 'startDate',
                             vtype: 'daterange',
                             fieldLabel: 'End',
-                            labelWidth: 50
+                            labelWidth: 70
+                        },{
+                          xtype: 'textfield',
+                          name: 'perioddescription',
+                          fieldLabel: 'Description',
+                          anchor: '75%',
+                          labelWidth: 70
                         }]
                     }, {
                         xtype: 'displayfield',
@@ -198,6 +229,18 @@ Ext.define('PTS.view.product.form.ProductForm', {
                 items: [{
                     xtype: 'textareafield',
                     name: 'purpose',
+                    grow: true,
+                    growMin: 80,
+                    anchor: '100%'
+                }]
+            }, {
+                xtype: 'fieldset',
+                collapsible: true,
+                  title: 'Use Limitation',
+                anchor: '-15',
+                items: [{
+                    xtype: 'textareafield',
+                    name: 'uselimitation',
                     grow: true,
                     growMin: 80,
                     anchor: '100%'

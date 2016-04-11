@@ -14,6 +14,10 @@ Ext.define('PTS.model.Product', {
         type: 'int',
         useNull: true
     }, {
+        name: 'productgroupid',
+        type: 'int',
+        useNull: true
+    }, {
         name: 'deliverabletypeid',
         type: 'int',
         useNull: true
@@ -31,6 +35,10 @@ Ext.define('PTS.model.Product', {
     }, {
         name: 'enddate',
         type: 'mydate'
+    }, {
+        name: 'perioddescription',
+        type: 'mystring',
+        useNull: true
     }, {
         name: 'description',
         type: 'mystring',
@@ -52,11 +60,29 @@ Ext.define('PTS.model.Product', {
     }, {
         name: 'projectcode',
         type: 'string',
-        persist: false
+        persist: false,
+        convert: function(v, record) {
+            return v ? v : 'None';
+        }
     }, {
         name: 'type',
         type: 'string',
         persist: false
+    }, {
+        name: 'uselimitation',
+        type: 'mystring',
+        useNull: true
+    }, {
+        name: 'isgroup',
+        type: 'myboolean',
+        useNull: true
+    }, {
+        name: 'productgroup',
+        type: 'string',
+        persist: false,
+        convert: function(v, record) {
+            return v ? v : 'None';
+        }
     }],
 
     idProperty: 'productid',

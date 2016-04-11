@@ -10,7 +10,8 @@ Ext.define('PTS.view.product.tab.ProductList', {
         //'PTS.util.Format',
         'Ext.ux.grid.PrintGrid',
         'Ext.ux.grid.SaveGrid',
-        'Ext.ux.grid.FilterBar'
+        'Ext.ux.grid.FilterBar',
+        'Ext.ux.grid.PagingToolbarResizer'
     ],
 
     store: 'Products',
@@ -19,15 +20,23 @@ Ext.define('PTS.view.product.tab.ProductList', {
 
     initComponent: function() {
         var me = this;
+        var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
+            groupHeaderTpl: 'Group: {name} ({rows.length})', //print the number of items in the group
+            startCollapsed: true // start all groups collapsed
+        });
 
         Ext.applyIf(me, {
+            features: [groupingFeature],
             dockedItems: [{
                 xtype: 'pagingtoolbar',
                 store: 'Products',
                 displayInfo: true,
                 plugins: [
                     Ext.create('Ext.ux.grid.PrintGrid', {}),
-                    Ext.create('Ext.ux.grid.SaveGrid', {})
+                    Ext.create('Ext.ux.grid.SaveGrid', {}),
+                    Ext.create('Ext.ux.grid.PagingToolbarResizer', {
+                        options: [25, 50, 100, 200, 500]
+                    })
                 ]
             }],
             columns: [{
@@ -79,6 +88,20 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     trueText: 'Yes',
                     falseText: 'No',
                     dataIndex: 'exportmetadata',
+                    //hidden: true,
+                    width: 55
+                }, {
+                    xtype: 'gridcolumn',
+                    hidden: false,
+                    dataIndex: 'productgroup',
+                    text: 'Group',
+                    flex: 1
+                }, {
+                    xtype: 'booleancolumn',
+                    text: 'Is Group',
+                    trueText: 'Yes',
+                    falseText: 'No',
+                    dataIndex: 'isgroup',
                     //hidden: true,
                     width: 55
                 }, {
