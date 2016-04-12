@@ -22,7 +22,8 @@ CREATE OR REPLACE VIEW dev.productlist AS
     p.productgroupid,
     p.uselimitation,
     pg.title AS productgroup,
-    p.perioddescription
+    p.perioddescription,
+    p.maintenancefrequencyid
    FROM dev.product p
      left JOIN dev.project USING (projectid)
      left JOIN dev.contactgroup ON project.orgid = contactgroup.contactid

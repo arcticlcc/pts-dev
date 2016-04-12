@@ -187,6 +187,22 @@ Ext.define('PTS.view.product.form.ProductForm', {
                           anchor: '75%',
                           labelWidth: 70
                         }]
+                      }, {
+                          xtype: 'combobox',
+                          name: 'maintenancefrequencyid',
+                          fieldLabel: 'Maintenance Frequency',
+                          allowBlank: true,
+                          anchor: '50%',
+                          store: 'MaintenanceFrequencies',
+                          displayField: 'codename',
+                          valueField: 'maintenancefrequencyid',
+                          forceSelection: true,
+                          queryMode: 'local',
+                          listConfig: {
+                              getInnerTpl: function() {
+                                  return '<div data-qtip="{description}">{codename}</div>';
+                              }
+                          }
                     }, {
                         xtype: 'displayfield',
                         name: 'uuid',

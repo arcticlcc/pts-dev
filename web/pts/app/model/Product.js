@@ -26,6 +26,10 @@ Ext.define('PTS.model.Product', {
         type: 'int',
         useNull: true
     }, {
+        name: 'maintenancefrequencyid',
+        type: 'int',
+        useNull: true
+    }, {
         name: 'title',
         type: 'mystring',
         useNull: true
