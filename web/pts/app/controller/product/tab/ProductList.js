@@ -84,7 +84,8 @@ Ext.define('PTS.controller.product.tab.ProductList', {
         });
 
         //set projectcode
-        copy.set('projectcode', this.getProjectIDsStore().getById(pid).get('projectcode'));
+        var pc = pid ? this.getProjectIDsStore().getById(pid).get('projectcode') : 'None';
+        copy.set('projectcode', pc);
         copy.commit();
     },
 
