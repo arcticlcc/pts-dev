@@ -8,6 +8,7 @@ Ext.define('PTS.view.product.window.ProductLinks', {
     requires: ['Ext.button.Button', 'Ext.toolbar.Toolbar'],
 
     title: 'Links',
+    detailTitle: 'Link Details',
     store: 'OnlineResources',
 
     initComponent: function() {

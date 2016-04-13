@@ -13,6 +13,7 @@ Ext.define('PTS.controller.product.window.Window', {
         'OnlineFunctions',
         'DateTypes',
         'ProductStatuses',
+        'ProductSteps',
         //'ProductComments',
         'ProductVectors',
         'CommonVectors'
@@ -36,12 +37,14 @@ Ext.define('PTS.controller.product.window.Window', {
         var pf = this.getController('product.form.ProductForm'),
             pc = this.getController('product.window.ProductContacts'),
             pm = this.getController('product.window.ProductMetadata'),
-            pk = this.getController('product.window.ProductKeywords');
+            pk = this.getController('product.window.ProductKeywords'),
+            ps = this.getController('product.window.ProductSteps');
         // Remember to call the init method manually
         pf.init();
         pc.init();
         pk.init();
         pm.init();
+        ps.init();
 
         this.control({
             'productwindow [action=closewindow]': {

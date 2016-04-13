@@ -48,6 +48,7 @@ Ext.define('PTS.view.controls.ReorderColumn', {
                             },
                             scope: rowEl
                         });
+                        this.fireEvent('moverow', rec);                        
                     }
                 }
             }, {
@@ -83,10 +84,19 @@ Ext.define('PTS.view.controls.ReorderColumn', {
                             },
                             scope: rowEl
                         });
+                        this.fireEvent('moverow', rec);
                     }
                 }
             }]
         });
         me.callParent([cfg]);
+
+        me.addEvents(
+            /**
+             * @event moverow
+             * Fires after a record is moved using the action.
+             * @param {Ext.data.Model} record
+             */
+            'moverow');
     }
 });

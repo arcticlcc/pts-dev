@@ -11,6 +11,7 @@ Ext.define('PTS.view.product.window.Window', {
         'PTS.view.product.window.ProductStatus',
         'PTS.view.product.window.ProductContacts',
         'PTS.view.product.window.ProductMetadata',
+        'PTS.view.product.window.ProductSteps',
         'PTS.view.product.form.ProductMetadataForm',
         //'PTS.view.controls.CommentEditGrid',
         'PTS.view.product.window.ProductKeywords',
@@ -137,6 +138,8 @@ Ext.define('PTS.view.product.window.Window', {
                                 })
                             ]
                         }]
+                    }, {
+                        xtype: 'productsteps'
                     }, {
                         xtype: 'productmetadata',
                         formItems: [{

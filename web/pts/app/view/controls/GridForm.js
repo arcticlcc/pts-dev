@@ -15,6 +15,12 @@ Ext.define('PTS.view.controls.GridForm', {
     syncOnRemoveRow: true,
 
     /**
+     * @cfg {String}
+     * Title to display in the detail section.
+     */
+    detailTitle: 'Details',
+
+    /**
      * @cfg {Ext.data.Store} store (required)
      * @inheritdoc Ext.panel.Table#store
      */
@@ -59,36 +65,40 @@ Ext.define('PTS.view.controls.GridForm', {
             store = grid.getStore();
         //mask = new Ext.LoadMask(pnl,'Saving...');
 
-        el.mask('Saving...');
-        form.getForm().updateRecord(rec);
+        if (form.fireEvent('beforesaverow', rec, store) !== false) {
+            el.mask('Saving...');
+            form.getForm().updateRecord(rec);
 
-        rec.save({
-            success: function(model, op) {
-                var idx = store.indexOfId(model.getId()),
-                    sm = grid.getSelectionModel();
+            rec.save({
+                success: function(model, op) {
+                    var idx = store.indexOfId(model.getId()),
+                        sm = grid.getSelectionModel();
 
-                //load the model to get desired trackresetonload behavior
-                form.loadRecord(model);
+                    //load the model to get desired trackresetonload behavior
+                    form.loadRecord(model);
 
-                if (idx === -1) {
-                    store.add(model);
-                    sm.select(model);
-                } else {
-                    sm.select(idx);
-                }
+                    if (idx === -1) {
+                        store.add(model);
+                        sm.select(model);
+                    } else {
+                        store.removeAt(idx);
+                        store.insert(idx, model);
+                        sm.select(idx);
+                    }
 
-                el.unmask();
-            },
-            failure: function(model, op) {
-                el.unmask();
-                Ext.create('widget.uxNotification', {
-                    title: 'Error',
-                    iconCls: 'ux-notification-icon-error',
-                    html: 'There was an error saving the link.</br>Error: ' + PTS.app.getError()
-                }).show();
-            },
-            scope: this
-        });
+                    el.unmask();
+                },
+                failure: function(model, op) {
+                    el.unmask();
+                    Ext.create('widget.uxNotification', {
+                        title: 'Error',
+                        iconCls: 'ux-notification-icon-error',
+                        html: 'There was an error saving the link.</br>Error: ' + PTS.app.getError()
+                    }).show();
+                },
+                scope: this
+            });
+        }
     },
 
     /**
@@ -178,7 +188,7 @@ Ext.define('PTS.view.controls.GridForm', {
                 //title:'Online Resource',
 
                 columns: me.columns,
-
+                viewConfig: me.gridViewConfig,
                 dockedItems: [{
                     xtype: 'pagingtoolbar',
                     store: me.store, // same store GridPanel is using
@@ -194,17 +204,19 @@ Ext.define('PTS.view.controls.GridForm', {
 
                 listeners: {
                     selectionchange: function(model, records) {
-                        var rec = records[0];
+                        var rec = records[0],
+                            disabled = records.length === 0;
 
                         if (rec) {
                             var form = this.up('form');
 
                             form.getForm().loadRecord(rec);
                             form.fireEvent('loadrecord', rec);
-                            form.down('#formpanel').enable();
+                            //form.down('#formpanel').enable();
                         }
 
-                        this.up('gridform').down('#removeRow').setDisabled(records.length === 0);
+                        this.up('gridform').down('#removeRow').setDisabled(disabled);
+                        this.up('gridform').down('#formpanel').setDisabled(disabled);
                     },
                     viewready: function(grid) {
                         if (grid.getStore().count() > 0) {
@@ -222,7 +234,7 @@ Ext.define('PTS.view.controls.GridForm', {
                 region: 'south',
                 disabled: true,
                 split: true,
-                title: 'Link Details',
+                title: me.detailTitle,
                 layout: 'anchor',
                 defaults: {
                     anchor: '70%',
@@ -265,6 +277,14 @@ Ext.define('PTS.view.controls.GridForm', {
              * @param {Ext.data.Model} record
              */
             'loadform',
+            /**
+             * @event beforesaverow
+             * Fires before a row is saved.
+             * Return false to cancel.
+             * @param {Ext.data.Model} record
+             * @param {Ext.data.Store} store
+             */
+            'beforesaverow',
             /**
              * @event beforeremoverow
              * Fires before a row is removed.
