@@ -10,6 +10,13 @@ Ext.define('PTS.model.Product', {
         type: 'int',
         persist: false
     }, {
+        name: 'orgid',
+        type: 'int',
+        useNull: true,
+        convert: function(v, record) {
+            return v ? v : PTS.user.get('groupid');
+        }
+    }, {
         name: 'projectid',
         type: 'int',
         useNull: true

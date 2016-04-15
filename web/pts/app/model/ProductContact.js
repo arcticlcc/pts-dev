@@ -28,6 +28,13 @@ Ext.define('PTS.model.ProductContact', {
     }, {
         name: 'role',
         persist: false
+    }, {
+        name: 'namerole',
+        type: 'string',
+        persist: false,
+        convert: function(v, record) {
+            return record.get('name') + '(' + record.get('role') + ')';
+        }
     }],
     idProperty: 'productcontactid',
 

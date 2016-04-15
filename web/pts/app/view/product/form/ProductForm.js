@@ -91,7 +91,7 @@ Ext.define('PTS.view.product.form.ProductForm', {
                     {
                         xtype: 'combobox',
                         name: 'projectid',
-                        forceSelection: true,
+                        forceSelection: false,
                         allowBlank: true,
                         //queryMode: 'local',
                         fieldLabel: 'Project',

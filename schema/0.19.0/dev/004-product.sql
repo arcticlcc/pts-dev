@@ -10,3 +10,11 @@ ALTER TABLE dev.product
   ON UPDATE NO ACTION ON DELETE NO ACTION;
 CREATE INDEX fki_maintenancefrequency_product_fk
  ON dev.product(maintenancefrequencyid);
+
+ -- Column: orgid
+
+-- ALTER TABLE dev.product DROP COLUMN orgid;
+
+ALTER TABLE dev.product ADD COLUMN orgid integer;
+ALTER TABLE dev.product ALTER COLUMN orgid SET NOT NULL;
+COMMENT ON COLUMN dev.product.orgid IS 'Identifies organization that owns the product';

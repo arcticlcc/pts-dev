@@ -85,16 +85,16 @@ Ext.define('PTS.view.product.window.ProductSteps', {
                 maxWidth: 250
             }, {
                 fieldLabel: 'Processor',
-                name: 'contactid',
+                name: 'productcontactid',
                 xtype: 'combobox',
-                displayField: 'name',
-                listConfig: {
+                displayField: 'namerole',
+                /*listConfig: {
                     getInnerTpl: function() {
                         return '<div>{name} ({role})</div>';
                     }
-                },
+                },*/
                 store: 'ProductContacts',
-                valueField: 'contactid',
+                valueField: 'productcontactid',
                 forceSelection: true,
                 allowBlank: false,
                 queryMode: 'local',

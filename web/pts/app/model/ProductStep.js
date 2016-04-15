@@ -14,7 +14,7 @@ Ext.define('PTS.model.ProductStep', {
         type: 'int',
         useNull: true
     }, {
-        name: 'contactid',
+        name: 'productcontactid',
         type: 'int',
         useNull: true
     }, {

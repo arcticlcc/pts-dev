@@ -83,6 +83,12 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     dataIndex: 'type'
                         //width: 55
                 }, {
+                    xtype: 'gridcolumn',
+                    hidden: false,
+                    dataIndex: 'productgroup',
+                    text: 'Group',
+                    flex: 1
+                }, {
                     xtype: 'booleancolumn',
                     text: 'Export',
                     trueText: 'Yes',
@@ -90,12 +96,6 @@ Ext.define('PTS.view.product.tab.ProductList', {
                     dataIndex: 'exportmetadata',
                     //hidden: true,
                     width: 55
-                }, {
-                    xtype: 'gridcolumn',
-                    hidden: false,
-                    dataIndex: 'productgroup',
-                    text: 'Group',
-                    flex: 1
                 }, {
                     xtype: 'booleancolumn',
                     text: 'Is Group',
