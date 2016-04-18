@@ -181,7 +181,7 @@ class ADIwg {
         ->find_many() as $object) {
             $steps[] = $object->as_array();
         }
-dump($steps);
+
         //get project and related products
         $prj = $product['projectid'] ? $this->getProject($product['projectid']) : false;
         $assoc = [];
@@ -272,7 +272,7 @@ dump($steps);
                 }
             }
         }
-dump($product);
+
         //merge resource
         if(isset($pg)) {
           foreach ($product as $key => $value) {
@@ -493,4 +493,3 @@ dump($product);
     }
 
 }
-?>

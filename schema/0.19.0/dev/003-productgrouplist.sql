@@ -8,7 +8,7 @@ ALTER TABLE dev.product
    CREATE OR REPLACE VIEW dev.productgrouplist AS
     SELECT p.productid,
        p.projectid,
-       form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+       common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
        p.uuid,
        p.title,
        p.isgroup,

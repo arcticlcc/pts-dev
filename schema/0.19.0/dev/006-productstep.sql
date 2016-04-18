@@ -4,7 +4,7 @@
 
 CREATE TABLE dev.productstep
 (
-  productstepid integer NOT NULL DEFAULT nextval('productstep_productstepid_seq'::regclass),
+  productstepid integer NOT NULL DEFAULT nextval('common.productstep_productstepid_seq'::regclass),
   productid integer NOT NULL, -- PK for PRODUCT
   productcontactid integer NOT NULL,
   description character varying NOT NULL,

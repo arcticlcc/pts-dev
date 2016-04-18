@@ -1,5 +1,3 @@
-SET search_path = dev, pg_catalog;
-
 CREATE OR REPLACE VIEW metadataproduct AS
  SELECT product.productid,
     common.form_projectcode((project.number)::integer, (project.fiscalyear)::integer, contactgroup.acronym) AS projectcode,

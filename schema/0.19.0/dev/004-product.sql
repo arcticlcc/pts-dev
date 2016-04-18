@@ -16,5 +16,8 @@ CREATE INDEX fki_maintenancefrequency_product_fk
 -- ALTER TABLE dev.product DROP COLUMN orgid;
 
 ALTER TABLE dev.product ADD COLUMN orgid integer;
+UPDATE dev.product SET orgid = ( SELECT groupschema.groupid
+          FROM common.groupschema
+          WHERE ((groupschema.groupschemaid)::name = ANY (current_schemas(false))));
 ALTER TABLE dev.product ALTER COLUMN orgid SET NOT NULL;
 COMMENT ON COLUMN dev.product.orgid IS 'Identifies organization that owns the product';

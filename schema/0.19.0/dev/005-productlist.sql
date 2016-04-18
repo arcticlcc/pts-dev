@@ -5,7 +5,7 @@
 CREATE OR REPLACE VIEW dev.productlist AS
  SELECT p.productid,
     p.projectid,
-    form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+    common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
     p.uuid,
     p.title,
     p.description,
