@@ -100,7 +100,7 @@ class ADIwg {
 
     }
 
-    function getProduct($id, $withAssoc = false) {
+    function getProduct($id, $withAssoc = false, $group = false) {
         $contacts = array();
         $roles = array();
 
@@ -142,6 +142,7 @@ class ADIwg {
         }
 
         //get product dates
+        $dates = [];
         $dObj = $this->app['idiorm']->getTable('productstatus')
         ->select_expr("MAX(effectivedate)", 'date')
         ->select('codename', 'dateType')
@@ -150,7 +151,7 @@ class ADIwg {
         ->group_by('codename')
         ->find_many();
 
-        if(!$dObj) {
+        if(!$dObj && !$group) {
           throw new \Exception("Unable to proceed: No status dates provided.");
         }
 
@@ -203,7 +204,7 @@ class ADIwg {
               ->find_many() as $object) {
                   $prd = $this->getProduct($object->productid);
                   $prd['assocType'] = 'projectProduct';
-                  $assoc[] = $prd;
+                  $assoc[$prd['resource']['resourceIdentifier']] = $prd;
               }
           }
 
@@ -217,7 +218,7 @@ class ADIwg {
 
         //get productgroup and related products
         if($product['productgroupid']) {
-          $pg = $this->getProduct($product['productgroupid']);
+          $pg = $this->getProduct($product['productgroupid'], null, true);
           if($withAssoc) {
               if($pg['resource']['exportmetadata']) {
                   $pg['assocType'] = 'largerWorkCitation';
@@ -231,9 +232,11 @@ class ADIwg {
               ->where('exportmetadata', TRUE)
               ->where_not_equal('productid', $id)
               ->find_many() as $object) {
-                  $prd = $this->getProduct($object->productid);
-                  $prd['assocType'] = 'crossReference';
-                  $assoc[] = $prd;
+                if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                    $prd = $this->getProduct($object->productid);
+                    $prd['assocType'] = 'crossReference';
+                    $assoc[] = $prd;
+                }
               }
 
           }
