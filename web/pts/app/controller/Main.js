@@ -82,6 +82,8 @@ Ext.define('PTS.controller.Main', {
                 body.mask('Please wait...Fetching Data'); //update mask
                 //load ProjectID store
                 me.getStore('ProjectIDs').load();
+                //load ProductGroupID store
+                me.getStore('ProductGroupIDs').load();
 
                 Ext.create('PTS.view.Viewport');
 
