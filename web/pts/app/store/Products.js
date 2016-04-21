@@ -14,5 +14,11 @@ Ext.define('PTS.store.Products', {
     sorters: [{
         property: 'projectcode',
         direction: 'DESC'
+    }, {
+        property: 'productgroup',
+        direction: 'ASC'
+    }, {
+        property: 'title',
+        direction: 'ASC'
     }]
 });
