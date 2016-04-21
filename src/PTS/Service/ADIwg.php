@@ -471,16 +471,18 @@ class ADIwg {
 
             $product = $schema->createTable("product");
             $product->addColumn("productid", "string");
-            $product->addColumn("projectid", "string", ['notnull' => FALSE]);
-            $product->addColumn("projectcode", "string");
+            $product->addColumn("projectid", "string", ['notnull' => false]);
+            $product->addColumn("projectcode", "string", ['notnull' => false]);
             $product->addColumn("json", "string");
             $product->addColumn("xml", "string");
             $product->addColumn("html", "string");
             $product->addColumn("metadataupdate", "string");
             $product->addColumn("groupid", "string");
             $product->setPrimaryKey(array("productid"));
-            $product->addForeignKeyConstraint($project,
-                array("projectid"), array("projectid"),
+            $product->addForeignKeyConstraint(
+                $project,
+                array("projectid"),
+                array("projectid"),
                 array("onUpdate" => "CASCADE","onDelete" => "SET NULL")
             );
 
@@ -494,7 +496,6 @@ class ADIwg {
             return $conn;
         }
 
-        return FALSE;
+        return false;
     }
-
 }
