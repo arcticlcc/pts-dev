@@ -189,63 +189,63 @@ class ADIwg {
 
         if($prj) {
 
-          if($withAssoc) {
-              if($prj['published']) {
-                  $prj['assocType'] = 'largerWorkCitation';
-                  $projuuid = $prj['resource']['resourceIdentifier'];
-                  $assoc = [$prj];
-              }
+            if($withAssoc) {
+                if($prj['published']) {
+                    $prj['assocType'] = 'largerWorkCitation';
+                    $projuuid = $prj['resource']['resourceIdentifier'];
+                    $assoc = [$prj];
+                }
 
-              //get related project products
-              foreach ($this->app['idiorm']->getTable('product')
-              ->where('projectid', $product['projectid'])
-              ->where('exportmetadata', TRUE)
-              ->where_not_equal('productid', $id)
-              ->find_many() as $object) {
-                  $prd = $this->getProduct($object->productid);
-                  $prd['assocType'] = 'projectProduct';
-                  $assoc[$prd['resource']['resourceIdentifier']] = $prd;
-              }
-          }
+                //get related project products
+                foreach ($this->app['idiorm']->getTable('product')
+                ->where('projectid', $product['projectid'])
+                ->where('exportmetadata', TRUE)
+                ->where_not_equal('productid', $id)
+                ->find_many() as $object) {
+                    $prd = $this->getProduct($object->productid);
+                    $prd['assocType'] = 'projectProduct';
+                    $assoc[$prd['resource']['resourceIdentifier']] = $prd;
+                }
+            }
 
           //if no product features, use project features if present
-          if($product['features'] === NULL && isset($prj['resource']['features'])) {
-              $product['features'] = $prj['resource']['features'];
-              $product['bbox'] = $prj['resource']['bbox'];
-              $product['featuresInherited'] = true;
+            if($product['features'] === NULL && isset($prj['resource']['features'])) {
+                $product['features'] = $prj['resource']['features'];
+                $product['bbox'] = $prj['resource']['bbox'];
+                $product['featuresInherited'] = true;
+            }
           }
-        }
 
-        //get productgroup and related products
-        if($product['productgroupid']) {
-          $pg = $this->getProduct($product['productgroupid'], null, true);
-          if($withAssoc) {
-              if($pg['resource']['exportmetadata']) {
-                  $pg['assocType'] = 'largerWorkCitation';
-                  //$pguuid = $pg['resource']['resourceIdentifier'];
-                  $assoc = [$pg];
-              }
-
-              //get related group products
-              foreach ($this->app['idiorm']->getTable('product')
-              ->where('productgroupid', $product['productgroupid'])
-              ->where('exportmetadata', TRUE)
-              ->where_not_equal('productid', $id)
-              ->find_many() as $object) {
-                if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
-                    $prd = $this->getProduct($object->productid);
-                    $prd['assocType'] = 'crossReference';
-                    $assoc[] = $prd;
+          //get productgroup and related products
+          if($product['productgroupid']) {
+            $pg = $this->getProduct($product['productgroupid'], null, true);
+            if($withAssoc) {
+                if($pg['resource']['exportmetadata']) {
+                    $pg['assocType'] = 'largerWorkCitation';
+                    //$pguuid = $pg['resource']['resourceIdentifier'];
+                    $assoc = [$pg];
                 }
-              }
 
-          }
+                //get related group products
+                foreach ($this->app['idiorm']->getTable('product')
+                ->where('productgroupid', $product['productgroupid'])
+                ->where('exportmetadata', TRUE)
+                ->where_not_equal('productid', $id)
+                ->find_many() as $object) {
+                  if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                      $prd = $this->getProduct($object->productid);
+                      $prd['assocType'] = 'crossReference';
+                      $assoc[$prd['resource']['resourceIdentifier']] = $prd;
+                  }
+                }
 
-          //if no product features, use group features if present
-          if($product['features'] === NULL && isset($pg['resource']['features'])) {
-              $product['features'] = $pg['resource']['features'];
-              $product['bbox'] = $pg['resource']['bbox'];
-          }
+            }
+
+            //if no product features, use group features if present
+            if($product['features'] === NULL && isset($pg['resource']['features'])) {
+                $product['features'] = $pg['resource']['features'];
+                $product['bbox'] = $pg['resource']['bbox'];
+            }
         }
 
         //get grouped products
@@ -257,9 +257,11 @@ class ADIwg {
               ->where('exportmetadata', TRUE)
               ->where_not_equal('productid', $id)
               ->find_many() as $object) {
-                  $prd = $this->getProduct($object->productid);
-                  $prd['assocType'] = 'isComposedOf';
-                  $assoc[] = $prd;
+                if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                    $prd = $this->getProduct($object->productid);
+                    $prd['assocType'] = 'isComposedOf';
+                    $assoc[$prd['resource']['resourceIdentifier']] = $prd;
+                }
               }
 
           }
