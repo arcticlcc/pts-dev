@@ -232,11 +232,11 @@ class ADIwg {
                 ->where('exportmetadata', TRUE)
                 ->where_not_equal('productid', $id)
                 ->find_many() as $object) {
-                  if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                  //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
                       $prd = $this->getProduct($object->productid);
                       $prd['assocType'] = 'crossReference';
                       $assoc[$prd['resource']['resourceIdentifier']] = $prd;
-                  }
+                  //}
                 }
 
             }
@@ -257,11 +257,11 @@ class ADIwg {
               ->where('exportmetadata', TRUE)
               ->where_not_equal('productid', $id)
               ->find_many() as $object) {
-                if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
                     $prd = $this->getProduct($object->productid);
                     $prd['assocType'] = 'isComposedOf';
                     $assoc[$prd['resource']['resourceIdentifier']] = $prd;
-                }
+                //}
               }
 
           }
