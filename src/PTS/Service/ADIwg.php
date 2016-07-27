@@ -66,6 +66,7 @@ class ADIwg {
             foreach ($this->app['idiorm']->getTable('product')
             ->select('productid')
             -> where('projectid', $project['projectid'])
+            ->where('exportmetadata', TRUE)
             ->find_many() as $object) {
                 $prd = $this->getProduct($object->get('productid'));
                 $prd['assocType'] = 'projectProduct';
@@ -151,8 +152,8 @@ class ADIwg {
         ->group_by('codename')
         ->find_many();
 
-        if(!$dObj && !$group) {
-          throw new \Exception("Unable to proceed: No status dates provided.");
+        if (!$dObj && !$group) {
+            throw new \Exception("Unable to proceed: No status dates provided for product id: $id.");
         }
 
         foreach ($dObj as $object) {
