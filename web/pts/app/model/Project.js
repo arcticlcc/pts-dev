@@ -24,6 +24,10 @@ Ext.define('PTS.model.Project', {
         type: 'int',
         useNull: true
     }, {
+        name: 'sciencebaseid',
+        type: 'mystring',
+        useNull: true
+    }, {
         name: 'title',
         type: 'mystring',
         useNull: true

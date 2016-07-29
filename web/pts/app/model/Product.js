@@ -25,6 +25,10 @@ Ext.define('PTS.model.Product', {
         type: 'int',
         useNull: true
     }, {
+        name: 'sciencebaseid',
+        type: 'mystring',
+        useNull: true
+    }, {
         name: 'deliverabletypeid',
         type: 'int',
         useNull: true

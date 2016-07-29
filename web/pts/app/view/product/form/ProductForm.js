@@ -209,6 +209,32 @@ Ext.define('PTS.view.product.form.ProductForm', {
                         submitValue: false,
                         fieldLabel: 'UUID',
                         anchor: '100%'
+                    },
+                    {
+                        xtype: 'fieldcontainer',
+                        layout: {
+                            align: 'stretchmax',
+                            type: 'hbox'
+                        },
+                        fieldLabel: 'ScienceBase ID',
+                        items: [{
+                            xtype: 'textfield',
+                            name: 'sciencebaseid',
+                            allowBlank: true,
+                            emptyText: 'ScienceBase ID',
+                            hideLabel: true,
+                            width: 300
+                        }, {
+                            xtype: 'simplelink',
+                            text: 'View in ScienceBase',
+                            margin: '0 10',
+                            cls: 'x-form-item-label',
+                            handler: function () {
+                                window.open('https://www.sciencebase.gov/catalog/item/' +
+                                    this.prev('textfield[name=sciencebaseid]')
+                                    .value, '_sb');
+                            }
+                        }]
                     }
                 ]
             }, {

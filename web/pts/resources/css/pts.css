@@ -479,3 +479,14 @@ body .ux-notification-light {
 .x-boxselect .x-form-trigger:hover {
     background-position: 0px 2px;
 }
+a.x-simplelink-default,
+a.x-simplelink-default:visited {
+    color:#00e;
+    text-decoration:none;
+}
+
+
+a.x-simplelink-default:hover {
+    cursor: pointer;
+    text-decoration:underline;
+}
