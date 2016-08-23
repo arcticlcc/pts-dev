@@ -71,9 +71,14 @@ reports:
           - {text: Admin City, dataIndex: admincity,  hidden: true}
           - {text: Admin State, dataIndex: adminstatename,  hidden: true}
           - {text: Admin Zip, dataIndex: adminpostalcode,  hidden: true}
-        fields: [projectcode, title, agreementcode, piname, pititle, organization, areacode, phone, phoneext, phonecountry, email, street1, street2, city, statename, postalcode, countryiso, admincontact, admintitle, adminareacode, adminphone, adminphoneext, adminphonecountry, adminemail, adminstreet1, adminstreet2, admincity, adminstatename, adminpostalcode, admincountryiso]
+          - {text: Status, dataIndex: status}
+
+        fields: [projectcode, title, agreementcode, piname, pititle, organization, areacode, phone, phoneext, phonecountry, email, street1, street2, city, statename, postalcode, countryiso, admincontact, admintitle, adminareacode, adminphone, adminphoneext, adminphonecountry, adminemail, adminstreet1, adminstreet2, admincity, adminstatename, adminpostalcode, admincountryiso, status, allemail]
         filterBar: true
         limit: 30
+        pbarPlugins:
+          - type: Ext.ux.grid.GrabField
+            cfg: {text: e-mail, dataindex: allemail, iconCls: pts-menu-email, tooltip: Get all visible e-mail addresses, delimiter: ", \n", windowTitle: E-mail addresses}
       - text: LCC Staff
         url: ../alccstaff
         qtip: Lists staff of the LCC
