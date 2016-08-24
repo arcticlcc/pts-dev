@@ -5,6 +5,7 @@ use Silex\Provider;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Debug\ErrorHandler;
 use Symfony\Component\Debug\ExceptionHandler;
+use PTS\Service\Github;
 
 // Create the application
 $app = new Application();
@@ -17,6 +18,7 @@ $app->register(new PTS\Service\PTSServiceProvider());
 $app->register(new PTS\Controller\Feature());
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "reports.yml"));
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "config.yml"));
+$app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "github.yml"));
 $app->register(new Igorw\Silex\ConfigServiceProvider($app['config.dir'] . "db.yml", array(
     'data_path' => __DIR__. '/../data',
 )));
@@ -133,6 +135,11 @@ $app['json'] = $app->share(function() {
 $app['adiwg'] = $app->share(function($app) {
 
     return new PTS\Service\ADIwg($app);
+});
+
+$app['github'] = $app->share(function($app) {
+
+    return new PTS\Service\Github($app);
 });
 
 $app['twig'] = $app->share($app->extend('twig', function($twig, $app) {

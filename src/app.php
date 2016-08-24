@@ -53,6 +53,7 @@ $app->mount('/', new PTS\Controller\Feature());
 $app->mount('/', new PTS\Controller\ModStatus());
 $app->mount('/', new PTS\Controller\ModDocStatus());
 $app->mount('/', new PTS\Controller\UserInfo());
+$app->mount('/', new PTS\Controller\Issue());
 
 $app->get('/', function() use ($app) {
 

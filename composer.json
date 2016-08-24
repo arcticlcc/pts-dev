@@ -19,7 +19,9 @@
         "silex/web-profiler": "~1.0@dev",
         "jeromemacias/silex-debug": "~1.0@dev",
         "symfony/finder": "^3.0",
-        "composer/semver": "^1.2"
+        "composer/semver": "^1.2",
+        "knplabs/github-api": "^1.7",
+        "php-http/guzzle6-adapter": "^1.1"
     },
     "repositories": [
         {
