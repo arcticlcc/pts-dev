@@ -46,6 +46,12 @@ Ext.define('PTS.view.MainToolbar', {
                             iconCls: 'pts-menu-settings',
                             text: 'Settings'
                         }, {
+                            xtype: 'menuitem',
+                            itemId: 'issueBtn',
+                            iconCls: 'pts-menu-exclamation',
+                            text: 'Create Issue',
+                            tooltip: 'Test'
+                        }, {
                             itemId: 'switchPTS',
                             iconCls: 'pts-menu-switch',
                             text: 'Switch PTS',

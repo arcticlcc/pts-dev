@@ -91,7 +91,9 @@ class Login implements ControllerProviderInterface
                         'user' => array(
                             'username' => $result->username,
                             'loginid' => $result->loginid,
-                            'firstname' => $result->firstname //TODO:Get this from database after setting path
+                            'firstname' => $result->firstname, //TODO:Get this from database after setting path
+                            'openid' => $result->openid
+
                         ),
                         'schema' => $result->groupschemaid,
                         'schemas' => $getSchemas($result->loginid),
@@ -193,7 +195,8 @@ class Login implements ControllerProviderInterface
                                     'user'=> array(
                                         'username' => $result->username,
                                         'loginid' => $result->loginid,
-                                        'firstname' => $result->firstname
+                                        'firstname' => $result->firstname,
+                                        'openid' => $result->openid
                                         ),
                                     'schema' => $result->groupschemaid,
                                     'schemas' => $getSchemas($result->loginid),
@@ -278,7 +281,8 @@ class Login implements ControllerProviderInterface
                                 'user'=> array(
                                     'username' => $result->username,
                                     'loginid' => $result->loginid,
-                                    'firstname' => $result->firstname
+                                    'firstname' => $result->firstname,
+                                    'openid' => $result->openid
                                     ),
                                 'schema' => $result->groupschemaid,
                                 'schemas' => $getSchemas($result->loginid),

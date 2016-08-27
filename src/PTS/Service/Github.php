@@ -20,7 +20,7 @@ class Github {
 
     public function client() {
       $client = new \Github\Client();
-      //$client->authenticate($this->app['github_config']['user'], $this->app['github_config']['token'], \Github\Client::AUTH_HTTP_TOKEN);
+      $client->authenticate($this->app['github_config']['token'],null, \Github\Client::AUTH_HTTP_TOKEN);
       return $client;
     }
 

@@ -17,7 +17,8 @@ Ext.define('PTS.Overrides', {
         'Ext.data.TreeStore',
         'Ext.grid.Scroller',
         'Ext.button.Cycle',
-        'Ext.data.Model'
+        'Ext.data.Model',
+        'Ext.form.action.Submit'
 
     ]
 }, function() {
@@ -491,6 +492,41 @@ Ext.define('PTS.Overrides', {
                 me.mon(me.scrollEl, 'scroll', me.onElScroll, me);
             }
         }
+    });
+
+    //jsonData support for form submits
+    Ext.override(Ext.form.action.Submit, {
+      doSubmit: function() {
+          var formEl,
+              ajaxOptions = Ext.apply(this.createCallback(), {
+                  url: this.getUrl(),
+                  method: this.getMethod(),
+                  headers: this.headers
+              });
+
+          // For uploads we need to create an actual form that contains the file upload fields,
+          // and pass that to the ajax call so it can do its iframe-based submit method.
+          if (this.form.hasUpload()) {
+              formEl = ajaxOptions.form = this.buildForm();
+              ajaxOptions.isUpload = true;
+          } else {
+              ajaxOptions.params = this.getParams();
+              ajaxOptions.jsonData = this.jsonData;
+          }
+
+          Ext.Ajax.request(ajaxOptions);
+
+          if (formEl) {
+              Ext.removeNode(formEl);
+          }
+      },
+
+      getParams: function() {
+          var nope = false,
+              configParams = this.callParent(),
+              fieldParams = this.jsonData ? null : this.form.getValues(nope, nope, this.submitEmptyText !== nope);
+          return Ext.apply({}, fieldParams, configParams);
+      }
     });
 
     //Fixes Ext.button.Cycle suppressEvent

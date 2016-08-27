@@ -5,11 +5,15 @@ Ext.define('PTS.controller.MainToolbar', {
     extend: 'Ext.app.Controller',
     views: [
         'MainToolbar',
-        'config.Window'
+        'config.Window',
+        'issue.Window'
     ],
     refs: [{
         ref: 'configForm',
         selector: 'configwindow form'
+    }, {
+        ref: 'issueForm',
+        selector: 'issuewindow form'
     }],
     init: function() {
         this.control({
@@ -18,6 +22,9 @@ Ext.define('PTS.controller.MainToolbar', {
             },
             'maintoolbar #switchPTS menu': {
                 click: this.onClickSwitchPTS
+            },
+            'maintoolbar #issueBtn': {
+                click: this.showIssue
             },
             'maintoolbar #configBtn': {
                 click: this.showSettings
@@ -30,6 +37,9 @@ Ext.define('PTS.controller.MainToolbar', {
             },
             'configwindow button[action=save]': {
                 click: this.saveSettings
+            },
+            'issuewindow button[action=save]': {
+                click: this.saveIssue
             }
         });
     },
@@ -64,6 +74,15 @@ Ext.define('PTS.controller.MainToolbar', {
      */
     switchPTS: function(location) {
         window.location.href = location;
+    },
+
+    /**
+     * Open issue window.
+     */
+    showIssue: function(btn) {
+        var issueWindow = Ext.create('PTS.view.issue.Window');
+
+        issueWindow.show();
     },
 
     /**
@@ -111,6 +130,43 @@ Ext.define('PTS.controller.MainToolbar', {
             },
             scope: this //need the controller to load the model on success
         });
+    },
+
+    /**
+     * Save issue.
+     */
+    saveIssue: function(btn) {
+        var win = this.getIssueForm().up('window'),
+            form = this.getIssueForm().getForm(),
+            el = this.getIssueForm().getEl();
+
+        el.mask('Saving...');
+        if (form.isValid()) {
+            form.submit({
+              method:'POST',
+              headers: {
+                  'Content-Type': 'application/json;charset=utf-8'
+              },
+              jsonData: Ext.JSON.encode(form.getFieldValues()),
+              //waitTitle:'Connecting',
+              //waitMsg:'Creating...',
+                success: function(form, action) {
+                  el.unmask();
+                  win.close();
+                   //Ext.Msg.alert('Success', action.result.msg);
+                   //
+                   Ext.create('widget.uxNotification', {
+                       title: 'Issue Created',
+                       iconCls: 'ux-notification-icon-information',
+                       html: 'Issue was created.'
+                   }).show();
+                },
+                failure: function(form, action) {
+                  el.unmask();
+                    //Ext.Msg.alert('Failed', action.result.msg);
+                }
+            });
+        }
     },
 
     /**
