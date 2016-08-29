@@ -88,6 +88,12 @@ Ext.define('PTS.view.dashboard.DeliverableList', {
                                 text: 'Not Completed',
                                 filter: 'notcompleted',
                                 checked: me.initFilter === 'notcompleted'
+                            }, {
+                                //xtype: 'menucheckitem',
+                                iconCls: 'pts-cross',
+                                text: 'Undelivered',
+                                filter: 'undelivered',
+                                checked: me.initFilter === 'undelivered'
                             }]
                         }
                     }

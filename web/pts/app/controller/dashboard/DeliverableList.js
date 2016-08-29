@@ -81,6 +81,12 @@ Ext.define('PTS.controller.dashboard.DeliverableList', {
                     value: ['where not in', ["Completed", "Archived", "Published", "Canceled"]]
                 }]);
                 break;
+            case 'undelivered':
+                store.filter([{
+                    property: 'status',
+                    value: 'Undelivered'
+                }]);
+                break;
             default:
                 store.clearFilter();
         }

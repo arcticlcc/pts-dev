@@ -246,6 +246,9 @@
 .pts-flag-purple {
     background-image: url("../images/icons/flag_purple.png");
     }
+.pts-cross {
+    background-image: url("../images/icons/cross.png");
+    }
 .pts-zoom {
     background-image: url("../images/icons/zoom.png");
     }
