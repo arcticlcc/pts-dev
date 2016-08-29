@@ -242,6 +242,12 @@ class Project implements ControllerProviderInterface
                         if($d['status'] == 'Canceled') {
                             $cls .= ' pts-deliverable-canceled';
                         }
+
+                        $due = $app['idiorm']->getFirstRelated(true, 'deliverabledue', 'deliverableid', $d['deliverableid'], null, 'deliverableid');                       
+                        if($due && $due[0]['dayspastdue'] > 0) {
+                            $cls .= ' pts-deliverable-overdue';
+                        }
+
                         if($cls) {
                             $dnode->setAttribute('cls',$cls);
                         }

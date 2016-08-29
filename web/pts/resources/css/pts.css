@@ -171,6 +171,9 @@
 .pts-deliverable-invalid, .pts-deliverable-modified{
     color: #808080;
     }
+.pts-deliverable-overdue {
+    color: #FF0000;
+}
 .pts-deliverable-canceled {
     text-decoration: line-through;
     }
