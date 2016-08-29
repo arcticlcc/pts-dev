@@ -147,7 +147,7 @@
         {% endif %}
       ],
       {% endif %}
-      {% if resource.frequency %}
+      {% if resource.frequency is defined %}
       "resourceMaintenance": [
         {
           "maintenanceFrequency": "{{ resource.frequency }}"{#,
@@ -183,7 +183,7 @@
       ],#}
       "constraint": {
         "useLimitation": ["While every effort has been made to ensure that these data are accurate and reliable within the limits of the current state of the art, the {{ organization.organizationName }} cannot assume liability for any damages caused by any errors or omissions in the data, nor as a result of the failure of the data to function on a particular system. The {{ organization.organizationName }} makes no warranty, expressed or implied, nor does the fact of distribution constitute such a warranty."
-          {% if resource.uselimitation %},"{{ resource.uselimitation }}" {% endif %}
+          {% if resource.uselimitation is defined %},"{{ resource.uselimitation }}" {% endif %}
           ]{#,
         "legalConstraint": [
           {
@@ -338,7 +338,7 @@
         }
       ],
       {% endif %}
-      {% if steps is not empty %}
+      {% if steps is defined and steps is not empty %}
       "dataQualityInfo": [
         {
           "scope": "{{ resourceType }}",

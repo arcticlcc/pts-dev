@@ -17,6 +17,18 @@ class ADIwg {
         $this->app = $app;
     }
 
+    function getGroupScienceBaseId($schema = false) {
+      $schema = $schema ? $schema : $this->app['session']->get('schema');
+
+      $group = $this->app['idiorm']
+          ->getTable('groupschema')
+          ->select('sciencebaseid')
+          ->where('groupschemaid', $schema)
+          ->find_one();
+
+      return $group->sciencebaseid;
+    }
+
     function getProject($id, $withAssoc = false) {
         $contacts = array();
         $roles = array();
@@ -85,6 +97,8 @@ class ADIwg {
 
         return array(
             'resourceType' => 'project',
+            //get ScienceBase id
+            'parentsciencebaseid' => $this->getGroupScienceBaseId(),
             'published' => $project['exportmetadata'],
             'organization' => $org,
             'resource' => $project,
@@ -194,6 +208,7 @@ class ADIwg {
                 if($prj['published']) {
                     $prj['assocType'] = 'largerWorkCitation';
                     $projuuid = $prj['resource']['resourceIdentifier'];
+                    $parentmetadata = $prj;
                     $assoc = [$prj];
                 }
 
@@ -290,6 +305,7 @@ class ADIwg {
 
         $return = array(
             'resourceType' => $product['resourcetype'],
+            'parentsciencebaseid' => $this->getGroupScienceBaseId(),
             'organization' => $org,
             'resource' =>  $product,
             'keywords' => array_filter(explode('|', $product['keywords'])),
@@ -314,6 +330,11 @@ class ADIwg {
             $return['projectkeywords'] = $prj['keywords'];
         }
 
+        //add parent metadata reference if present
+        if(isset($parentmetadata)) {
+
+          $return['parentmetadata'] = $parentmetadata;
+        }
         //merge group
         if(isset($pg)) {
           foreach ($return as $key => $value) {

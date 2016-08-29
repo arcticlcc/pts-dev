@@ -1,41 +1,28 @@
+{% import "metadata/citation.twig" as citation %}
 {% autoescape 'json' %}
     {
       "metadataIdentifier": {
         "identifier": "{{ resource.resourceIdentifier }}",
         "type": "uuid"
       },
-      {% if parentMetadata is defined %}
-      {# TODO #}
+      {% if parentmetadata is defined and not parentmetadata is empty %}
+      "parentMetadata": {{ citation.citation(parentmetadata) }},
+      {% elseif parentsciencebaseid is defined and not parentsciencebaseid is empty %}
       "parentMetadata": {
-        "title": "",
+        "title": "Parent metadata for resource",
         "date": [
           {
-            "date": "0000-00-00",
-            "dateType": ""
+            "date": "{{ resource.datecreated|default(resource.startdate) }}",,
+            "dateType": "unknown"
           }
         ],
-        "edition": "",
-        "responsibleParty": [
-          {
-            "contactId": "",
-            "role": ""
-          }
-        ],
-        "presentationForm": [""],
         "identifier": [
+          {% if parentsciencebaseid %}
           {
-            "identifier": "",
-            "type": ""
+            "identifier": {{ parentsciencebaseid }},
+            "type": "scienceBase"
           }
-        ],
-        "onlineResource": [
-          {
-            "uri": "http://thisisanexample.com",
-            "protocol": "",
-            "name": "",
-            "description": "",
-            "function": ""
-          }
+          {% endif %}
         ]
       },
       {% endif %}

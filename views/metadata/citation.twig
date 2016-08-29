@@ -69,6 +69,17 @@
                 }
               ]
             }
+          }{% endif %}{% if resource.sciencebaseid %},
+          {
+            "identifier": "{{ resource.sciencebaseid }}",
+            "type": "scienceBase",
+            "authority": {
+              "title": "{{ 'ScienceBase identifier for the resource' }}",
+              "date": [{
+                "date": "{{ resource.datecreated|default(resource.startdate) }}",
+                "dateType": "creation"
+              }]
+            }
           }{% endif %}
         ],
         "onlineResource": [
