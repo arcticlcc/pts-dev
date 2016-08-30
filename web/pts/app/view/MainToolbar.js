@@ -5,6 +5,12 @@
 
 Ext.define('PTS.view.MainToolbar', {
     extend: 'Ext.toolbar.Toolbar',
+    requires: [
+      'Ext.form.field.Text',
+      'Ext.form.field.HtmlEditor',
+      'Ext.menu.Menu',
+      'Ext.menu.Item'      
+    ],
     alias: 'widget.maintoolbar',
     height: 33,
     id: 'pts-main-toolbar',
