@@ -303,7 +303,7 @@
       {% if resource.features %}
       "extent": [
         {
-          "description":"{{ resourceType }} bounding box {{ resource.featuresInherited ? '(inherited from parent project)' }}",
+          "description":"{{ resourceType }} bounding box {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}",
           "geographicElement":[
             {
               "type":"Feature",
@@ -311,7 +311,7 @@
               "id": "boundingExtent",
               "geometry":null,
               "properties":{
-                "description":"{{ resourceType }} bounding box {{ resource.featuresInherited ? '(inherited from parent project)' }}"
+                "description":"{{ resourceType }} bounding box {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}"
               },
               "crs":{
                 "type":"name",
@@ -322,7 +322,7 @@
             }
           ]
         },{
-          "description":"{{ resourceType }} locations {{ resource.featuresInherited ? '(inherited from parent project)' }}",
+          "description":"{{ resourceType }} locations {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}",
           "geographicElement":[
             {
               "type": "FeatureCollection",
