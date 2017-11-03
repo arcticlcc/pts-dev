@@ -1,8 +1,11 @@
 {% autoescape 'json' %}
     {
-      "contactId": "{{ contact.contactId }}",
-      {% if contact.individualName %}"individualName": "{{ contact.individualName }}",{% endif %}
-      "organizationName": "{{ contact.organizationName }}"
+      "contactId": "{{ contact.uuid }}",
+      "name": "{{ contact.name }}",
+      "isOrganization": {{ contact.isOrganization }}
+      {% if contact.parentuuid %}
+      ,"memberOfOrganization": ["{{ contact.parentuuid }}"]
+      {% endif %}
       {% if contact.positionName %}
       ,"positionName": "{{ contact.positionName }}"
       {% endif %}
@@ -25,22 +28,20 @@
         }
       ]
       {% endif %}
-      {% if contact.deliveryPoint1 or contact.email %}
+      {% if not contact.email is null %}
       ,
-      "address": {
-        {% if not contact.deliveryPoint1 is null %}
-          {% set comma = true %}
+      "electronicMailAddress": ["{{ contact.email }}"]
+      {% endif %}
+      {% if contact.deliveryPoint1 %}
+      ,
+      "address": [{
         "deliveryPoint": ["{{ contact.deliveryPoint1 }}"{% if not contact.deliveryPoint2 is null %},"{{ contact.deliveryPoint2 }}"{% endif %}],
         "city": "{{ contact.city }}",
         "administrativeArea": "{{ contact.administrativeArea }}",
         "postalCode": "{{ contact.postalCode }}",
-        "country": "{{ contact.country }}"
-        {% endif %}
-        {% if not contact.email is null %}
-          {{ comma is defined ? ',' : '' }}
-        "electronicMailAddress": ["{{ contact.email }}"]
-        {% endif %}
-      }
+        "country": "{{ contact.country }}",
+        "addressType":["{{ contact.addresstype }}"]
+      }]
       {% endif %}
     }{% if loop.last == false %},{% endif %}
 {% endautoescape %}

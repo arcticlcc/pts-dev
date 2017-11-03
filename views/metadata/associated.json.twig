@@ -13,19 +13,19 @@
     }],
     "responsibleParty": [
       {
-        "contactId": "{{ assoc.organization.contactId }}",
+        "contactId": "{{ assoc.organization.uuid }}",
         "role": "custodian"
       }
     ],
     "identifier": [
       {
         "identifier": "{{ assoc.resource.resourceIdentifier }}",
-        "type": "uuid",
+        "namespace" : "urn:uuid",
         "authority": {
           "title": "{{ assoc.organization.organizationName }}",
           "responsibleParty": [
             {
-              "contactId": "{{ assoc.organization.contactId }}",
+              "contactId": "{{ assoc.organization.uuid }}",
               "role": "originator"
             }
           ]

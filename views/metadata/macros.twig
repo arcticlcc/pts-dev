@@ -1,9 +1,9 @@
-{% macro arraytostring(arr) %}
+{% macro arraytostring(arr, key) %}
 	{% autoescape 'json' %}
 		{% for item in arr %}
-		    "{{ item }}"{% if loop.last == false %},{% endif %}
+		    "{{ key ? item[key] : item }}"{% if loop.last == false %},{% endif %}
 		{% endfor %}
-	{% endautoescape %}	
+	{% endautoescape %}
 {% endmacro %}
 
 {% macro arraytoints(arr) %}
@@ -11,5 +11,5 @@
 		{% for item in arr %}
 		    {{ item }}{% if loop.last == false %},{% endif %}
 		{% endfor %}
-	{% endautoescape %}	
+	{% endautoescape %}
 {% endmacro %}

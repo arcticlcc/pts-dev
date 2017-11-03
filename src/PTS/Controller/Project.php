@@ -243,7 +243,7 @@ class Project implements ControllerProviderInterface
                             $cls .= ' pts-deliverable-canceled';
                         }
 
-                        $due = $app['idiorm']->getFirstRelated(true, 'deliverabledue', 'deliverableid', $d['deliverableid'], null, 'deliverableid');                       
+                        $due = $app['idiorm']->getFirstRelated(true, 'deliverabledue', 'deliverableid', $d['deliverableid'], null, 'deliverableid');
                         if($due && $due[0]['dayspastdue'] > 0) {
                             $cls .= ' pts-deliverable-overdue';
                         }

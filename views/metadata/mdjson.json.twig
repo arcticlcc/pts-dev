@@ -1,30 +1,43 @@
 {% import "metadata/contactref.twig" as contactref %}
 {% autoescape 'json' %}
 {
-  "version": {
+  "schema": {
     "name": "mdJson",
-    "version": "1.0.0"
+    "version": "2.0.0"
   },
+  "metadataRepository" : [{
+      "metadataStandard" : "mdJSON",
+      "citation" : {
+        "title" : "LCC Network Science Catalog"
+      },
+      "repository" : "ScienceBase"
+    },{ "metadataStandard" : "ISO 19115-2",
+        "citation" : {
+          "title" : "{{ organization.name }}"
+        },
+        "repository" : "data.gov"
+      }
+  ],
   "contact": [
   {% for contact in contacts %}
     {% include "metadata/contact.json.twig" %}
   {% endfor %}
-  ],
+],
   "metadata": {
     "metadataInfo": {% include "metadata/metadatainfo.json.twig" %},
-    "resourceInfo": {% include "metadata/resourceinfo.json.twig" %},
-    "distributionInfo": [
+    "resourceInfo": {% include "metadata/resourceinfo.json.twig" %}
+    {# "distributionInfo": [
 	  {% if links %}
 	    {% include "metadata/distributioninfo.json.twig" %}
-	  {% endif %}    
-    ],
-    "associatedResource": [
+	  {% endif %}
+    ], #}
+    {# "associatedResource": [
 	  {% for assoc in associated if assoc.resource.exportmetadata %}
 	    {% if not loop.first %},{% endif %}
 	    {% include "metadata/associated.json.twig" %}
-	  {% endfor %}        
+	  {% endfor %}
     ],
-    "additionalDocumentation": []
+    "additionalDocumentation": [] #}
   }
 }
 {% endautoescape %}

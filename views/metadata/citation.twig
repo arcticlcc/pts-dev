@@ -23,7 +23,7 @@
         {# "edition": "", #}
         "responsibleParty": [
           {
-            "contactId": "{{ organization.contactId }}",
+            "party": [{"contactId": "{{ organization.uuid }}"}],
             "role": "owner"
           }
           {% if project %}
@@ -36,9 +36,9 @@
         "identifier": [
           {
             "identifier": "{{ resource.resourceIdentifier }}",
-            "type": "uuid",
+            "namespace" : "urn:uuid",
             "authority": {
-              "title": "{{ organization.organizationName }}",
+              "title": "{{ organization.name }}",
               {% if project %}
               "date": [{
                 "date": "{{ resource.datecreated|default(resource.startdate) }}",
@@ -47,7 +47,7 @@
               {% endif %}
               "responsibleParty": [
                 {
-                  "contactId": "{{ organization.contactId }}",
+                  "party": [{"contactId": "{{ organization.uuid }}"}],
                   "role": "originator"
                 }
               ]
@@ -57,14 +57,14 @@
             "identifier": "{{ resource.projectcode }}",
             "type": "projectCode",
             "authority": {
-              "title": "{{ organization.organizationName }}",
+              "title": "{{ organization.name }}",
               "date": [{
                 "date": "{{ resource.datecreated|default(resource.startdate) }}",
                 "dateType": "creation"
               }],
               "responsibleParty": [
                 {
-                  "contactId": "{{ organization.contactId }}",
+                  "party": [{"contactId": "{{ organization.uuid }}"}],
                   "role": "originator"
                 }
               ]
@@ -72,7 +72,7 @@
           }{% endif %}{% if resource.sciencebaseid %},
           {
             "identifier": "{{ resource.sciencebaseid }}",
-            "type": "scienceBase",
+            "namespace" : "gov.sciencebase.catalog",
             "authority": {
               "title": "{{ 'ScienceBase identifier for the resource' }}",
               "date": [{

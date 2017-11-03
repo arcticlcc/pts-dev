@@ -1,7 +1,7 @@
 {% autoescape 'json' %}
 {
   "distributorContact": {
-      "contactId": "{{ organization.contactId }}",
+      "party": [{"contactId": "{{ organization.uuid }}"}],
       "role": "owner"
   },
   "distributionOrderProcess": [

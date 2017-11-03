@@ -54,24 +54,32 @@ class ADIwg {
 
         //get other contacts for project
         foreach ($this->app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
-        ->join('projectcontact', array('metadatacontact.contactId', '=', 'projectcontact.contactid'))
-        -> where('projectcontact.projectid', $project['projectid'])
+        ->join('projectallcontacts', array('metadatacontact.contactId', '=', 'projectallcontacts.contactid'))
+        -> where('projectallcontacts.projectid', $project['projectid'])
         -> where_not_equal('contactId', $org['contactId'])
         ->find_many() as $object) {
             $contacts[] = $object->as_array();
         }
-
+//dump($contacts);
         //get other project contact roles for project
         foreach ($this->app['idiorm']->getTable('projectcontact')
         ->select('projectcontact.*')
+        ->select('contact.uuid')
         ->select('roletype')
         ->select('adiwg', 'role')
         ->join('roletype', array('projectcontact.roletypeid', '=', 'roletype.roletypeid'))
+        ->join('contact', array('projectcontact.contactid', '=', 'contact.contactid'))
         -> where('projectid', $project['projectid'])
         ->find_many() as $object) {
             $roles[] = $object->as_array();
         }
 
+        $role_map = [];
+
+        array_walk($roles, function ($val) use (&$role_map) {
+            $role_map[$val['roletypeid']][] = $val;
+        });
+//dump($role_map);
         //get products
         $assoc = [];
         if($withAssoc) {
@@ -95,7 +103,7 @@ class ADIwg {
             };
         }
 
-        return array(
+        $data = array(
             'resourceType' => 'project',
             //get ScienceBase id
             'parentsciencebaseid' => $this->getGroupScienceBaseId(),
@@ -108,10 +116,14 @@ class ADIwg {
             "cats" => array_filter(explode('|', $project['projectcategory'])),
             "projectkeywords" => FALSE,
             'contacts' => $contacts,
-            'roles' => $roles,
+            'roles' => $role_map,
             'links' => FALSE,
             'associated' => $assoc
         );
+
+//dump($data);
+
+        return $data;
 
     }
 
@@ -349,6 +361,7 @@ class ADIwg {
     }
 
     function renderProject($project) {
+      //echo $this->app['twig']->render('metadata/mdjson.json.twig', $project);
         return $this->app['twig']->render('metadata/mdjson.json.twig', $project);
     }
 

@@ -3,24 +3,24 @@
     {
       "metadataIdentifier": {
         "identifier": "{{ resource.resourceIdentifier }}",
-        "type": "uuid"
+        "namespace" : "urn:uuid"
       },
       {% if parentmetadata is defined and not parentmetadata is empty %}
       "parentMetadata": {{ citation.citation(parentmetadata) }},
       {% elseif parentsciencebaseid is defined and not parentsciencebaseid is empty %}
       "parentMetadata": {
         "title": "Parent metadata for resource",
-        "date": [
+        {#"date": [
           {
-            "date": "{{ resource.datecreated|default(resource.startdate) }}",,
+            "date": "{{ resource.datecreated|default(resource.startdate) }}",
             "dateType": "unknown"
           }
-        ],
+        ], #}
         "identifier": [
           {% if parentsciencebaseid %}
           {
-            "identifier": {{ parentsciencebaseid }},
-            "type": "scienceBase"
+            "identifier": "{{ parentsciencebaseid }}",
+            "namespace" : "gov.sciencebase.catalog"
           }
           {% endif %}
         ]
@@ -28,24 +28,38 @@
       {% endif %}
       "metadataContact": [
           {
-            "contactId": "{{ organization.contactId }}",
+            "party": [{"contactId": "{{ organization.uuid }}"}],
             "role": "author"
           }
           {% if resourceType == 'project' %}
           {{ contactref.ref(roles,[8,3],true) }}
           {% endif %}
       ],
-      "metadataCreationDate": "{{ (resource.metadataupdate|default("now"))|date('c') }}",
-      "metadataLastUpdate": "{{ "now"|date('c') }}",
-      "metadataCharacterSet": "utf8",
-      "metadataUri": "http://metadata.arcticlcc.org/{{ resource.resourceIdentifier }}",
+      "metadataDate": [
+        {
+          "date": "{{ (resource.metadataupdate|default("now"))|date('c') }}",
+          "dateType": "creation"
+        },
+        {
+          "date": "{{ "now"|date('c') }}",
+          "dateType": "lastUpdate"
+        }
+      ],
+      "defaultMetadataLocale" : {
+        "language" : "eng",
+        "characterSet" : "UTF-8",
+        "country" : "USA"
+      },
+      "metadataOnlineResource": [
+        {"uri":"http://metadata.arcticlcc.org/{{ resource.resourceIdentifier }}"}
+      ],
       "metadataStatus": "completed",
       "metadataMaintenance": {
-        "maintenanceFrequency": "asNeeded",
-        "maintenanceNote": ["Metadata records are generated from database"],
-        "maintenanceContact": [
+        "frequency": "asNeeded",
+        "note": ["Metadata records are generated from database"],
+        "contact": [
           {
-            "contactId": "{{ organization.contactId }}",
+            "party": [{"contactId": "{{ organization.uuid }}"}],
             "role": "author"
           }
           {% if resourceType == 'project' %}
