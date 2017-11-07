@@ -4,29 +4,30 @@
     {
       "resourceType": [{"type":"{{ resourceType }}"}],
       {% if resource.startdate or resource.enddate %}
-      "resourceTimePeriod": {
+      "timePeriod": {
         "description": "{{ resourceType == 'project' ? 'Span of project activity' : 'Time span for which resource(' ~ resourceType ~ ') is relevant. ' ~ resource.perioddescription}}",
-        {% if resource.startdate %}"beginPosition": "{{resource.startdate}}"{% endif %}{% if resource.startdate and resource.enddate %},{% endif %}
-        {% if resource.enddate %}"endPosition": "{{resource.enddate}}"{% endif %}
+        {% if resource.startdate %}"startDateTime": "{{resource.startdate}}"{% endif %}{% if resource.startdate and resource.enddate %},{% endif %}
+        {% if resource.enddate %}"endDateTime": "{{resource.enddate}}"{% endif %}
       },
       {% endif %}
       "citation": {{ citation.citation(_context) }},
       "pointOfContact": [
         {
-          "party": [{"contactId": "{{ organization.uuid }}"}],
+          "party": [
+            {"contactId": "{{ organization.uuid }}"},
+            {"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"}
+          ],
           "role": "pointOfContact"
         }
         {% if resourceType == 'project' %}
-        {{ contactref.ref(roles,[6,2,8],true) }}
+        {{ contactref.ref(roles,[6,2,8,7,12],true) }}
         {% else %}
-        {{ contactref.ref(roles,[2, 7, 10],true) }}
+        {{ contactref.ref(roles,[2,7,6],true) }}
         {% endif %}
       ],
       "abstract": "{{ resource.abstract }}",
       "shortAbstract": "{{ resource.shortAbstract }}",
       "status": ["{{ resource.status }}"],
-      "hasMapLocation": {{ resource.features is empty ? 'false' : 'true'}},
-      "hasDataAvailable": true,
       "defaultResourceLocale" : {
         "language" : "eng",
         "characterSet" : "UTF-8",
@@ -352,38 +353,28 @@
       {% if resource.features %}
       "extent": [
         {
-          "description":"{{ resourceType }} bounding box {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}",
-          "geographicElement":[
-            {
-              "type":"Feature",
-              "bbox": {{ resource.bbox }},
-              "id": "boundingExtent",
-              "geometry":null,
-              "properties":{
-                "description":"{{ resourceType }} bounding box {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}"
-              },
-              "crs":{
-                "type":"name",
-                "properties":{
-                  "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
-                }
-              }
-            }
-          ]
-        },{
           "description":"{{ resourceType }} locations {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}",
-          "geographicElement":[
-            {
-              "type": "FeatureCollection",
-              "crs":{
-                "type":"name",
-                "properties":{
-                  "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
-                }
-              },
-              "features": {{ resource.features|raw }}
-            }
-          ]
+          "geographicExtent":[{
+            "boundingBox":{
+
+              "westLongitude": {{ bbox[0] }},
+              "eastLongitude": {{ bbox[2] }},
+              "southLatitude": {{ bbox[1] }},
+              "northLatitude": {{ bbox[3] }}
+            },
+            "geographicElement":[
+              {
+                "type": "FeatureCollection",
+                "crs":{
+                  "type":"name",
+                  "properties":{
+                    "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
+                  }
+                },
+                "features": {{ resource.features|raw }}
+              }
+            ]
+          }]
         }
       ],
       {% endif %}

@@ -24,7 +24,7 @@
         "responsibleParty": [
           {
             "party": [{"contactId": "{{ organization.uuid }}"}],
-            "role": "owner"
+            "role": "administrator"
           }
           {% if project %}
           {{ contactref.ref(c.roles,[7,10,1,4,9],true) }}

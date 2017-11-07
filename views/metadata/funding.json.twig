@@ -1,0 +1,16 @@
+{% autoescape 'json' %}
+{
+  "allocation": [
+    {
+      "amount": {{ funds.amount }},
+      "currency": "USD",
+      "sourceId": "{{ funds.sourceid }}",
+      "recipientId": "{{ funds.recipientid }}",
+      "matching": {{ funds.type == "Matching" ? 'true' : 'false'}}
+    }
+  ],
+  "timePeriod": {
+    "startDateTime": "{{ funds.startdate }}"
+  }
+}
+{% endautoescape %}

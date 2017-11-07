@@ -103,6 +103,14 @@ class ADIwg {
             };
         }
 
+        //funding
+        $funding = [];
+        foreach ($this->app['idiorm']->getTable('metadatafunding')
+        -> where('projectid', $project['projectid'])
+        ->find_many() as $object) {
+            $funding[] = $object->as_array();
+        }
+
         $data = array(
             'resourceType' => 'project',
             //get ScienceBase id
@@ -110,6 +118,8 @@ class ADIwg {
             'published' => $project['exportmetadata'],
             'organization' => $org,
             'resource' => $project,
+            'funding' => $funding,
+            'bbox' => json_decode($project['bbox']),
             'keywords' => array_filter(explode('|', $project['keywords'])),
             "topics" => array_filter(explode('|', $project['topiccategory'])),
             "usertypes" => array_filter(explode('|', $project['usertype'])),
