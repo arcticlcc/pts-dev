@@ -8,9 +8,13 @@
       "recipientId": "{{ funds.recipientid }}",
       "matching": {{ funds.type == "Matching" ? 'true' : 'false'}}
     }
-  ],
+  ]
+
+  {% if funds.startdate %}
+  ,
   "timePeriod": {
     "startDateTime": "{{ funds.startdate }}"
   }
+  {% endif %}
 }
 {% endautoescape %}

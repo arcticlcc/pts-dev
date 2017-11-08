@@ -1,6 +1,6 @@
 -- View: dev.metadatacontact
 
--- DROP VIEW dev.metadatacontact;
+DROP VIEW dev.metadatacontact;
 
 CREATE OR REPLACE VIEW dev.metadatacontact AS
  SELECT c.contactid AS "contactId",
@@ -19,7 +19,8 @@ CREATE OR REPLACE VIEW dev.metadatacontact AS
     c.uuid,
     c.parentuuid,
     c.allids,
-    add.addresstype
+    add.addresstype,
+    c.contacttype
    FROM ( SELECT person.contactid,
             con.uuid,
             ccg.contactid AS parentgroupid,
@@ -28,9 +29,11 @@ CREATE OR REPLACE VIEW dev.metadatacontact AS
             false AS "isOrganization",
             (((person.firstname::text || COALESCE(' '::text || person.middlename::text, ''::text)) || ' '::text) || person.lastname::text) || COALESCE(', '::text || person.suffix::text, ''::text) AS name,
             pos.code AS "positionName",
-            web.uri
+            web.uri,
+            ct.adiwg AS contacttype
            FROM person
              JOIN contact con ON person.contactid = con.contactid
+             JOIN contacttype ct USING (contacttypeid)
              LEFT JOIN ( SELECT contactcontactgroup.groupid,
                     contactcontactgroup.contactid,
                     contactcontactgroup.positionid,
@@ -59,9 +62,11 @@ CREATE OR REPLACE VIEW dev.metadatacontact AS
             true AS "isOrganization",
             cl.name,
             NULL::character varying AS "positionName",
-            web.uri
+            web.uri,
+            ct.adiwg AS contacttype
            FROM contactgroup cg
              LEFT JOIN contact con ON cg.contactid = con.contactid
+             JOIN contacttype ct USING (contacttypeid)
              LEFT JOIN contactgrouplist cl ON cl.contactid = cg.contactid
              LEFT JOIN contact pg ON cl.parentgroupid = pg.contactid
              LEFT JOIN ( SELECT eaddress.eaddressid,

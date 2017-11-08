@@ -44,6 +44,7 @@
       ],#}
       {% if keywords or projectkeywords or usertypes or cats %}
       "keyword": [
+        {% if topics %}
         {
           "keyword": [
             {% for kw in topics %}
@@ -70,6 +71,7 @@
             },
             "fullPath" : true
           },
+        {% endif %}
         {% if keywords %}
           {
             "keyword": [
@@ -199,11 +201,11 @@
       {% if resource.frequency is defined %}
       "resourceMaintenance": [
         {
-          "maintenanceFrequency": "{{ resource.frequency }}"{#,
-          "maintenanceNote": [""],
-          "maintenanceContact": [
+          "frequency": "{{ resource.frequency }}"{#,
+          "note": [""],
+          "contact": [
             {
-              "contactId": "",
+              "party":[{"contactId": ""}],
               "role": ""
             }
           ]#}
@@ -333,14 +335,20 @@
           }
         ]
       },#}
-      {% if epsgcodes is defined or wkt is defined %}
-      "spatialReferenceSystem": {
-        {% if epsgcodes is defined %}"epsgNumber": [{{ macros.arraytoints(epsgcodes) }}]{% endif %},
-        {% if wkt is defined %}"wkt": [{{ macros.arraytostring(wkt) }}]{% endif %}
-      },
+      {% if epsgcodes is defined %}
+      "spatialReferenceSystem": [
+        {% for item in  epsgcodes %}
+        {% if not loop.first %},{% endif %}
+        {
+          "referenceSystemIdentifier": {
+            "identifier": "{{ item }}"
+          }
+        }
+        {% endfor %}
+      ],
       {% endif %}
       {% if spatialformats is defined %}
-     "spatialRepresentation": [{{ macros.arraytostring(spatialformats) }}],
+     "spatialRepresentationType": [{{ macros.arraytostring(spatialformats) }}],
       {% endif %}
      {#"spatialResolution": [
         {

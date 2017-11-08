@@ -9,11 +9,11 @@ CREATE OR REPLACE VIEW dev.metadataproject AS
             groupschema.displayname,
             groupschema.deliverablecalendarid,
             groupschema.projecturiformat
-           FROM groupschema
+           FROM common.groupschema
           WHERE groupschema.groupschemaid::name = ANY (current_schemas(false))
         )
  SELECT project.projectid,
-    form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+    common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
     project.orgid,
     project.title,
     project.parentprojectid,
@@ -43,13 +43,13 @@ CREATE OR REPLACE VIEW dev.metadataproject AS
    FROM gschema,
     project
      JOIN contactgroup ON project.orgid = contactgroup.contactid
-     JOIN status ON status.statusid = project_status(project.projectid)
+     JOIN status ON status.statusid = common.project_status(project.projectid)
      LEFT JOIN ( SELECT projectkeyword.projectid,
             string_agg(projectkeyword.preflabel::text, '|'::text) AS keywords
            FROM ( SELECT projectkeyword_1.projectid,
                     keyword.preflabel
                    FROM projectkeyword projectkeyword_1
-                     JOIN keyword USING (keywordid)
+                     JOIN gcmd.keyword USING (keywordid)
                   GROUP BY projectkeyword_1.projectid, keyword.preflabel) projectkeyword
           GROUP BY projectkeyword.projectid) kw USING (projectid)
      LEFT JOIN ( SELECT projectusertype.projectid,

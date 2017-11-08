@@ -2,6 +2,7 @@
     {
       "contactId": "{{ contact.uuid }}",
       "name": "{{ contact.name }}",
+      "contactType": "{{ contact.contacttype }}",
       "isOrganization": {{ contact.isOrganization }}
       {% if contact.parentuuid %}
       ,"memberOfOrganization": ["{{ contact.parentuuid }}"]
@@ -21,7 +22,7 @@
       {% endif %}
       {% if contact.officePhone %}
       ,
-      "phoneBook": [
+      "phone": [
         {
           "phoneNumber": "{{ contact.officePhone }}",
           "service": ["voice"]

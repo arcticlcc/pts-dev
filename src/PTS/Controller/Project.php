@@ -70,7 +70,7 @@ class Project implements ControllerProviderInterface
                 $app['json']->setData($result);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $app['json']->setAll(null, 500, false, $exc->getMessage());
             }
 
@@ -100,7 +100,7 @@ class Project implements ControllerProviderInterface
                     'Content-type' => "$ct; charset=utf-8"
                 ));
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $response = $app['json']->setAll(null, 500, false, $exc->getMessage())->getResponse();
             }
@@ -117,7 +117,7 @@ class Project implements ControllerProviderInterface
                 $response = $app['json']->setData($json)->getResponse(true);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $response = $app['json']->setAll(null, 500, false, $exc->getMessage())->getResponse();
             }
@@ -134,7 +134,7 @@ class Project implements ControllerProviderInterface
                 $response = $app['json']->setData($json)->getResponse(true);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $response = $app['json']->setAll(null, 500, false, $exc->getMessage())->getResponse();
             }

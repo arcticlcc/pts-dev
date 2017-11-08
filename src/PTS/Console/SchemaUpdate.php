@@ -81,7 +81,7 @@ class SchemaUpdate extends \Knp\Command\Command {
               $finder->files()->in($path . '/dev')->name('*.sql' )->sortByName();
               $contents = '';
                 foreach ($finder as $file) {
-                    $path = "SET search_path TO dev, public;\n\n";
+                    $path = "SET search_path TO dev, cvl, public;\n\n";
                     $contents .= "---- File: {$file->getBasename()} ----\n\n";
                     $contents .= $path;
                     $contents .= $file->getContents();
@@ -93,7 +93,7 @@ class SchemaUpdate extends \Knp\Command\Command {
                 }
                 //loop other schemas
                 foreach ($schemas as $s) {
-                    $s_path = "SET search_path TO $s, public;\n\n";
+                    $s_path = "SET search_path TO $s, cvl, public;\n\n";
                     $s_contents = preg_replace("/".$path."/", $s_path, $contents);
                     $s_contents = preg_replace("/dev\./", $s . '.', $s_contents);
                     //write out schema

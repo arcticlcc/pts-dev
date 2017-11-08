@@ -60,7 +60,7 @@ class ADIwg {
         ->find_many() as $object) {
             $contacts[] = $object->as_array();
         }
-//dump($contacts);
+
         //get other project contact roles for project
         foreach ($this->app['idiorm']->getTable('projectcontact')
         ->select('projectcontact.*')
@@ -79,7 +79,7 @@ class ADIwg {
         array_walk($roles, function ($val) use (&$role_map) {
             $role_map[$val['roletypeid']][] = $val;
         });
-//dump($role_map);
+
         //get products
         $assoc = [];
         if($withAssoc) {
@@ -89,7 +89,7 @@ class ADIwg {
             ->where('exportmetadata', TRUE)
             ->find_many() as $object) {
                 $prd = $this->getProduct($object->get('productid'));
-                $prd['assocType'] = 'projectProduct';
+                $prd['assocType'] = 'product';
                 $assoc[] = $prd;
             }
 
@@ -131,8 +131,6 @@ class ADIwg {
             'associated' => $assoc
         );
 
-//dump($data);
-
         return $data;
 
     }
@@ -160,8 +158,8 @@ class ADIwg {
 
         //get other contacts for product
         foreach ($this->app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
-        ->join('productcontact', array('metadatacontact.contactId', '=', 'productcontact.contactid'))
-        ->where('productcontact.productid', $product['productid'])
+        ->join('productallcontacts', array('metadatacontact.contactId', '=', 'productallcontacts.contactid'))
+        ->where('productallcontacts.productid', $product['productid'])
         ->where_not_equal('contactId', $org['contactId'])
         ->find_many() as $object) {
             $contacts[] = $object->as_array();
@@ -170,13 +168,21 @@ class ADIwg {
         //get other product contact roles for product
         foreach ($this->app['idiorm']->getTable('productcontact')
         ->select('productcontact.*')
-        ->select('codename', 'role')
+        ->select('contact.uuid')
+        ->select('codename', 'roletype')
         ->select_expr('isoroletype.isoroletypeid', 'roletypeid')
         ->join('isoroletype', array('productcontact.isoroletypeid', '=', 'isoroletype.isoroletypeid'))
+        ->join('contact', array('productcontact.contactid', '=', 'contact.contactid'))
         ->where('productid', $product['productid'])
         ->find_many() as $object) {
             $roles[] = $object->as_array();
         }
+
+        $role_map = [];
+
+        array_walk($roles, function ($val) use (&$role_map) {
+            $role_map[$val['roletypeid']][] = $val;
+        });
 
         //get product dates
         $dates = [];
@@ -228,7 +234,7 @@ class ADIwg {
 
             if($withAssoc) {
                 if($prj['published']) {
-                    $prj['assocType'] = 'largerWorkCitation';
+                    $prj['assocType'] = 'parentProject';
                     $projuuid = $prj['resource']['resourceIdentifier'];
                     $parentmetadata = $prj;
                     $assoc = [$prj];
@@ -241,7 +247,7 @@ class ADIwg {
                 ->where_not_equal('productid', $id)
                 ->find_many() as $object) {
                     $prd = $this->getProduct($object->productid);
-                    $prd['assocType'] = 'projectProduct';
+                    $prd['assocType'] = 'crossReference';
                     $assoc[$prd['resource']['resourceIdentifier']] = $prd;
                 }
             }
@@ -277,6 +283,23 @@ class ADIwg {
                   //}
                 }
 
+            }
+
+            //merge group contacts if present
+            if(isset($pg['contacts'])) {
+              foreach ($pg['contacts'] as $arr1) {
+                  if(array_search ($arr1, $contacts) === FALSE){
+              	    $contacts[] = $arr1;
+          	   }
+              }
+            }
+            //merge project contacts if present
+            if(isset($prj['contacts'])) {
+              foreach ($prj['contacts'] as $arr1) {
+                  if(array_search ($arr1, $contacts) === FALSE){
+              	    $contacts[] = $arr1;
+          	   }
+              }
             }
 
             //if no product features, use group features if present
@@ -333,13 +356,14 @@ class ADIwg {
             'keywords' => array_filter(explode('|', $product['keywords'])),
             'projectkeywords' => FALSE,
             'topics' => array_filter(explode('|', $product['topiccategory'])),
+            'bbox' => json_decode($product['bbox']),
             'spatialformats' => array_filter(explode('|', $product['spatialformat'])),
             'epsgcodes' => array_filter(explode('|', $product['epsgcode'])),
             'wkt' => array_filter(explode('|', $product['wkt'])),
             'usertypes' => FALSE, //array_filter(explode('|', $product['usertype'])),
             'cats' => FALSE, //array_filter(explode('|', $product['productcategory'])),
             'contacts' => $contacts,
-            'roles' => $roles,
+            'roles' => $role_map,
             'dates' => $dates,
             'links' => $links,
             'steps' => $steps,
@@ -376,6 +400,7 @@ class ADIwg {
     }
 
     function renderProduct($product) {
+        //echo $this->app['twig']->render('metadata/mdjson.json.twig', $product);
         return $this->app['twig']->render('metadata/mdjson.json.twig', $product);
     }
 
@@ -483,8 +508,9 @@ class ADIwg {
 
         if ($code > 0) {
             throw new \Exception("mdTranslator error.");
-        } elseif (!is_object($xml) || !$xml->writerPass) {
-            throw new \Exception("JSON did not validate.");
+        } elseif (!is_object($xml) || !$xml->writerPass || !$xml->readerStructurePass || !$xml->readerValidationPass || !$xml->readerExecutionPass) {
+            throw new \Exception("JSON did not validate. " .
+            json_decode($json)->metadata->resourceInfo->citation->identifier[0]->identifier);
         }
 
         return $xml->writerOutput;

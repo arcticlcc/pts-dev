@@ -4,7 +4,7 @@
 
 CREATE OR REPLACE VIEW dev.metadataproduct AS
  SELECT product.productid,
-    form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
+    common.form_projectcode(project.number::integer, project.fiscalyear::integer, contactgroup.acronym) AS projectcode,
     product.orgid,
     product.title,
     deliverabletype.isocodename AS resourcetype,
@@ -38,7 +38,7 @@ CREATE OR REPLACE VIEW dev.metadataproduct AS
    FROM ( SELECT groupschema.groupschemaid,
             groupschema.groupid,
             groupschema.producturiformat
-           FROM groupschema
+           FROM common.groupschema
           WHERE groupschema.groupschemaid::name = ANY (current_schemas(false))) gschema,
     product
      LEFT JOIN project USING (projectid)
@@ -51,7 +51,7 @@ CREATE OR REPLACE VIEW dev.metadataproduct AS
            FROM ( SELECT productkeyword_1.productid,
                     keyword.preflabel
                    FROM productkeyword productkeyword_1
-                     JOIN keyword USING (keywordid)
+                     JOIN gcmd.keyword USING (keywordid)
                   GROUP BY productkeyword_1.productid, keyword.preflabel) productkeyword
           GROUP BY productkeyword.productid) kw USING (productid)
      LEFT JOIN ( SELECT producttopiccategory.productid,

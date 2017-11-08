@@ -92,13 +92,16 @@
 	    {% include "metadata/associated.json.twig" %}
 	  {% endfor %}
     ],
-    "additionalDocumentation": [],
+    "additionalDocumentation": []
+    {% if funding is defined  %}
+    ,
     "funding":[
       {% for funds in funding %}
         {% if not loop.first %},{% endif %}
         {% include "metadata/funding.json.twig" %}
       {% endfor %}
     ]
+    {% endif %}
   }
 }
 {% endautoescape %}
