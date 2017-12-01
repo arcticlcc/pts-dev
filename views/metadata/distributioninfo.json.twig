@@ -1,25 +1,19 @@
 {% autoescape 'json' %}
 {
-  "distributorContact": {
+  "contact": {
       "party": [{"contactId": "{{ organization.uuid }}"}],
       "role": "owner"
   },
-  "distributionOrderProcess": [
+  "orderProcess": [
     {
       "fees": "none"
     }
   ],
-  {# "distributorFormat": [
-    {
-      "formatName": "",
-      "version": ""
-    }
-  ], #}
-  "distributorTransferOptions": [
+  "transferOption": [
   {% for link in links %}
   {% if not loop.first %},{% endif %}
     {
-      "online": [
+      "onlineOption": [
         {
           "uri": "{{ link.uri }}",
           "name": "{{ link.title }}",

@@ -81,11 +81,15 @@
   "metadata": {
     "metadataInfo": {% include "metadata/metadatainfo.json.twig" %},
     "resourceInfo": {% include "metadata/resourceinfo.json.twig" %},
-    {# "distributionInfo": [
-	  {% if links %}
-	    {% include "metadata/distributioninfo.json.twig" %}
-	  {% endif %}
-    ], #}
+    "resourceDistribution": [
+      {% if links %}
+      {
+        "distributor": [
+      	    {% include "metadata/distributioninfo.json.twig" %}
+        ]
+      }
+      {% endif %}
+  ],
     "associatedResource": [
 	  {% for assoc in associated if assoc.resource.exportmetadata %}
 	    {% if not loop.first %},{% endif %}

@@ -78,7 +78,7 @@ CREATE OR REPLACE VIEW dev.metadatacontact AS
                     row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
                    FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
              LEFT JOIN contactgrouplist cl ON cl.contactid = ccg.groupid
-             LEFT JOIN contact cg ON ccg.contactid = cg.contactid
+             LEFT JOIN contact cg ON ccg.groupid = cg.contactid
              LEFT JOIN "position" pos ON ccg.positionid = pos.positionid
              LEFT JOIN ( SELECT eaddress.eaddressid,
                     eaddress.contactid,
@@ -531,7 +531,7 @@ CREATE OR REPLACE VIEW alcc.metadatacontact AS
                     row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
                    FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
              LEFT JOIN contactgrouplist cl ON cl.contactid = ccg.groupid
-             LEFT JOIN contact cg ON ccg.contactid = cg.contactid
+             LEFT JOIN contact cg ON ccg.groupid = cg.contactid
              LEFT JOIN "position" pos ON ccg.positionid = pos.positionid
              LEFT JOIN ( SELECT eaddress.eaddressid,
                     eaddress.contactid,
@@ -984,7 +984,7 @@ CREATE OR REPLACE VIEW walcc.metadatacontact AS
                     row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
                    FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
              LEFT JOIN contactgrouplist cl ON cl.contactid = ccg.groupid
-             LEFT JOIN contact cg ON ccg.contactid = cg.contactid
+             LEFT JOIN contact cg ON ccg.groupid = cg.contactid
              LEFT JOIN "position" pos ON ccg.positionid = pos.positionid
              LEFT JOIN ( SELECT eaddress.eaddressid,
                     eaddress.contactid,
@@ -1437,7 +1437,7 @@ CREATE OR REPLACE VIEW absi.metadatacontact AS
                     row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
                    FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
              LEFT JOIN contactgrouplist cl ON cl.contactid = ccg.groupid
-             LEFT JOIN contact cg ON ccg.contactid = cg.contactid
+             LEFT JOIN contact cg ON ccg.groupid = cg.contactid
              LEFT JOIN "position" pos ON ccg.positionid = pos.positionid
              LEFT JOIN ( SELECT eaddress.eaddressid,
                     eaddress.contactid,
@@ -1890,7 +1890,7 @@ CREATE OR REPLACE VIEW nwb.metadatacontact AS
                     row_number() OVER (PARTITION BY contactcontactgroup.contactid ORDER BY contactcontactgroup.priority) AS rank
                    FROM contactcontactgroup) ccg ON person.contactid = ccg.contactid AND ccg.rank = 1
              LEFT JOIN contactgrouplist cl ON cl.contactid = ccg.groupid
-             LEFT JOIN contact cg ON ccg.contactid = cg.contactid
+             LEFT JOIN contact cg ON ccg.groupid = cg.contactid
              LEFT JOIN "position" pos ON ccg.positionid = pos.positionid
              LEFT JOIN ( SELECT eaddress.eaddressid,
                     eaddress.contactid,
