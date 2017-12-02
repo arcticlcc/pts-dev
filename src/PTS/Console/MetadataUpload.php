@@ -58,10 +58,10 @@ class MetadataUpload extends \Knp\Command\Command {
             if (!file_exists($file)) {
                 Throw new \Exception("Could not find file $file.");
             }
-            
+
             if(!$time || ($time > $inv)) {
                 $result = $app['s3.upload']($file, $bucket, $key, $compress);
-                $message = "Uploaded to {$result['ObjectURL']}";
+                $message = "Uploaded to {$result['Location']}";
                 $app['monolog']->addInfo($message);
                 $output->writeln($message);
             } else {
