@@ -82,7 +82,11 @@ Ext.application({
     getError: function(full) {
         var error = this.lastError;
 
-        return (full || (error.length < 300)) ? error : error.substr(0, 300) + '...';
+        if(full || error) {
+          return (full || (error.length < 300)) ? error : error.substr(0, 300) + '...';
+        } else {
+          return 'Unknown error occurred during last request.';
+        }
     },
 
     /**
