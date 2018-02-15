@@ -44,6 +44,7 @@ class AwsS3ServiceProvider implements ServiceProviderInterface {
             //     'Key'    => $key,
             //     'Body'   => fopen($file, 'r+')
             // ));
+
             $result = $s3->upload($bucket, $key, fopen($file, 'r+'));
 
             if ($compress) {
