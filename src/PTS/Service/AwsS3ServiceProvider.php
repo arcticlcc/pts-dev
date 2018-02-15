@@ -39,11 +39,12 @@ class AwsS3ServiceProvider implements ServiceProviderInterface {
             }
 
             // Upload an object to Amazon S3
-            $result = $s3->putObject(array(
-                'Bucket' => $bucket,
-                'Key'    => $key,
-                'Body'   => fopen($file, 'r+')
-            ));
+            // $result = $s3->putObject(array(
+            //     'Bucket' => $bucket,
+            //     'Key'    => $key,
+            //     'Body'   => fopen($file, 'r+')
+            // ));
+            $result = $s3->upload($bucket, $key, fopen($file, 'r+'));
 
             if ($compress) {
                 unlink($file);
