@@ -11,7 +11,7 @@
         "league/oauth2-client": "0.3.*@dev",
         "google/apiclient": "1.1.*",
         "swiftmailer/swiftmailer": "5.3.*",
-        "mheap/silex-markdown": "dev-master",
+        "mheap/silex-markdown": "dev-master#6d2ef5e",
         "knplabs/console-service-provider": "1.*",
         "sabre/vobject": "~3.3.0",
         "aws/aws-sdk-php-silex": "1.*",
@@ -35,7 +35,8 @@
     "autoload": {
         "psr-0": {
             "PTS": "src/",
-            "Idiorm": "src/"
+            "Idiorm": "src/",
+            "SilexMarkdown": "vendor/mheap/silex-markdown/src"
         }
     }
 }
