@@ -129,7 +129,7 @@ $app->get('/{class}.{format}', function(Request $request, $class, $format) use (
         $response = $app[$format]->setData($result)->getResponse();
 
     } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
         $response = $app[$format]->setAll(null, 409, false, $exc->getMessage())->getResponse();
     }
@@ -162,7 +162,7 @@ $app->get('/{class}/{id}', function(Request $request, $class, $id) use ($app) {
             $app['json']->setAll($result, $code, $success, $message);
         }
     } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
         $message = $exc->getMessage();
         $success = false;
         $code = 400;
@@ -184,7 +184,7 @@ $app->get('{class}/{id}/{related}.{format}', function(Request $request, $class, 
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
         $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
@@ -213,7 +213,7 @@ $app->post('/{class}', function(Request $request, $class) use ($app) {
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
         $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
@@ -238,7 +238,7 @@ $app->delete('/{class}/{id}', function($class, $id) use ($app) {
             throw new \Exception("Unauthorized.");
         }
     } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
         $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
 
@@ -259,7 +259,7 @@ $app->delete('/{class}/{id}', function($class, $id) use ($app) {
             $app['json']->setAll($result, $code, $success, $message);
         }
     } catch (Exception $exc) {
-        $app['monolog']->addError($exc->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
         $message = $exc->getMessage();
         $success = false;
         $code = 400;

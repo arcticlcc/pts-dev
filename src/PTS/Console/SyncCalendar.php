@@ -52,7 +52,7 @@ class SyncCalendar extends \Knp\Command\Command {
             }
 
         } catch (\Exception $exc) {
-            $app['monolog']->addError($exc->getMessage());
+            $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
         }
     }
 

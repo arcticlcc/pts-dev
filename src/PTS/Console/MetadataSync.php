@@ -87,7 +87,7 @@ class MetadataSync extends \Knp\Command\Command {
                 $output->writeln($message);
             }
         } catch (\Exception $exc) {
-            $app['monolog']->addError($exc->getMessage());
+            $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
         }
     }
 

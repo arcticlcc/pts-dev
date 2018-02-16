@@ -119,7 +119,7 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                 ));
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -170,7 +170,7 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                     ));
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -220,7 +220,7 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                 ));
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -263,7 +263,7 @@ class Feature implements ControllerProviderInterface, ServiceProviderInterface
                     $app['json']->setAll($result,$code,$success,$message);
                 }
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;

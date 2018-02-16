@@ -123,7 +123,7 @@ class Modification implements ControllerProviderInterface
 
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -174,7 +174,7 @@ class Modification implements ControllerProviderInterface
                         $app['json']->setAll($result,$code,$success,$message);
                     }
                 } catch (Exception $exc) {
-                    $app['monolog']->addError($exc->getMessage());
+                    $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                     $message = $exc->getMessage();
                     $success = false;
                     $code = 400;
@@ -212,7 +212,7 @@ class Modification implements ControllerProviderInterface
                 $app['json']->setData($result);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $app['json']->setAll(null, 500, false, $exc->getMessage());
             }
 
