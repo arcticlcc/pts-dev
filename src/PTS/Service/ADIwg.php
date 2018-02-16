@@ -217,9 +217,10 @@ class ADIwg {
         $steps = [];
         foreach ($this->app['idiorm']->getTable('productstep')
         ->select('productstep.*')
-        ->select('contactid')
+        ->select('uuid')
         ->select('role')
         ->join('productcontactlist', array('productcontactlist.productcontactid', '=', 'productstep.productcontactid'))
+        ->join('contact', array('productcontactlist.contactid', '=', 'contact.contactid'))
         ->where('productid', $id)
         ->order_by_asc('priority')
         ->find_many() as $object) {
@@ -280,6 +281,12 @@ class ADIwg {
                 }
             }
 
+            //if no product features, use group features if present
+            if($product['features'] === NULL && isset($pg['resource']['features'])) {
+                $product['features'] = $pg['resource']['features'];
+                $product['bbox'] = $pg['resource']['bbox'];
+            }
+
           //if no product features, use project features if present
             if($product['features'] === NULL && isset($prj['resource']['features'])) {
                 $product['features'] = $prj['resource']['features'];
@@ -304,12 +311,6 @@ class ADIwg {
           	   }
               }
             }
-
-            //if no product features, use group features if present
-            if($product['features'] === NULL && isset($pg['resource']['features'])) {
-                $product['features'] = $pg['resource']['features'];
-                $product['bbox'] = $pg['resource']['bbox'];
-            }
         }
 
         //get grouped products
@@ -320,7 +321,7 @@ class ADIwg {
               ->where('productgroupid', $id)
               ->where('exportmetadata', TRUE)
               ->where_not_equal('productid', $id)
-              ->where_not_in('uuid', array_keys($assoc))
+              //->where_not_in('uuid', array_keys($assoc))
               ->find_many() as $object) {
                 //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
                     $prd = $this->getProduct($object->productid);
