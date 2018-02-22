@@ -236,7 +236,7 @@ class ADIwg {
               if($pg['resource']['exportmetadata']) {
                   $pg['assocType'] = 'largerWorkCitation';
                   //$pguuid = $pg['resource']['resourceIdentifier'];
-                  $assoc = [$pg];
+                  $assoc['group'] = $pg;
               }
 
               //get related group products
@@ -265,7 +265,7 @@ class ADIwg {
                     $prj['assocType'] = 'parentProject';
                     $projuuid = $prj['resource']['resourceIdentifier'];
                     $parentmetadata = $prj;
-                    $assoc = [$prj];
+                    $assoc['project'] = $prj;
                 }
 
                 //get related project products
@@ -273,7 +273,7 @@ class ADIwg {
                 ->where('projectid', $product['projectid'])
                 ->where('exportmetadata', TRUE)
                 ->where_not_equal('productid', $id)
-                //->where_not_equal('productgroupid', $id)
+                ->where_not_equal('productid', $product['productgroupid'])
                 ->find_many() as $object) {
                     $prd = $this->getProduct($object->productid);
                     $prd['assocType'] = 'crossReference';
@@ -347,15 +347,15 @@ class ADIwg {
         //merge resource
         if(isset($pg)) {
           foreach ($product as $key => $value) {
-            if (empty($value)) {
+            if (false !== $value && empty($value)) {
               $product[$key] = $pg['resource'][$key];
             }
           }
         }
 
         $return = array(
-            'resourceType' => $product['resourcetype'],
-            'parentsciencebaseid' => $this->getGroupScienceBaseId(),
+            'resourceType' => $product['isgroup'] ? 'collection': $product['resourcetype'],
+            'parentsciencebaseid' => isset($projuuid) ? null : $this->getGroupScienceBaseId(),
             'organization' => $org,
             'resource' =>  $product,
             'keywords' => array_filter(explode('|', $product['keywords'])),
