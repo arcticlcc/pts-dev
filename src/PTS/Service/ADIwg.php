@@ -9,27 +9,30 @@ namespace PTS\Service;
  * @author Joshua Bradley <joshua_bradley@fws.gov>
  */
 
-class ADIwg {
-
+class ADIwg
+{
     private $app;
 
-    public function __construct($app) {
+    public function __construct($app)
+    {
         $this->app = $app;
     }
 
-    function getGroupScienceBaseId($schema = false) {
-      $schema = $schema ? $schema : $this->app['session']->get('schema');
+    public function getGroupScienceBaseId($schema = false)
+    {
+        $schema = $schema ? $schema : $this->app['session']->get('schema');
 
-      $group = $this->app['idiorm']
+        $group = $this->app['idiorm']
           ->getTable('groupschema')
           ->select('sciencebaseid')
           ->where('groupschemaid', $schema)
           ->find_one();
 
-      return $group->sciencebaseid;
+        return $group->sciencebaseid;
     }
 
-    function getProject($id, $withAssoc = false) {
+    public function getProject($id, $withAssoc = false)
+    {
         $contacts = array();
         $roles = array();
 
@@ -82,23 +85,23 @@ class ADIwg {
 
         //get products
         $assoc = [];
-        if($withAssoc) {
+        if ($withAssoc) {
             foreach ($this->app['idiorm']->getTable('product')
             ->select('productid')
             -> where('projectid', $project['projectid'])
-            ->where('exportmetadata', TRUE)
+            ->where('exportmetadata', true)
             ->find_many() as $object) {
                 $prd = $this->getProduct($object->get('productid'));
-                $prd['assocType'] = 'product';
+                $prd['assocType'] = $prd['resource']['isgroup'] ? 'isPartOf': 'product';
                 $assoc[] = $prd;
             }
 
             //merge contacts
             foreach ($assoc as $arr) {
                 foreach ($arr['contacts'] as $arr1) {
-                    if(array_search ($arr1, $contacts) === false){
+                    if (array_search($arr1, $contacts) === false) {
                         $contacts[] = $arr1;
-                   };
+                    };
                 };
             };
         }
@@ -113,6 +116,7 @@ class ADIwg {
 
         $data = array(
             'resourceType' => 'project',
+            'sciencebaseid' => $project['sciencebaseid'],
             //get ScienceBase id
             'parentsciencebaseid' => $this->getGroupScienceBaseId(),
             'published' => $project['exportmetadata'],
@@ -132,10 +136,10 @@ class ADIwg {
         );
 
         return $data;
-
     }
 
-    function getProduct($id, $withAssoc = false, $group = false) {
+    public function getProduct($id, $withAssoc = false, $group = false)
+    {
         $contacts = array();
         $roles = array();
 
@@ -230,132 +234,131 @@ class ADIwg {
         $assoc = [];
 
         //get productgroup and related products
-        if($product['productgroupid']) {
-          $pg = $this->getProduct($product['productgroupid'], null, true);
-          if($withAssoc) {
-              if($pg['resource']['exportmetadata']) {
-                  $pg['assocType'] = 'largerWorkCitation';
-                  //$pguuid = $pg['resource']['resourceIdentifier'];
-                  $assoc['group'] = $pg;
-              }
+        if ($product['productgroupid']) {
+            $pg = $this->getProduct($product['productgroupid'], null, true);
+            if ($withAssoc) {
+                if ($pg['resource']['exportmetadata']) {
+                    $pg['assocType'] = 'largerWorkCitation';
+                    //$pguuid = $pg['resource']['resourceIdentifier'];
+                    $assoc['group'] = $pg;
+                }
 
-              //get related group products
-              foreach ($this->app['idiorm']->getTable('product')
+                //get related group products
+                foreach ($this->app['idiorm']->getTable('product')
               ->where('productgroupid', $product['productgroupid'])
-              ->where('exportmetadata', TRUE)
+              ->where('exportmetadata', true)
               ->where_not_equal('productid', $id)
               ->find_many() as $object) {
-                //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                    //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
                     $prd = $this->getProduct($object->productid);
                     $prd['assocType'] = 'crossReference';
                     $assoc[$prd['resource']['resourceIdentifier']] = $prd;
-                //}
-              }
-
-          }
-
-        //get project and related products
-        $projectId = $product['projectid'] || $product['ptsProjectId'];
-        $prj = $projectId ? $this->getProject($product['projectid']) : false;
-
-        if($prj) {
-
-            if($withAssoc) {
-                if($prj['published']) {
-                    $prj['assocType'] = 'parentProject';
-                    $projuuid = $prj['resource']['resourceIdentifier'];
-                    $parentmetadata = $prj;
-                    $assoc['project'] = $prj;
+                    //}
                 }
+            }
+}
+            //get project and related products
+            $projectId = $product['projectid'] ? $product['projectid'] : $product['ptsProjectId'];
+            $prj = $projectId ? $this->getProject($product['projectid']) : false;
+            if ($prj) {
+                if ($withAssoc) {
+                    if ($prj['published']) {
+                        $prj['assocType'] = 'parentProject';
+                        $projuuid = $prj['resource']['resourceIdentifier'];
+                        $parentmetadata = isset($pg) ? $pg : $prj;
+                        $assoc['project'] = $prj;
+                    }
 
-                //get related project products
-                foreach ($this->app['idiorm']->getTable('product')
+                    //get related project products
+                    foreach ($this->app['idiorm']->getTable('product')
                 ->where('projectid', $product['projectid'])
-                ->where('exportmetadata', TRUE)
+                ->where('exportmetadata', true)
                 ->where_not_equal('productid', $id)
                 ->where_not_equal('productid', $product['productgroupid'])
                 ->find_many() as $object) {
-                    $prd = $this->getProduct($object->productid);
-                    $prd['assocType'] = 'crossReference';
-                    $assoc[$prd['resource']['resourceIdentifier']] = $prd;
+                        $prd = $this->getProduct($object->productid);
+                        $prd['assocType'] = 'crossReference';
+                        $assoc[$prd['resource']['resourceIdentifier']] = $prd;
+                    }
+                }
+
+                //if no product features, use group features if present
+                if ($product['features'] === null && isset($pg['resource']['features'])) {
+                    $product['features'] = $pg['resource']['features'];
+                    $product['bbox'] = $pg['resource']['bbox'];
+                }
+
+                //if no product features, use project features if present
+                if ($product['features'] === null && isset($prj['resource']['features'])) {
+                    $product['features'] = $prj['resource']['features'];
+                    $product['bbox'] = $prj['resource']['bbox'];
+                    $product['featuresInherited'] = true;
                 }
             }
 
-            //if no product features, use group features if present
-            if($product['features'] === NULL && isset($pg['resource']['features'])) {
-                $product['features'] = $pg['resource']['features'];
-                $product['bbox'] = $pg['resource']['bbox'];
-            }
-
-          //if no product features, use project features if present
-            if($product['features'] === NULL && isset($prj['resource']['features'])) {
-                $product['features'] = $prj['resource']['features'];
-                $product['bbox'] = $prj['resource']['bbox'];
-                $product['featuresInherited'] = true;
-            }
-          }
-
             //merge group contacts if present
-            if(isset($pg['contacts'])) {
-              foreach ($pg['contacts'] as $arr1) {
-                  if(array_search($arr1, $contacts) === false){
-              	    $contacts[] = $arr1;
-          	   }
-              }
+            if (isset($pg['contacts'])) {
+                foreach ($pg['contacts'] as $arr1) {
+                    if (array_search($arr1, $contacts) === false) {
+                        $contacts[] = $arr1;
+                    }
+                }
             }
             //merge project contacts if present
-            if(isset($prj['contacts'])) {
-              foreach ($prj['contacts'] as $arr1) {
-                  if(array_search ($arr1, $contacts) === false){
-              	    $contacts[] = $arr1;
-          	   }
-              }
+            if (isset($prj['contacts'])) {
+                foreach ($prj['contacts'] as $arr1) {
+                    if (array_search($arr1, $contacts) === false) {
+                        $contacts[] = $arr1;
+                    }
+                }
             }
-        }
+
 
         //get grouped products
-        if($product['isgroup']) {
-          if($withAssoc) {
-              //get related group products
-              foreach ($this->app['idiorm']->getTable('product')
+        if ($product['isgroup']) {
+            if ($withAssoc) {
+                //get related group products
+                foreach ($this->app['idiorm']->getTable('product')
               ->where('productgroupid', $id)
-              ->where('exportmetadata', TRUE)
+              ->where('exportmetadata', true)
               ->where_not_equal('productid', $id)
               //->where_not_in('uuid', array_keys($assoc))
               ->find_many() as $object) {
-                //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
+                    //if(!isset($assoc[$prd['resource']['resourceIdentifier']])) {
                     $prd = $this->getProduct($object->productid);
                     $prd['assocType'] = 'isComposedOf';
                     $assoc[$prd['resource']['resourceIdentifier']] = $prd;
-                //}
-              }
-
-          }
+                    //}
+                }
+            }
         }
 
         //merge contacts
         foreach ($assoc as $arr) {
-            if(isset($arr['contacts'])) {
+            if (isset($arr['contacts'])) {
                 foreach ($arr['contacts'] as $arr1) {
-                    if(array_search ($arr1, $contacts) === false){
-                	    $contacts[] = $arr1;
-            	   }
+                    if (array_search($arr1, $contacts) === false) {
+                        $contacts[] = $arr1;
+                    }
                 }
             }
         }
 
         //merge resource
-        if(isset($pg)) {
-          foreach ($product as $key => $value) {
-            if (false !== $value && empty($value)) {
-              $product[$key] = $pg['resource'][$key];
+        if (isset($pg)) {
+            foreach ($product as $key => $value) {
+                if (false !== $value && empty($value)) {
+                    $product[$key] = $pg['resource'][$key];
+                }
             }
-          }
         }
 
+        $parentsbid =(isset($pg) && $pg['sciencebaseid'] ? $pg['sciencebaseid'] :
+         (isset($prj) ? $prj['sciencebaseid'] : false));
         $return = array(
             'resourceType' => $product['isgroup'] ? 'collection': $product['resourcetype'],
-            'parentsciencebaseid' => isset($projuuid) ? null : $this->getGroupScienceBaseId(),
+            'sciencebaseid' => $product['sciencebaseid'],
+            'parentsciencebaseid' => $parentsbid ? $parentsbid : $this->getGroupScienceBaseId(),
             'organization' => $org,
             'resource' =>  $product,
             'keywords' => array_filter(explode('|', $product['keywords'])),
@@ -376,41 +379,41 @@ class ADIwg {
             'projectuuid' => isset($projuuid) ? $projuuid : null,
             'ptsProjectId' => $product['projectid']
         );
-
         //add project keywords if present
-        if(isset($prj['keywords'])) {
+        if (isset($prj['keywords'])) {
             $return['projectkeywords'] = $prj['keywords'];
         }
 
         //add parent metadata reference if present
-        if(isset($parentmetadata)) {
-
-          $return['parentmetadata'] = $parentmetadata;
+        if (isset($parentmetadata)) {
+            $return['parentmetadata'] = $parentmetadata;
         }
         //merge group
-        if(isset($pg)) {
-          foreach ($return as $key => $value) {
-            if (empty($value)) {
-              $return[$key] = $pg[$key];
+        if (isset($pg)) {
+            foreach ($return as $key => $value) {
+                if (empty($value)) {
+                    $return[$key] = $pg[$key];
+                }
             }
-          }
         }
 
         return $return;
-
     }
 
-    function renderProject($project) {
-      //echo $this->app['twig']->render('metadata/mdjson.json.twig', $project);
+    public function renderProject($project)
+    {
+        //echo $this->app['twig']->render('metadata/mdjson.json.twig', $project);
         return $this->app['twig']->render('metadata/mdjson.json.twig', $project);
     }
 
-    function renderProduct($product) {
+    public function renderProduct($product)
+    {
         //echo $this->app['twig']->render('metadata/mdjson.json.twig', $product);
         return $this->app['twig']->render('metadata/mdjson.json.twig', $product);
     }
 
-    function saveProject($id, $schema = false, $_conn = false) {
+    public function saveProject($id, $schema = false, $_conn = false)
+    {
         $schema = $schema ? $schema : $this->app['session']->get('schema');
         //if none, create the db file
         $this->buildMetaDB(false, $schema);
@@ -418,7 +421,7 @@ class ADIwg {
         $conn = $_conn ? $_conn : $this->app['dbs'][$schema];
         $sql = "SELECT * FROM project WHERE projectid = ?";
 
-        $probject = $this->getProject($id, TRUE);
+        $probject = $this->getProject($id, true);
         $uuid = $probject['resource']['resourceIdentifier'];
         $project = $conn->fetchAssoc($sql, array($uuid));
         $json = $this->renderProject($probject);
@@ -433,14 +436,14 @@ class ADIwg {
                 'metadataupdate' => (new \DateTime())->format(\DateTime::ISO8601)
             );
 
-        if($project) {
+        if ($project) {
             $conn->update('project', $data, array('projectid' => $uuid));
         } else {
             $data['projectid'] = $uuid;
             $conn->insert('project', $data);
         }
 
-        if(!$_conn) {
+        if (!$_conn) {
             $conn->close();
         }
 
@@ -450,12 +453,14 @@ class ADIwg {
         $object->save();
     }
 
-    function deleteProject($id) {
+    public function deleteProject($id)
+    {
         $conn = $this->app['dbs'][$this->app['session']->get('schema')];
         $conn->delete('project', array('projectid' => $id));
     }
 
-    function saveProduct($id, $schema = false, $_conn = false) {
+    public function saveProduct($id, $schema = false, $_conn = false)
+    {
         $schema = $schema ? $schema : $this->app['session']->get('schema');
         //if none, create the db file
         $this->buildMetaDB(false, $schema);
@@ -463,7 +468,7 @@ class ADIwg {
         $conn = $_conn ? $_conn : $this->app['dbs'][$schema];
         $sql = "SELECT * FROM product WHERE productid = ?";
 
-        $probject = $this->getProduct($id, TRUE);
+        $probject = $this->getProduct($id, true);
         $uuid = $probject['resource']['resourceIdentifier'];
         $product = $conn->fetchAssoc($sql, array($uuid));
         $json = $this->renderProduct($probject);
@@ -479,14 +484,14 @@ class ADIwg {
                 'metadataupdate' => (new \DateTime())->format(\DateTime::ISO8601)
             );
 
-        if($product) {
+        if ($product) {
             $conn->update('product', $data, array('productid' => $uuid));
         } else {
             $data['productid'] = $uuid;
             $conn->insert('product', $data);
         }
 
-        if(!$_conn) {
+        if (!$_conn) {
             $conn->close();
         }
 
@@ -496,12 +501,14 @@ class ADIwg {
         $object->save();
     }
 
-    function deleteProduct($id) {
+    public function deleteProduct($id)
+    {
         $conn = $this->app['dbs'][$this->app['session']->get('schema')];
         $conn->delete('product', array('productid' => $id));
     }
 
-    function translate($json, $format='iso19115_2') {
+    public function translate($json, $format='iso19115_2')
+    {
         //write to temp file to support cross-platform
         $temp = tmpfile();
         fwrite($temp, $json);
@@ -522,17 +529,18 @@ class ADIwg {
         return $xml->writerOutput;
     }
 
-    function buildMetaDB($path = false, $schema = false) {
-        if(!$path) {
-            if($schema) {
-            //get the file from $app['dbs'] config
-            $path = $this->app['dbOptions'][$schema]['path'];
+    public function buildMetaDB($path = false, $schema = false)
+    {
+        if (!$path) {
+            if ($schema) {
+                //get the file from $app['dbs'] config
+                $path = $this->app['dbOptions'][$schema]['path'];
             } else {
                 throw new \Exception("buildMetaDB failed. No schema or path supplied.");
             }
         }
 
-        if(!file_exists($path)) {
+        if (!file_exists($path)) {
             $conn = $this->app['dbs'][$schema];
 
             $schema = new \Doctrine\DBAL\Schema\Schema();
