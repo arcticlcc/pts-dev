@@ -50,6 +50,7 @@ class MetadataProduct extends \Knp\Command\Command {
 
         $schema = $input->getOption('schema');
         $app['idiorm']->setPath($schema);
+        $app['session']->set('schema',$schema);
 
         $app['monolog']->addInfo("Querying for productid($id).");
 

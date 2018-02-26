@@ -32,6 +32,7 @@ class ADIwg
     }
 
     public function getProject($id, $withAssoc = false)
+
     {
         $contacts = array();
         $roles = array();
@@ -256,62 +257,64 @@ class ADIwg
                     //}
                 }
             }
-}
-            //get project and related products
-            $projectId = $product['projectid'] ? $product['projectid'] : $product['ptsProjectId'];
-            $prj = $projectId ? $this->getProject($product['projectid']) : false;
-            if ($prj) {
-                if ($withAssoc) {
-                    if ($prj['published']) {
-                        $prj['assocType'] = 'parentProject';
-                        $projuuid = $prj['resource']['resourceIdentifier'];
-                        $parentmetadata = isset($pg) ? $pg : $prj;
-                        $assoc['project'] = $prj;
-                    }
+        }
 
-                    //get related project products
-                    foreach ($this->app['idiorm']->getTable('product')
+        //get project and related products
+        $projectId = $product['projectid'] ? $product['projectid'] : $product['ptsProjectId'];
+        $prj = $projectId ? $this->getProject($product['projectid']) : false;
+
+        if ($prj) {
+            if ($withAssoc) {
+                if ($prj['published']) {
+                    $prj['assocType'] = 'parentProject';
+                    $projuuid = $prj['resource']['resourceIdentifier'];
+                    $parentmetadata = isset($pg) ? $pg : $prj;
+                    $assoc['project'] = $prj;
+                }
+
+                //get related project products
+                foreach ($this->app['idiorm']->getTable('product')
                 ->where('projectid', $product['projectid'])
                 ->where('exportmetadata', true)
                 ->where_not_equal('productid', $id)
-                ->where_not_equal('productid', $product['productgroupid'])
+                ->where_not_equal('productid', $product['productgroupid'] ? $product['productgroupid'] : -1)
                 ->find_many() as $object) {
-                        $prd = $this->getProduct($object->productid);
-                        $prd['assocType'] = 'crossReference';
-                        $assoc[$prd['resource']['resourceIdentifier']] = $prd;
-                    }
-                }
-
-                //if no product features, use group features if present
-                if ($product['features'] === null && isset($pg['resource']['features'])) {
-                    $product['features'] = $pg['resource']['features'];
-                    $product['bbox'] = $pg['resource']['bbox'];
-                }
-
-                //if no product features, use project features if present
-                if ($product['features'] === null && isset($prj['resource']['features'])) {
-                    $product['features'] = $prj['resource']['features'];
-                    $product['bbox'] = $prj['resource']['bbox'];
-                    $product['featuresInherited'] = true;
+                    $prd = $this->getProduct($object->productid);
+                    $prd['assocType'] = 'crossReference';
+                    $assoc[$prd['resource']['resourceIdentifier']] = $prd;
                 }
             }
 
-            //merge group contacts if present
-            if (isset($pg['contacts'])) {
-                foreach ($pg['contacts'] as $arr1) {
-                    if (array_search($arr1, $contacts) === false) {
-                        $contacts[] = $arr1;
-                    }
+            //if no product features, use group features if present
+            if ($product['features'] === null && isset($pg['resource']['features'])) {
+                $product['features'] = $pg['resource']['features'];
+                $product['bbox'] = $pg['resource']['bbox'];
+            }
+
+            //if no product features, use project features if present
+            if ($product['features'] === null && isset($prj['resource']['features'])) {
+                $product['features'] = $prj['resource']['features'];
+                $product['bbox'] = $prj['resource']['bbox'];
+                $product['featuresInherited'] = true;
+            }
+        }
+
+        //merge group contacts if present
+        if (isset($pg['contacts'])) {
+            foreach ($pg['contacts'] as $arr1) {
+                if (array_search($arr1, $contacts) === false) {
+                    $contacts[] = $arr1;
                 }
             }
-            //merge project contacts if present
-            if (isset($prj['contacts'])) {
-                foreach ($prj['contacts'] as $arr1) {
-                    if (array_search($arr1, $contacts) === false) {
-                        $contacts[] = $arr1;
-                    }
+        }
+        //merge project contacts if present
+        if (isset($prj['contacts'])) {
+            foreach ($prj['contacts'] as $arr1) {
+                if (array_search($arr1, $contacts) === false) {
+                    $contacts[] = $arr1;
                 }
             }
+        }
 
 
         //get grouped products

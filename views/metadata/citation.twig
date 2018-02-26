@@ -74,11 +74,11 @@
             "identifier": "{{ resource.sciencebaseid }}",
             "namespace" : "gov.sciencebase.catalog",
             "authority": {
-              "title": "{{ 'ScienceBase identifier for the resource' }}",
+              "title": "{{ 'ScienceBase identifier for the resource' }}" {#,
               "date": [{
                 "date": "{{ resource.datecreated|default(resource.startdate) }}",
-                "dateType": "creation"
-              }]
+                "dateType": "lastUpdate"
+              }]#}
             }
           }{% endif %}
         ],
