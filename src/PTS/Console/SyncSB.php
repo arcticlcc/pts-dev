@@ -97,8 +97,6 @@ class SyncSB extends \Knp\Command\Command
             }
         }
 
-        dump($map);
-
         $output->writeln($data->total . ' items found.');
 
         foreach ($map as $uuid => $sbid) {
@@ -119,7 +117,7 @@ class SyncSB extends \Knp\Command\Command
                 $product->set('sciencebaseid', $sbid)->save();
                 continue;
             }
-            $app['monolog']->addWarning("No prject or product found with uuid {$uuid}.");
+            $app['monolog']->addWarning("No project or product found with uuid {$uuid}.");
         }
         $output->writeln('Sync complete.');
         $app['monolog']->info('Sync complete.');
