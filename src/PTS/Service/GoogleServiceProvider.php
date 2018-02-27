@@ -56,7 +56,7 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             if ($batch) {
                 $client->setUseBatch(TRUE);
                 $batch = new \Google_Http_Batch($client);
-                return array('batch'=>$batch,'service'=>$service);
+                return array('batch'=>$batch,'service'=>$service, 'client'=>$client);
             }
 
             return $service;
@@ -203,7 +203,8 @@ class GoogleServiceProvider implements ServiceProviderInterface {
             $events = $service->events->listEvents($calId, $optParams);
             $gcal = $app['gcal'](TRUE);
             $cal = $gcal['service'];
-            $batch = $gcal['batch'];
+            //$batch = $gcal['batch'];
+            $client = $gcal['client'];
             $update = array();
             $schema = $schema ? $schema : $app['session']->get('schema');
 
@@ -237,31 +238,36 @@ class GoogleServiceProvider implements ServiceProviderInterface {
               }
             }
 
-            foreach ($dataIdx as $values) {
-                //action, insert or update
-                $eventData = $app['eventData']($values, $schema);
+            $chunked = array_chunk($dataIdx, 100, true);
 
-                $createdEvent = $app['createEvent']($eventData);
+            foreach ($chunked as $data) {
+              $batch = new \Google_Http_Batch($client);
 
-                if(isset($update[$createdEvent->getId()])) {
-                    $createdEvent->setSequence($update[$createdEvent->getId()]);
-                    $action = $cal->events->update($calId, $createdEvent->getId(), $createdEvent);
-                } else {
-                    $action = $cal->events->insert($calId, $createdEvent);
-                }
-                $batch->add($action, $createdEvent->getId());
+              foreach ($data as $values) {
+                  //action, insert or update
+                  $eventData = $app['eventData']($values, $schema);
+
+                  $createdEvent = $app['createEvent']($eventData);
+
+                  if(isset($update[$createdEvent->getId()])) {
+                      $createdEvent->setSequence($update[$createdEvent->getId()]);
+                      $action = $cal->events->update($calId, $createdEvent->getId(), $createdEvent);
+                  } else {
+                      $action = $cal->events->insert($calId, $createdEvent);
+                  }
+                  $batch->add($action, $createdEvent->getId());
+              }
+
+              $b = $batch->execute();
+
+              $result['errors'] = array();
+
+              foreach ($b as $r) {
+                  if(method_exists($r,'getErrors')) {
+                      $result['errors'][] = $r->getErrors();
+                  }
+              }
             }
-
-            $b = $batch->execute();
-
-            $result['errors'] = array();
-
-            foreach ($b as $r) {
-                if(method_exists($r,'getErrors')) {
-                    $result['errors'][] = $r->getErrors();
-                }
-            }
-
             return $result;
 
         });
