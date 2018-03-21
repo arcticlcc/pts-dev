@@ -260,7 +260,7 @@ class ADIwg
         }
 
         //get project and related products
-        $projectId = $product['projectid'] ? $product['projectid'] : $product['ptsProjectId'];
+        $projectId = $product['projectid'] ? $product['projectid'] : isset($product['ptsProjectId']) ? $product['ptsProjectId'] : null;
         $prj = $projectId ? $this->getProject($product['projectid']) : false;
 
         if ($prj) {
