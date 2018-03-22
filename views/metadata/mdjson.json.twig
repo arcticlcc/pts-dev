@@ -3,7 +3,7 @@
 {
   "schema": {
     "name": "mdJson",
-    "version": "2.0.0"
+    "version": "2.4.5"
   },
   "metadataRepository" : [{
       "metadataStandard" : "mdJSON",
@@ -12,10 +12,10 @@
       },
       "repository" : "ScienceBase"
     }
-    {% if not resourceType == 'project' %}
+    {% if not (resourceType == 'project') %}
     ,{ "metadataStandard" : "ISO 19115-2",
         "citation" : {
-          "title" : "{{ organization.name }}"
+          "title" : "{{ organization.name }} data.gov"
         },
         "repository" : "data.gov"
       }

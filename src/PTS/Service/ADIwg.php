@@ -56,6 +56,19 @@ class ADIwg
 
         $contacts[] = $org;
 
+        //get deliverabletypes
+        $deliverabletypes = [];
+        foreach ($this->app['idiorm']->getTable('product')
+        ->distinct()
+        ->select('catalog')
+        ->join('deliverabletype', array('product.deliverabletypeid', '=', 'deliverabletype.deliverabletypeid'))
+        -> where('projectid', $project['projectid'])
+        ->where('exportmetadata', true)
+        ->where('deliverabletype.product', true)
+        ->find_many() as $object) {
+          $deliverabletypes[] = $object->catalog;
+        }
+
         //get other contacts for project
         foreach ($this->app['idiorm']->getTable('metadatacontact')->distinct()->select('metadatacontact.*')
         ->join('projectallcontacts', array('metadatacontact.contactId', '=', 'projectallcontacts.contactid'))
@@ -129,6 +142,7 @@ class ADIwg
             "topics" => array_filter(explode('|', $project['topiccategory'])),
             "usertypes" => array_filter(explode('|', $project['usertype'])),
             "cats" => array_filter(explode('|', $project['projectcategory'])),
+            "deliverabletypes" => $deliverabletypes,
             "projectkeywords" => false,
             'contacts' => $contacts,
             'roles' => $role_map,
