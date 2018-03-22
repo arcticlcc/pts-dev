@@ -1,6 +1,7 @@
 /config/config.yml
 /config/google.yml
 /config/github.yml
+/config/sciencebase.yml
 /config/aws.json
 /config/aws.php
 /log/console.log
