@@ -260,6 +260,7 @@ class ADIwg
         }
 
         //get project and related products
+        $ptsProjectId = null;
         if(isset($product['ptsProjectId'])) {$ptsProjectId = $product['ptsProjectId'];}
 
         $projectId = $product['projectid'] ? $product['projectid'] : $ptsProjectId;
