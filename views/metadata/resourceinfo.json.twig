@@ -48,7 +48,7 @@
           "version": ""
         }
       ],#}
-      {% if keywords or projectkeywords or usertypes or cats or deliverabletypes%}
+      {% if keywords or projectkeywords or usertypes or cats or deliverabletypes %}
       "keyword": [
         {% if topics %}
         {
@@ -76,9 +76,10 @@
               ]
             },
             "fullPath" : true
-          },
+          }
         {% endif %}
         {% if keywords %}
+          {% if topics %},{% endif %}
           {
             "keyword": [
               {% for kw in keywords %}
@@ -111,7 +112,8 @@
           }
         {% endif %}
         {% if projectkeywords %}
-          ,{
+          {% if topics or keywords %},{% endif %}
+          {
             "keyword": [
               {% for kw in projectkeywords %}
                   {"keyword": "{{ kw }}"}{% if loop.last == false %},{% endif %}
@@ -143,7 +145,8 @@
           }
         {% endif %}
         {% if usertypes %}
-          ,{
+          {% if topics or keywords or projectkeywords %},{% endif %}
+          {
             "keyword": [
               {% for kw in usertypes %}
               {"keyword": "{{ kw }}",
@@ -173,7 +176,8 @@
           }
         {% endif %}
         {% if cats %}
-          ,{
+          {% if topics or keywords or projectkeywords or usertypes %},{% endif %}
+          {
             "keyword": [
               {% for kw in cats %}
                   {"keyword": "{{ kw }}",
@@ -203,7 +207,8 @@
           }
         {% endif %}
         {% if deliverabletypes %}
-          ,{
+		      {% if topics or keywords or projectkeywords or usertypes or cats %},{% endif %}
+          {
             "keyword": [
               {% for kw in deliverabletypes %}
                   {"keyword": "{{ kw }}",
