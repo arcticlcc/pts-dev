@@ -285,10 +285,9 @@ class ADIwg
                 if ($prj['published']) {
                     $prj['assocType'] = 'parentProject';
                     $projuuid = $prj['resource']['resourceIdentifier'];
-                    $parentmetadata = isset($pg) ? $pg : $prj;
+                    $parentmetadata = isset($pg) && $pg['resource']['exportmetadata'] ? $pg : $prj;
                     $assoc['project'] = $prj;
                 }
-
                 //get related project products
                 foreach ($this->app['idiorm']->getTable('product')
                 ->where('projectid', $product['projectid'])
@@ -390,6 +389,7 @@ class ADIwg
             'wkt' => array_filter(explode('|', $product['wkt'])),
             'usertypes' => false, //array_filter(explode('|', $product['usertype'])),
             'cats' => false, //array_filter(explode('|', $product['productcategory'])),
+            'deliverabletypes' => false, //array_filter(explode('|', $product['productcategory'])),
             'contacts' => $contacts,
             'roles' => $role_map,
             'dates' => $dates,
