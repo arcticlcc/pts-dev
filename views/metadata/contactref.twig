@@ -5,7 +5,7 @@
 	    {% if not values or key in values %}
 	      {% if (comma == true and loop.first) or not loop.first %},{% endif %}
 	      {
-	        "role": "{{ contact[0].roletype }}",
+	        "role": "{{ contact[0].role }}",
           "party": [
           {% for item in contact %}
       		    {
