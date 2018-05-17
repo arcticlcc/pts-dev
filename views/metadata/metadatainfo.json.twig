@@ -54,9 +54,12 @@
         "characterSet" : "UTF-8",
         "country" : "USA"
       },
-      "metadataOnlineResource": [
-        {"uri":"http://metadata.arcticlcc.org/{{ resource.resourceIdentifier }}/"}
-      ],
+      "metadataOnlineResource": [{
+        "uri":"http://metadata.arcticlcc.org/{{ resource.resourceIdentifier }}/",
+        "name": "Online access to metadata",
+        "protocol": "http",
+        "function": "completeMetadata"
+      }],
       "metadataStatus": "completed",
       "metadataMaintenance": {
         "frequency": "asNeeded",

@@ -14,8 +14,8 @@
       "pointOfContact": [
         {
           "party": [
-            {"contactId": "{{ organization.uuid }}"},
-            {"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"}
+            {"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"},
+            {"contactId": "{{ organization.uuid }}"}
           ],
           "role": "pointOfContact"
         },
@@ -67,7 +67,10 @@
               "title" : "ISO 19115 Topic Category",
               "edition" : "ISO 19115-1:2014",
               "onlineResource" : [{
-                  "uri" : "https://doi.org/10.18123/D6RP4M"
+                  "uri" : "https://doi.org/10.18123/D6RP4M",
+                  "name": "Web page for ISO 19115-1:2014 Standard",
+                  "protocol": "http",
+                  "function": "information"
                 }
               ],
               "identifier" : [{
@@ -88,7 +91,7 @@
             ],
             "keywordType": "theme",
             "thesaurus":{
-              "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+              "title":"Global Change Master Directory (GCMD) Science Keywords",
               "date":[
                 {
                   "date":"2013-04-01",
@@ -101,7 +104,8 @@
               ],
               "onlineResource":[
                 {
-                  "uri":"http://gcmd.nasa.gov/learn/keywords.html"
+                  "uri":"https://earthdata.nasa.gov/gcmd-forum",
+                  "name": "Global Change Master Directory (GCMD) Science Keywords website"
                 }
               ]
               {# "identifier" : [{
@@ -121,7 +125,7 @@
             ],
             "keywordType": "project",
             "thesaurus":{
-              "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+              "title":"Global Change Master Directory (GCMD) Science Keywords",
               "date":[
                 {
                   "date":"2013-04-01",
@@ -134,7 +138,8 @@
               ],
               "onlineResource":[
                 {
-                  "uri":"http://gcmd.nasa.gov/learn/keywords.html"
+                  "uri":"https://earthdata.nasa.gov/gcmd-forum",
+                  "name": "Global Change Master Directory (GCMD) Science Keywords website"
                 }
               ]
               {# "identifier" : [{
@@ -164,7 +169,8 @@
               "title" : "End User Types - Landscape Conservation Cooperatives",
               "edition" : "2017",
               "onlineResource" : [{
-                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/54760ef9e4b0f62cb5dc41a0"
+                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/54760ef9e4b0f62cb5dc41a0",
+                  "name": "End User Types Keyword Vocabulary"
                 }
               ],
               "identifier" : [{
@@ -195,7 +201,8 @@
               "title" : "Project Category - Landscape Conservation Cooperatives",
               "edition" : "2017",
               "onlineResource" : [{
-                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/52dee7c5e4b0dee2a6cd6b18"
+                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/52dee7c5e4b0dee2a6cd6b18",
+                  "name": "Project Category Keyword Vocabulary"
                 }
               ],
               "identifier" : [{
@@ -226,7 +233,8 @@
               "title" : "Deliverable Types - Landscape Conservation Cooperatives",
               "edition" : "2017",
               "onlineResource" : [{
-                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/5307baa3e4b0dcc7bdc913a9"
+                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/5307baa3e4b0dcc7bdc913a9",
+                  "name": "Deliverable Types Keyword Vocabulary"
                 }
               ],
               "identifier" : [{

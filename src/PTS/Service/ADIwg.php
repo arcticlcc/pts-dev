@@ -188,7 +188,7 @@ class ADIwg
         foreach ($this->app['idiorm']->getTable('productcontact')
         ->select('productcontact.*')
         ->select('contact.uuid')
-        ->select('codename', 'roletype')
+        ->select('codename', 'role')
         ->select_expr('isoroletype.isoroletypeid', 'roletypeid')
         ->join('isoroletype', array('productcontact.isoroletypeid', '=', 'isoroletype.isoroletypeid'))
         ->join('contact', array('productcontact.contactid', '=', 'contact.contactid'))
