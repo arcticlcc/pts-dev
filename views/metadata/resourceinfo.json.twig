@@ -23,7 +23,8 @@
           "party": [
             {"contactId": "{{ organization.uuid }}"}
           ],
-          "role": "publisher"
+          "role": "publisher",
+          "pts": true
         }
         {% if resourceType == 'project' %}
         {{ contactref.ref(roles,[6,2,8,7,12],true) }}
