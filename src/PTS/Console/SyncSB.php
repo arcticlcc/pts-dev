@@ -50,7 +50,7 @@ class SyncSB extends \Knp\Command\Command
 
         try {
             $client = new Client();
-            $url = "https://www.sciencebase.gov/catalog/items?ancestors={$sciencebaseid}&max=1700&format=json&fields=id,identifiers,browseType";
+            $url = "https://www.sciencebase.gov/catalog/items?ancestors={$sciencebaseid}&max=1700&format=json&fields=id,identifiers,browseType,files";
             $res = $client->request('GET', $url);
             //echo $res->getStatusCode();
           // "200"
@@ -92,14 +92,29 @@ class SyncSB extends \Knp\Command\Command
                 }
 
                 if ($uuid) {
-                    $map[$uuid] = $value->id;
+                    $map[$uuid] = array('id' => $value->id, 'data' => array());
+
+                    if (property_exists($value, 'files')) {
+                        $file = null;
+                        foreach ($value->files as $file) {
+                            if ($file->name == 'md_metadata.json') {
+                                $map[$uuid]['json'] = $file;
+                                continue ;
+                            }
+                            if ($file->name == 'metadata.xml') {
+                                $map[$uuid]['xml'] = $file;
+                                continue ;
+                            }
+
+                            $map[$uuid]['data'][] = $file;
+                        }
+                    }
                 }
             }
         }
 
-        $output->writeln($data->total . ' items found.');
-
-        foreach ($map as $uuid => $sbid) {
+        foreach ($map as $uuid => $item) {
+            $sbid = $item['id'];
             $project = $app['idiorm']->getTable('project')
             ->where('uuid', $uuid)
             ->find_one();
@@ -115,11 +130,39 @@ class SyncSB extends \Knp\Command\Command
 
             if ($product) {
                 $product->set('sciencebaseid', $sbid)->save();
+
+                if(isset($item['data'])) {
+                  foreach ($item['data'] as $file) {
+                    $this->insertLink($product->productid, $file, 1, "File stored on ScienceBase.");
+                  }
+                }
+                if(isset($item['xml'])) {
+                  $this->insertLink($product->productid, $item['xml'], 6, "ISO 19115-2 Metadata stored on ScienceBase.");
+                }
                 continue;
             }
-            $app['monolog']->addWarning("No project or product found with uuid {$uuid}.");
+            $app['monolog']->addWarning("No project or product found with uuid {$uuid} and sbid {$sbid}.");
         }
         $output->writeln('Sync complete.');
         $app['monolog']->info('Sync complete.');
+    }
+
+    protected function insertLink($id, $file, $func = 2, $desc="ScienceBase item") {
+        $app = $this->getSilexApplication();
+        $link = $app['idiorm']->getTable('onlineresource');
+        $exists = $link->where(array(
+                'productid' => $id,
+                'uri' => $file->downloadUri
+            ))->find_one();
+
+        if(!$exists){
+            $link->create();
+            $link->set('productid', $id);
+            $link->set('onlinefunctionid', $func);
+            $link->set('uri', $file->downloadUri);
+            $link->set('title', $file->name);
+            $link->set('description', $desc);
+            $link->save();
+        }
     }
 }
