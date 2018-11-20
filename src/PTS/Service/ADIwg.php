@@ -397,7 +397,9 @@ class ADIwg
             'steps' => $steps,
             'associated' => $assoc,
             'projectuuid' => isset($projuuid) ? $projuuid : null,
-            'ptsProjectId' => $product['projectid']
+            'ptsProjectId' => $product['projectid'],
+            'usertypes' => $prj['usertypes']
+
         );
         //add project keywords if present
         if (isset($prj['keywords'])) {
