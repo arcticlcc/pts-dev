@@ -59,7 +59,19 @@
         "name": "Online access to metadata",
         "protocol": "http",
         "function": "completeMetadata"
-      }],
+      }
+      {% for link in links %}
+        {% if link.onlinefunctionid in [6] %}
+          ,
+          {
+            "uri": "{{ link.uri }}",
+            "name": "{{ link.title }}",
+            "description": "{{ link.description }}",
+            "function": "{{ link.function }}"
+          }
+        {% endif %}
+      {% endfor %}
+      ],
       "metadataStatus": "completed",
       "metadataMaintenance": {
         "frequency": "asNeeded",

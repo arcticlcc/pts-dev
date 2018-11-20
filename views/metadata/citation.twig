@@ -1,6 +1,6 @@
 {% macro citation(c) %}
   {% import "metadata/contactref.twig" as contactref %}
-  {% set project, resource, organization = c.resourceType == 'project', c.resource, c.organization %}
+  {% set project, resource, organization, links = c.resourceType == 'project', c.resource, c.organization, c.links %}
 	{% autoescape 'json' %}
 	  {
         "title": "{{ resource.title }}",
@@ -90,6 +90,26 @@
             "description": "Web page with detailed information about the resource.",
             "function": "information"
           }
+          {% if resource.sciencebaseid %},
+            {
+              "uri": "https://www.sciencebase.gov/catalog/item/{{ resource.sciencebaseid }}",
+              "protocol": "http",
+              "name": "Resource ScienceBase website",
+              "description": "Web page with detailed information about the resource.",
+              "function": "information"
+            }
+          {% endif %}
+          {% for link in links %}
+            {% if link.onlinefunctionid in [2,5,8,9,10,12] %}
+              ,
+              {
+                "uri": "{{ link.uri }}",
+                "name": "{{ link.title }}",
+                "description": "{{ link.description }}",
+                "function": "{{ link.function }}"
+              }
+            {% endif %}
+          {% endfor %}
         ]
       }
 	{% endautoescape %}
