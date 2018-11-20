@@ -4,9 +4,20 @@
     {
       "amount": {{ funds.amount }},
       "currency": "USD",
-      "sourceId": "{{ funds.sourceid }}",
+      "sourceId": "{{ funds.sourcetype == "lcc" ? 'f2d64d80-7641-4b87-b5a4-02250f27ad4a' : funds.sourceid}}",
       "recipientId": "{{ funds.recipientid }}",
-      "matching": {{ funds.type == "Matching" ? 'true' : 'false'}}
+      "matching": {{ funds.type == "Match" and funds.sourcetype != "lcc" ? 'true' : 'false'}},
+      "sourceAllocationId": "{{ funds.modificationcode }}",
+      "responsibleParty": [{
+        "party" : [{
+          "contactId" : "{{ organization.uuid }}"
+        }
+        {% if funds.adminid != organization.uuid %}
+        , {"contactId" : "{{ funds.adminid }}"}
+        {% endif %}
+        ],
+        "role" : "administrator"
+      }]
     }
   ]
 
