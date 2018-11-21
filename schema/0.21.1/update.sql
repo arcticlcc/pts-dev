@@ -62,7 +62,8 @@ CREATE OR REPLACE VIEW dev.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE dev.sbproductmissing
   OWNER TO bradley;
@@ -132,7 +133,8 @@ CREATE OR REPLACE VIEW alcc.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE alcc.sbproductmissing
   OWNER TO bradley;
@@ -202,7 +204,8 @@ CREATE OR REPLACE VIEW walcc.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE walcc.sbproductmissing
   OWNER TO bradley;
@@ -272,7 +275,8 @@ CREATE OR REPLACE VIEW absi.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE absi.sbproductmissing
   OWNER TO bradley;
@@ -342,7 +346,8 @@ CREATE OR REPLACE VIEW nwb.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE nwb.sbproductmissing
   OWNER TO bradley;
@@ -412,7 +417,8 @@ CREATE OR REPLACE VIEW sciapp.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE sciapp.sbproductmissing
   OWNER TO bradley;

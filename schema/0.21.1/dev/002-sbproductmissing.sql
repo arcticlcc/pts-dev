@@ -22,7 +22,8 @@ CREATE OR REPLACE VIEW dev.sbproductmissing AS
            FROM product p_1
              LEFT JOIN onlineresource o USING (productid)
           WHERE p_1.exportmetadata AND NOT p_1.isgroup AND (o.onlinefunctionid = ANY (ARRAY[1, 2, 3, 11, 12])) AND o.uri::text ~~ 'https://www.sciencebase.gov%'::text
-          GROUP BY p_1.productid));
+          GROUP BY p_1.productid))
+  ORDER BY 3;
 
 ALTER TABLE dev.sbproductmissing
   OWNER TO bradley;

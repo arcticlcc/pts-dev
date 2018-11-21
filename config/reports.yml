@@ -248,3 +248,19 @@ reports:
           - {text: Leveraged, dataIndex: leveraged, renderer: usMoney}
           - {text: Total, dataIndex: total, renderer: usMoney}
         fields: [fiscalyear, {name: allocated, type: number}, invoiced, difference, leveraged, total]
+  - text: Data Product Reports
+    qtip: Reports associated with Data Products
+    iconCls: folder
+    leaf: false
+    children:
+      - text: ScienceBase Missing
+        url: ../sbproductmissing
+        qtip: Lists products that do not have ScienceBase download links
+        cols:
+          - {text: Project, dataIndex: projectcode}
+          - {text: Title, dataIndex: title, flex: 3}
+          - {text: Type, dataIndex: type}
+          - {text: UUID, dataIndex: uuid, hidden:true}
+          - {text: ScienceBase ID, dataIndex: sciencebaseid, flex:1}
+          - {text: ScienceBase Link, dataIndex: sblink, flex: 2}
+        fields: [productid, projectid, projectcode,uuid, title, exportmetadata, type, deliverabletypeid, sciencebaseid, sblink]
