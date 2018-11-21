@@ -109,6 +109,19 @@ class SyncSB extends \Knp\Command\Command
                             $map[$uuid]['data'][] = $file;
                         }
                     }
+                    //get shapefiles
+                    if (property_exists($value, 'facets')) {
+                        $file = null;
+                        foreach ($value->facets as $facet) {
+                            if ($facet->className == 'gov.sciencebase.catalog.item.facet.ShapefileFacet') {
+                                $file = (object) array(
+                                  'downloadUri' => "https://www.sciencebase.gov/catalog/file/get/{$value->id}?facet={$facet->name}",
+                                  'name' => "{$facet->name}_Shapefile.zip"
+                                );
+                                $map[$uuid]['data'][] = $file;
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -156,13 +169,25 @@ class SyncSB extends \Knp\Command\Command
             ))->find_one();
 
         if(!$exists){
-            $link->create();
-            $link->set('productid', $id);
-            $link->set('onlinefunctionid', $func);
-            $link->set('uri', $file->downloadUri);
-            $link->set('title', $file->name);
-            $link->set('description', $desc);
-            $link->save();
+          $named=$app['idiorm']->getTable('onlineresource')->where(array(
+                  'productid' => $id,
+                  'title' => $file->name
+              ))->find_one();
+
+            if(!$named) {
+              $link->create();
+              $link->set('productid', $id);
+              $link->set('onlinefunctionid', $func);
+              $link->set('uri', $file->downloadUri);
+              $link->set('title', $file->name);
+              $link->set('description', $desc);
+              $link->save();
+
+              return;
+            }
+
+          $named->set('uri', $file->downloadUri)->save();
         }
+
     }
 }
