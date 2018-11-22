@@ -92,6 +92,10 @@ Ext.define('PTS.controller.report.tab.ReportTab', {
                         if (c.renderer) {
                             c.renderer = Ext.util.Format[c.renderer];
                         }
+
+                        if (c.ptsrenderer) {
+                            c.renderer = PTS.util.Format[c.ptsrenderer];
+                        }
                     });
                     tab.columns = data.cols;
                 }
