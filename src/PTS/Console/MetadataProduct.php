@@ -50,6 +50,7 @@ class MetadataProduct extends \Knp\Command\Command {
 
         $schema = $input->getOption('schema');
         $app['idiorm']->setPath($schema);
+        $app['session']->set('schema',$schema);
 
         $app['monolog']->addInfo("Querying for productid($id).");
 
@@ -70,7 +71,7 @@ class MetadataProduct extends \Knp\Command\Command {
                 $output->writeln($out);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $output->writeln($exc->getMessage());
             }

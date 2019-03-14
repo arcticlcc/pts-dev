@@ -60,7 +60,7 @@ class Deliverable implements ControllerProviderInterface
                 $app['json']->setData($result);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $app['json']->setAll(null, 409, false, $exc->getMessage());
             }
@@ -122,7 +122,7 @@ class Deliverable implements ControllerProviderInterface
 
                 $app['json']->setData($result);
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -151,7 +151,7 @@ class Deliverable implements ControllerProviderInterface
                 $app['json']->setData($json)->getResponse(true);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -174,7 +174,7 @@ class Deliverable implements ControllerProviderInterface
                 $app['json']->setData($json)->getResponse(true);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -202,7 +202,7 @@ class Deliverable implements ControllerProviderInterface
                 $app['json']->setData($result)->getResponse(true);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -250,7 +250,7 @@ class Deliverable implements ControllerProviderInterface
                 }
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;

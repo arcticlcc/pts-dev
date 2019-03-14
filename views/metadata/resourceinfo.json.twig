@@ -2,36 +2,46 @@
 {% import "metadata/citation.twig" as citation %}
 {% autoescape 'json' %}
     {
-      "resourceType": "{{ resourceType }}",
+      "resourceType": [{"type":"{{ resourceType }}"}],
       {% if resource.startdate or resource.enddate %}
-      "resourceTimePeriod": {
+      "timePeriod": {
         "description": "{{ resourceType == 'project' ? 'Span of project activity' : 'Time span for which resource(' ~ resourceType ~ ') is relevant. ' ~ resource.perioddescription}}",
-        {% if resource.startdate %}"beginPosition": "{{resource.startdate}}"{% endif %}{% if resource.startdate and resource.enddate %},{% endif %}
-        {% if resource.enddate %}"endPosition": "{{resource.enddate}}"{% endif %}
+        {% if resource.startdate %}"startDateTime": "{{resource.startdate}}"{% endif %}{% if resource.startdate and resource.enddate %},{% endif %}
+        {% if resource.enddate %}"endDateTime": "{{resource.enddate}}"{% endif %}
       },
       {% endif %}
       "citation": {{ citation.citation(_context) }},
       "pointOfContact": [
         {
-          "contactId": "{{ organization.contactId }}",
+          "party": [
+            {"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"},
+            {"contactId": "{{ organization.uuid }}"}
+          ],
           "role": "pointOfContact"
+        },
+        {
+          "party": [
+            {"contactId": "{{ organization.uuid }}"}
+          ],
+          "role": "publisher",
+          "pts": true
         }
         {% if resourceType == 'project' %}
-        {{ contactref.ref(roles,[6,2,8],true) }}
+        {{ contactref.ref(roles,[6,2,8,7,12],true) }}
         {% else %}
-        {{ contactref.ref(roles,[2, 7, 10],true) }}
+        {{ contactref.ref(roles,[2,7,6],true) }}
         {% endif %}
       ],
       "abstract": "{{ resource.abstract }}",
       "shortAbstract": "{{ resource.shortAbstract }}",
-      "status": "{{ resource.status }}",
-      "hasMapLocation": {{ resource.features is empty ? 'false' : 'true'}},
-      "hasDataAvailable": true,
-      "language": ["eng; USA"],
-      "characterSet": ["utf8"],
+      "status": ["{{ resource.status }}"],
+      "defaultResourceLocale" : {
+        "language" : "eng",
+        "characterSet" : "UTF-8",
+        "country" : "USA"
+      },
       {#"purpose": "",
       "credit": [""],#}
-      "topicCategory": [{{ macros.arraytostring(topics) }}],
       {#"environmentDescription": "",
       "resourceNativeFormat": [
         {
@@ -39,16 +49,50 @@
           "version": ""
         }
       ],#}
-      {% if keywords or projectkeywords or usertypes or cats %}
+      {% if keywords or projectkeywords or usertypes or cats or deliverabletypes %}
       "keyword": [
+        {% if topics %}
+        {
+          "keyword": [
+            {% for kw in topics %}
+                {"keyword": "{{ kw }}", "path" : ["{{ kw }}"] }{% if loop.last == false %},{% endif %}
+            {% endfor %}
+          ],
+            "keywordType" : "isoTopicCategory",
+            "thesaurus" : {
+              "date" : [{
+                  "date" : "2014-04",
+                  "dateType" : "revision"
+                }
+              ],
+              "title" : "ISO 19115 Topic Category",
+              "edition" : "ISO 19115-1:2014",
+              "onlineResource" : [{
+                  "uri" : "https://doi.org/10.18123/D6RP4M",
+                  "name": "Web page for ISO 19115-1:2014 Standard",
+                  "protocol": "http",
+                  "function": "information"
+                }
+              ],
+              "identifier" : [{
+                  "identifier" : "ISO 19115 Topic Category"
+                }
+              ]
+            },
+            "fullPath" : true
+          }
+        {% endif %}
         {% if keywords %}
+          {% if topics %},{% endif %}
           {
             "keyword": [
-              {{ macros.arraytostring(keywords) }}
+              {% for kw in keywords %}
+                  {"keyword": "{{ kw }}"}{% if loop.last == false %},{% endif %}
+              {% endfor %}
             ],
             "keywordType": "theme",
             "thesaurus":{
-              "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+              "title":"Global Change Master Directory (GCMD) Science Keywords",
               "date":[
                 {
                   "date":"2013-04-01",
@@ -61,20 +105,28 @@
               ],
               "onlineResource":[
                 {
-                  "uri":"http://gcmd.nasa.gov/learn/keywords.html"
+                  "uri":"https://earthdata.nasa.gov/gcmd-forum",
+                  "name": "Global Change Master Directory (GCMD) Science Keywords website"
                 }
               ]
+              {# "identifier" : [{
+                  "identifier" : "1eb0ea0a-312c-4d74-8d42-6f1ad758f999"
+                }
+              ]               #}
             }
-          }{% if projectkeywords or usertypes or cats %},{% endif %}
+          }
         {% endif %}
         {% if projectkeywords %}
+          {% if topics or keywords %},{% endif %}
           {
             "keyword": [
-              {{ macros.arraytostring(projectkeywords) }}
+              {% for kw in projectkeywords %}
+                  {"keyword": "{{ kw }}"}{% if loop.last == false %},{% endif %}
+              {% endfor %}
             ],
             "keywordType": "project",
             "thesaurus":{
-              "title":"NASA/Global Change Master Directory (GCMD) Earth Science Keywords",
+              "title":"Global Change Master Directory (GCMD) Science Keywords",
               "date":[
                 {
                   "date":"2013-04-01",
@@ -87,62 +139,111 @@
               ],
               "onlineResource":[
                 {
-                  "uri":"http://gcmd.nasa.gov/learn/keywords.html"
+                  "uri":"https://earthdata.nasa.gov/gcmd-forum",
+                  "name": "Global Change Master Directory (GCMD) Science Keywords website"
                 }
               ]
+              {# "identifier" : [{
+                  "identifier" : "1eb0ea0a-312c-4d74-8d42-6f1ad758f999"
+                }
+              ]               #}
             }
-          }{% if usertypes or cats %},{% endif %}
+          }
         {% endif %}
         {% if usertypes %}
+          {% if topics or keywords or projectkeywords %},{% endif %}
           {
             "keyword": [
-              {{ macros.arraytostring(usertypes) }}
+              {% for kw in usertypes %}
+              {"keyword": "{{ kw }}",
+              "path" : ["{{ kw }}"]
+              }{% if loop.last == false %},{% endif %}
+          {% endfor %}
             ],
-            "keywordType": "theme",
-            "thesaurus":{
-              "title":"LCC End User Type Keywords",
-              "date":[
-                {
-                  "date":"2015-05-11",
-                  "dateType":"revision"
+            "keywordType" : "LCC End User Type",
+            "thesaurus" : {
+              "date" : [{
+                  "date" : "2017-09",
+                  "dateType" : "revision"
                 }
               ],
-              "edition":"Version 1.9.2",
-              "presentationForm":[
-                "documentDigital"
+              "title" : "End User Types - Landscape Conservation Cooperatives",
+              "edition" : "2017",
+              "onlineResource" : [{
+                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/54760ef9e4b0f62cb5dc41a0",
+                  "name": "End User Types Keyword Vocabulary"
+                }
               ],
-              "onlineResource":[
-                {
-                  "uri":"https://www.sciencebase.gov/vocab/vocabulary/54760ef9e4b0f62cb5dc41a0"
+              "identifier" : [{
+                  "identifier" : "425f4a7c-dca2-56d8-947e-6f6bd1033d70"
                 }
               ]
-            }
-          }{% if cats %},{% endif %}
+            },
+            "fullPath" : true
+          }
         {% endif %}
         {% if cats %}
+          {% if topics or keywords or projectkeywords or usertypes %},{% endif %}
           {
             "keyword": [
-              {{ macros.arraytostring(cats) }}
+              {% for kw in cats %}
+                  {"keyword": "{{ kw }}",
+                  "path" : ["{{ kw }}"]
+                  }{% if loop.last == false %},{% endif %}
+              {% endfor %}
             ],
-            "keywordType": "theme",
-            "thesaurus":{
-              "title":"LCC Project Category Keywords",
-              "date":[
-                {
-                  "date":"2015-05-11",
-                  "dateType":"revision"
+            "keywordType" : "LCC Project Category",
+            "thesaurus" : {
+              "date" : [{
+                  "date" : "2017-09",
+                  "dateType" : "revision"
                 }
               ],
-              "edition":"Version 1.9.2",
-              "presentationForm":[
-                "documentDigital"
+              "title" : "Project Category - Landscape Conservation Cooperatives",
+              "edition" : "2017",
+              "onlineResource" : [{
+                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/52dee7c5e4b0dee2a6cd6b18",
+                  "name": "Project Category Keyword Vocabulary"
+                }
               ],
-              "onlineResource":[
-                {
-                  "uri":"https://www.sciencebase.gov/vocab/vocabulary/52dee7c5e4b0dee2a6cd6b18"
+              "identifier" : [{
+                  "identifier" : "5da1d3b7-375b-58ae-a134-2ee0c94c395f"
                 }
               ]
-            }
+            },
+            "fullPath" : true
+          }
+        {% endif %}
+        {% if deliverabletypes %}
+		      {% if topics or keywords or projectkeywords or usertypes or cats %},{% endif %}
+          {
+            "keyword": [
+              {% for kw in deliverabletypes %}
+                  {"keyword": "{{ kw }}",
+                  "path" : ["{{ kw }}"]
+                  }{% if loop.last == false %},{% endif %}
+              {% endfor %}
+            ],
+            "keywordType" : "LCC Deliverable",
+            "thesaurus" : {
+              "date" : [{
+                  "date" : "2017-09",
+                  "dateType" : "revision"
+                }
+              ],
+              "title" : "Deliverable Types - Landscape Conservation Cooperatives",
+              "edition" : "2017",
+              "onlineResource" : [{
+                  "uri" : "https://www.sciencebase.gov/vocab/vocabulary/5307baa3e4b0dcc7bdc913a9",
+                  "name": "Deliverable Types Keyword Vocabulary"
+                }
+              ],
+              "identifier" : [{
+                  "identifier" : "fa455d4a-5d87-56bc-b074-9a967beff904"
+                }
+              ]
+            },
+            "fullPath" : true
           }
         {% endif %}
       ],
@@ -150,11 +251,11 @@
       {% if resource.frequency is defined %}
       "resourceMaintenance": [
         {
-          "maintenanceFrequency": "{{ resource.frequency }}"{#,
-          "maintenanceNote": [""],
-          "maintenanceContact": [
+          "frequency": "{{ resource.frequency }}"{#,
+          "note": [""],
+          "contact": [
             {
-              "contactId": "",
+              "party":[{"contactId": ""}],
               "role": ""
             }
           ]#}
@@ -181,8 +282,9 @@
           "fileUri": "http://thisisanexample.com"
         }
       ],#}
-      "constraint": {
-        "useLimitation": ["While every effort has been made to ensure that these data are accurate and reliable within the limits of the current state of the art, the {{ organization.organizationName }} cannot assume liability for any damages caused by any errors or omissions in the data, nor as a result of the failure of the data to function on a particular system. The {{ organization.organizationName }} makes no warranty, expressed or implied, nor does the fact of distribution constitute such a warranty."
+      "constraint": [{
+        "type": "use",
+        "useLimitation": ["While every effort has been made to ensure that these data are accurate and reliable within the limits of the current state of the art, the {{ organization.name }} cannot assume liability for any damages caused by any errors or omissions in the data, nor as a result of the failure of the data to function on a particular system. The {{ organization.name }} makes no warranty, expressed or implied, nor does the fact of distribution constitute such a warranty."
           {% if resource.uselimitation is defined %},"{{ resource.uselimitation }}" {% endif %}
           ]{#,
         "legalConstraint": [
@@ -200,7 +302,7 @@
             "userNote": ""
           }
         ]#}
-      },
+      }],
       {#"taxonomy": {
         "classificationSystem": [
           {
@@ -283,14 +385,20 @@
           }
         ]
       },#}
-      {% if epsgcodes is defined or wkt is defined %}
-      "spatialReferenceSystem": {
-        {% if epsgcodes is defined %}"epsgNumber": [{{ macros.arraytoints(epsgcodes) }}]{% endif %},
-        {% if wkt is defined %}"wkt": [{{ macros.arraytostring(wkt) }}]{% endif %}
-      },
+      {% if epsgcodes is defined %}
+      "spatialReferenceSystem": [
+        {% for item in  epsgcodes %}
+        {% if not loop.first %},{% endif %}
+        {
+          "referenceSystemIdentifier": {
+            "identifier": "{{ item }}"
+          }
+        }
+        {% endfor %}
+      ],
       {% endif %}
       {% if spatialformats is defined %}
-     "spatialRepresentation": [{{ macros.arraytostring(spatialformats) }}],
+     "spatialRepresentationType": [{{ macros.arraytostring(spatialformats) }}],
       {% endif %}
      {#"spatialResolution": [
         {
@@ -303,38 +411,28 @@
       {% if resource.features %}
       "extent": [
         {
-          "description":"{{ resourceType }} bounding box {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}",
-          "geographicElement":[
-            {
-              "type":"Feature",
-              "bbox": {{ resource.bbox }},
-              "id": "boundingExtent",
-              "geometry":null,
-              "properties":{
-                "description":"{{ resourceType }} bounding box {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}"
-              },
-              "crs":{
-                "type":"name",
-                "properties":{
-                  "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
-                }
-              }
-            }
-          ]
-        },{
           "description":"{{ resourceType }} locations {{ resource.featuresInherited|default(false) ? '(inherited from parent project)' }}",
-          "geographicElement":[
-            {
-              "type": "FeatureCollection",
-              "crs":{
-                "type":"name",
-                "properties":{
-                  "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
-                }
-              },
-              "features": {{ resource.features|raw }}
-            }
-          ]
+          "geographicExtent":[{
+            "boundingBox":{
+
+              "westLongitude": {{ bbox[0] }},
+              "eastLongitude": {{ bbox[2] }},
+              "southLatitude": {{ bbox[1] }},
+              "northLatitude": {{ bbox[3] }}
+            },
+            "geographicElement":[
+              {
+                "type": "FeatureCollection",
+                "crs":{
+                  "type":"name",
+                  "properties":{
+                    "name":"urn:ogc:def:crs:OGC:1.3:CRS84"
+                  }
+                },
+                "features": {{ resource.features|raw }}
+              }
+            ]
+          }]
         }
       ],
       {% endif %}
@@ -353,7 +451,7 @@
                 "dateTime": "{{ step.stepdate }}",
                 "processor": [
                   {
-                    "contactId": "{{ step.contactid }}",
+                    "contactId": "{{ step.uuid }}",
                     "role": "{{ step.role }}"
                   }
                 ]

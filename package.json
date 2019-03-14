@@ -29,7 +29,7 @@
     "grunt-contrib-uglify": "^2",
     "grunt-jsbeautifier": "^0.2.10",
     "grunt-jsduck": "^1.0.1",
-    "grunt-sencha-dependencies": "^0.8.1",
+    "grunt-sencha-dependencies": "pablix/grunt-sencha-dependencies#b9f282c874b11f1767ab6dd8a9121440109418f7",
     "grunt-wget": "^0.1.3"
   }
 }

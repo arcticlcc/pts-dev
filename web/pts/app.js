@@ -31,7 +31,7 @@ Ext.application({
         'Ext.ux.window.Notification'
     ],
     name: 'PTS',
-    version: '0.19.2',
+    version: '0.21.1',
 
     appFolder: 'app',
     autoCreateViewport: false,
@@ -82,7 +82,11 @@ Ext.application({
     getError: function(full) {
         var error = this.lastError;
 
-        return (full || (error.length < 300)) ? error : error.substr(0, 300) + '...';
+        if(full || error) {
+          return (full || (error.length < 300)) ? error : error.substr(0, 300) + '...';
+        } else {
+          return 'Unknown error occurred during last request.';
+        }
     },
 
     /**

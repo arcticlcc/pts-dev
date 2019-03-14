@@ -1,8 +1,12 @@
 {% autoescape 'json' %}
     {
-      "contactId": "{{ contact.contactId }}",
-      {% if contact.individualName %}"individualName": "{{ contact.individualName }}",{% endif %}
-      "organizationName": "{{ contact.organizationName }}"
+      "contactId": "{{ contact.uuid }}",
+      "name": "{{ contact.name }}",
+      "contactType": "{{ contact.contacttype }}",
+      "isOrganization": {{ contact.isOrganization }}
+      {% if contact.parentuuid %}
+      ,"memberOfOrganization": ["{{ contact.parentuuid }}"]
+      {% endif %}
       {% if contact.positionName %}
       ,"positionName": "{{ contact.positionName }}"
       {% endif %}
@@ -11,6 +15,7 @@
       "onlineResource": [
         {
           "uri": "{{ contact.uri }}",
+          "name": "Web page for {{ contact.name }}",
           "protocol": "http",
           "function": "information"
         }
@@ -18,29 +23,27 @@
       {% endif %}
       {% if contact.officePhone %}
       ,
-      "phoneBook": [
+      "phone": [
         {
           "phoneNumber": "{{ contact.officePhone }}",
           "service": ["voice"]
         }
       ]
       {% endif %}
-      {% if contact.deliveryPoint1 or contact.email %}
+      {% if not contact.email is null %}
       ,
-      "address": {
-        {% if not contact.deliveryPoint1 is null %}
-          {% set comma = true %}
+      "electronicMailAddress": ["{{ contact.email }}"]
+      {% endif %}
+      {% if contact.deliveryPoint1 %}
+      ,
+      "address": [{
         "deliveryPoint": ["{{ contact.deliveryPoint1 }}"{% if not contact.deliveryPoint2 is null %},"{{ contact.deliveryPoint2 }}"{% endif %}],
         "city": "{{ contact.city }}",
         "administrativeArea": "{{ contact.administrativeArea }}",
         "postalCode": "{{ contact.postalCode }}",
-        "country": "{{ contact.country }}"
-        {% endif %}
-        {% if not contact.email is null %}
-          {{ comma is defined ? ',' : '' }}
-        "electronicMailAddress": ["{{ contact.email }}"]
-        {% endif %}
-      }
+        "country": "{{ contact.country }}",
+        "addressType":["{{ contact.addresstype }}"]
+      }]
       {% endif %}
     }{% if loop.last == false %},{% endif %}
 {% endautoescape %}

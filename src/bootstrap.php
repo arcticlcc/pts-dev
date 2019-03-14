@@ -200,7 +200,7 @@ if ('cli' !== php_sapi_name()) {
 }
 
 // Error handling
-$app->error(function (\Exception $ex, $code) use ($app) {
+$app->error(function (\Exception $exc, $code) use ($app) {
     $json = $app["request"]->server->get('HTTP_ACCEPT') == 'application/json';
 
     if ($app['debug']) {
@@ -208,7 +208,7 @@ $app->error(function (\Exception $ex, $code) use ($app) {
     }
 
     if($json) {
-        $app['monolog']->addError($ex->getMessage());
+        $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
          return $response = $app['json']->setAll(null, $code, false, "Sorry, there was an error. It's been logged and we'll look into it.")->getResponse();
     } else {
         if (404 == $code) {

@@ -19,6 +19,18 @@ Ext.define('PTS.util.Format', {
     },
 
     /**
+     * Formats value as url
+     * @param {String} value The value to format
+     */
+    link: function(val) {
+        if (val) {
+            return '<a href="' + val + '" target="_blank">' + val + '</a>';
+        }
+
+        return val;
+    },
+
+    /**
      * Formats documemt status for TPS report
      * @param {String} value The value to format
      */

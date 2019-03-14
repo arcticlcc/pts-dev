@@ -32,7 +32,7 @@ class PTSServiceProvider implements ServiceProviderInterface {
                     throw new \Exception("Unauthorized.");
                 }
             } catch (Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $response = $app['json']->setAll(null, 409, false, $exc->getMessage())->getResponse();
             }
@@ -81,7 +81,7 @@ class PTSServiceProvider implements ServiceProviderInterface {
                 //$app['json']->setData($result);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 $message = $exc->getMessage();
                 $success = false;
                 $code = 400;
@@ -262,7 +262,7 @@ class PTSServiceProvider implements ServiceProviderInterface {
                  $app['json']->setData($result);
 
                  } catch (\Exception $exc) {
-                 $app['monolog']->addError($exc->getMessage());
+                 $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                  $app['json']->setAll(null, 409, false, $exc->getMessage());
                  }*/
@@ -278,7 +278,7 @@ class PTSServiceProvider implements ServiceProviderInterface {
                 $app[$format]->setData($result);
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $app[$format]->setAll(null, 409, false, $exc->getMessage());
             }
@@ -318,7 +318,7 @@ class PTSServiceProvider implements ServiceProviderInterface {
                 }
 
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
 
                 $app['json']->setAll(null, 409, false, $exc->getMessage());
             }

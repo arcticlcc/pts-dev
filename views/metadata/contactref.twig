@@ -1,13 +1,20 @@
 {% macro ref(contacts, values, comma) %}
+{% import "metadata/macros.twig" as macros %}
 	{% autoescape 'json' %}
-	  {% for contact in contacts %}
-	    {% if not values or contact.roletypeid in values %}
+	  {% for key, contact in contacts %}
+	    {% if not values or key in values %}
 	      {% if (comma == true and loop.first) or not loop.first %},{% endif %}
 	      {
-	        "contactId": "{{ contact.contactid }}",
-	        "role": "{{ contact.role }}"
+	        "role": "{{ contact[0].role }}",
+          "party": [
+          {% for item in contact %}
+      		    {
+                "contactId": "{{ item.uuid }}"
+              }{% if loop.last == false %},{% endif %}
+      		{% endfor %}
+          ]
 	      }
 	    {% endif %}
 	  {% endfor %}
-	{% endautoescape %}	  
+	{% endautoescape %}
 {% endmacro %}

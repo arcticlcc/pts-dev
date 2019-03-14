@@ -39,6 +39,7 @@ class MetadataSync extends \Knp\Command\Command {
                 }
 
                 $app['idiorm']->setPath($schema);
+                $app['session']->set('schema',$schema);
                 $build = $adiwg->buildMetaDB(FALSE, $schema);
                 $conn = $build ? $build : $app['dbs'][$schema];
                 $conn->exec('PRAGMA journal_mode=WAL;');
@@ -57,6 +58,7 @@ class MetadataSync extends \Knp\Command\Command {
                             $output->writeln('Found ' . count($items) .
                                 " $table records for $schema schema.");
                             foreach ($items as $item) {
+                                $output->writeln("Processing {$table}Id " . $item->$getId);
                                 $adiwg->$method($item->$getId, $schema, $conn);
                             }
                             $output->writeln("Sync completed for $schema::$table.");
@@ -68,7 +70,7 @@ class MetadataSync extends \Knp\Command\Command {
                     });
                 }
             } catch (\Exception $exc) {
-                $app['monolog']->addError($exc->getMessage());
+                $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
                 die;
             }
         }
@@ -85,7 +87,7 @@ class MetadataSync extends \Knp\Command\Command {
                 $output->writeln($message);
             }
         } catch (\Exception $exc) {
-            $app['monolog']->addError($exc->getMessage());
+            $app['monolog']->addError("{$exc->getMessage()}, line {$exc->getLine()} in {$exc->getFile()}");
         }
     }
 

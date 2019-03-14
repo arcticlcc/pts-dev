@@ -1,6 +1,6 @@
 {% macro citation(c) %}
   {% import "metadata/contactref.twig" as contactref %}
-  {% set project, resource, organization = c.resourceType == 'project', c.resource, c.organization %}
+  {% set project, resource, organization, links = c.resourceType == 'project', c.resource, c.organization, c.links %}
 	{% autoescape 'json' %}
 	  {
         "title": "{{ resource.title }}",
@@ -23,8 +23,12 @@
         {# "edition": "", #}
         "responsibleParty": [
           {
-            "contactId": "{{ organization.contactId }}",
-            "role": "owner"
+            "party": [{"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"}],
+            "role": "pointOfContact"
+          },
+          {
+            "party": [{"contactId": "{{ organization.uuid }}"}],
+            "role": "administrator"
           }
           {% if project %}
           {{ contactref.ref(c.roles,[7,10,1,4,9],true) }}
@@ -36,9 +40,9 @@
         "identifier": [
           {
             "identifier": "{{ resource.resourceIdentifier }}",
-            "type": "uuid",
+            "namespace" : "urn:uuid",
             "authority": {
-              "title": "{{ organization.organizationName }}",
+              "title": "{{ organization.name }}",
               {% if project %}
               "date": [{
                 "date": "{{ resource.datecreated|default(resource.startdate) }}",
@@ -47,7 +51,7 @@
               {% endif %}
               "responsibleParty": [
                 {
-                  "contactId": "{{ organization.contactId }}",
+                  "party": [{"contactId": "{{ organization.uuid }}"}],
                   "role": "originator"
                 }
               ]
@@ -55,16 +59,16 @@
           }{% if project %},
           {
             "identifier": "{{ resource.projectcode }}",
-            "type": "projectCode",
+            "namespace": "lcc:arctic",
             "authority": {
-              "title": "{{ organization.organizationName }}",
+              "title": "{{ organization.name }}",
               "date": [{
                 "date": "{{ resource.datecreated|default(resource.startdate) }}",
                 "dateType": "creation"
               }],
               "responsibleParty": [
                 {
-                  "contactId": "{{ organization.contactId }}",
+                  "party": [{"contactId": "{{ organization.uuid }}"}],
                   "role": "originator"
                 }
               ]
@@ -72,17 +76,18 @@
           }{% endif %}{% if resource.sciencebaseid %},
           {
             "identifier": "{{ resource.sciencebaseid }}",
-            "type": "scienceBase",
+            "namespace" : "gov.sciencebase.catalog",
             "authority": {
-              "title": "{{ 'ScienceBase identifier for the resource' }}",
+              "title": "{{ 'ScienceBase identifier for the resource' }}" {#,
               "date": [{
                 "date": "{{ resource.datecreated|default(resource.startdate) }}",
-                "dateType": "creation"
-              }]
+                "dateType": "lastUpdate"
+              }]#}
             }
           }{% endif %}
         ],
         "onlineResource": [
+          {% if resource.uri %}
           {
             "uri": "{{ resource.uri }}",
             "protocol": "http",
@@ -90,6 +95,27 @@
             "description": "Web page with detailed information about the resource.",
             "function": "information"
           }
+          {% endif %}
+          {% if resource.sciencebaseid and resource.uri %},
+            {
+              "uri": "https://www.sciencebase.gov/catalog/item/{{ resource.sciencebaseid }}",
+              "protocol": "http",
+              "name": "Resource ScienceBase website",
+              "description": "Web page with detailed information about the resource.",
+              "function": "information"
+            }
+          {% endif %}
+          {% for link in links %}
+            {% if link.onlinefunctionid in [2,5,8,9,10,12] %}
+              ,
+              {
+                "uri": "{{ link.uri }}",
+                "name": "{{ link.title }}",
+                "description": "{{ link.description }}",
+                "function": "{{ link.function }}"
+              }
+            {% endif %}
+          {% endfor %}
         ]
       }
 	{% endautoescape %}

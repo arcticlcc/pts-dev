@@ -230,8 +230,10 @@ Ext.define('PTS.controller.product.window.ProductMetadata', {
 
         btn.disable();
 
+        Ext.Ajax.timeout = 180000;
         Ext.Ajax.request({
             url: '/product/' + id + '/metadata/publish',
+            timeout: 180000,
             method: action,
             success: function(response, opts) {
                 record.set('exportmetadata', action === 'DELETE' ? 0 : 1);

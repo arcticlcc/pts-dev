@@ -17,6 +17,7 @@ use PTS\Console\MetadataSync;
 use PTS\Console\MetadataUpload;
 use PTS\Console\SyncCalendar;
 use PTS\Console\SchemaUpdate;
+use PTS\Console\SyncSB;
 
 $application = $app['console'];
 $application->add(new MyCommand);
@@ -27,6 +28,7 @@ $application->add(new MetadataSync);
 $application->add(new MetadataUpload);
 $application->add(new SyncCalendar);
 $application->add(new SchemaUpdate);
+$application->add(new SyncSB);
 $application->run($app['console.input'], $app['console.output']);
 
 ?>

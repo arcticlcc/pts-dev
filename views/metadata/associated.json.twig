@@ -3,7 +3,7 @@
 {
   "associationType": "{{ assoc.assocType }}",
   "initiativeType": "project",
-  "resourceType": "{{ assoc.resourceType }}",
+  "resourceType": [{"type": "{{ assoc.resourceType }}"}],
   "resourceCitation": {{ citation.citation(assoc) }},
   "metadataCitation": {
     "title": "Metadata for {{ assoc.resourceType }}: {{ assoc.resource.title }}",
@@ -13,19 +13,19 @@
     }],
     "responsibleParty": [
       {
-        "contactId": "{{ assoc.organization.contactId }}",
+        "party": [{"contactId": "{{ assoc.organization.uuid }}"}],
         "role": "custodian"
       }
     ],
     "identifier": [
       {
         "identifier": "{{ assoc.resource.resourceIdentifier }}",
-        "type": "uuid",
+        "namespace" : "urn:uuid",
         "authority": {
-          "title": "{{ assoc.organization.organizationName }}",
+          "title": "{{ assoc.organization.name }}",
           "responsibleParty": [
             {
-              "contactId": "{{ assoc.organization.contactId }}",
+              "party": [{"contactId": "{{ assoc.organization.uuid }}"}],
               "role": "originator"
             }
           ]
