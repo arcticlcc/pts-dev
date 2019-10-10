@@ -87,6 +87,7 @@
           }{% endif %}
         ],
         "onlineResource": [
+          {% if resource.uri %}
           {
             "uri": "{{ resource.uri }}",
             "protocol": "http",
@@ -94,7 +95,8 @@
             "description": "Web page with detailed information about the resource.",
             "function": "information"
           }
-          {% if resource.sciencebaseid %},
+          {% endif %}
+          {% if resource.sciencebaseid and resource.uri %},
             {
               "uri": "https://www.sciencebase.gov/catalog/item/{{ resource.sciencebaseid }}",
               "protocol": "http",
