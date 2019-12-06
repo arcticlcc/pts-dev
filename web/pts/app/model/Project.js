@@ -62,6 +62,10 @@ Ext.define('PTS.model.Project', {
         type: 'mystring',
         useNull: true
     }, {
+        name: 'purpose',
+        type: 'mystring',
+        useNull: true
+    }, {
         name: 'uuid',
         persist: false
     }, {
