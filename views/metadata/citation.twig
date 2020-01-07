@@ -1,6 +1,6 @@
-{% macro citation(c) %}
+{% macro citation(c, g) %}
   {% import "metadata/contactref.twig" as contactref %}
-  {% set project, resource, organization, links = c.resourceType == 'project', c.resource, c.organization, c.links %}
+  {% set project, resource, organization, isLCC, defcontacts, links = c.resourceType == 'project', c.resource, c.organization, g.isLCC, g.defcontacts, c.links %}
 	{% autoescape 'json' %}
 	  {
         "title": "{{ resource.title }}",
@@ -22,10 +22,12 @@
         ],
         {# "edition": "", #}
         "responsibleParty": [
-          {
-            "party": [{"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"}],
-            "role": "pointOfContact"
-          },
+          {% if defcontacts %}
+            {
+              "party": [{"contactId": "{{ defcontacts.poc() }}"}],
+              "role": "pointOfContact"
+            },
+          {% endif %}
           {
             "party": [{"contactId": "{{ organization.uuid }}"}],
             "role": "administrator"
@@ -59,7 +61,7 @@
           }{% if project %},
           {
             "identifier": "{{ resource.projectcode }}",
-            "namespace": "lcc:arctic",
+            "namespace": "{{isLCC ? "lcc:arctic" : "https://schema.org/identifier"}}",
             "authority": {
               "title": "{{ organization.name }}",
               "date": [{

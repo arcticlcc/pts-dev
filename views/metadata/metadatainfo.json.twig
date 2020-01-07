@@ -6,7 +6,7 @@
         "namespace" : "urn:uuid"
       },
       {% if parentmetadata is defined and not parentmetadata is empty %}
-      "parentMetadata": {{ citation.citation(parentmetadata) }},
+      "parentMetadata": {{ citation.citation(parentmetadata, _context) }},
       {% elseif parentsciencebaseid is defined and not parentsciencebaseid is empty %}
       "parentMetadata": {
         "title": "Parent metadata for resource",
@@ -27,10 +27,12 @@
       },
       {% endif %}
       "metadataContact": [
-          {
-            "party": [{"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"}],
-            "role": "pointOfContact"
-          },
+          {% if defcontacts %}
+            {
+              "party": [{"contactId": "{{ defcontacts.metapoc() }}"}],
+              "role": "pointOfContact"
+            },
+          {% endif %}
           {
             "party": [{"contactId": "{{ organization.uuid }}"}],
             "role": "publisher"
@@ -54,15 +56,18 @@
         "characterSet" : "UTF-8",
         "country" : "USA"
       },
-      "metadataOnlineResource": [{
-        "uri":"http://metadata.arcticlcc.org/{{ resource.resourceIdentifier }}/",
-        "name": "Online access to metadata",
-        "protocol": "http",
-        "function": "completeMetadata"
-      }
+      "metadataOnlineResource": [
+      {% if isLCC %}
+        {
+          "uri":"http://metadata.arcticlcc.org/{{ resource.resourceIdentifier }}/",
+          "name": "Online access to metadata",
+          "protocol": "http",
+          "function": "completeMetadata"
+        }
+      {% endif %}
       {% for link in links %}
         {% if link.onlinefunctionid in [6] %}
-          ,
+          {% if isLCC %},{% endif %}
           {
             "uri": "{{ link.uri }}",
             "name": "{{ link.title }}",

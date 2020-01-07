@@ -10,11 +10,11 @@
         {% if resource.enddate %}"endDateTime": "{{resource.enddate}}"{% endif %}
       },
       {% endif %}
-      "citation": {{ citation.citation(_context) }},
+      "citation": {{ citation.citation(_context, _context) }},
       "pointOfContact": [
         {
           "party": [
-            {"contactId": "edc6b779-3352-4a81-8430-76bcce1bfcb3"},
+            {% if defcontacts %}{"contactId": "{{ defcontacts.poc() }}"},{% endif %}
             {"contactId": "{{ organization.uuid }}"}
           ],
           "role": "pointOfContact"

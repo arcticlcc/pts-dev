@@ -4,7 +4,7 @@
   "associationType": "{{ assoc.assocType }}",
   "initiativeType": "project",
   "resourceType": [{"type": "{{ assoc.resourceType }}"}],
-  "resourceCitation": {{ citation.citation(assoc) }},
+  "resourceCitation": {{ citation.citation(assoc, _context) }},
   "metadataCitation": {
     "title": "Metadata for {{ assoc.resourceType }}: {{ assoc.resource.title }}",
     "date": [{
@@ -31,7 +31,9 @@
           ]
         }
       }
-    ],
+    ]
+    {% if isLCC %}
+    ,
     "onlineResource": [
       {
         "uri": "http://metadata.arcticlcc.org/{{ assoc.resource.resourceIdentifier }}",
@@ -40,6 +42,7 @@
         "function": "completeMetadata"
       }
     ]
+    {% endif %}
   }
 }
 {% endautoescape %}
