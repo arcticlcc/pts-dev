@@ -235,6 +235,18 @@ Ext.define('PTS.view.project.form.ProjectForm', {
             }, {
                 xtype: 'fieldset',
                 collapsible: true,
+                title: 'Purpose',
+                anchor: '-15',
+                items: [{
+                    xtype: 'textareafield',
+                    name: 'purpose',
+                    grow: true,
+                    growMin: 80,
+                    anchor: '100%'
+                }]
+            }, {
+                xtype: 'fieldset',
+                collapsible: true,
                 title: 'Supplemental',
                 anchor: '-15',
                 items: [{
